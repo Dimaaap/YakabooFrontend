@@ -1,0 +1,32 @@
+@use 'helpers' as *;
+
+:root {
+    --color-light: #FFFFFF;
+    --color-black: #000000;
+    --color-blue-10: #337;
+    --color-gray-10: #5B636F;
+    --color-pink-10: #ff00c5;
+    --color-red-10: rgb(234, 91, 61);
+    --color-green-10: rgb(0, 148, 95);
+    --color-black-10: #222;
+    --color-purple-10: rgb(175, 57, 231);
+    --color-blue-accent: rgb(68, 68, 136);
+
+    --color-blue-20: #333399;
+    --color-gray-20: #626B77;
+
+    --color-gray-30: #78818D;
+
+    --color-gray-40: #F2F3F6;
+
+    --border: #{rem(1)} solid var(--color-gray-10);
+
+    --container-width: #{rem(1600)};
+    --container-padding-x: #{rem(16)};
+
+    --transition-duration: 0.2s;
+
+    @include laptop {
+        --container-width: #{rem(1280)};
+      }
+}
