@@ -1,0 +1,47 @@
+@use "../helpers" as *;
+
+.books-container {
+    display: flex;
+    flex-direction: column;
+    gap: rem(15);
+    background-color: var(--color-light);
+    padding-block: 2%;
+    border-radius: rem(20);
+
+    &__badge {
+        @include fluid-text(16, 14);
+
+        font-weight: 500;
+        width: 100%;
+        background-color: var(--color-red-10);
+        display: flex;
+        flex-direction: row;
+        gap: rem(12);
+        width: 14%;
+        color: var(--color-light);
+        padding: rem(10);
+        align-items: center;
+        padding-inline: 1%;
+        border-radius: 0 rem(50) rem(50) 0;
+    }
+
+    & .book-slider {
+        display: flex;
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        transition: transform 0.4s ease-in-out;
+        padding-inline: 2%;
+        gap: 1%;
+        align-items: flex-start;
+
+        &__book {
+            display: flex;
+            flex-direction: column;
+            width: 20%;
+            flex-shrink: 0;
+            gap: rem(10);
+            justify-content: end;
+        }
+    }
+}

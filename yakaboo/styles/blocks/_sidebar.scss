@@ -1,0 +1,42 @@
+@use "../helpers" as *;
+
+.sidebar {
+    width: 15%;
+
+    &__list {
+        @include fluid-text(16, 14);
+
+        display: flex;
+        flex-direction: column;
+        gap: rem(15);
+        color: var(--color-gray-20);
+        font-weight: 600;
+    }
+
+    &__item {
+
+        &:hover {
+            color: var(--color-pink-10);
+
+            & img {
+                filter: brightness(0) saturate(100%) invert(24%) sepia(97%) saturate(6112%) hue-rotate(294deg) brightness(99%) contrast(108%);
+            }
+        }
+    }
+
+    &__point-flex {
+        display: flex;
+        align-items: center;
+        gap: rem(5);
+
+        img {
+            filter: invert(50%);
+            max-width: rem(25);
+            min-width: rem(22);
+        }
+    }
+}
+
+#second-image {
+    @include square(23);
+}

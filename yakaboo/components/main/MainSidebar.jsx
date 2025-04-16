@@ -28,55 +28,55 @@ export const MainSidebar = () => {
             </Link>
             <Link href="#" className="sidebar__item">
                 <li className="sidebar__point-flex">
-                   <Image src="/icons/book.svg" alt="" width="20" height="20" />
+                   <Image src="/icons/book.svg" alt="" width="18" height="22" />
                    Друковані книги
                 </li>
             </Link>
             <Link href="#" className="sidebar__item">
                 <li className="sidebar__point-flex">
-                   <Image src="/icons/book.svg" alt="" width="20" height="20" />
+                   <Image src="/icons/mobile.svg" alt="" id="second-image" width="18" height="22" />
                    Електронні книги
                 </li>
             </Link>
             <Link href="#" className="sidebar__item">
                 <li className="sidebar__point-flex">
-                   <Image src="/icons/book.svg" alt="" width="20" height="20" />
+                   <Image src="/icons/audio.svg" alt="" width="18" height="22" />
                    Аудіокниги
                 </li>
             </Link>
             <Link href="#" className="sidebar__item">
                 <li className="sidebar__point-flex">
-                   <Image src="/icons/book.svg" alt="" width="20" height="20" />
+                   <Image src="/icons/table-games.svg" alt="" width="18" height="22" />
                    Настільні ігри
                 </li>
             </Link>
             <Link href="#" className="sidebar__item">
                 <li className="sidebar__point-flex">
-                   <Image src="/icons/book.svg" alt="" width="20" height="20" />
-                   Творчіть, хобі
+                   <Image src="/icons/art.svg" alt="" width="18" height="22" />
+                   Творчість, хобі
                 </li>
             </Link>
             <Link href="#" className="sidebar__item">
                 <li className="sidebar__point-flex">
-                   <Image src="/icons/book.svg" alt="" width="20" height="20" />
+                   <Image src="/icons/accessouris.svg" alt="" width="18" height="22" />
                    Книжкові аксесуари
                 </li>
             </Link>
             <Link href="#" className="sidebar__item">
                 <li className="sidebar__point-flex">
-                   <Image src="/icons/book.svg" alt="" width="20" height="20" />
+                   <Image src="/icons/notes.svg" alt="" width="18" height="22" />
                     Блокноти
                 </li>
             </Link>
             <Link href="#" className="sidebar__item">
                 <li className="sidebar__point-flex">
-                   <Image src="/icons/book.svg" alt="" width="20" height="20" />
+                   <Image src="/icons/gift.svg" alt="" width="18" height="22" />
                     Подарунки
                 </li>
             </Link>
             <Link href="#" className="sidebar__item">
                 <li className="sidebar__point-flex">
-                   <Image src="/icons/book.svg" alt="" width="20" height="20" />
+                   <Image src="/icons/active-rest.svg" alt="" width="18" height="22" />
                     Активний відпочинок
                 </li>
             </Link>

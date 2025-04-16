@@ -1,0 +1,14 @@
+@use "../helpers" as *;
+
+.main-container {
+    width: 100%;
+    display: flex;
+    gap: 1%;
+
+    &__right {
+        display: flex;
+        flex-direction: column;
+        gap: rem(20);
+        width: 85%;
+    }
+}

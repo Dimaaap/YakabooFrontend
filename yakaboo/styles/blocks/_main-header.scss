@@ -1,0 +1,49 @@
+@use "../helpers" as *;
+
+.main-header {
+    display: flex;
+    flex-direction: column;
+    gap: rem(10);
+    background-color: transparent;
+    scrollbar-color: var(--color-gray-20) transparent;
+    
+    &::-webkit-scrollbar-button {
+        background-color: red;
+    }
+
+    &__title {
+        color: var(--color-blue-20);
+        font-weight: 700;
+        letter-spacing: .01em;
+    }
+
+    &__items {
+        width: 95%;
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: 1%;
+        overflow-x: auto;
+        white-space: nowrap;
+        scrollbar-width: thin;
+        padding-bottom: 1%;
+    }
+
+    &__link {
+        flex-shrink: 0;
+        background-color: var(--color-gray-50);
+        border-radius: rem(50);
+        padding: 1%;
+    }
+
+    &__point {
+        @include fluid-text(16, 14);
+        white-space: nowrap;
+        font-weight: 500;
+        color: var(--color-gray-10);
+
+        &.is-active {
+            color: var(--color-pink-10);
+        }
+    }
+}
