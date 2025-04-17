@@ -1,8 +1,14 @@
-import React from 'react'
+"use client"
+
+import React, { useState } from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
+import { ContactsModal } from '../modals';
 
 export const Header = () => {
+
+    const [isContactsOpen, setIsContactsOpen] = useState(false);
+
   return (
     <div className="header container">
         <div className="header__section header__first-section">
@@ -26,18 +32,23 @@ export const Header = () => {
             </div>
         </div>
         <div className="header__section header__right-section">
-            <div className="header__section-info-text">
-                <div className="top-row row">
-                    <Image src="/icons/phone.svg" alt="" width="15" height="15" className="row__icon" />    
-                    <span className="row__text">
-                        0-800-335-425
-                    </span>
-                    <Image src="/icons/chevron-down.svg" alt="" width="20" height="20" className="row__icon" />
-                </div>  
-                <div className="bottom-row row">
-                    <span className="row__text">
-                        Без вихідних, з 9 до 20
-                    </span>
+            <div className="header__section-relative" onMouseEnter={() => setIsContactsOpen(true)} 
+                onMouseLeave={() => setIsContactsOpen(false)}>
+                <div className="header__section-info-text">
+                    <div className="top-row row">
+                        <Image src="/icons/phone.svg" alt="" width="15" height="15" className="row__icon" />    
+                        <span className="row__text">
+                            0-800-335-425
+                        </span>
+                        <Image src="/icons/chevron-down.svg" alt="" width="20" height="20" className="row__icon" />
+                    </div>  
+                    <div className="bottom-row row">
+                        <span className="row__text">
+                            Без вихідних, з 9 до 20
+                        </span>
+                    </div>
+                    { isContactsOpen && <ContactsModal /> }
+                    
                 </div>
             </div>
             <div className="header__icons-row">

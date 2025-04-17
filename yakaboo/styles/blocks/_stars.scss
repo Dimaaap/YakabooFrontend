@@ -1,0 +1,10 @@
+@use "../helpers" as *;
+
+.stars {
+    @include fluid-text(18, 14);
+    display: flex;
+    align-items: center;
+    gap: rem(4);
+    color: var(--color-pink-10);
+    font-weight: 600;
+}

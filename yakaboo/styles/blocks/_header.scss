@@ -4,6 +4,7 @@
     display: grid;
     grid-template-columns: 15% 55% 30%;
     padding-block: 1%;
+    position: relative;
 
     @include tablet {
         grid-template-columns: 30% 30% 30%;
@@ -13,6 +14,10 @@
     &__section {
         display: flex;
         align-items: center;
+
+        &-relative {
+            position: relative;
+        }
     }
 
     &__first-section {
@@ -128,6 +133,7 @@
     &__section-info-text {
         display: flex;
         flex-direction: column;
+        cursor: pointer;
 
         & .row {
             display: flex;

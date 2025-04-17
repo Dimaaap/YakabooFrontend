@@ -1,0 +1,47 @@
+@use "../helpers" as *;
+
+.contacts-modal {
+    font-size: rem(14);
+    position: absolute;
+    background-color: var(--color-light);
+    border: rem(1) solid var(--color-black);
+    border-radius: rem(10);
+    padding: rem(15);
+    display: flex;
+    align-items: start;
+    gap: 5%;
+    left: -20%;
+    top: 100%;
+    width: rem(250);
+
+    &__left {
+        & img {
+            width: rem(12);
+            margin-top: rem(8);
+        }
+    }
+
+    &__right {
+        display: flex;
+        flex-direction: column;
+        gap: rem(2);
+    }
+
+    &__phone-link {
+        color: var(--color-gray-10);
+        font-weight: 500;
+
+        &:hover {
+            color: var(--color-blue-10);
+            text-decoration: underline;
+        }
+    }
+
+    &__text-container {
+        display: grid;
+        flex-direction: column;
+        gap: rem(2);
+        color: var(--color-gray-10);
+        font-weight: 500;
+    }
+}

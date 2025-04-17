@@ -11,6 +11,9 @@
         gap: rem(15);
         color: var(--color-gray-20);
         font-weight: 600;
+        position: sticky;
+        top: 2%;
+        bottom: 2%;
     }
 
     &__item {
