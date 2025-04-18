@@ -1,0 +1,38 @@
+@use "../helpers" as *;
+
+.chat-options {
+    background-color: var(--color-light);
+    position: fixed;
+    bottom: 18%;
+    left: 2%;
+    padding: 1%;
+    border-radius: rem(50);
+    z-index: 1;
+
+    &__wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: rem(10);
+    }
+
+    &__icon-wrapper {
+        width: rem(50);
+        height: rem(50);
+        border-radius: 50%;
+        color: var(--color-light);
+        background-color: var(--color-blue-30);
+        z-index: 2;
+
+        &.purple-wrapper {
+            background-color: transparent;
+        }
+
+        &.green-wrapper {
+            background-color: var(--color-green-10);
+        }
+
+        & img {
+            z-index: 3;
+        }
+    }
+}

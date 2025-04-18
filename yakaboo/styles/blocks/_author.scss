@@ -1,0 +1,8 @@
+@use '../helpers' as *;
+
+.author {
+    display: flex;
+    flex-direction: column;
+    gap: rem(5);
+    padding: 2%;
+}

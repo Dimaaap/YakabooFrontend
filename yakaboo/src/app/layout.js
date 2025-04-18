@@ -1,4 +1,6 @@
-import { Montserrat } from "next/font/google"
+import { Montserrat } from "next/font/google";
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import { Header } from "../../components/shared";
 
 const monserrat = Montserrat(
   {
@@ -18,6 +20,7 @@ export default function RootLayout({ children }) {
       <body
         className={ monserrat.className }
       >
+        <Header />
         {children}
       </body>
     </html>

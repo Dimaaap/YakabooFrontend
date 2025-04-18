@@ -1,0 +1,19 @@
+@use "../helpers" as *;
+
+.breadcrumbs {
+    display: flex;
+    list-style-type: none;
+    align-items: center;
+    gap: rem(10);
+
+    &__item {
+        @include fluid-text(16, 14);
+        color: var(--color-gray-30);
+    }
+
+    &__link {
+        display: flex;
+        align-items: center;
+        gap: rem(5);
+    }
+}

@@ -10,7 +10,7 @@ export const Header = () => {
     const [isContactsOpen, setIsContactsOpen] = useState(false);
 
   return (
-    <div className="header container">
+    <div className="header">
         <div className="header__section header__first-section">
             <button type="button" id="burger">
                 <Image src="/icons/line.svg" className="header__icon" width="20" height="1"/>
