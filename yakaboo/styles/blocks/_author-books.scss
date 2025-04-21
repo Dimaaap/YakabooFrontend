@@ -1,0 +1,88 @@
+@use "../helpers" as *;
+
+.author-books {
+    background-color: var(--color-light);
+    padding: 2%;
+    border-radius: rem(10);
+    display: flex;
+    flex-direction: column;
+    gap: 2%;
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__count {
+        @include fluid-text(20, 16);
+    }
+
+    &__select {
+        font-size: rem(14);
+        display: flex;
+        align-items: center;
+        gap: rem(7);
+        color: var(--color-gray-20);
+        font-weight: 500;
+        cursor: pointer;
+
+        & img {
+            width: rem(12);
+            height: rem(12);
+        }
+    }
+
+    &__wrapper {
+        display: flex;
+        align-items: center;
+        gap: 2%;
+    }
+
+    &__title {
+        @include fluid-text(16, 14);
+    }
+
+    &__books-container {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: rem(7);
+        row-gap: 3%;
+    }
+
+    &__book {
+        display: grid;
+        flex-direction: column;
+        gap: 1%;
+    }
+
+    &__author {
+        font-size: rem(14);
+        color: var(--color-gray-30);
+        font-weight: 500;
+    }
+
+    &__price {
+        @include fluid-text(16, 14);
+        color: var(--color-blue-10);
+    }
+
+    &__delivery-time {
+        font-size: rem(14);
+        display: flex;
+        gap: rem(2);
+        font-weight: 500;
+
+        &.green-time {
+            color: var(--color-green-10);
+
+            & img {
+                filter: invert(35%) sepia(97%) saturate(546%) hue-rotate(124deg) brightness(90%) contrast(87%);
+            }
+        }
+
+
+        & img {
+            width: rem(15);
+        }
+    }
+}

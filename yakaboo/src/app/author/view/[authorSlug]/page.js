@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from "next/navigation";
-import { AuthorHeader, Breadcrumbs } from "../../../../../components";
+import { AuthorBooks, AuthorHeader, Breadcrumbs, Filters } from "../../../../../components";
 
 export default function AuthorPage() {
 
@@ -15,6 +15,10 @@ export default function AuthorPage() {
         <div className="author">
             <Breadcrumbs linksList={ breadcrumbsObject } />
             <AuthorHeader />
+            <div className="author__flex-container">
+                <Filters />
+                <AuthorBooks />
+            </div>
         </div>
     )
 }

@@ -1,0 +1,172 @@
+@use "../helpers" as *;
+
+.filters {
+    width: 18%;
+    background-color: var(--color-light);
+    border-radius: rem(10);
+    padding: 1.5%;
+    font-size: rem(14);
+    display: flex;
+    flex-direction: column;
+    gap: rem(10);
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: rem(5);
+
+        &-title {
+            font-weight: 600;
+        }
+
+        &-scroll {
+            max-height: rem(270);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: rem(5);
+        }
+
+        &-label {
+            display: flex;
+            gap: 4%;
+            align-items: center;
+            position: relative;
+            user-select: none;
+            transition: color 0.3s;
+
+            &:hover {
+                color: var(--color-black);
+            }
+
+            &:hover .filters__form-custom-box {
+                border-color: var(--color-pink-10);
+            }
+        }
+
+        &-field {
+            font-weight: 500;
+            color: #626B77;
+        }
+
+        &-checkbox {
+            display: none;
+        }
+
+        &-custom-box {
+            min-height: rem(20);
+            max-height: rem(20);
+            min-width: rem(20);
+            max-width: rem(20);
+            background-color: var(--color-gray-40);
+            border-radius: rem(5);
+            position: relative;
+            border: rem(1) solid var(--color-gray-30);
+
+            &::after {
+                content: '';
+                display: none;
+                position: absolute;
+                width: rem(6);
+                height: rem(10);
+                left: rem(7);
+                top: rem(3);
+                border: solid white;
+                border-width: 0 rem(2) rem(2) 0;
+                transform: rotate(45deg);
+            }
+        }
+
+        &-checkbox:checked + &-custom-box {
+            background-color: var(--color-pink-10);
+            border: none;
+        }
+
+        &-checkbox:checked + &-custom-box::after {
+            display: block;
+        }
+    }
+
+    &__search-container {
+        position: relative;
+
+        & img {
+            position: absolute;
+            top: 25%;
+            right: 5%;
+            cursor: pointer;
+        }
+    }
+
+    &__search {
+        width: 100%;
+        background-color: var(--color-gray-40);
+        border: rem(1) solid #ddd;
+        border-radius: rem(5);
+        height: rem(35);
+        padding-inline-start: 5%;
+        color: var(--color-gray-30);
+        font-weight: 500;
+    }
+
+    &__show-all {
+        background-color: transparent;
+        border: none;
+        display: flex;
+        gap: rem(3);
+        padding: 0;
+        margin-top: 2%;
+        color: #626B77;
+        align-items: center;
+        font-weight: 600;
+
+        & img {
+            width: rem(12);
+        }
+    }
+
+    &__field-row {
+        display: flex;
+        gap: 10%;
+    }
+
+    &__row {
+        position: relative;
+        width: 40%;
+        display: flex;
+    }
+
+    &__price-label {
+        position: absolute;
+        top: 20%;
+        left: 5%;
+        font-size: rem(14);
+        color: var(--color-gray-30);
+        font-weight: 600;
+    }
+
+    &__price-field {
+        width: rem(100);
+        height: rem(35);
+        background-color: var(--color-gray-40);
+        border: rem(1) solid #ddd;
+        border-radius: rem(7);
+        padding-left: 35%;
+        font-weight: 500;
+    }
+
+    &__form-button {
+        background-color: var(--color-gray-40);
+        border: none;
+        color: var(--color-gray-20);
+        font-weight: 500;
+        padding-block: 3%;
+        border-radius: rem(7);
+        margin-top: 5%;
+        border: rem(1) solid transparent;
+
+        &:hover {
+            border-color: var(--color-gray-30);
+        }
+    }
+}

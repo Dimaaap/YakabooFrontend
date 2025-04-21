@@ -5,3 +5,6 @@ export { Stars } from "./Stars";
 export { Footer } from "./Footer";
 export { ChatBtn } from "./ChatBtn";
 export { Breadcrumbs } from "./Breadcrumbs";
+export { AuthorFacts } from "./AuthorFacts";
+export { Filters } from "./Filters";
+export { BookCard } from "./BookCard";

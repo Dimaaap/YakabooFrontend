@@ -3,6 +3,11 @@
 .author {
     display: flex;
     flex-direction: column;
-    gap: rem(5);
+    gap: rem(20);
     padding: 2%;
+
+    &__flex-container {
+      display: flex;
+      gap: rem(20);  
+    }
 }

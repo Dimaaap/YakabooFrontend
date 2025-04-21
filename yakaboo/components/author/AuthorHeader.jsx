@@ -1,6 +1,7 @@
 import React from 'react'
 import "../../styles/main.scss";
 import Image from 'next/image';
+import { AuthorFacts } from '../shared';
 
 export const AuthorHeader = () => {
   return (
@@ -59,6 +60,10 @@ export const AuthorHeader = () => {
             Показати повністю 
             <Image src="/icons/arrow-left.svg" alt="" width="16" height="16" />
         </button>
+      </div>
+
+      <div className="author-header__right">
+        <AuthorFacts factText="Кінг встановив для себе певну письменницьку 'квоту' - 2000 слів кожен день." />
       </div>
     </div>
   )
