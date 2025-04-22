@@ -4,15 +4,17 @@ import React, { useState } from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
 import { ContactsModal } from '../modals';
+import { useMenuModalStore } from '../../states';
 
 export const Header = () => {
 
     const [isContactsOpen, setIsContactsOpen] = useState(false);
+    const { setIsMenuModalOpen } = useMenuModalStore();
 
   return (
     <div className="header">
         <div className="header__section header__first-section">
-            <button type="button" id="burger">
+            <button type="button" id="burger" onClick={() => setIsMenuModalOpen(true)}>
                 <Image src="/icons/line.svg" className="header__icon" width="20" height="1"/>
                 <Image src="/icons/line.svg" className="header__icon" width="20" height="1"/>
             </button>
@@ -22,7 +24,7 @@ export const Header = () => {
         </div>
         <div className="header__section header__center-section">
             <button className="header__categories-btn">
-                <Image src="/icons/menu.svg" className="header__icon menu" width="25" alt="" height="25" />
+                <Image src="/icons/menu.svg" className="header__icon menu visually-hidden" width="25" alt="" height="25" />
                 Категорії книг
             </button>
             <div className="header__search-container">

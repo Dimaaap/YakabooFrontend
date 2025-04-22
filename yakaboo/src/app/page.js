@@ -1,4 +1,4 @@
-import { MainContainer } from "../../components";
+import { MainContainer, MenuModal } from "../../components";
 import "../../styles/main.scss"
 
 export default function Home() {

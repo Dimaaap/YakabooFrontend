@@ -7,4 +7,12 @@
     gap: rem(4);
     color: var(--color-pink-10);
     font-weight: 600;
+
+    &.smaller {
+        font-size: rem(14);
+        
+        & img {
+            width: rem(12);
+        }
+    }
 }

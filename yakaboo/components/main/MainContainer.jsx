@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useState } from 'react'
+import React from 'react'
 import { AdditionalInfo, Banner, BooksContainer, MainHeader, MainSidebar } from '.'
-import { ChatBtn, Footer } from '../shared'
-import { ChatOptions } from '../modals'
-import { useChatModalStore } from '../../states';
+import { ChatBtn } from '../shared'
+import { ChatOptions, MenuModal } from '../modals'
+import { useChatModalStore, useMenuModalStore } from '../../states';
 
 export const MainContainer = () => {
 
   const { isChatModalOpen, setIsChatModalOpen } = useChatModalStore();
+  const { isMenuModalOpen } = useMenuModalStore();
 
   const toggleContactsOpen = () => {
     if(isChatModalOpen){
@@ -20,6 +21,8 @@ export const MainContainer = () => {
 
   return (
     <div className="main-container">
+      { isMenuModalOpen && <MenuModal /> }
+      
       <div className="main-container__top">
         <MainSidebar />
         <div className="main-container__right">
@@ -29,10 +32,8 @@ export const MainContainer = () => {
           <AdditionalInfo />
         </div>  
       </div>
-      <Footer />
       <ChatBtn onClick={toggleContactsOpen} />
       { isChatModalOpen && <ChatOptions /> }
-      
     </div>
   )
 }
