@@ -1,0 +1,99 @@
+@use "../helpers" as *;
+
+.categories {
+    &__content {
+        background-color: var(--color-light);
+        width: rem(350);
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translate(0);
+    }
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        gap: rem(7);
+        padding: 3%;
+        font-size: rem(14);
+        border-bottom: rem(2) solid var(--color-gray-40);
+        padding-bottom: 4%;
+    }
+
+    &__row {
+        display: flex;
+        align-items: center;
+        gap: 2%;
+        width: 100%;
+
+        &.top-row {
+            justify-content: space-between;
+        }
+    }
+
+    &__subtitle {
+        font-weight: 500;
+        letter-spacing: 0.001em;
+    }
+
+    &__category {
+        border: rem(1) solid var(--color-pink-10);
+        background-color: transparent;
+        padding: 2%;
+        border-radius: rem(10);
+        color: var(--color-gray-30);
+        font-weight: 500;
+
+        &:hover {
+            color: var(--color-gray-20);
+        }
+
+        &.active {
+            background-color: var(--color-pink-10);
+            color: var(--color-light);
+        }
+    }
+
+    &__list {
+        font-size: rem(14);
+        display: flex;
+        flex-direction: column;
+        gap: rem(1);
+
+        &-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-inline: 4%;
+            padding-block: 4%;
+            border-bottom: rem(2) solid var(--color-gray-40);
+
+            &:hover {
+                background-color: var(--color-gray-40);
+            }
+        }
+
+        & img {
+            width: rem(12);
+            height: rem(12);
+            transform: rotate(270deg);
+        }
+    }
+
+    &__item {
+        font-weight: 500;
+        color: var(--color-gray-10);
+    }
+
+    &__footer {
+        padding: 6%;
+        font-size: rem(14);
+    }
+
+    &__info {
+        background-color: var(--color-gray-40);
+        border-radius: rem(5);
+        padding: 5%;
+        font-weight: 500;
+    }
+}

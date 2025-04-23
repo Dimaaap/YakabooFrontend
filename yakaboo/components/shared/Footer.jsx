@@ -1,8 +1,18 @@
+"use client"
+
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
 export const Footer = () => {
+
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+    }
+
   return (
     <footer className="footer">
         <div className="footer__top-row">
@@ -144,7 +154,7 @@ export const Footer = () => {
             <span className="footer__copyright">
                 &copy; Yakaboo 2004-2025. Усі права захищено.
             </span>
-            <button className="footer__top-btn" type="btn">
+            <button className="footer__top-btn" type="btn" onClick={scrollToTop}>
                 Вгору
                 <Image src="/icons/arrow-up.svg" alt="" width="20" height="20" />
             </button>

@@ -4,26 +4,29 @@ import React, { useState } from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
 import { ContactsModal } from '../modals';
-import { useMenuModalStore } from '../../states';
+import { useBookCategoriesModalStore, useCartModalStore, 
+    useMenuModalStore } from '../../states';
 
 export const Header = () => {
 
     const [isContactsOpen, setIsContactsOpen] = useState(false);
     const { setIsMenuModalOpen } = useMenuModalStore();
+    const { setIsCartModalOpen } = useCartModalStore();
+    const { setIsCategoriesModalOpen } = useBookCategoriesModalStore();
 
   return (
     <div className="header">
         <div className="header__section header__first-section">
             <button type="button" id="burger" onClick={() => setIsMenuModalOpen(true)}>
-                <Image src="/icons/line.svg" className="header__icon" width="20" height="1"/>
-                <Image src="/icons/line.svg" className="header__icon" width="20" height="1"/>
+                <Image src="/icons/line.svg" className="header__icon" width="20" height="1" alt=""/>
+                <Image src="/icons/line.svg" className="header__icon" width="20" height="1" alt=""/>
             </button>
             <Link href="/" className="header__logo">
                 <Image src="/icons/logo.svg" width="200" alt="Yakaboo" height="70" />
             </Link>
         </div>
         <div className="header__section header__center-section">
-            <button className="header__categories-btn">
+            <button className="header__categories-btn" onClick={() => setIsCategoriesModalOpen(true)}>
                 <Image src="/icons/menu.svg" className="header__icon menu visually-hidden" width="25" alt="" height="25" />
                 Категорії книг
             </button>
@@ -54,7 +57,7 @@ export const Header = () => {
                 </div>
             </div>
             <div className="header__icons-row">
-                <Link className="header__link" href="#">
+                <Link className="header__link" href="#" onClick={() => setIsCartModalOpen(true) }>
                     <Image src="/icons/cart.svg" alt="" className="header__link-icon" width="20" height="20" />
                     <span className="header__link-text">Кошик</span>
                 </Link>

@@ -154,7 +154,7 @@ export const BooksContainer = () => {
         </div>
         <Link href="#" className="books-container__more-books">
             Перейти до категорії
-            <Image src="/icons/arrow-left.svg" width="20" height="20" />
+            <Image src="/icons/arrow-left.svg" width="20" height="20" alt="" />
         </Link>
         </div>
 
@@ -302,7 +302,7 @@ export const BooksContainer = () => {
         </div>
         <Link href="#" className="books-container__more-books">
             Перейти до категорії
-            <Image src="/icons/arrow-left.svg" width="20" height="20" />
+            <Image src="/icons/arrow-left.svg" width="20" height="20" alt=""/>
         </Link>
         </div>
 
@@ -456,7 +456,7 @@ export const BooksContainer = () => {
         </div>
         <Link href="#" className="books-container__more-books">
             Перейти до категорії
-            <Image src="/icons/arrow-left.svg" width="20" height="20" />
+            <Image src="/icons/arrow-left.svg" width="20" height="20" alt="" />
         </Link>
         </div>    
 
@@ -612,7 +612,7 @@ export const BooksContainer = () => {
         </div>
         <Link href="#" className="books-container__more-books">
             Перейти до категорії
-            <Image src="/icons/arrow-left.svg" width="20" height="20" />
+            <Image src="/icons/arrow-left.svg" width="20" height="20" alt="" />
         </Link>
         </div>    
     </div>

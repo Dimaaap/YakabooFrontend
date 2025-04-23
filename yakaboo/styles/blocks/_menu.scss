@@ -11,8 +11,6 @@
 
     &__content {
         position: absolute;
-        top: 0;
-        left: 0;
         background-color: var(--color-light);
         width: rem(300);
         overflow-y: scroll;
@@ -24,6 +22,11 @@
 
         &.active {
             transform: translateX(0);
+        }
+
+        &:not(.cart-content){
+            top: 0;
+            left: 0;
         }
     }
 

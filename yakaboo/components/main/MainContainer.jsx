@@ -3,13 +3,16 @@
 import React from 'react'
 import { AdditionalInfo, Banner, BooksContainer, MainHeader, MainSidebar } from '.'
 import { ChatBtn } from '../shared'
-import { ChatOptions, MenuModal } from '../modals'
-import { useChatModalStore, useMenuModalStore } from '../../states';
+import { BookCategoriesModal, CartModal, ChatOptions, MenuModal } from '../modals'
+import { useBookCategoriesModalStore, useCartModalStore, useChatModalStore, 
+  useMenuModalStore } from '../../states';
 
 export const MainContainer = () => {
 
   const { isChatModalOpen, setIsChatModalOpen } = useChatModalStore();
   const { isMenuModalOpen } = useMenuModalStore();
+  const { isCartModalOpen } = useCartModalStore();
+  const { isCategoriesModalOpen } = useBookCategoriesModalStore()
 
   const toggleContactsOpen = () => {
     if(isChatModalOpen){
@@ -34,6 +37,8 @@ export const MainContainer = () => {
       </div>
       <ChatBtn onClick={toggleContactsOpen} />
       { isChatModalOpen && <ChatOptions /> }
+      { isCartModalOpen && <CartModal /> }
+      { isCategoriesModalOpen && <BookCategoriesModal /> }
     </div>
   )
 }
