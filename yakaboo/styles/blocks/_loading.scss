@@ -1,0 +1,27 @@
+@use "../helpers" as *;
+
+.loading {
+    display: flex;
+    align-items: center;
+    gap: 5%;
+    width: 100%;
+
+
+    &__rect {
+        width: rem(400);
+        height: rem(350);
+        background-color: var(--color-gray-40);
+        border-radius: rem(10);
+        animation: pulse 1.5s ease-in-out infinite;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}

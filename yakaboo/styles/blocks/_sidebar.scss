@@ -14,6 +14,10 @@
         position: sticky;
         top: 2%;
         bottom: 2%;
+
+        & .loading__text {
+            background-color: red;
+        }
     }
 
     &__item {

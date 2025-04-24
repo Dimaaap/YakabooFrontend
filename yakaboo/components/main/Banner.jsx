@@ -24,7 +24,6 @@ export const Banner = () => {
             const sixHours = 6 * 60 * 60 * 1000
 
             if(cached && cachedTime && now - parseInt(cachedTime) < sixHours){
-                console.log("in cache")
                 const parsedBanners = JSON.parse(cached);
                 setBanners(parsedBanners);
                 return 
@@ -72,7 +71,6 @@ export const Banner = () => {
 
     useEffect(() => {
         if(banners.length > 0){
-            console.log(banners);
             startAutoScroll();    
         }
         return () => clearAutoScroll();
@@ -88,11 +86,17 @@ export const Banner = () => {
             transform: `translateX(-${index * slideWidth}%)`,
             transition: `transform 0.5s ease-in-out`
         }}>
-            { banners && banners.map((banner, i) => (
+            { banners.length > 0 ? ( banners.map((banner, i) => (
                 <Link key={ i } className="banner__image" href="#">
                     <Image src={ banner.image_src } alt={`Banner_${i + 1}`} width={ 400 } height={ 400 } />
                 </Link>
-            )) }
+            ))): (
+                <div className="loading">
+                    {[...Array(3)].map((_, i) => (
+                        <div className="loading__rect" key={i}></div>
+                    ))}
+                </div>
+            )}
         </div>
         <button className="banner__btn next-btn" onClick={handleNext}>
             <Image src="/icons/arrow-left.svg" width="30" height="30" alt="" />

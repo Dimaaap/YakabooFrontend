@@ -1,90 +1,62 @@
+"use client"
+
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import Endpoints from '../../endpoints';
+
 
 export const MainSidebar = () => {
+
+    const [sidebars, setSidebars] = useState([]);
+
+
+    const fetchSidebars = async () => {
+        try {
+            const cached = localStorage.getItem("sidebars");
+            const cachedTime = localStorage.getItem("sidebars_time");
+
+            const now = Date.now();
+            const sixHours = 6 * 60 * 60 * 1000
+
+            if(cached && cachedTime && now - parseInt(cachedTime) < sixHours){
+                const parsedSidebars = JSON.parse(cached);
+                setSidebars(parsedSidebars);
+                return
+            }
+
+            const res = await fetch(Endpoints.ALL_SIDEBARS)
+            const data = await res.json()
+            setSidebars(data);
+
+            localStorage.setItem("sidebars", JSON.stringify(data))
+            localStorage.setItem("sidebars_time", now.toString())
+        } catch(error){
+            console.error("Помилка при отриманні sidebars", error)
+        }
+    }
+
+    useEffect(() => {
+        fetchSidebars()
+    }, [])
+
   return (
     <div className='sidebar'>
         <ul className="sidebar__list">
-            <Link href="#" className="sidebar__item">
-                <li className="sidebar__point">
-                   Акції 
-                </li>
-            </Link>
-            <Link href="#" className="sidebar__item">
-                <li className="sidebar__point">
-                   Сертифікати
-                </li>
-            </Link>
-            <Link href="#" className="sidebar__item">
-                <li className="sidebar__point">
-                   Програма лояльності
-                </li>
-            </Link>
-            <Link href="#" className="sidebar__item">
-                <li className="sidebar__point">
-                   Остання ціна
-                </li>
-            </Link>
-            <Link href="#" className="sidebar__item">
-                <li className="sidebar__point-flex">
-                   <Image src="/icons/book.svg" alt="" width="18" height="22" />
-                   Друковані книги
-                </li>
-            </Link>
-            <Link href="#" className="sidebar__item">
-                <li className="sidebar__point-flex">
-                   <Image src="/icons/mobile.svg" alt="" id="second-image" width="18" height="22" />
-                   Електронні книги
-                </li>
-            </Link>
-            <Link href="#" className="sidebar__item">
-                <li className="sidebar__point-flex">
-                   <Image src="/icons/audio.svg" alt="" width="18" height="22" />
-                   Аудіокниги
-                </li>
-            </Link>
-            <Link href="#" className="sidebar__item">
-                <li className="sidebar__point-flex">
-                   <Image src="/icons/table-games.svg" alt="" width="18" height="22" />
-                   Настільні ігри
-                </li>
-            </Link>
-            <Link href="#" className="sidebar__item">
-                <li className="sidebar__point-flex">
-                   <Image src="/icons/art.svg" alt="" width="18" height="22" />
-                   Творчість, хобі
-                </li>
-            </Link>
-            <Link href="#" className="sidebar__item">
-                <li className="sidebar__point-flex">
-                   <Image src="/icons/accessouris.svg" alt="" width="18" height="22" />
-                   Книжкові аксесуари
-                </li>
-            </Link>
-            <Link href="#" className="sidebar__item">
-                <li className="sidebar__point-flex">
-                   <Image src="/icons/notes.svg" alt="" width="18" height="22" />
-                    Блокноти
-                </li>
-            </Link>
-            <Link href="#" className="sidebar__item">
-                <li className="sidebar__point-flex">
-                   <Image src="/icons/gift.svg" alt="" width="18" height="22" />
-                    Подарунки
-                </li>
-            </Link>
-            <Link href="#" className="sidebar__item">
-                <li className="sidebar__point-flex">
-                   <Image src="/icons/active-rest.svg" alt="" width="18" height="22" />
-                    Активний відпочинок
-                </li>
-            </Link>
-            <Link href="#" className="sidebar__item">
-                <li className="sidebar__point">
-                   Видавництва
-                </li>
-            </Link>
+            { sidebars.length > 0 ? (sidebars.map((sidebar, i) => (
+                <Link key={ i } className="sidebar__item" href={ sidebar.slug }>
+                    <li className="sidebar__point-flex">
+                        { sidebar.icon && (<Image src={sidebar.icon} alt="" width="18" height="22" />) }
+                        { sidebar.title }
+                    </li>
+                </Link>
+            ))): (
+                <>
+                    {[...Array(5).map((_, i) => (
+                        <li className="loading__text" key={i}></li>
+                    ))]}
+                </>
+            ) }
         </ul>
     </div>
   )
