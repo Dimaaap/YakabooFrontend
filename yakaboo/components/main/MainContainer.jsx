@@ -4,15 +4,18 @@ import React from 'react'
 import { AdditionalInfo, Banner, BooksContainer, MainHeader, MainSidebar } from '.'
 import { ChatBtn } from '../shared'
 import { BookCategoriesModal, CartModal, ChatOptions, MenuModal } from '../modals'
-import { useBookCategoriesModalStore, useCartModalStore, useChatModalStore, 
+import { useBookCategoriesModalStore, useCartModalStore, useChatModalStore,
+  useSubcategoriesModalStore,
   useMenuModalStore } from '../../states';
+import { BookSubcategoryModal } from '../modals/BookSubcategoryModal';
 
 export const MainContainer = () => {
 
   const { isChatModalOpen, setIsChatModalOpen } = useChatModalStore();
   const { isMenuModalOpen } = useMenuModalStore();
   const { isCartModalOpen } = useCartModalStore();
-  const { isCategoriesModalOpen } = useBookCategoriesModalStore()
+  const { isCategoriesModalOpen } = useBookCategoriesModalStore();
+  const { isSubcategoriesModalOpen, currentCategoryId, currentCategorySlug } = useSubcategoriesModalStore();
 
   const toggleContactsOpen = () => {
     if(isChatModalOpen){
@@ -39,6 +42,8 @@ export const MainContainer = () => {
       { isChatModalOpen && <ChatOptions /> }
       { isCartModalOpen && <CartModal /> }
       { isCategoriesModalOpen && <BookCategoriesModal /> }
+      { isSubcategoriesModalOpen && <BookSubcategoryModal categoryId={currentCategoryId} 
+      categorySlug={currentCategorySlug} /> }
     </div>
   )
 }

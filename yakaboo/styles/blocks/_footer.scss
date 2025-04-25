@@ -27,6 +27,16 @@
         color: var(--color-gray-20);
     }
 
+    &__point {
+        &.skeleton {
+            width: rem(100);
+            height: rem(16);
+            background-color: var(--color-gray-40);
+            border-radius: rem(4);
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+    }
+
     &__email-input {
         font-size: rem(14);
         color: var(--color-gray-10);
@@ -186,5 +196,17 @@
     &__copyright {
         font-weight: 500;
         color: var(--color-gray-20);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.4;
+    }
+    100% {
+        opacity: 1;
     }
 }

@@ -2,7 +2,9 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { fetchData } from '../../utils'
+import Endpoints from '../../endpoints'
 
 export const Footer = () => {
 
@@ -12,6 +14,12 @@ export const Footer = () => {
             behavior: "smooth"
         })
     }
+    
+    const [links, setLinks] = useState([])
+
+    useEffect(() => {
+        fetchData(Endpoints.ALL_FOOTER_LINKS, setLinks, "footer_links")
+    }, [])
 
   return (
     <footer className="footer">
@@ -69,66 +77,45 @@ export const Footer = () => {
                 <p className="footer__list-title">
                     Yakaboo
                 </p>
-                <li className="footer__item">
-                    <Link href="#" className="footer__point">
-                        Про магазин
-                    </Link>
-                </li>
-                <li className="footer__item">
-                    <Link href="#" className="footer__point">
-                        Програма лояльності
-                    </Link>
-                </li>
-                <li className="footer__item">
-                    <Link href="#" className="footer__point">
-                        Вакансії
-                    </Link>
-                </li>
-                <li className="footer__item">
-                    <Link href="#" className="footer__point">
-                        Контакти
-                    </Link>
-                </li>
+                { links.length > 0 ? (
+                    links
+                    .filter(link => link.category === "Yakaboo")
+                    .map(link => (
+                        <li key={ link.title } className="footer__item">
+                            <Link href={ link.link } className="footer__point">
+                                { link.title }
+                            </Link>
+                        </li>
+                    ))
+                ) : (
+                    Array.from({length: 4}).map((_, i) => (
+                        <li key={i} className="footer__item">
+                            <div className="footer__point skeleton" />
+                        </li>
+                    ))
+                ) }
             </ul>
             <ul className="footer__list">
                 <p className="footer__list-title">
                     Інформація
                 </p>
-                <li className="footer__item">
-                    <Link href="#" className="footer__point">
-                        Доставка та оплата
-                    </Link>
-                </li>
-                <li className="footer__item">
-                    <Link href="#" className="footer__point">
-                        Подарункові сертифікати
-                    </Link>
-                </li>
-                <li className="footer__item">
-                    <Link href="#" className="footer__point">
-                        Повернення товару
-                    </Link>
-                </li>
-                <li className="footer__item">
-                    <Link href="#" className="footer__point">
-                        Блог
-                    </Link>
-                </li>
-                <li className="footer__item">
-                    <Link href="#" className="footer__point">
-                        Часто шукають
-                    </Link>
-                </li>
-                <li className="footer__item">
-                    <Link href="#" className="footer__point">
-                        Серія книг
-                    </Link>
-                </li>
-                <li className="footer__item">
-                    <Link href="#" className="footer__point">
-                        Автори
-                    </Link>
-                </li>
+                { links.length > 0 ? (
+                    links
+                    .filter(link => link.category === "Інформація")
+                    .map(link => (
+                        <li key={ link.title } className="footer__item">
+                            <Link href={ link.link } className="footer__point">
+                                { link.title }
+                            </Link>
+                        </li>
+                    ))
+                ) : (
+                    Array.from({length: 4}).map((_, i) => (
+                        <li key={i} className="footer__item">
+                            <div className="footer__point skeleton" />
+                        </li>
+                    ))
+                ) }
             </ul>
             <div className="footer__section">
                 <div className="footer__desc">
@@ -152,7 +139,7 @@ export const Footer = () => {
         </div>
         <div className="footer__footer-row">
             <span className="footer__copyright">
-                &copy; Yakaboo 2004-2025. Усі права захищено.
+                &copy;{`Yakaboo 2004 - ${new Date().getFullYear()} .Усі права захищено`}
             </span>
             <button className="footer__top-btn" type="btn" onClick={scrollToTop}>
                 Вгору

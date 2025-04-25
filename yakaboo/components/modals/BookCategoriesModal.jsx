@@ -1,17 +1,41 @@
-import React from 'react'
+"use client"
+
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
-import { useBookCategoriesModalStore } from '../../states';
+import { useBookCategoriesModalStore, useSubcategoriesModalStore } from '../../states';
+import { fetchData } from '../../utils';
+import Endpoints from '../../endpoints';
 
 export const BookCategoriesModal = () => {
 
     const { isCategoriesModalOpen, setIsCategoriesModalOpen } = useBookCategoriesModalStore();
+    const { setIsSubcategoriesModalOpen, setCurrentCategoryId, 
+        setCurrentCategorySlug } = useSubcategoriesModalStore();
+
+    const [categories, setCategories] = useState([]);
 
     const handleBackdropClick = (e) => {
         if (e.target === e.currentTarget){
             setIsCategoriesModalOpen(false);
         }
     }
+
+    const handleShowSubcategoriesModal = (category, modalOpen) => {
+        if(modalOpen) {
+            setCurrentCategoryId(category.id);
+            setCurrentCategorySlug(category.slug);  
+        } else {
+            setCurrentCategoryId(null);
+            setCurrentCategorySlug(null);
+        }
+        setIsSubcategoriesModalOpen(modalOpen);  
+        
+    }
+
+    useEffect(() => {
+        fetchData(Endpoints.ALL_BOOK_CATEGORIES, setCategories, "book_categories")
+    }, [])
 
   return (
     <div className="menu categories" onClick={handleBackdropClick}>
@@ -41,96 +65,18 @@ export const BookCategoriesModal = () => {
             </div>
         </div>
         <ul className="categories__list">
-            <Link href="#" className="categories__list-link">
-                <li className="categories__item">
-                    Добірки Yakaboo
-                </li>
-                <Image src="/icons/arrow-left.svg" alt="" width="16" height="16" />
-            </Link>  
-            <Link href="#" className="categories__list-link">
-                <li className="categories__item">
-                    Комплекти книжок
-                </li>
-            </Link> 
-            <Link href="#" className="categories__list-link">
-                <li className="categories__item">
-                    Книги іноземними мовами
-                </li>
-                <Image src="/icons/arrow-left.svg" alt="" width="16" height="16" />
-            </Link> 
-            <Link href="#" className="categories__list-link">
-                <li className="categories__item">
-                    Вибір читачів
-                </li>
-                <Image src="/icons/arrow-left.svg" alt="" width="16" height="16" />
-            </Link> 
-            <Link href="#" className="categories__list-link">
-                <li className="categories__item">
-                    Художня література
-                </li>
-                <Image src="/icons/arrow-left.svg" alt="" width="16" height="16" />
-            </Link> 
-            <Link href="#" className="categories__list-link">
-                <li className="categories__item">
-                    Подарункові книжки
-                </li>
-                <Image src="/icons/arrow-left.svg" alt="" width="16" height="16" />
-            </Link> 
-            <Link href="#" className="categories__list-link">
-                <li className="categories__item">
-                    Бізнес, гроші, економіка
-                </li>
-                <Image src="/icons/arrow-left.svg" alt="" width="16" height="16" />
-            </Link> 
-            <Link href="#" className="categories__list-link">
-                <li className="categories__item">
-                    Саморозвиток. Мотивація
-                </li>
-                <Image src="/icons/arrow-left.svg" alt="" width="16" height="16" />
-            </Link> 
-            <Link href="#" className="categories__list-link">
-                <li className="categories__item">
-                    Дитяча література
-                </li>
-                <Image src="/icons/arrow-left.svg" alt="" width="16" height="16" />
-            </Link> 
-            <Link href="#" className="categories__list-link">
-                <li className="categories__item">
-                    Виховання дітей. Книжки для батьків
-                </li>
-                <Image src="/icons/arrow-left.svg" alt="" width="16" height="16" />
-            </Link> 
-
-            <Link href="#" className="categories__list-link">
-                <li className="categories__item">
-                    Навчальна література. Педагогіка
-                </li>
-                <Image src="/icons/arrow-left.svg" alt="" width="16" height="16" />
-            </Link> 
-            <Link href="#" className="categories__list-link">
-                <li className="categories__item">
-                    Суспільство. Держава. Філософія
-                </li>
-                <Image src="/icons/arrow-left.svg" alt="" width="16" height="16" />
-            </Link> 
-            <Link href="#" className="categories__list-link">
-                <li className="categories__item">
-                    Історія
-                </li>
-                <Image src="/icons/arrow-left.svg" alt="" width="16" height="16" />
-            </Link> 
-            <Link href="#" className="categories__list-link">
-                <li className="categories__item">
-                    Біографії й мемуари
-                </li>
-                <Image src="/icons/arrow-left.svg" alt="" width="16" height="16" />
-            </Link> 
-            <Link href="#" className="categories__list-link">
-                <li className="categories__item">
-                    Здоров'я. Фітнес. Здорове харчування
-                </li>
-                <Image src="/icons/arrow-left.svg" alt="" width="16" height="16" />
-            </Link>             
+            { categories.length > 0 ? (
+                categories.map((category, i) => (
+                    <Link href={ category.slug } className="categories__list-link" key={ i }
+                    onMouseEnter={ () => handleShowSubcategoriesModal(category, true) }
+                    onMouseLeave={ () => handleShowSubcategoriesModal(category, false) }>
+                        <li className="categories__item">
+                            { category.title }
+                        </li>
+                        {i !== 1 ? <Image src="/icons/arrow-left.svg" alt="" width="16" height="16" /> : <></>}
+                    </Link>
+                ))
+            ) : <></> }
         </ul>
         <div className="categories__footer">
             <div className="categories__info">
