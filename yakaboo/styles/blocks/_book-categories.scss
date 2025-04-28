@@ -3,11 +3,13 @@
 .categories {
     &__content {
         background-color: var(--color-light);
-        width: rem(350);
+        width: rem(650);
         position: absolute;
         top: 0;
         left: 0;
         transform: translate(0);
+        overflow-y: hidden;
+        display: flex;
     }
 
     &__header {
@@ -28,6 +30,27 @@
 
         &.top-row {
             justify-content: space-between;
+        }
+    }
+
+    &__modal {
+        &.left-modal {
+            width: 60%;
+            overflow-y: scroll;
+
+        }
+
+        &.right-modal {
+            width: 40%;
+            overflow-y: auto;
+            opacity: 1;
+            pointer-events: auto;
+
+            &.hidden {
+                width: 0;
+                opacity: 0;
+                pointer-events: none;
+            }
         }
     }
 

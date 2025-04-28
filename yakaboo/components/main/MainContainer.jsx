@@ -1,13 +1,12 @@
 "use client";
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { AdditionalInfo, Banner, BooksContainer, MainHeader, MainSidebar } from '.'
 import { ChatBtn } from '../shared'
-import { BookCategoriesModal, CartModal, ChatOptions, MenuModal } from '../modals'
+import { BookCategoriesWithSubcategoriesModal, CartModal, ChatOptions, MenuModal } from '../modals'
 import { useBookCategoriesModalStore, useCartModalStore, useChatModalStore,
   useSubcategoriesModalStore,
   useMenuModalStore } from '../../states';
-import { BookSubcategoryModal } from '../modals/BookSubcategoryModal';
 
 export const MainContainer = () => {
 
@@ -15,7 +14,9 @@ export const MainContainer = () => {
   const { isMenuModalOpen } = useMenuModalStore();
   const { isCartModalOpen } = useCartModalStore();
   const { isCategoriesModalOpen } = useBookCategoriesModalStore();
-  const { isSubcategoriesModalOpen, currentCategoryId, currentCategorySlug } = useSubcategoriesModalStore();
+  const { setIsHoveringCategory, setIsHoveringSubcategoryModal,
+    setIsSubcategoriesModalOpen
+   } = useSubcategoriesModalStore();
 
   const toggleContactsOpen = () => {
     if(isChatModalOpen){
@@ -24,6 +25,13 @@ export const MainContainer = () => {
       setIsChatModalOpen(true)
     }
   }
+
+  useEffect(() => {
+    console.log("dadsa")
+    if(!setIsHoveringCategory && !setIsHoveringSubcategoryModal){
+      setIsSubcategoriesModalOpen(false);
+    }
+  }, [setIsHoveringCategory, setIsHoveringSubcategoryModal, setIsSubcategoriesModalOpen])
 
   return (
     <div className="main-container">
@@ -41,9 +49,7 @@ export const MainContainer = () => {
       <ChatBtn onClick={toggleContactsOpen} />
       { isChatModalOpen && <ChatOptions /> }
       { isCartModalOpen && <CartModal /> }
-      { isCategoriesModalOpen && <BookCategoriesModal /> }
-      { isSubcategoriesModalOpen && <BookSubcategoryModal categoryId={currentCategoryId} 
-      categorySlug={currentCategorySlug} /> }
+      { isCategoriesModalOpen && <BookCategoriesWithSubcategoriesModal /> }
     </div>
   )
 }

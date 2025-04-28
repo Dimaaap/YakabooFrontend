@@ -1,45 +1,39 @@
+"use client";
+
 import Link from 'next/link'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { fetchData } from '../../utils';
+import { useSubcategoriesModalStore } from '../../states';
 
 export const BookSubcategoryModal = ({ categoryId, categorySlug }) => {
-  return (
-    <div className="subcategories">
+
+    const [subcategories, setSubcategories] = useState([]);
+    const { setIsHoveringSubcategoryModal } = useSubcategoriesModalStore();
+
+    useEffect(() => {
+        fetchData(`http://localhost:8003/categories/${categoryId}/subcategories`, 
+            setSubcategories, `category_${categoryId}_subcategories`)
+    }, [categoryId])
+  
+    return (
+    <div className="subcategories"
+    onMouseEnter={() => setIsHoveringSubcategoryModal(true)}
+    onMouseLeave={() => setIsHoveringSubcategoryModal(false)}>
         <ul className="subcategories__list">
             <li className="subcategories__point main-point">
-                <Link href="#" className="subcategories__point-link">
+                <Link href={ categorySlug } className="subcategories__point-link">
                     Дивитись всі
                 </Link>
             </li>
-            <li className="subcategories__point">
-                <Link href="#" className="subcategories__point-link">
-                    Подих весни: душевне читання для гарного настрою
-                </Link>
-            </li>
-            <li className="subcategories__point">
-                <Link href="#" className="subcategories__point-link">
-                    Вибрана українська класика
-                </Link>
-            </li>
-            <li className="subcategories__point">
-                <Link href="#" className="subcategories__point-link">
-                    70 мастрідів до Дня детективного роману
-                </Link>
-            </li>
-            <li className="subcategories__point">
-                <Link href="#" className="subcategories__point-link">
-                    Головні англомовні релізи року
-                </Link>
-            </li>
-            <li className="subcategories__point">
-                <Link href="#" className="subcategories__point-link">
-                    Хітова манга: класика та бестселери
-                </Link>
-            </li>
-            <li className="subcategories__point">
-                <Link href="#" className="subcategories__point-link">
-                    Квітневі промінчики: дітям про весну
-                </Link>
-            </li>
+            { subcategories.length > 0 ? (
+                subcategories.map((subcategory) => (
+                    <li className="subcategories__point" key={subcategory.id}>
+                        <Link href={subcategory.slug} className="subcategories__point-link">
+                            { subcategory.title }
+                        </Link>
+                    </li>
+                ))
+            ) : (<></>)}
         </ul>
     </div>
   )

@@ -11,7 +11,8 @@ export const BookCategoriesModal = () => {
 
     const { isCategoriesModalOpen, setIsCategoriesModalOpen } = useBookCategoriesModalStore();
     const { setIsSubcategoriesModalOpen, setCurrentCategoryId, 
-        setCurrentCategorySlug } = useSubcategoriesModalStore();
+        setCurrentCategorySlug, setIsHoveringCategory,
+        isHoveringSubcategoryModal } = useSubcategoriesModalStore();
 
     const [categories, setCategories] = useState([]);
 
@@ -38,7 +39,9 @@ export const BookCategoriesModal = () => {
     }, [])
 
   return (
-    <div className="menu categories" onClick={handleBackdropClick}>
+    <div className="menu categories" onClick={handleBackdropClick}
+    onMouseEnter={() => setIsHoveringCategory(true)}
+    onMouseLeave={() => setIsHoveringCategory(false)}>
       <div className={`menu__content categories__content  ${isCategoriesModalOpen ? 'active': ''}`}>
         <div className="menu__header categories__header">
             <div className="categories__row top-row">
@@ -68,8 +71,8 @@ export const BookCategoriesModal = () => {
             { categories.length > 0 ? (
                 categories.map((category, i) => (
                     <Link href={ category.slug } className="categories__list-link" key={ i }
-                    onMouseEnter={ () => handleShowSubcategoriesModal(category, true) }
-                    onMouseLeave={ () => handleShowSubcategoriesModal(category, false) }>
+                    onMouseEnter={() => handleShowSubcategoriesModal(category, true) }
+                    onMouseLeave={() => handleShowSubcategoriesModal(category, false)}>
                         <li className="categories__item">
                             { category.title }
                         </li>

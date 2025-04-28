@@ -1,15 +1,6 @@
 @use "../helpers" as *;
 
 .subcategories {
-    position: absolute;
-    top: 0;
-    left: rem(350);
-    background-color: var(--color-light);
-    z-index: 999;
-    height: 100vh;
-    width: rem(300);
-    overflow-y: auto;
-    padding-top: rem(4);
 
     &__list {
         @include fluid-text(16, 14);
@@ -19,6 +10,7 @@
     }
 
     &__point {
+        font-size: rem(14);
         padding: 4%;
         border-bottom: rem(2) solid var(--color-gray-40);
         font-weight: 500;
