@@ -14,6 +14,7 @@ export const BookCategoriesWithSubcategoriesModal = () => {
     const [categories, setCategories] = useState([])
     const [hoveredCategory, setHoveredCategory] = useState(null);
     const [subcategories, setSubcategories] = useState([]);
+    const [isHovering, setIsHovering] = useState(false);
 
     useEffect(() => {
         fetchData(Endpoints.ALL_BOOK_CATEGORIES, setCategories, "book_categories");
@@ -42,6 +43,15 @@ export const BookCategoriesWithSubcategoriesModal = () => {
         }
     }, [hoveredCategory])
 
+    useEffect(() => {
+        if(!isHovering){
+            const timeout = setTimeout(() => {
+                setHoveredCategory(null);
+            }, 100);
+            return () => clearTimeout(timeout)
+        }
+    }, [isHovering])
+
 
     const handleBackdropClick = e => {
         if(e.target === e.currentTarget){
@@ -53,10 +63,15 @@ export const BookCategoriesWithSubcategoriesModal = () => {
   return (
     isCategoriesModalOpen && (
         <div className="menu categories" onClick={ handleBackdropClick }>
-            { console.log(hoveredCategory) }
-            <div className={`menu__content categories__content`}>
-                <div className="categories__modal left-modal">
-                    <div className="menu__header categories__header">
+            <div className={`menu__content categories__content ${!hoveredCategory ? "hidden-modal": ""}`}>
+                <div className={`categories__modal left-modal ${!hoveredCategory ? "hidden-modal__left": ""}`}
+                onMouseEnter={() => setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}>
+                    <div className="menu__header categories__header"
+                    onMouseEnter={() => {
+                        setHoveredCategory(null);
+                        setIsHovering(false);
+                    }}>
                         <div className="categories__row top-row">
                             <p className="categories__subtitle">
                                 Категорії книг
@@ -85,8 +100,10 @@ export const BookCategoriesWithSubcategoriesModal = () => {
                             categories.map((category, i) => (
                                 <Link href={ category.slug } key={ category.id }
                                 className="categories__list-link"
-                                onMouseEnter={() => setHoveredCategory(category)}
-                                onMouseLeave={() => setHoveredCategory(null)}>
+                                onMouseEnter={() => {
+                                    setHoveredCategory(category);
+                                    setIsHovering(true)
+                                }}>
                                     <li className="categories__item">
                                         { category.title }
                                     </li>
@@ -96,8 +113,9 @@ export const BookCategoriesWithSubcategoriesModal = () => {
                         ) : <></> }
                     </ul>   
                 </div>
-                
-                <div className={`categories__modal right-modal ${!hoveredCategory ? "hidden" : ""}`}>
+                <div className={`categories__modal right-modal ${!hoveredCategory ? "hidden-modal__right" : ""}`}
+                onMouseEnter={() => setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}>
                     { subcategories.length > 0 && (
                         <ul className="subcategories__list">
                             <li className="subcategories__point main-point">

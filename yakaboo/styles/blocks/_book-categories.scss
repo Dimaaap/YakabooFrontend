@@ -10,6 +10,11 @@
         transform: translate(0);
         overflow-y: hidden;
         display: flex;
+
+        &.hidden-modal {
+            width: rem(350);
+            display: block;
+        }
     }
 
     &__header {
@@ -35,22 +40,20 @@
 
     &__modal {
         &.left-modal {
-            width: 60%;
+            width: 54.2%;
             overflow-y: scroll;
+
+            &.hidden-modal__left {
+                width: 100%;
+            }
 
         }
 
         &.right-modal {
-            width: 40%;
+            width: 45.8%;
             overflow-y: auto;
             opacity: 1;
             pointer-events: auto;
-
-            &.hidden {
-                width: 0;
-                opacity: 0;
-                pointer-events: none;
-            }
         }
     }
 

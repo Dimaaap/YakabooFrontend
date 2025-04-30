@@ -1,0 +1,56 @@
+@use "../helpers" as *;
+
+.promo-sidebar {
+    font-size: rem(14);
+    border-radius: rem(10);
+    background-color: var(--color-light);
+    align-self: self-start;
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        padding-block: 7%;
+        gap: rem(5);
+        font-weight: 500;
+        color: var(--color-gray-20);
+    }
+
+    &__item {
+        padding-block: 2%;
+        padding-inline: 7%;
+
+        &.active {
+            color: var(--color-pink-10);
+            border-left: rem(2) solid var(--color-pink-10);
+        }
+    }
+
+    &__link {
+        &:hover {
+            color: var(--color-gray-30);
+        }
+    }
+}
+
+.skeleton {
+    background-color: var(--color-gray-20);
+    border-radius: rem(4);
+    animation: pulse 1.5s infinite ease-in-out;
+  
+    &--text {
+      width: 70%;
+      height: rem(14);
+    }
+}
+
+@keyframes pulse {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
