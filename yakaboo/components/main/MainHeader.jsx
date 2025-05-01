@@ -6,6 +6,8 @@ import Endpoints from '../../endpoints';
 
 export const MainHeader = () => {
 
+    const SIX_HOURS = 6 * 60 * 60 * 1000
+
     const [interesting, setInteresting] = useState([]);
 
     const fetchInteresting = async() => {
@@ -14,7 +16,6 @@ export const MainHeader = () => {
             const cachedTime = localStorage.getItem("interesting_time");
 
             const now = Date.now()
-            const SIX_HOURS = 6 * 60 * 60 * 1000
 
             if(cached && cachedTime && now - parseInt(cachedTime) < SIX_HOURS){
                 const parsedInteresting = JSON.parse(cached);
