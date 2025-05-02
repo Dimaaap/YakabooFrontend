@@ -8,3 +8,6 @@ export { Breadcrumbs } from "./Breadcrumbs";
 export { AuthorFacts } from "./AuthorFacts";
 export { Filters } from "./Filters";
 export { BookCard } from "./BookCard";
+export { PromoTimer } from "./PromoTimer";
+export { PromotionsSidebar } from "./PromotionsSidebar";
+export { Promotions } from "./Promotions";

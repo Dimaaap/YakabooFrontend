@@ -7,8 +7,8 @@
     padding-inline: 2%;
     padding-block: 1%;
 
-    &__title {
-        @include fluid-text(22, 18);
+    & h4 {
+        @include fluid-text(20, 16);
     }
 
     &__content {
@@ -26,6 +26,7 @@
         grid-template-columns: repeat(2, 1fr);
         gap: 2%;
         row-gap: 3%;
+        padding-bottom: 3%;
     }
 
     &__promo-card {
@@ -41,6 +42,13 @@
     &__promo-image {
         border-radius: rem(5);
         width: 100%;
+
+        &.skeleton-image {
+            width: 100%;
+            height: rem(250);
+            background-color: var(--color-gray-40);
+            animation: pulse 1.5s infinite ease-in-out;
+        }
     }
 
     &__text-container {
@@ -53,14 +61,47 @@
     &__title {
         font-size: rem(14);
         font-weight: 600;
+
+        &.skeleton-title {
+            width: rem(200);
+            height: rem(25);
+            background-color: var(--color-gray-40);
+            animation: pulse 1.5s infinite ease-in-out;
+        }
     }
 
     &__desc {
         font-weight: 500;
+
+        &.skeleton-desc {
+            width: 100%;
+            height: rem(50);
+            background-color: var(--color-gray-40);
+            animation: pulse 1.5s infinite ease-in-out;
+        }
     }
 
     &__date {
         color: var(--color-gray-20);
         font-weight: 500;
+
+        &.skeleton-date {
+            width: rem(200);
+            height: rem(25);
+            background-color: var(--color-gray-40);
+            animation: pulse 1.5s infinite ease-in-out;
+        }
     }
 }
+
+@keyframes pulse {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
