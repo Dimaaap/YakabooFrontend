@@ -5,10 +5,12 @@ import { ChatBtn } from '../../components/shared'
 import { BookCategoriesWithSubcategoriesModal, CartModal, ChatOptions, MenuModal } from '../../components/modals'
 import { useBookCategoriesModalStore, useCartModalStore, useChatModalStore,
   useSubcategoriesModalStore,
-  useMenuModalStore } from '../../states';
+  useMenuModalStore, 
+  useUserLoginModalStore} from '../../states';
   
 import "../../styles/main.scss"
 import { AdditionalInfo, Banner, BooksContainer, MainHeader, MainSidebar } from '../../components';
+import { UserLoginModal } from '../../components/modals/UserLoginModal';
 
 export default function Home() {
 
@@ -19,6 +21,8 @@ export default function Home() {
     const { setIsHoveringCategory, setIsHoveringSubcategoryModal,
       setIsSubcategoriesModalOpen
      } = useSubcategoriesModalStore();
+
+    const { isLoginModalOpen } = useUserLoginModalStore();
   
     const toggleContactsOpen = () => {
       if(isChatModalOpen){
@@ -53,6 +57,7 @@ export default function Home() {
           { isChatModalOpen && <ChatOptions /> }
           { isCartModalOpen && <CartModal /> }
           { isCategoriesModalOpen && <BookCategoriesWithSubcategoriesModal /> }
+          { isLoginModalOpen && <UserLoginModal /> }
       </div>
    </div>
   );

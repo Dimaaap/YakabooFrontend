@@ -5,7 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ContactsModal } from '../modals';
 import { useBookCategoriesModalStore, useCartModalStore, 
-    useMenuModalStore } from '../../states';
+    useMenuModalStore, 
+    useUserLoginModalStore} from '../../states';
 
 export const Header = () => {
 
@@ -13,6 +14,7 @@ export const Header = () => {
     const { setIsMenuModalOpen } = useMenuModalStore();
     const { setIsCartModalOpen } = useCartModalStore();
     const { setIsCategoriesModalOpen } = useBookCategoriesModalStore();
+    const { setIsLoginModalOpen } = useUserLoginModalStore();
 
   return (
     <div className="header">
@@ -61,12 +63,12 @@ export const Header = () => {
                     <Image src="/icons/cart.svg" alt="" className="header__link-icon" width="20" height="20" />
                     <span className="header__link-text">Кошик</span>
                 </Link>
-                <Link className="header__link" href="#">
+                <div className="header__link" onClick={() => setIsLoginModalOpen(true)}>
                     <Image src="/icons/user.svg" alt="" className="header__link-icon" width="20" height="20" />
                     <span className="header__link-text">
                         Увійти    
                     </span>
-                </Link>
+                </div>
             </div>
         </div>
     </div>

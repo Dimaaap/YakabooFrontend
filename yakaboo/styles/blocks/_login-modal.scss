@@ -1,0 +1,59 @@
+@use "../helpers" as *;
+
+.login-modal {
+    &__content {
+        @include abs-center;
+
+        font-size: rem(14);
+        background-color: var(--color-light);
+        width: 35%;
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        gap: rem(10);
+        justify-content: center;
+        text-align: center;
+        padding-inline: 7%;
+        padding-block: 1%;
+    }
+
+    &__close {
+        right: 2%;
+        top: 2%;
+        position: absolute;
+        border: none;
+        background-color: transparent;
+        transition: all 0.3s ease-in;
+        border-radius: rem(50);
+
+        &:hover {
+            background-color: var(--color-gray-40);
+        }
+    }
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        gap: rem(5);
+    }
+
+    &__user-icon-container {
+        @include abs-x;
+
+        background-color: var(--color-pink-10);
+        align-self: self-start;
+        justify-content: center;
+        margin-top: 4%;
+        width: rem(35);
+        height: rem(35);
+        cursor: pointer;
+        border-radius: rem(50);
+        position: relative;
+
+        & img {
+            @include abs-center;
+            width: rem(15);
+            height: rem(15);
+        }
+    }
+}

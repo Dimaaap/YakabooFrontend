@@ -5,26 +5,25 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { PromoTimer } from '.';
-
-export const Promotions = ({ promos }) => {
+export const Promotions = ({ promos }) => { 
 
   return (
     <div className="promotions__right promo-content">
         {promos.length > 0 ? (
         promos.map((promo, i) => (
-            <Link className="promotions__promo-card" key={i} href={`/promo/${promo.slug}`}>
-            <Image
-                src={promo.image}
-                alt=""
-                className="promotions__promo-image"
-                width="500"
-                height="250"
-            />
-            <div className="promotions__text-container">
-                <p className="promotions__title">{promo.title}</p>
-                <p className="promotions__desc">{promo.main_description}</p>
-            </div>
-            <PromoTimer endDate={ promo.end_date } />
+            <Link className="promotions__promo-card" key={i} href={`/promotion/${promo.slug}`}>
+                <Image
+                    src={promo.image}
+                    alt=""
+                    className="promotions__promo-image"
+                    width="500"
+                    height="250"
+                />
+                <div className="promotions__text-container">
+                    <p className="promotions__title">{promo.title}</p>
+                    <p className="promotions__desc">{promo.main_description}</p>
+                </div>
+                <PromoTimer endDate={ promo.end_date } />
             </Link>
         ))
         ) : (
