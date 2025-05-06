@@ -1,12 +1,13 @@
 "use client";
 
 import Image from 'next/image'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useUserLoginModalStore } from '../../states';
 
 export const UserLoginModal = () => {
 
-    const { isLoginModalOpen, setIsLoginModalOpen } = useUserLoginModalStore();
+    const { isLoginModalOpen, setIsLoginModalOpen, setIsRegisterModalOpen } = useUserLoginModalStore();
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleBackdropClick = (e) => {
         if (e.target === e.currentTarget){
@@ -25,6 +26,19 @@ export const UserLoginModal = () => {
             document.body.style.overflow = ""
         })
     }, [isLoginModalOpen])
+
+    const toggleShowPassword = () => {
+        if(showPassword) {
+            setShowPassword(false)
+        } else {
+            setShowPassword(true)
+        }
+    }
+
+    const changeModal = () => {
+        setIsLoginModalOpen(false);
+        setIsRegisterModalOpen(true);
+    }
 
   return (
     <div className="menu login-modal" onClick={handleBackdropClick}>
@@ -71,16 +85,19 @@ export const UserLoginModal = () => {
                     </span>   
                 </div>
                 <input name="password" id="password" className="form__input" 
-                placeholder="Введіть пароль" type="password"/>
-                <Image src="/icons/eye-close.svg" alt="" width="16" height="16" />
+                placeholder="Введіть пароль" type={`${ showPassword ? "text": "password" }`}/>
+
+                <Image src={`${!showPassword ? "/icons/eye-close.svg": "/icons/eye.svg"}`} 
+                alt="" width="16" height="16" className={`form__eye ${showPassword ? "open-eye" : ""}`} 
+                onClick={toggleShowPassword} />
             </div>
-            <button className="form__submit-btn" type="submit" disabled>
+            <button className="form__submit-btn disabled" type="submit" disabled>
                 Увійти
             </button>
         </form>
         <p className="login-modal__additional-info">
-            Немає акаунту?
-            <span className="login-modal__link-span">Зареєструватись</span>
+            Немає акаунту? {" "}
+            <span className="login-modal__link-span" onClick={ changeModal }>Зареєструватись</span>
         </p>
       </div>
     </div>

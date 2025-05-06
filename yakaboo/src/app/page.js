@@ -2,7 +2,8 @@
 
 import React, { useEffect } from 'react'
 import { ChatBtn } from '../../components/shared'
-import { BookCategoriesWithSubcategoriesModal, CartModal, ChatOptions, MenuModal } from '../../components/modals'
+import { BookCategoriesWithSubcategoriesModal, CartModal, ChatOptions, MenuModal, 
+  UserRegisterModal } from '../../components/modals'
 import { useBookCategoriesModalStore, useCartModalStore, useChatModalStore,
   useSubcategoriesModalStore,
   useMenuModalStore, 
@@ -22,7 +23,7 @@ export default function Home() {
       setIsSubcategoriesModalOpen
      } = useSubcategoriesModalStore();
 
-    const { isLoginModalOpen } = useUserLoginModalStore();
+    const { isLoginModalOpen, isRegisterModalOpen } = useUserLoginModalStore();
   
     const toggleContactsOpen = () => {
       if(isChatModalOpen){
@@ -58,6 +59,7 @@ export default function Home() {
           { isCartModalOpen && <CartModal /> }
           { isCategoriesModalOpen && <BookCategoriesWithSubcategoriesModal /> }
           { isLoginModalOpen && <UserLoginModal /> }
+          { isRegisterModalOpen && <UserRegisterModal /> }
       </div>
    </div>
   );

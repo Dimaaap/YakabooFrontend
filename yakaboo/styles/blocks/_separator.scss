@@ -1,0 +1,19 @@
+@use "../helpers" as *;
+
+.separator {
+    display: flex;
+    align-items: center;
+    gap: rem(15);
+
+    &-line {
+        background-color: var(--color-gray-50);
+        width: rem(150);
+        height: rem(1);
+        border-radius: rem(1);
+    }
+
+    &-text {
+        color: var(--color-gray-20);
+        font-weight: 500;
+    }
+}

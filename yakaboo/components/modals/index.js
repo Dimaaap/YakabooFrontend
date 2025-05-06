@@ -3,3 +3,4 @@ export { ChatOptions } from "./ChatOptions";
 export { MenuModal } from "./MenuModal";
 export { CartModal } from "./CartModal";
 export { BookCategoriesWithSubcategoriesModal } from "./BookCategoriesWithSubcategoriesModal";
+export { UserRegisterModal } from "./UserRegisterModal";
