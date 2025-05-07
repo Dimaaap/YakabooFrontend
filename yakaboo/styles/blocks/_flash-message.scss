@@ -1,0 +1,44 @@
+@use "../helpers" as *;
+
+.flash-message {
+    position: fixed;
+    top: 5%;
+    right: 5%;
+    background-color: var(--color-light);
+    border-radius: rem(10);
+    padding-inline: 3%;
+    padding-block: 5%;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+                0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 2%;
+
+    &__close{
+        position: absolute;
+        top: 0;
+        right: 2%;
+    }
+
+    &__message-text {
+        text-align: left;
+        font-size: rem(14);
+        font-weight: 500;
+        max-width: 95%;
+        margin-left: auto;
+    }
+
+    &__ok-button {
+        width: 100%;
+        border-radius: rem(5);
+        text-align: center;
+        font-size: rem(14);
+        padding-block: 2%;
+        background-color: var(--color-blue-10);
+        color: var(--color-light);
+
+        &:hover {
+            background-color: var(--color-blue-accent);
+        }
+    }
+}

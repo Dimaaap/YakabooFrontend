@@ -4,7 +4,8 @@ const Endpoints = {
     ALL_FOOTER_LINKS: "http://127.0.0.1:8003/footers/all",
     ALL_BOOK_CATEGORIES: "http://127.0.0.1:8003/categories/all",
     ALL_PROMOTIONS: "http://127.0.0.1:8003/promotions/all",
-    ALL_PROMO_CATEGORIES: "http://127.0.0.1:8003/promo_categories/all"
+    ALL_PROMO_CATEGORIES: "http://127.0.0.1:8003/promo_categories/all",
+    USER_REGISTER: "http://localhost:8003/auth/signup",
 }
 
 export default Endpoints;

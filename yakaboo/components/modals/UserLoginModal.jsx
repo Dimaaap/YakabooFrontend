@@ -4,10 +4,20 @@ import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { useUserLoginModalStore } from '../../states';
 
+import { useForm } from "react-hook-form"
+
 export const UserLoginModal = () => {
 
     const { isLoginModalOpen, setIsLoginModalOpen, setIsRegisterModalOpen } = useUserLoginModalStore();
     const [showPassword, setShowPassword] = useState(false);
+
+    const {register, handleSubmit, formState: {errors}} = useForm();
+
+    const REG_EMAIL_VALIDATOR = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+    const REG_EMAIL_FAILED_MESSAGE = "Некоректний email"
+    const REG_PASSWORD_VALIDATOR = /^(?=.*\d)(?=.*[a-zA-Zа-яА-Я]).{8,}$/
+    const REG_PASSWORD_FAILED_MESSAGE = "Пароль має містити хоча б одну цифру і літеру"
+
 
     const handleBackdropClick = (e) => {
         if (e.target === e.currentTarget){
@@ -33,6 +43,10 @@ export const UserLoginModal = () => {
         } else {
             setShowPassword(true)
         }
+    }
+
+    const onSubmit = async data => {
+        console.log(data);
     }
 
     const changeModal = () => {
@@ -67,13 +81,25 @@ export const UserLoginModal = () => {
             <span className="separator-text">або</span>
             <span className="separator-line" />
         </div>
-        <form className="login-modal__form login-form form" method="post">
+        <form className="login-modal__form login-form form" method="post"
+        onSubmit={handleSubmit(onSubmit)}>
             <div className="form__field-group">
-                <label htmlFor="phone_number" className="form__label">
-                    Номер телефону *
+                <label htmlFor="email" className="form__label">
+                    Email *
                 </label>
-                <input name="phone_number" id="phone_number" className="form__input" 
-                placeholder='Введіть номер або email' type="tel"/>
+                <input name="email" id="email" 
+                className={`form__input ${ errors.email ? "failed-input": "" }`} 
+                placeholder='Введіть email' type="email" 
+                {...register("email", {
+                    required: "Це поле обов'язкове",
+                    pattern: {
+                        value: REG_EMAIL_VALIDATOR,
+                        message: REG_EMAIL_FAILED_MESSAGE
+                    }
+                })}/>
+                { errors.email && (
+                    <span className="form__message-text">{ errors.email.message }</span>
+                ) }
             </div>
             <div className="form__field-group">
                 <div className="form__field-row">
@@ -84,12 +110,28 @@ export const UserLoginModal = () => {
                         Забули пароль?
                     </span>   
                 </div>
-                <input name="password" id="password" className="form__input" 
-                placeholder="Введіть пароль" type={`${ showPassword ? "text": "password" }`}/>
+                <div className="form__input-wrapper">
+                    <input name="password" 
+                    id="password" 
+                    className={`form__input password-input ${errors.password ? "failed-input": ""}`}
+                    placeholder="Введіть пароль" 
+                    type={`${ showPassword ? "text": "password" }`}
+                    {...register("password", {
+                        required: "Це поле обов'язкове",
+                        minLength: {
+                            value: 8,
+                            message: "Пароль повинен містити не менше 8 символів"
+                        },
+                        pattern: {
+                            value: REG_PASSWORD_VALIDATOR,
+                            message: REG_PASSWORD_FAILED_MESSAGE
+                        }
+                    })}/>
 
-                <Image src={`${!showPassword ? "/icons/eye-close.svg": "/icons/eye.svg"}`} 
-                alt="" width="16" height="16" className={`form__eye ${showPassword ? "open-eye" : ""}`} 
-                onClick={toggleShowPassword} />
+                    <Image src={`${!showPassword ? "/icons/eye-close.svg": "/icons/eye.svg"}`} 
+                    alt="" width="16" height="16" className={`form__eye login-eye ${showPassword ? "open-eye" : ""}`} 
+                    onClick={toggleShowPassword} />
+                </div>
             </div>
             <button className="form__submit-btn disabled" type="submit" disabled>
                 Увійти

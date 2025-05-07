@@ -11,3 +11,4 @@ export { BookCard } from "./BookCard";
 export { PromoTimer } from "./PromoTimer";
 export { PromotionsSidebar } from "./PromotionsSidebar";
 export { Promotions } from "./Promotions";
+export { FlashMessage } from "./FlashMessage";

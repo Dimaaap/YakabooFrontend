@@ -80,15 +80,23 @@
         }
     }
 
+    &__input-wrapper {
+        position: relative;
+    }
+
     &__input {
         height: rem(45);
+        width: 100%;
         background-color: #F4F6F8;
         border: rem(1) solid #ddd;
         border-radius: rem(7);
         color: #222;
         font-weight: 500;
         padding-inline: 3%;
-        position: relative;
+
+        &.password-input {
+            position: relative;
+        }
 
         &.failed-input {
             border: rem(2) solid var(--color-red-10);
@@ -123,13 +131,18 @@
         position: absolute;
         right: 4%;
         top: 57%;
+        transform: translateY(-100%);
         cursor: pointer;
+
+        &.login-eye {
+            top: 66%;
+        }
 
         &.open-eye {
             top: 60%;
 
             &.register-open {
-                top: 75%;
+                top: 65%;
             }
         }
 

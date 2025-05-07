@@ -41,3 +41,19 @@ export const getTimeLeft = endDate => {
 
     return `${days} днів, ${hours} годин, ${minutes} хвилин`
 }
+
+
+export const setCookies = (name, value) => {
+    document.cookie = `${name}=${value || ""}; path=/`;
+}
+
+export const getCookie = name => {
+    const match = document.cookie.match(new RegExp('(^| )' + name + "=([^;]+)"));
+
+    if(match) {
+        return match[2]
+    }
+
+    return null;
+}
+
