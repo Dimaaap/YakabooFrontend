@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react'
 import Image from "next/image";
-import { useUserLoginModalStore } from '../../states';
 import Link from 'next/link';
+import { useUserLoginModalStore, useConfirmationCodeStore } from '../../states';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 import PhoneInput from 'react-phone-input-2';
@@ -16,6 +16,7 @@ import { FlashMessage } from '../shared';
 export const UserRegisterModal = () => {
 
     const {isRegisterModalOpen, setIsRegisterModalOpen, setIsLoginModalOpen} = useUserLoginModalStore();
+    const { setIsConfirmationModalOpen } = useConfirmationCodeStore();
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [serverError, setServerError] = useState(null);
@@ -97,6 +98,8 @@ export const UserRegisterModal = () => {
                     setCookies(key, value)
                 })
                 setServerError(null)
+                setIsRegisterModalOpen(false);
+                setIsConfirmationModalOpen(true);
             }
         } catch(error){
             console.log(error)
@@ -121,8 +124,8 @@ export const UserRegisterModal = () => {
 
   return (
     <div className="menu login-modal" onClick={handleBackdropClick}>
+        { serverError && <FlashMessage message={ serverError } onClose={() => setServerError(null)} /> }
         <div className="login-modal__content register-content">
-            { serverError && <FlashMessage message={ serverError } onClose={() => setServerError(null)} /> }
             <button className="menu__close login-modal__close" type="button" onClick={() => setIsRegisterModalOpen(false)}>
                 <Image src="/icons/close-smaller.svg" alt="" width="22" height="22" />
             </button>
@@ -268,8 +271,11 @@ export const UserRegisterModal = () => {
                     до чинного законодавства України про недоторканість до особистої 
                     інформації.
                 </span>
-                <button className="form__submit-btn" type="submit">
-                    Зареєструватись
+                <button className={`form__submit-btn ${ loading ? "load-btn" : "" }`} type="submit">
+                    { loading ? (
+                        <Image src="./icons/spinner.svg" alt="" className="form__spinner spin-animated" 
+                        width="20" height="20" />
+                    ) : "Зареєструватись" }
                 </button>
             </form>
             <p className="login-modal__additional-info">

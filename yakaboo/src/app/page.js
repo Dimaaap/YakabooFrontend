@@ -2,12 +2,12 @@
 
 import React, { useEffect } from 'react'
 import { ChatBtn } from '../../components/shared'
-import { BookCategoriesWithSubcategoriesModal, CartModal, ChatOptions, MenuModal, 
+import { BookCategoriesWithSubcategoriesModal, CartModal, ChatOptions, ConfirmationCodeModal, MenuModal, 
   UserRegisterModal } from '../../components/modals'
 import { useBookCategoriesModalStore, useCartModalStore, useChatModalStore,
   useSubcategoriesModalStore,
   useMenuModalStore, 
-  useUserLoginModalStore} from '../../states';
+  useUserLoginModalStore, useConfirmationCodeStore} from '../../states';
   
 import "../../styles/main.scss"
 import { AdditionalInfo, Banner, BooksContainer, MainHeader, MainSidebar } from '../../components';
@@ -16,29 +16,29 @@ import { UserLoginModal } from '../../components/modals/UserLoginModal';
 export default function Home() {
 
   const { isChatModalOpen, setIsChatModalOpen } = useChatModalStore();
-    const { isMenuModalOpen } = useMenuModalStore();
-    const { isCartModalOpen } = useCartModalStore();
-    const { isCategoriesModalOpen } = useBookCategoriesModalStore();
-    const { setIsHoveringCategory, setIsHoveringSubcategoryModal,
-      setIsSubcategoriesModalOpen
-     } = useSubcategoriesModalStore();
+  const { isConfirmationModalOpen } = useConfirmationCodeStore();
+  const { isMenuModalOpen } = useMenuModalStore();
+  const { isCartModalOpen } = useCartModalStore();
+  const { isCategoriesModalOpen } = useBookCategoriesModalStore();
+  const { setIsHoveringCategory, setIsHoveringSubcategoryModal,
+    setIsSubcategoriesModalOpen
+  } = useSubcategoriesModalStore();
 
-    const { isLoginModalOpen, isRegisterModalOpen } = useUserLoginModalStore();
+  const { isLoginModalOpen, isRegisterModalOpen } = useUserLoginModalStore();
   
-    const toggleContactsOpen = () => {
-      if(isChatModalOpen){
-        setIsChatModalOpen(false);
-      } else {
-        setIsChatModalOpen(true)
-      }
+  const toggleContactsOpen = () => {
+    if(isChatModalOpen){
+      setIsChatModalOpen(false);
+    } else {
+      setIsChatModalOpen(true)
     }
+  }
   
-    useEffect(() => {
-      console.log("dadsa")
+  useEffect(() => {
       if(!setIsHoveringCategory && !setIsHoveringSubcategoryModal){
         setIsSubcategoriesModalOpen(false);
       }
-    }, [setIsHoveringCategory, setIsHoveringSubcategoryModal, setIsSubcategoriesModalOpen])
+  }, [setIsHoveringCategory, setIsHoveringSubcategoryModal, setIsSubcategoriesModalOpen])
 
   return (
    <div className=''>
@@ -60,6 +60,7 @@ export default function Home() {
           { isCategoriesModalOpen && <BookCategoriesWithSubcategoriesModal /> }
           { isLoginModalOpen && <UserLoginModal /> }
           { isRegisterModalOpen && <UserRegisterModal /> }
+          { isConfirmationModalOpen && <ConfirmationCodeModal /> }
       </div>
    </div>
   );

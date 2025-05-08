@@ -6,6 +6,7 @@ const Endpoints = {
     ALL_PROMOTIONS: "http://127.0.0.1:8003/promotions/all",
     ALL_PROMO_CATEGORIES: "http://127.0.0.1:8003/promo_categories/all",
     USER_REGISTER: "http://localhost:8003/auth/signup",
+    PHONE_NUMBER_VERIFICATION: "http://localhost:8003/auth/verify-sms-code"
 }
 
 export default Endpoints;

@@ -12,7 +12,6 @@
         gap: rem(7);
         justify-content: start;
         text-align: left;
-        position: relative;
     }
 
     &__label {
@@ -163,16 +162,31 @@
         background-color: var(--color-blue-10);
         cursor: pointer;
 
-        &.disabled {
+        &.disabled{
             cursor: not-allowed;
             background-color: rgba(51,51,119,0.6);
         }
+
+        &.load-btn {
+            cursor: not-allowed;
+            background-color: var(--color-gray-50);
+
+            &:hover {
+                background-color: var(--color-gray-50) !important;
+            }
+        }
+        
 
         &:not(.disabled){
             &:hover {
                 background-color: rgba(51,51,119,0.9);
             }
         }
+    }
+
+    &__spinner {
+        margin: 0 auto;
+        animation: spin 1s linear infinite;
     }
 
     &__block-content {
@@ -190,5 +204,14 @@
         color: var(--color-red-10);
         font-weight: 500;
         font-size: rem(14);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
     }
 }

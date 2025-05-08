@@ -1,0 +1,97 @@
+@use "../helpers" as *;
+
+
+.code-modal {
+    &__content {
+        @include abs-center;
+
+        border-radius: rem(10);
+        font-size: rem(14);
+        background-color: var(--color-light);
+        width: 35%;
+        padding: 1%; 
+        display: flex;
+        flex-direction: column;
+        gap: rem(22);   
+    }
+    
+    &__close {
+        position: absolute;
+        right: 2%;
+        top: 2%;
+    }
+
+    &__text-container {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: rem(7);
+    }
+
+    &__main-info {
+        @include fluid-text(18, 16);
+        font-weight: 500;
+    }
+
+    &__additional-info {
+        font-weight: 500;
+    }
+
+    &__code-cells {
+        display: flex;
+        gap: 2%;
+        justify-content: center;
+        margin: 0 auto;
+        width: 90%;
+    }
+
+    &__code-cell {
+        width: 25%;
+        height: rem(50);
+        border: none;
+        border-radius: rem(7);
+        background-color: var(--color-gray-50);
+        font-size: rem(18);
+        font-weight: 500;
+        text-align: center;
+        
+
+        &:focus {
+            border: rem(2) solid var(--color-pink-10);
+            background-color: var(--color-light);
+        }
+    }
+
+    &__submit-btn {
+        width: 90%;
+        margin: 0 auto;
+        background-color: var(--color-blue-10);
+        font-weight: 500;
+        color: var(--color-light);
+        padding-block: 2%;
+        border-radius: rem(10);
+        border: none;
+
+        &:hover {
+            background-color: var(--color-blue-accent);
+        }
+    }
+
+    &__send-again {
+        background-color: transparent;
+        border: none;
+        font-weight: 500;
+        color: var(--color-blue-10);
+        align-self: self-start;
+        margin: 0 auto;
+
+        &.disable-code {
+            cursor: not-allowed;
+            color: var(--color-gray-10);
+        }
+
+        &:hover {
+            color: var(--color-blue-accent);
+        }
+    }
+}

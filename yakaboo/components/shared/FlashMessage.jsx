@@ -30,7 +30,7 @@ export const FlashMessage = ({ message, onClose }) => {
     }
 
   return (
-    <div className="flash-message">
+    <div className={`flash-message ${visible ? "animate-slide-in": "animate-slide-out"}`}>
         <button className="menu__close flash-message__close" 
         type="button" onClick={ handleClose }>
             <Image src="/icons/close-smaller.svg" alt="" width="20" height="20" />

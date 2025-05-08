@@ -44,7 +44,6 @@ export const MainHeader = () => {
             Замовляйте книжки - оплачуйте Зимовою єПідтримкою
         </h2>
         <ul className="main-header__items">
-            { console.log(interesting) }
             { interesting.length > 0 ? (
                 interesting.map((interest, i) => (
                     <Link href={ interest.slug } key={ i } className="main-header__link">

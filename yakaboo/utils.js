@@ -47,6 +47,18 @@ export const setCookies = (name, value) => {
     document.cookie = `${name}=${value || ""}; path=/`;
 }
 
+export const setCookiesWithTimer = (name, value, minutes) => {
+    let expires = ""
+
+    if(minutes) {
+        const date = new Date();
+        date.setTime(date.getTime() + (minutes * 60 * 1000))
+        expires = "; expires=" + date.toUTCString()
+    }
+
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
 export const getCookie = name => {
     const match = document.cookie.match(new RegExp('(^| )' + name + "=([^;]+)"));
 
