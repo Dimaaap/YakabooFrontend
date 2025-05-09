@@ -5,11 +5,14 @@ import React, { useEffect, useState } from 'react'
 import { useUserLoginModalStore } from '../../states';
 
 import { useForm } from "react-hook-form"
+import Endpoints from '../../endpoints';
+import { setCookiesWithTimer } from '../../utils';
 
 export const UserLoginModal = () => {
 
     const { isLoginModalOpen, setIsLoginModalOpen, setIsRegisterModalOpen } = useUserLoginModalStore();
     const [showPassword, setShowPassword] = useState(false);
+    const [serverError, setServerError] = useState(null)
 
     const {register, handleSubmit, formState: {errors}} = useForm();
 
@@ -17,6 +20,7 @@ export const UserLoginModal = () => {
     const REG_EMAIL_FAILED_MESSAGE = "Некоректний email"
     const REG_PASSWORD_VALIDATOR = /^(?=.*\d)(?=.*[a-zA-Zа-яА-Я]).{8,}$/
     const REG_PASSWORD_FAILED_MESSAGE = "Пароль має містити хоча б одну цифру і літеру"
+    const TWO_MINUTES = 2 * 60 * 1000;
 
 
     const handleBackdropClick = (e) => {
@@ -46,12 +50,53 @@ export const UserLoginModal = () => {
     }
 
     const onSubmit = async data => {
-        console.log(data);
+        try {
+            const result = await loginUser(data);
+        } catch(error){
+            setServerError(error)
+        }
     }
 
     const changeModal = () => {
         setIsLoginModalOpen(false);
         setIsRegisterModalOpen(true);
+    }
+
+    const loginUser = async (data) => {
+        try {
+            const response = await fetch(Endpoints.USER_LOGIN, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: data.email,
+                    password: data.password
+                })
+            });
+
+            if(!response.ok){
+                const errorData = await response.json();
+                setServerError(errorData.detail || "Невідома помилка")
+                throw new Error(`HTTP Error! Status: ${response.status}`)
+            } else {
+                const result = await response.json();
+                const access_token = result.access_token;
+                const refresh_token = result.refresh_token;
+                setCookiesWithTimer("access_token", access_token, 30)
+                setCookiesWithTimer("refresh_token", refresh_token, 60 * 24 * 7)
+                setCookiesWithTimer("token_type", result.token_type)
+                setCookiesWithTimer("email", result.user.email)
+                setCookiesWithTimer("first_name", result.user.first_name)
+                setCookiesWithTimer("last_name", result.user.last_name)
+                setCookiesWithTimer("phone_number", result.user.phone_number)
+                setServerError(null)
+                setIsLoginModalOpen(false);
+            }
+        } catch(error){
+            console.error(error)
+            setServerError("Помилка сервера")
+        }
     }
 
   return (
@@ -82,13 +127,13 @@ export const UserLoginModal = () => {
             <span className="separator-line" />
         </div>
         <form className="login-modal__form login-form form" method="post"
-        onSubmit={handleSubmit(onSubmit)}>
+        onSubmit={ handleSubmit(onSubmit) }>
             <div className="form__field-group">
                 <label htmlFor="email" className="form__label">
                     Email *
                 </label>
                 <input name="email" id="email" 
-                className={`form__input ${ errors.email ? "failed-input": "" }`} 
+                className={`form__input ${ errors.email || serverError ? "failed-input": "" }`} 
                 placeholder='Введіть email' type="email" 
                 {...register("email", {
                     required: "Це поле обов'язкове",
@@ -99,6 +144,10 @@ export const UserLoginModal = () => {
                 })}/>
                 { errors.email && (
                     <span className="form__message-text">{ errors.email.message }</span>
+                ) }
+
+                { serverError && (
+                    <span className="form__message-text">{ serverError }</span>
                 ) }
             </div>
             <div className="form__field-group">

@@ -6,7 +6,10 @@ import Link from 'next/link';
 import { ContactsModal } from '../modals';
 import { useBookCategoriesModalStore, useCartModalStore, 
     useMenuModalStore, 
+    useProfileSettingsModalStore, 
     useUserLoginModalStore} from '../../states';
+import { useAuth } from '../../hooks';
+import { UserProfileButton } from '.';
 
 export const Header = () => {
 
@@ -15,6 +18,9 @@ export const Header = () => {
     const { setIsCartModalOpen } = useCartModalStore();
     const { setIsCategoriesModalOpen } = useBookCategoriesModalStore();
     const { setIsLoginModalOpen } = useUserLoginModalStore();
+    const { setIsProfileSettingsModalOpen } = useProfileSettingsModalStore();
+
+    const isAuthenticated = useAuth();
 
   return (
     <div className="header">
@@ -63,12 +69,18 @@ export const Header = () => {
                     <Image src="/icons/cart.svg" alt="" className="header__link-icon" width="20" height="20" />
                     <span className="header__link-text">Кошик</span>
                 </Link>
-                <div className="header__link" onClick={() => setIsLoginModalOpen(true)}>
-                    <Image src="/icons/user.svg" alt="" className="header__link-icon" width="20" height="20" />
-                    <span className="header__link-text">
-                        Увійти    
-                    </span>
-                </div>
+                { !isAuthenticated ? (
+                    <div className="header__link" onClick={() => setIsLoginModalOpen(true)}>
+                        <Image src="/icons/user.svg" alt="" className="header__link-icon" width="20" height="20" />
+                        <span className="header__link-text">
+                            Увійти    
+                        </span>
+                    </div>
+                ) : (
+                    <div className="header__link user-info" onClick={() => setIsProfileSettingsModalOpen(true)}>
+                        <UserProfileButton />
+                    </div>
+                ) }
             </div>
         </div>
     </div>

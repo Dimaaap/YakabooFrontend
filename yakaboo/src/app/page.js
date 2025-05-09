@@ -7,11 +7,13 @@ import { BookCategoriesWithSubcategoriesModal, CartModal, ChatOptions, Confirmat
 import { useBookCategoriesModalStore, useCartModalStore, useChatModalStore,
   useSubcategoriesModalStore,
   useMenuModalStore, 
-  useUserLoginModalStore, useConfirmationCodeStore} from '../../states';
+  useUserLoginModalStore, useConfirmationCodeStore,
+  useProfileSettingsModalStore} from '../../states';
   
 import "../../styles/main.scss"
 import { AdditionalInfo, Banner, BooksContainer, MainHeader, MainSidebar } from '../../components';
 import { UserLoginModal } from '../../components/modals/UserLoginModal';
+import { ProfileSettingsModal } from '../../components/modals/ProfileSettingsModal';
 
 export default function Home() {
 
@@ -25,6 +27,7 @@ export default function Home() {
   } = useSubcategoriesModalStore();
 
   const { isLoginModalOpen, isRegisterModalOpen } = useUserLoginModalStore();
+  const { isProfileSettingsModalOpen } = useProfileSettingsModalStore()
   
   const toggleContactsOpen = () => {
     if(isChatModalOpen){
@@ -61,6 +64,7 @@ export default function Home() {
           { isLoginModalOpen && <UserLoginModal /> }
           { isRegisterModalOpen && <UserRegisterModal /> }
           { isConfirmationModalOpen && <ConfirmationCodeModal /> }
+          { isProfileSettingsModalOpen && <ProfileSettingsModal /> }
       </div>
    </div>
   );

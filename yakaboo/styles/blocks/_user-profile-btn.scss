@@ -1,0 +1,14 @@
+@use "../helpers" as *;
+
+.profile-btn {
+    padding: rem(8);
+    border-radius: rem(50);
+    background-color: var(--color-pink-10);
+    color: var(--color-light);
+    text-align: center;
+    cursor: pointer;
+
+    &__user {
+        text-align: center;
+    }
+}

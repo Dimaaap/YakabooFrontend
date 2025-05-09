@@ -69,3 +69,9 @@ export const getCookie = name => {
     return null;
 }
 
+export const getUserFullName = () => {
+    const firstName = getCookie("first_name")
+    const lastName = getCookie("last_name")
+
+    return `${ firstName } ${ lastName }`
+}
