@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form"
 import Endpoints from '../../endpoints';
 import { setCookiesWithTimer } from '../../utils';
 
-export const UserLoginModal = () => {
+export const UserLoginModal = ({ afterClose = null }) => {
 
     const { isLoginModalOpen, setIsLoginModalOpen, setIsRegisterModalOpen } = useUserLoginModalStore();
     const [showPassword, setShowPassword] = useState(false);
@@ -62,6 +62,14 @@ export const UserLoginModal = () => {
         setIsRegisterModalOpen(true);
     }
 
+
+    const handleCloseModal = () => {
+        setIsLoginModalOpen(false);
+        if(afterClose){
+            afterClose()
+        }
+    }
+
     const loginUser = async (data) => {
         try {
             const response = await fetch(Endpoints.USER_LOGIN, {
@@ -103,7 +111,7 @@ export const UserLoginModal = () => {
     <div className="menu login-modal" onClick={handleBackdropClick}>
       <div className="login-modal__content">
         <button className="menu__close login-modal__close" type="button" onClick={() => setIsLoginModalOpen(false)}>
-            <Image src="/icons/close-smaller.svg" alt="" width="22" height="22" />
+            <Image src="/icons/close-smaller.svg" alt="" width="22" height="22" onClick={ handleCloseModal } />
         </button>
         <div className="login-modal__header">
             <div className="login-modal__user-icon-container">

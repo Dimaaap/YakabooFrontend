@@ -10,7 +10,7 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/high-res.css';
 import { useForm } from 'react-hook-form';
 import Endpoints from '../../endpoints';
-import { setCookies } from '../../utils';
+import {  setCookiesWithTimer } from '../../utils';
 import { FlashMessage } from '../shared';
 
 export const UserRegisterModal = () => {
@@ -95,7 +95,7 @@ export const UserRegisterModal = () => {
                         "email": result.email
                     }
                 Object.entries(userData).forEach(([key, value]) => {
-                    setCookies(key, value)
+                    setCookiesWithTimer(key, value, 4320)
                 })
                 setServerError(null)
                 setIsRegisterModalOpen(false);

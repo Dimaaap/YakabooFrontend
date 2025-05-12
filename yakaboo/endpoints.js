@@ -10,6 +10,7 @@ const Endpoints = {
     PHONE_NUMBER_VERIFICATION: "http://localhost:8003/auth/verify-sms-code",
     JWT_REFRESH_TOKEN: "http://localhost:8003/auth/jwt/refresh",
     CHECK_ACCESS_TOKEN: "http://localhost:8003/auth/jwt/verify-token",
+    USER_CHANGE_PASSWORD: "http://localhost:8003/auth/user/change-password",
 }
 
 export default Endpoints;

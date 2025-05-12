@@ -8,16 +8,16 @@ export const useProtectedPage = () => {
     const isAuthenticated = useAuth();
     
     const { isLoginModalOpen, setIsLoginModalOpen } = useUserLoginModalStore()
-    const [ loading, setLoading ] = useState(true);
+    const [authChecked , setAuthChecked] = useState(false);
 
     useEffect(() => {
         if(isAuthenticated !== undefined){
-            setLoading(false);
             if(!isAuthenticated){
                 setIsLoginModalOpen(true)
             } else {
                 setIsLoginModalOpen(false);
             }
+            setAuthChecked(true)
         }
     }, [isAuthenticated, setIsLoginModalOpen])
 
@@ -26,5 +26,5 @@ export const useProtectedPage = () => {
         router.push("/")
     }
 
-    return { isAuthenticated, isLoginModalOpen, loading, handleCloseModal }
+    return { isAuthenticated, isLoginModalOpen, loading: !authChecked, handleCloseModal }
 }

@@ -1,0 +1,135 @@
+@use "../helpers" as *;
+
+.user-data {
+    background-color: var(--color-light);
+    display: flex;
+    flex-direction: column;
+    gap: rem(20);
+    font-size: rem(14);
+    border-radius: rem(7);
+    padding: 1%;
+    width: 48%;
+
+    &__title {
+        @include fluid-text(18, 14);
+        font-weight: 600;
+    }
+
+    &__row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-inline: 1%;
+    }
+
+    &__cell {
+        display: flex;
+        flex-direction: column;
+        gap: rem(1);
+    }
+
+    &__field-title {
+        color: var(--color-gray-30);
+        font-weight: 500;
+    }
+
+    &__user-info {
+        font-weight: 500;
+    }
+
+    &__change {
+        background-color: transparent;
+        border: none;
+        color: var(--color-blue-accent);
+        font-weight: 500;
+
+        &:hover {
+            color: var(--color-blue-10);
+        }
+    }
+
+    &__subscription {
+        display: flex;
+        flex-direction: column;
+        gap: rem(5);
+        padding-inline: 1%;
+    }
+
+    &__bold {
+        font-weight: 500;
+    }
+
+    &__form-container {
+        border-top: rem(2) solid var(--color-gray-50);
+        padding-top: 2%;
+        padding-inline: 1%;
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: rem(15);
+    }
+
+    &__field-group {
+        display: flex;
+        flex-direction: column;
+        gap: rem(5);
+    }
+
+    &__field-label {
+        font-weight: 600;
+    }
+
+    &__field-input {
+        height: rem(45);
+        background-color: var(--color-gray-40);
+        border: rem(1) solid var(--color-gray-50);
+        border-radius: rem(7);
+        padding-inline: 3%;
+        font-size: rem(14);
+        font-weight: 500;
+        width: 40%;
+    }
+
+    &__last-form-input {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    &__btns-row {
+        display: flex;
+        align-items: center;
+        gap: rem(10);
+
+        & button {
+            padding-block: 6%;
+            border: none;
+            border-radius: rem(7);
+            font-weight: 600;
+            width: fluid(100, 50);
+        }
+    }
+
+    &__submit-btn {
+        background-color: var(--color-blue-10);
+        color: var(--color-light);
+    }
+
+    &__cancel-btn {
+        color: var(--color-gray-20);
+    }
+
+    &__text-block {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__additional-info {
+        width: 40%;
+        font-size: rem(12);
+        font-weight: 500;
+        color: var(--color-gray-30);
+    }
+}

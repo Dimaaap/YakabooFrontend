@@ -75,3 +75,9 @@ export const getUserFullName = () => {
 
     return `${ firstName } ${ lastName }`
 }
+
+
+export const getUniqueErrorField = errorStr => {
+    const errorField = errorStr.split(":")[1]
+    return errorField.trim();
+}

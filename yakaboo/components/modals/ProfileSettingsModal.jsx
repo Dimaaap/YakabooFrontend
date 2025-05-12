@@ -119,7 +119,7 @@ export const ProfileSettingsModal = () => {
                 <div className="menu__body settings-body">
                     <ul className="settings-menu">
                         <li className="settings-point">
-                            <Link href="#" className="settings-link" onClick={ () => handleLinkClick() }>
+                            <Link href="/my-account" className="settings-link" onClick={ () => handleLinkClick() }>
                                 <span className="settings__icon-wrapper">
                                     <Image src="/icons/user-pink.svg" alt="" width="18" height="18" />
                                 </span>

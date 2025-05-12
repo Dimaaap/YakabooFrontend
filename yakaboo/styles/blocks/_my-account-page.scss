@@ -1,0 +1,22 @@
+@use "../helpers" as *;
+
+.my-account {
+    padding: 2%;
+
+    &__main {
+        display: flex;
+        flex-direction: column;
+        gap: rem(15);
+    }
+
+    &__page-title {
+        @include fluid-text(20, 16);
+        font-weight: 600;
+        margin-left: 1%;
+    }
+
+    &__flex-container {
+        display: flex;
+        gap: 3%;
+    }
+}
