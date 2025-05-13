@@ -6,3 +6,4 @@ export { useSubcategoriesModalStore } from "./SubcategoriesModalStore";
 export { useUserLoginModalStore } from "./UserLoginModalStore"
 export { useConfirmationCodeStore } from "./ConfirmationCodeStore"
 export { useProfileSettingsModalStore } from "./ProfileSettingsModalStore";
+export { useWishListModalStore } from "./WishlistModalStore";

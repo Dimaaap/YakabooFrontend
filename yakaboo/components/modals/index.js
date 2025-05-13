@@ -5,3 +5,4 @@ export { CartModal } from "./CartModal";
 export { BookCategoriesWithSubcategoriesModal } from "./BookCategoriesWithSubcategoriesModal";
 export { UserRegisterModal } from "./UserRegisterModal";
 export { ConfirmationCodeModal } from "./ConfirmationCodeModal";
+export { CreateWishListModal } from "./CreateWishListModal"

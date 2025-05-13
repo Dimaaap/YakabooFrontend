@@ -14,3 +14,4 @@ export { Promotions } from "./Promotions";
 export { FlashMessage } from "./FlashMessage";
 export { UserProfileButton } from "./UserProfileButton";
 export { NoneSpan } from "./NoneSpan";
+export { WishlistsMainContainer } from "./WishlistsMainContainer";

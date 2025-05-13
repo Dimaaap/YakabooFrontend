@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form"
 
 import Image from "next/image";
-import { getCookie, getUniqueErrorField, getUserFullName, setCookies, setCookiesWithTimer } from '../../utils';
+import { dateFormat, getCookie, getUniqueErrorField, getUserFullName, setCookies, setCookiesWithTimer } from '../../utils';
 import { FlashMessage, NoneSpan } from '../shared';
 import Endpoints from '../../endpoints';
 
@@ -28,7 +28,7 @@ export const MainContainer = () => {
  
     useEffect(() => {
         checkUserSubscription();
-    })
+    }, [userSubscribed])
 
     const checkUserSubscription = async () => {
         try {
@@ -45,10 +45,6 @@ export const MainContainer = () => {
         }
     }
 
-    const onSubmit = (data) => {
-
-    }
-
     const openForm = formId => {
         setVisibleForms([...visibleForms, formId])
     }
@@ -61,7 +57,7 @@ export const MainContainer = () => {
         let newValue = e.target.value;
 
         if(fieldTitle === "phone_number") {
-            newValue = e.target.slice(1)
+            newValue = newValue.slice(1)
         }
 
         setUserData(prevState => ({
@@ -127,7 +123,7 @@ export const MainContainer = () => {
 
         Object.keys(userData).forEach(field => {
             const currentValue = userData[field];
-            const cookieValue = getCookie(field);
+            const cookieValue = getCookie(field) || "";
 
             if(currentValue !== cookieValue){
                 newDataToUpdate[field] = currentValue;
@@ -140,6 +136,8 @@ export const MainContainer = () => {
         }
 
         try {
+            console.log("here")
+            console.log(body)
             const response = await fetch(`http://localhost:8003/auth/user/update/${userEmail}`, {
                 method: "PATCH",
                 headers: {
@@ -150,6 +148,7 @@ export const MainContainer = () => {
 
             if(response.ok) {
                 const resp = await response.json();
+                console.log("response: ", resp)
                 Object.keys(resp).forEach(key => {
                     if(resp[key]){
                         setCookiesWithTimer(key, resp[key], 60 * 24 * 3)
@@ -219,7 +218,8 @@ export const MainContainer = () => {
                             className="user-data__field-input" name="last_name" id="last_name" 
                             value={ userData.last_name } onInput={(e) => updateFieldValue(e, "last_name")} />
                             <div className="user-data__btns-row">
-                                <button className="user-data__submit-btn" type="submit">
+                                <button className="user-data__submit-btn" type="submit"
+                                onClick={(e) => handleSaveChangesButton(e, 1)}>
                                     Зберегти
                                 </button>
                                 <button className="user-data__cancel-btn" type="button" 
@@ -258,7 +258,8 @@ export const MainContainer = () => {
                             className="user-data__field-input" name="email" id="email" 
                             value={ userData.email } onChange={(e) => updateFieldValue(e, "email")} />
                             <div className="user-data__btns-row">
-                                <button className="user-data__submit-btn" type="submit">
+                                <button className="user-data__submit-btn" type="submit"
+                                onClick={(e) => handleSaveChangesButton(e, 2)}>
                                     Зберегти
                                 </button>
                                 <button className="user-data__cancel-btn" type="button"
@@ -298,7 +299,8 @@ export const MainContainer = () => {
                             maxLength={13} value={ "+"+userData.phone_number } 
                             onChange={ (e) => updateFieldValue(e, "phone_number") } />
                             <div className="user-data__btns-row">
-                                <button className="user-data__submit-btn" type="submit">
+                                <button className="user-data__submit-btn" type="submit"
+                                onClick={(e) => handleSaveChangesButton(e, 3)}>
                                     Зберегти
                                 </button>
                                 <button className="user-data__cancel-btn" type="button"
@@ -322,17 +324,29 @@ export const MainContainer = () => {
                         *******
                     </p>
                 </div>
-                <button className="user-data__change" type="button">Змінити</button>
+                <button className="user-data__change" type="button"
+                onClick={() => openForm(4)}>Змінити</button>
             </div>
         ) : (
             <div className="user-data__form-container">
-                <form className="user-data__form">
+                <form className="user-data__form" method="post" onSubmit={ handleSubmit(handleChangePasswordForm) }>
                     <div className="user-data__field-group">
                         <label htmlFor='old_password' className="user-data__field-label">
                             Старий пароль
                         </label>
-                        <input type="password" placeholder="Введіть старий пароль" autoComplete="false"
-                        className="user-data__field-input" name="old_password" id="old_password" />
+                        <input type="password" placeholder="Введіть старий пароль" 
+                        autoComplete="false"
+                        className="user-data__field-input"
+                        name="old_password" id="old_password" 
+                        {...register("old_password", {
+                            required: "Це поле обов'язкове"
+                        })} />
+                        { errors.old_password && 
+                        <span className="form__message-text">
+                            { errors.old_password.message }
+                        </span> }
+
+                        { passwordFormError && <span className="form__message-text">{ passwordFormError }</span> }
                     </div>
                     <div className="user-data__field-group">
                         <div className="user-data__text-block">
@@ -346,16 +360,31 @@ export const MainContainer = () => {
                         </div>
                         <div className="user-data__last-form-input">
                             <input type="password" placeholder="Введіть новий пароль" autoComplete="false"
-                            className="user-data__field-input" name="new_password" id="new_password" />
+                            className="user-data__field-input" name="new_password" id="new_password" 
+                            { ...register("new_password", {
+                                required: "Пароль обов'язковий",
+                                minLength: {
+                                    value: 8,
+                                    message: "Пароль повинен містити не менше 8 символів"
+                                },
+                                pattern: {
+                                    value: /^(?=.*\d)(?=.*[a-zA-Zа-яА-Я]).{8,}$/,
+                                    message: 'Пароль має містити хоча б одну цифру і літеру',
+                                }
+                            }) }/>
                             <div className="user-data__btns-row">
                                 <button className="user-data__submit-btn" type="submit">
                                     Зберегти
                                 </button>
-                                <button className="user-data__cancel-btn" type="button">
+                                <button className="user-data__cancel-btn" type="button"
+                                onClick={() => closeForm(4)}>
                                     Скасувати
                                 </button>
                             </div>
                         </div>
+                        { errors.new_password && <span className="form__message-text">
+                            { errors.new_password.message }
+                        </span> }
                     </div>
                 </form>
             </div>
@@ -368,10 +397,13 @@ export const MainContainer = () => {
                         Дата народження
                     </span>
                     <p className="user-data__user-info">
-                        25 вер. 2004
+                        { dateFormat(getCookie("birth_date")) }
                     </p>
                 </div>
-                <button className="user-data__change" type="button">Змінити</button>
+                <button className="user-data__change" type="button"
+                onClick={() => openForm(5)}>
+                    { getCookie("birth_date") ? "Змінити": "Додати" }
+                </button>
             </div>    
         ) : (
             <div className="user-data__form-container">
@@ -382,12 +414,15 @@ export const MainContainer = () => {
                         </label>
                         <div className="user-data__last-form-input">
                             <input type="date" placeholder="Ваша дата народження" autoComplete="false"
-                            className="user-data__field-input" name="birth_date" id="birth_date" />
+                            className="user-data__field-input" name="birth_date" id="birth_date"
+                            onChange={(e) => updateFieldValue(e, "birth_date")} />
                             <div className="user-data__btns-row">
-                                <button className="user-data__submit-btn" type="submit">
+                                <button className="user-data__submit-btn" type="submit"
+                                onClick={(e) => handleSaveChangesButton(e, 5)}>
                                     Зберегти
                                 </button>
-                                <button className="user-data__cancel-btn" type="button">
+                                <button className="user-data__cancel-btn" type="button"
+                                onClick={() => closeForm(5)}>
                                     Скасувати
                                 </button>
                             </div>

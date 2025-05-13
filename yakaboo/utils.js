@@ -78,6 +78,18 @@ export const getUserFullName = () => {
 
 
 export const getUniqueErrorField = errorStr => {
-    const errorField = errorStr.split(":")[1]
-    return errorField.trim();
+    console.log(errorStr)
+    const errorField = errorStr.msg?.split(":")[1]
+    return errorField?.trim();
+}
+
+export const dateFormat = inputDate => {
+    if(inputDate){
+        const date = new Date(inputDate);
+        const formattedDate = `${date.getDate().toString().
+            padStart(2, "0")}.${(date.getMonth() + 1).toString().padStart(2, "0")}.${(date.getFullYear())}`
+        return formattedDate;
+    } else {
+        return ""
+    }
 }

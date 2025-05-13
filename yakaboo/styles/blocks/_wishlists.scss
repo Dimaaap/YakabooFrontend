@@ -1,0 +1,99 @@
+@use "../helpers" as *;
+
+.wishlists {
+    padding: 2%;
+    display: flex;
+    align-items: center;
+    gap: 3%;
+
+    &__section {
+        width: 50%;
+        
+        &.left-section {
+            width: 20%;
+            display: flex;
+            flex-direction: column;
+            gap: rem(10);
+        }
+
+        &.right-section {
+            text-align: center;
+        }
+    }
+
+    &__sidebar {
+        background-color: var(--color-light);
+        justify-content: center;
+        padding: 7%;
+        border-radius: rem(10);
+        display: flex;
+        flex-direction: column;
+        gap: rem(15);
+    }
+
+    &__menu {
+        display: flex;
+        flex-direction: column;
+        gap: rem(10);
+    }
+
+    &__whishlist {
+        font-size: rem(14);
+        font-weight: 500;
+        background-color: var(--color-gray-40);
+        padding: 4%;
+        border-radius: rem(7);
+        color: var(--color-gray-20);
+    }
+
+    &__create-wishlist-ul {
+        width: 100%;
+        border: none;
+        border-radius: rem(7);
+        padding-block: 4%;
+        color: var(--color-light);
+        font-weight: 500;
+        font-size: rem(14);
+        transition: all 0.3s ease;
+        background-color: var(--color-blue-10);
+
+        &:hover {
+            background-color: var(--color-blue-accent);
+        }
+    }
+
+    &__title {
+        @include fluid-text(18, 16);
+        font-weight: 500;
+    }
+
+    &__text-container {
+        display: flex;
+        flex-direction: column;
+        gap: rem(5);
+    }
+
+    &__description {
+        font-weight: 500;
+        font-size: rem(14);
+    }
+
+    & .blue-btn {
+        background-color: var(--color-blue-10);
+        border: none;
+        color: var(--color-light);
+        font-weight: 500;
+        font-size: rem(14);
+        padding-inline: 8%;
+        margin: 0 auto;
+        border-radius: rem(10);
+        margin-top: 2%;
+        padding-block: 1.5%;
+        align-self: start;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background-color: var(--color-blue-accent);
+        }
+    }
+}
