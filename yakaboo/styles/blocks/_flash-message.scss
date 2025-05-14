@@ -37,8 +37,18 @@
         max-width: 99%;
     }
 
+    &__btns-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    & .btn {
+        width: 40%;
+    }
+
     &__ok-button {
-        width: 100%;
+        width: 40%;
         border-radius: rem(5);
         text-align: center;
         font-size: rem(14);

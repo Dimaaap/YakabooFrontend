@@ -1,41 +1,76 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Image from "next/image"
 
-import { CreateWishListModal, WishlistsMainContainer } from "../../../../components";
+import { CreateWishListModal, WishlistSidebar, WishlistsMainContainer } from "../../../../components";
 import { useWishListModalStore } from "../../../../states";
+import { fetchData, getCookie } from "../../../../utils";
+import { useProtectedPage } from "../../../../hooks";
 
 
 export default function WishListPage() {
 
-    const { isWishlistModalOpen, setIsWishlistModalOpen } = useWishListModalStore();
-
+    const { isWishlistModalOpen } = useWishListModalStore();
+    const { isAuthenticated, loading, handleCloseModal } = useProtectedPage();
+    
+    const [serverError, setServerError] = useState(null)
     const [wishlists, setWishlists] = useState([])
+
 
     const addWishlist = newWishlist => {
         setWishlists((prevWishlists) => [...prevWishlists, newWishlist])
     }
 
+    const deleteWishlist = async(id) => {
+        try {
+            const response = await fetch(`http://localhost:8003/wishlist/${id}`, {
+                method: "DELETE"
+            })
+
+            if(response.ok){
+                setWishlists((prevWishlists) => prevWishlists.filter(wishlist => wishlist.id !== id))
+            } else {
+                setServerError("Failed to delete wishlist")
+            }
+        } catch(error){
+            setServerError(error)
+        }
+    }
+
+    const updateWishlistTitle = updatedWishlist => {
+        setWishlists((prevWishlists) => 
+            prevWishlists.map((wishlist) => wishlist.id === updatedWishlist.id ? updatedWishlist : wishlist)
+        )
+    }
+
+    useEffect(() => {
+        const userEmail = getCookie("email")
+        fetchData(`http://localhost:8003/wishlist/${userEmail}`, 
+            setWishlists, 
+            `${userEmail}_wishlists`
+        )
+    }, [])
+
+    if(loading){
+        return  <Image src="/icons/spinner.svg" width="20" height="20" alt="" className="animate-spin" />
+    }
+
     return(
         <div className="wishlists">
             { isWishlistModalOpen && <CreateWishListModal addWishlist={ addWishlist } /> }
-            <div className="wishlists__section left-section">
-                <h1 className="wishlists__title">
-                    Бажане
-                </h1>
-                <div className="wishlists__sidebar">
-                    <button className="wishlists__create-wishlist-ul btn" type="button"
-                    onClick={() => setIsWishlistModalOpen(true)}>
-                        Створити список
-                    </button>
-                    <ul className="wishlists__menu">
-                        <li className="wishlists__whishlist">
-                            фівіфвіф
-                        </li>
-                    </ul>
-                </div>
-            </div>   
-            <WishlistsMainContainer />
+            <h1 className="wishlists__title">
+                Бажане
+            </h1>
+            <div className="wishlists__container">
+                { wishlists.length > 0 ? (
+                    <div className="wishlists__section left-section">
+                        <WishlistSidebar wishlists={ wishlists } />
+                    </div> 
+                ) : <></> }  
+                <WishlistsMainContainer wishlists={ wishlists } 
+                deleteWishlist={ deleteWishlist } updateWishlist={ updateWishlistTitle } />
+            </div>
         </div>
     )
 }

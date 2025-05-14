@@ -15,3 +15,5 @@ export { FlashMessage } from "./FlashMessage";
 export { UserProfileButton } from "./UserProfileButton";
 export { NoneSpan } from "./NoneSpan";
 export { WishlistsMainContainer } from "./WishlistsMainContainer";
+export { WishlistSidebar } from "./WishlistSidebar";
+export { FlashMessageWithAgreement } from "./FlashMessageWithAgreement"

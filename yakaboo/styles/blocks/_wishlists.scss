@@ -2,9 +2,16 @@
 
 .wishlists {
     padding: 2%;
-    display: flex;
-    align-items: center;
     gap: 3%;
+    display: flex;
+    flex-direction: column;
+    gap: rem(10);
+
+    &__container {
+        display: flex;
+        align-items: start;
+        gap: 3%;
+    }
 
     &__section {
         width: 50%;
@@ -18,6 +25,71 @@
 
         &.right-section {
             text-align: center;
+            width: 70%;
+        }
+    }
+
+    &__wishlist-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: rem(10);
+        font-size: rem(14);
+        justify-content: start;
+        text-align: left;
+    }
+
+    & .wishlist {
+        width: 100%;
+        background-color: var(--color-light);
+        display: flex;
+        flex-direction: column;
+        border-radius: rem(10);
+
+        &__header {
+            padding: 1% 2%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: rem(1) solid var(--color-gray-50);
+        }
+
+        &__title {
+            color: var(--color-gray-30);
+            font-weight: 500;
+        }
+
+        &__no-text {
+            color: var(--color-gray-30);
+            font-weight: 500;
+        }
+
+        &__buttons-row {
+            display: flex;
+            align-items: center;
+            gap: 7%;
+        }
+
+        &__button {
+            background-color: var(--color-gray-50);
+            border: none;
+            padding: rem(10);
+            border-radius: rem(50);
+
+            &.up-btn {
+                background-color: transparent;
+
+                &.rotated {
+                    & img {
+                        transform: rotate(180deg);
+                    }   
+                }
+            }
+
+        }
+
+        &__body {
+            padding: 1.5% 2%;
         }
     }
 
