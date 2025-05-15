@@ -7,3 +7,4 @@ export { useUserLoginModalStore } from "./UserLoginModalStore"
 export { useConfirmationCodeStore } from "./ConfirmationCodeStore"
 export { useProfileSettingsModalStore } from "./ProfileSettingsModalStore";
 export { useWishListModalStore } from "./WishlistModalStore";
+export { useUpdateWishlistModalStore } from "./UpdateWishlistModalStore";

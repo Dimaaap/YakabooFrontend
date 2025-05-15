@@ -1,9 +1,10 @@
 "use client"
 
 import React, { useState } from 'react'
-import { useWishListModalStore } from "../../states";
+import { useUpdateWishlistModalStore, useWishListModalStore } from "../../states";
 import Image from 'next/image';
 import { FlashMessageWithAgreement } from '.';
+import { UpdateWishlistModal } from '../modals';
 
 export const WishlistsMainContainer = ({ wishlists, deleteWishlist, updateWishlist }) => {
 
@@ -12,6 +13,8 @@ export const WishlistsMainContainer = ({ wishlists, deleteWishlist, updateWishli
     const [showFlashMessage, setShowFlashMessage] = useState(false)
     const [wishlistToDelete, setWishlistToDelete] = useState(null)
     const [showBooks, setShowBooks] = useState([])
+
+    const { isUpdateWishlistModalOpen, setIsUpdateWishlistModalOpen } = useUpdateWishlistModalStore();
 
     const handleDeleteClick = wishlist => {
         setWishlistToDelete(wishlist)
@@ -23,9 +26,15 @@ export const WishlistsMainContainer = ({ wishlists, deleteWishlist, updateWishli
         setShowFlashMessage(false)
     }
 
+    const handleUpdateWishlistButton = wishlist => {
+        setSelectedWishlistForUpdate(wishlist);
+        setIsUpdateWishlistModalOpen(true)
+    }
+
     const handleCloseFlashMessage = () => {
         setShowFlashMessage(false);
     }
+
 
     const setBooksOpen = wishlistId => {
         setShowBooks((prevShowBooks) => [...prevShowBooks, wishlistId])
@@ -60,7 +69,8 @@ export const WishlistsMainContainer = ({ wishlists, deleteWishlist, updateWishli
                                 { wishlist.title }
                             </p>
                             <div className="wishlist__buttons-row">
-                                <button className="wishlist__button wishlist-btn">
+                                <button className="wishlist__button wishlist-btn"
+                                onClick={ () => handleUpdateWishlistButton(wishlist) }>
                                     <Image src="/icons/pen.svg" alt="" width="16" height="16" />
                                 </button>
                                 <button className="wishlist__button wishlist-btn"
@@ -87,7 +97,10 @@ export const WishlistsMainContainer = ({ wishlists, deleteWishlist, updateWishli
                         ) }
                     </div>
                 )) }
-                 { showFlashMessage && (
+                { isUpdateWishlistModalOpen && <UpdateWishlistModal wishlist={ selectedWishlistForUpdate } 
+                updateWishlistTitle={ updateWishlist }/> }
+                
+                { showFlashMessage && (
                     <FlashMessageWithAgreement 
                         message="Ви впевнені, що хочете видалити всі книги зі списку бажань?" 
                         onConfirm={ handleConfirmDelete }

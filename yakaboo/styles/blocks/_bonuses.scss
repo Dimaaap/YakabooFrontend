@@ -1,0 +1,54 @@
+@use "../helpers" as *;
+
+.bonuses {
+    padding: 1% 2%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: rem(15);
+
+    &__text-block {
+        display: flex;
+        flex-direction: column;
+        gap: rem(10);
+        font-weight: 600;
+        font-size: rem(14);
+    }
+
+    &__text-title {
+        font-size: rem(22);
+    }
+
+    &__table {
+        display: flex;
+        flex-direction: column;
+        gap: rem(5);
+        width: 100%;
+
+        & thead {
+            background-color: var(--color-light);
+            border-radius: rem(5);
+            color: var(--color-gray-30);
+            font-size: rem(14);
+            padding-inline: 2%;
+        }
+
+        &-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+
+    &__no-data {
+        width: 100%;
+        background-color: var(--color-light);
+        padding-block: 1%;
+        font-size: rem(14);
+        color: var(--color-gray-30);
+        font-weight: 500;
+        text-align: center;
+        border-radius: rem(5);
+        margin-bottom: 4%;
+    }
+}

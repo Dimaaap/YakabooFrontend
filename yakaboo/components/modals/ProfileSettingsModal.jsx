@@ -64,7 +64,7 @@ export const ProfileSettingsModal = () => {
                 <div className="menu__body settings-body">
                     <ul className="settings-menu">
                         <li className="settings-point">
-                            <Link href="#" className="settings-link" onClick={ () => handleLinkClick() }>
+                            <Link href="/my-account/orders" className="settings-link" onClick={ () => handleLinkClick() }>
                                 <span className="settings__icon-wrapper">
                                     <Image src="/icons/truck-pink.svg" alt="" width="18" height="18" />
                                 </span>
@@ -74,7 +74,7 @@ export const ProfileSettingsModal = () => {
                             </Link>
                         </li>
                         <li className="settings-point">
-                            <Link href="#" className="settings-link" onClick={ () => handleLinkClick() }>
+                            <Link href="/my-account/library" className="settings-link" onClick={ () => handleLinkClick() }>
                                 <span className="settings__icon-wrapper">
                                     <Image src="/icons/done.svg" alt="" width="18" height="18" />
                                 </span>
@@ -104,7 +104,7 @@ export const ProfileSettingsModal = () => {
                             </Link>
                         </li>
                         <li className="settings-point">
-                            <Link href="#" className="settings-link" onClick={ () => handleLinkClick() }>
+                            <Link href="/my-account/bonuses" className="settings-link" onClick={ () => handleLinkClick() }>
                                 <span className="settings__icon-wrapper">
                                     <Image src="/icons/bonuses.svg" alt="" width="18" height="18" />
                                 </span>

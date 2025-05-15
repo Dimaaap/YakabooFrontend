@@ -49,7 +49,7 @@ export const CreateWishListModal = ({ addWishlist }) => {
     if (e.target === e.currentTarget){
         setIsWishlistModalOpen(false);
     }
-}
+  }
 
 useEffect(() => {
   if(isWishlistModalOpen) {

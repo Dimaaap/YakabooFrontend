@@ -3,16 +3,19 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image"
 
-import { CreateWishListModal, WishlistSidebar, WishlistsMainContainer } from "../../../../components";
-import { useWishListModalStore } from "../../../../states";
+import { CreateWishListModal, FlashMessage, WishlistSidebar, WishlistsMainContainer } from "../../../../components";
+import { useProfileSettingsModalStore, useWishListModalStore } from "../../../../states";
 import { fetchData, getCookie } from "../../../../utils";
 import { useProtectedPage } from "../../../../hooks";
+import { UserLoginModal } from "../../../../components/modals/UserLoginModal";
+import { ProfileSettingsModal } from "../../../../components/modals/ProfileSettingsModal";
 
 
 export default function WishListPage() {
 
     const { isWishlistModalOpen } = useWishListModalStore();
     const { isAuthenticated, loading, handleCloseModal } = useProtectedPage();
+    const { isProfileSettingsModalOpen } = useProfileSettingsModalStore();
     
     const [serverError, setServerError] = useState(null)
     const [wishlists, setWishlists] = useState([])
@@ -56,9 +59,15 @@ export default function WishListPage() {
         return  <Image src="/icons/spinner.svg" width="20" height="20" alt="" className="animate-spin" />
     }
 
+    if(!isAuthenticated){
+        return <UserLoginModal afterClose={ handleCloseModal } />
+    }
+
     return(
         <div className="wishlists">
+            { serverError && <FlashMessage message={ serverError } onClose={ setServerError(null) } /> }
             { isWishlistModalOpen && <CreateWishListModal addWishlist={ addWishlist } /> }
+            { isProfileSettingsModalOpen && <ProfileSettingsModal /> }
             <h1 className="wishlists__title">
                 Бажане
             </h1>

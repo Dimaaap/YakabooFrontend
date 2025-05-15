@@ -1,0 +1,68 @@
+@use "../helpers" as *;
+
+.orders,
+.page {
+    padding: 1% 2%;
+    display: flex;
+    flex-direction: column;
+    gap: rem(15);
+
+    &__page-title {
+        font-size: rem(22);
+    }
+
+    &__container {
+        display: flex;
+        align-items: start;
+        gap: 2%;
+    }
+
+    &__section {
+        &.left-section {
+            width: 15%;
+        }
+    }
+
+    &-sidebar {
+        width: 100%;
+        background-color: var(--color-light);
+        border-radius: rem(7);
+        padding-block: 8%;
+        font-size: rem(14);
+        color: var(--color-gray-30);
+        font-weight: 600;
+        display: flex;
+        flex-direction: column;
+        gap: rem(15);
+    }
+
+    &-point {
+        padding-block: 1%;
+        padding-inline: 5%;
+        cursor: pointer;
+        transition: color 0.3s ease;
+
+        &:hover {
+            color: var(--color-pink-10);
+            border-left: rem(2) solid var(--color-pink-10);
+        }
+
+        &.active {
+            border-left: rem(2) solid var(--color-pink-10);
+            color: var(--color-pink-10);    
+        }   
+    }
+
+    & .right-section {
+        font-size: rem(14);
+        color: var(--color-gray-30);
+        font-weight: 500;
+    }
+
+    &__books-container {
+        width: 100%;
+        height: rem(30);
+        border-radius: rem(5);
+        background-color: var(--color-light);
+    }
+}
