@@ -92,6 +92,7 @@
         color: #222;
         font-weight: 500;
         padding-inline: 3%;
+        position: relative;
 
         &.password-input {
             position: relative;
@@ -108,11 +109,32 @@
         justify-content: space-between;
     }
 
+    &__info-message-container {
+        background-color: transparent;
+        border: rem(1) solid var(--color-gray-50);
+        border-radius: rem(10);
+        padding-block: 2%;
+        padding-inline: 3%;
+        margin-top: 4%;
+        font-weight: 500;
+    }
+
     &__forgot-password {
         font-size: rem(14);
         color: #5B636F;
         font-weight: 500;
         cursor: pointer;
+        border: none;
+        background-color: transparent;
+
+        &.disabled {
+            cursor: not-allowed;
+            color: var(--color-gray-50);
+
+            &:hover {
+                color: var(--color-gray-50);
+            }
+        }
 
         &:hover {
             color: var(--color-blue-10);

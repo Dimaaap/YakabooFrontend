@@ -47,6 +47,12 @@ export const setCookies = (name, value) => {
     document.cookie = `${name}=${value || ""}; path=/`;
 }
 
+export const deleteCookie = name => {
+    if(getCookie(name)){
+        document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;`
+    }
+}
+
 export const setCookiesWithTimer = (name, value, minutes) => {
     let expires = ""
 
@@ -92,4 +98,9 @@ export const dateFormat = inputDate => {
     } else {
         return ""
     }
+}
+
+export const validateEmailRegex = email => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email)
 }

@@ -11,7 +11,9 @@ const Endpoints = {
     JWT_REFRESH_TOKEN: "http://localhost:8003/auth/jwt/refresh",
     CHECK_ACCESS_TOKEN: "http://localhost:8003/auth/jwt/verify-token",
     USER_CHANGE_PASSWORD: "http://localhost:8003/auth/user/change-password",
-    CREATE_WISHLIST: "http://localhost:8003/wishlist/create"
+    CREATE_WISHLIST: "http://localhost:8003/wishlist/create",
+    CHANGE_PASSWORD_WITH_EMAIL: "http://localhost:8003/auth/user/change-password-with-email",
+    USER_LOGOUT: "http://localhost:8003/auth/jwt/logout",
 }
 
 export default Endpoints;

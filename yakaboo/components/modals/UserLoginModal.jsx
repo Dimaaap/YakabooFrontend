@@ -6,15 +6,19 @@ import { useUserLoginModalStore } from '../../states';
 
 import { useForm } from "react-hook-form"
 import Endpoints from '../../endpoints';
-import { setCookiesWithTimer } from '../../utils';
+import { setCookiesWithTimer, validateEmailRegex } from '../../utils';
 
 export const UserLoginModal = ({ afterClose = null }) => {
 
     const { isLoginModalOpen, setIsLoginModalOpen, setIsRegisterModalOpen } = useUserLoginModalStore();
     const [showPassword, setShowPassword] = useState(false);
     const [serverError, setServerError] = useState(null)
-
-    const {register, handleSubmit, formState: {errors}} = useForm();
+    const [emailError, setEmailError] = useState(null)
+    const [infoMessage, setInfoMessage] = useState(null)
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+    const [sendgingLoading, setSendingLoading] = useState(false)
+  
+    const {register, handleSubmit, formState: {errors}, getValues} = useForm();
 
     const REG_EMAIL_VALIDATOR = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
     const REG_EMAIL_FAILED_MESSAGE = "Некоректний email"
@@ -36,9 +40,9 @@ export const UserLoginModal = ({ afterClose = null }) => {
             document.body.style.overflow = "";
         }
     
-        return(() => {
+        return() => {
             document.body.style.overflow = ""
-        })
+        }
     }, [isLoginModalOpen])
 
     const toggleShowPassword = () => {
@@ -46,6 +50,55 @@ export const UserLoginModal = ({ afterClose = null }) => {
             setShowPassword(false)
         } else {
             setShowPassword(true)
+        }
+    }
+
+    const handleUserForgotPassword = async(event) => {
+        event.preventDefault()
+        setServerError(null)
+
+        const email = getValues("email")
+        console.log(email)
+
+        if(!email){
+            setEmailError("Це поле обов'язкове")
+        } else if(!validateEmailRegex(email)){
+            setEmailError("Неправильний формат email")
+        } else {
+            try {
+                setSendingLoading(true)
+                setEmailError(null)
+                const response = await fetch(Endpoints.CHANGE_PASSWORD_WITH_EMAIL, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        user_email: email
+                    })
+                })
+
+                if(response.ok){
+                    const resp = await response.json();
+
+                    setInfoMessage(`Відправили вам оновлений пароль на email: ${email}`)
+
+                    setTimeout(() => {
+                        setInfoMessage(null)
+                    }, 10000)
+
+                    setIsButtonDisabled(true)
+                    setTimeout(() => setIsButtonDisabled(false), TWO_MINUTES)
+                } else {
+                    const error = await response.json();
+                    console.error(error);
+                    setServerError("Користувач з таким email не зареєстрований")
+                }
+            } catch(error){
+                setServerError("Користувач з таким email не зареєстрований")
+            } finally {
+                setSendingLoading(false)
+            }
         }
     }
 
@@ -141,7 +194,7 @@ export const UserLoginModal = ({ afterClose = null }) => {
                     Email *
                 </label>
                 <input name="email" id="email" 
-                className={`form__input ${ errors.email || serverError ? "failed-input": "" }`} 
+                className={`form__input ${ errors.email || serverError || emailError ? "failed-input": "" }`} 
                 placeholder='Введіть email' type="email" 
                 {...register("email", {
                     required: "Це поле обов'язкове",
@@ -154,6 +207,10 @@ export const UserLoginModal = ({ afterClose = null }) => {
                     <span className="form__message-text">{ errors.email.message }</span>
                 ) }
 
+                { emailError && (
+                    <span className="form__message-text">{ emailError }</span>
+                ) }
+
                 { serverError && (
                     <span className="form__message-text">{ serverError }</span>
                 ) }
@@ -163,9 +220,11 @@ export const UserLoginModal = ({ afterClose = null }) => {
                     <label htmlFor="password" className="form__label">
                         Пароль *
                     </label> 
-                    <span className="form__forgot-password">
+                    <button className={`form__forgot-password ${ isButtonDisabled ? "disabled": "" }`}
+                    type="button" disabled={ isButtonDisabled }
+                    onClick={ handleUserForgotPassword }>
                         Забули пароль?
-                    </span>   
+                    </button>   
                 </div>
                 <div className="form__input-wrapper">
                     <input name="password" 
@@ -189,8 +248,20 @@ export const UserLoginModal = ({ afterClose = null }) => {
                     alt="" width="16" height="16" className={`form__eye login-eye ${showPassword ? "open-eye" : ""}`} 
                     onClick={toggleShowPassword} />
                 </div>
+                { errors.password && (
+                    <span className="form__message-text">{ errors.password.message }</span>
+                    ) }
+                { infoMessage && (
+                    <span className="form__info-message-container">
+                        { infoMessage }
+                    </span>
+                ) }
+
+                { sendgingLoading && (
+                    <Image src="/icons/spinner.svg" width="20" height="20" alt="" className="animate-spin" />
+                ) }
             </div>
-            <button className="form__submit-btn disabled" type="submit" disabled>
+            <button className="form__submit-btn" type="submit">
                 Увійти
             </button>
         </form>
