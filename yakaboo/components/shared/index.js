@@ -18,3 +18,5 @@ export { WishlistsMainContainer } from "./WishlistsMainContainer";
 export { WishlistSidebar } from "./WishlistSidebar";
 export { FlashMessageWithAgreement } from "./FlashMessageWithAgreement";
 export { OrdersSidebar } from "./OrdersSidebar";
+export { FilterForm } from "./FilterForm";
+export { ProductCard } from "./ProductCard";
