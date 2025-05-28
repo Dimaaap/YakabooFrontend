@@ -16,12 +16,9 @@ export const ProductCard = ({
     inStock=true    
 }) => {
 
-    let truncatedTitle = title.length > 18 ? title.slice(0, 18) + "..." : title
-    let truncatedBrand = brand.length > 22 ? brand.slice(0, 22) + "..." : brand
-
   return (
     <Link className="product-card" href={ productLink }>
-        <div className="product-card__header hidden">
+        <div className="product-card__header">
             <Badge text={ productCode } backgroundColor="#F4F6F8" />
             <div className="badge" style={{"backgroundColor": "#F4F6F8"}}>
                 <svg width="20" height="16" viewBox="0 0 16 14" fill="#333373" 
@@ -41,11 +38,11 @@ export const ProductCard = ({
                     </div>
                 )) }
             </div>
-            <p className="product-card__title" data-full-title={ title }>
-                { truncatedTitle }
+            <p className="product-card__title">
+                { title }
             </p>
-            <span className="product-card__brand" data-full-brand={ brand }>
-                { truncatedBrand }
+            <span className="product-card__brand">
+                { brand }
             </span>
             <div className="product-card__price-container">
                 { newPrice ? (
@@ -77,6 +74,11 @@ export const ProductCard = ({
                     { inStock ? "В наявності": "Немає в наявності" }
                 </span>
             </div>
+
+            <button className="product-card__buy-btn">
+                <Image src="/icons/cart.svg" alt="" width="16" height="16" />
+                Купити
+            </button>
         </div>
     </Link>
   )

@@ -6,7 +6,7 @@
     padding: 2%;
     display: flex;
     flex-direction: column;
-    gap: rem(25);
+    gap: rem(50);
     width: 100%;
 
     &__header {
@@ -32,7 +32,31 @@
     &__body {
         display: grid;
         grid-template-columns: repeat(6, 1fr);
-        row-gap: rem(50);
         column-gap: rem(20);
+        position: relative;
+    }
+
+    &__pagination {
+        display: flex;
+        flex-direction: column;
+        gap: rem(15);
+    }
+
+    &__show-more {
+        display: inline;
+        width: rem(280);
+        justify-content: center;
+        margin: 0 auto;
+        font-size: rem(12);
+        font-weight: 500;
+        background-color: var(--color-gray-40);
+        color: var(--color-gray-20);
+        padding-block: 1%;
+        border: rem(1) solid transparent;
+        border-radius: rem(10);
+
+        &:hover {
+            border-color: var(--color-gray-50);
+        }
     }
 }
