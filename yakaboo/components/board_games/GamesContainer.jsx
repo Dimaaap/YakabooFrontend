@@ -120,7 +120,7 @@ export const GamesContainer = () => {
                 Показати більше товарів
             </button>
             <div className="games-container__pagination-btns">
-                <button className="games-container__paginagion-btn arrow-pagination">
+                <button className="games-container__pagination-btn arrow-pagination disabled">
                     <Image src="/icons/left.svg" alt="" width="18" height="18" />
                 </button>
 
@@ -154,7 +154,7 @@ export const GamesContainer = () => {
                     </button>
                 </div>
 
-                <button className="games-container__paginagion-btn arrow-pagination">
+                <button className="games-container__pagination-btn arrow-pagination">
                     <Image src="/icons/right.svg" alt="" width="18" height="18" />
                 </button>
             </div>

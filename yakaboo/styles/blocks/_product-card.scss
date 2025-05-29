@@ -1,13 +1,14 @@
 @use "../helpers" as *;
 
 .product-card {
-    height: auto;
+    height: rem(440);
     flex-direction: column;
     position: relative;
     padding: rem(5);
     z-index: 1;
     border-radius: rem(5);
     transition: border 0s ease;
+    overflow: visible;
 
     & .hidden {
         opacity: 0;
@@ -166,7 +167,12 @@
     }
 
     &__buy-btn {
+        position: absolute;
+        top: 89%;
+        left: 10%;
+        z-index: 20;
         opacity: 0;
+        width: 80%;
         background-color: var(--color-red-10);
         display: flex;
         align-items: center;
@@ -178,7 +184,6 @@
         padding-block: 5%;
         justify-content: center;
         border-radius: rem(10);
-        margin-top: 2%;
         transition: opacity var(--transition-duration) ease;
 
         &:hover {

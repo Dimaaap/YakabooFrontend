@@ -1,4 +1,4 @@
-import { BoardGamesFilters, BoardGamesHeader, GamesContainer } from "../../../components/board_games";
+import { BoardGamesFilters, BoardGamesHeader, DescriptionText, GamesContainer } from "../../../components/board_games";
 
 export default function BoardGamesPage() {
     return (
@@ -8,6 +8,7 @@ export default function BoardGamesPage() {
                 <BoardGamesFilters />
                 <GamesContainer />
             </div>
+            <DescriptionText />
         </div>
     )
 }

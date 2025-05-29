@@ -34,12 +34,13 @@
         grid-template-columns: repeat(6, 1fr);
         column-gap: rem(20);
         position: relative;
+        overflow: visible;
     }
 
     &__pagination {
         display: flex;
         flex-direction: column;
-        gap: rem(15);
+        gap: rem(30);
     }
 
     &__show-more {
@@ -58,5 +59,56 @@
         &:hover {
             border-color: var(--color-gray-50);
         }
+    }
+
+    &__pagination-btns {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__pagination-btn {
+        &.arrow-pagination {
+            padding-block: 1%;
+            padding-inline: 2.5%;
+            border-radius: rem(20);
+            border: rem(1) solid transparent;
+
+            &:hover {
+                border-color: var(--color-gray-30);
+            }
+        }
+
+        &.numeric-pagination {
+            font-size: rem(14);
+            color: var(--color-gray-30);
+            font-weight: 500;
+            background-color: transparent;
+            border: rem(1) solid var(--color-gray-50);
+            border-radius: rem(50);
+            width: rem(40);
+            height: rem(40);
+
+            &.is-active {
+                background-color: var(--color-gray-50);
+            }
+
+            &:hover {
+                border-color: var(--color-gray-30);
+            }
+        }
+
+        &.disabled {
+            &:hover {
+                cursor: not-allowed;
+                border-color: transparent;
+            }
+        }
+    }
+
+    &__pagination-nums {
+        display: flex;
+        align-items: center;
+        gap: rem(15);
     }
 }
