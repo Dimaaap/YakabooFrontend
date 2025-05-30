@@ -3,7 +3,7 @@ import React from 'react'
 export const DescriptionText = () => {
   return (
     <div className="category-description">
-        <p className="categoty-description__desc">
+        <p className="category-description__desc">
             Якщо ви хочете весело, цікаво і з користю провести вільний час у колі сім'ї, друзів або колег, 
             то вам дійсно варто купити настільні ігри. За таким заняттям в атмосфері веселощів 
             і живого спілкування час в компанії пролітає непомітно. Ви знайдете безліч популярних розважальних 
