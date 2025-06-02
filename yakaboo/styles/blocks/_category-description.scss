@@ -1,0 +1,22 @@
+@use "../helpers" as *;
+
+.category-description {
+    font-size: rem(14);
+    display: flex;
+    flex-direction: column;
+    gap: rem(10);
+    font-weight: 500;
+    color: var(--color-gray-30);
+
+    &__title {
+        font-weight: 700;
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: rem(7);
+        list-style: disc;
+        padding-left: rem(30);
+    }
+}

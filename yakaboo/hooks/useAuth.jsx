@@ -11,6 +11,7 @@ export const useAuth = () => {
 
     const refreshAccessToken = async () => {
         const refreshToken = getCookie("refresh_token");
+        console.log(refreshToken)
 
         if(!refreshToken){
             localStorage.setItem("is_auth", "false")

@@ -18,7 +18,7 @@ export const UserLoginModal = ({ afterClose = null }) => {
     const [isButtonDisabled, setIsButtonDisabled] = useState(false)
     const [sendgingLoading, setSendingLoading] = useState(false)
   
-    const {register, handleSubmit, formState: {errors}, getValues} = useForm();
+    const {register, handleSubmit, formState: {errors}, getValues, setError} = useForm();
 
     const REG_EMAIL_VALIDATOR = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
     const REG_EMAIL_FAILED_MESSAGE = "Некоректний email"
@@ -138,8 +138,16 @@ export const UserLoginModal = ({ afterClose = null }) => {
 
             if(!response.ok){
                 const errorData = await response.json();
-                setServerError(errorData.detail || "Невідома помилка")
-                throw new Error(`HTTP Error! Status: ${response.status}`)
+                if(response.status === 401){
+                    setError("password", {
+                        type: "manual",
+                        message: "Неправильний пароль"
+                    })
+                    setServerError(null)
+                } else {
+                    setServerError(errorData.detail || "Невідома помилка")   
+                    throw new Error(`HTTP Error! Status: ${response.status}`) 
+                }
             } else {
                 const result = await response.json();
                 const access_token = result.access_token;

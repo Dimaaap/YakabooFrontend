@@ -1,72 +1,50 @@
 "use client"
 
 import { useEffect } from "react"
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"
+import { deleteCookie, getCookie } from "../../../../utils"
+import Endpoints from "../../../../endpoints"
+import { useRedirectAfterLogoutStore } from "../../../../states"
 
-import Image from "next/image";
-
-import { useProtectedPage } from "../../../../hooks"
-import { useRedirectAfterLogoutStore } from "../../../../states";
-import { deleteCookie, getCookie } from "../../../../utils";
-import Endpoints from "../../../../endpoints";
-import { UserLoginModal } from "../../../../components/modals/UserLoginModal";
 
 export default function MyAccountLogout() {
-
-    const { isAuthenticated, loading, handleCloseModal } = useProtectedPage();
-    const { setIsRedirectAfterLogout } = useRedirectAfterLogoutStore();
-    
     const router = useRouter()
 
-    const logoutUser = async() => {
-        const refreshToken = getCookie("refresh_token");
-
-        if(refreshToken){
-            try {
-                const response = await fetch(Endpoints.USER_LOGOUT, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${refreshToken}`
-                    }
-                })
-
-                if(response.ok){
-                    const cookiesForDelete = [
-                        "access_token", "refresh_token", "token_type", 
-                        "email", "phone_number", "first_name", "last_name",
-                        "birth_date"
-                    ]
-
-                    cookiesForDelete.forEach((cookie) => {
-                        deleteCookie(cookie)
-                    })
-                    setIsRedirectAfterLogout(true)
-                    router.push('/')
-                }
-            } catch(err){
-                console.error(err)
-            }
-        }
-    }
+    const { setIsRedirectAfterLogout } = useRedirectAfterLogoutStore();
 
     useEffect(() => {
-        if(isAuthenticated){
-            logoutUser();
+        const logoutUser = async() => {
+            const refreshToken = getCookie("refresh_token")
+
+            if(refreshToken){
+                try {
+                    await fetch(Endpoints.USER_LOGOUT, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type":"application/json",
+                            Authorization: `Bearer ${refreshToken}`
+                        }
+                    })
+                } catch (error){
+                    console.warn("Logout request failed. Proceeding anyway.")
+                }
+            }
+
+            [
+                "access_token", "refresh_token", "token_type",
+                "email", "phone_number", "first_name", "last_name",
+                "birth_date", "is_login"
+            ].forEach(deleteCookie);
+
+            localStorage.setItem("is_auth", "false");
+            localStorage.removeItem("auth_expires");
+
+            setIsRedirectAfterLogout(true);
+            router.push("/")
         }
-    }, [isAuthenticated])
 
-    if (loading) {
-        return <Image src="/icons/spinner.svg" width="20" height="20" alt="" className="animate-spin" />
-    }
+        logoutUser()
+    }, [router, setIsRedirectAfterLogout])
 
-    return(
-        <>
-             {!isAuthenticated ? (
-                <UserLoginModal afterClose={handleCloseModal} />
-            ) : (
-                <></>
-            )}
-        </>
-    )
+    return null;
 }

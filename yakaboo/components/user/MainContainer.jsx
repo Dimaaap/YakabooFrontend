@@ -11,6 +11,8 @@ import Endpoints from '../../endpoints';
 export const MainContainer = () => {
 
     const [dataToUpdate, setDataToUpdate] = useState({})
+    const [showPassword, setShowPassword] = useState(false);
+    const [newPasswordShow, setNewPasswordShow] = useState(false);
     const [visibleForms, setVisibleForms] = useState([])
     const [showFlashMessage, setShowFlashMessage] = useState(false)
     const [passwordFormError, setPasswordFormError] = useState(null)
@@ -30,6 +32,22 @@ export const MainContainer = () => {
         checkUserSubscription();
     }, [userSubscribed])
 
+    const toggleShowPassword = () => {
+        if(showPassword) {
+            setShowPassword(false)
+        } else {
+            setShowPassword(true)
+        }
+    }
+
+    const toggleNewPasswordShow = () => {
+        if(newPasswordShow){
+            setNewPasswordShow(false)
+        } else {
+            setNewPasswordShow(true)
+        }
+    }
+
     const checkUserSubscription = async () => {
         try {
             const response = await fetch(`http://127.0.0.1:8003/subs/check/${getCookie("email")}`)
@@ -38,7 +56,7 @@ export const MainContainer = () => {
                 const res = await response.json();
                 setUserSubscribed(res.exists);
             } else {
-                console.log(response)
+                console.error(response.text)
             }
         } catch(error){
             console.error(error);
@@ -136,8 +154,6 @@ export const MainContainer = () => {
         }
 
         try {
-            console.log("here")
-            console.log(body)
             const response = await fetch(`http://localhost:8003/auth/user/update/${userEmail}`, {
                 method: "PATCH",
                 headers: {
@@ -148,7 +164,6 @@ export const MainContainer = () => {
 
             if(response.ok) {
                 const resp = await response.json();
-                console.log("response: ", resp)
                 Object.keys(resp).forEach(key => {
                     if(resp[key]){
                         setCookiesWithTimer(key, resp[key], 60 * 24 * 3)
@@ -334,7 +349,7 @@ export const MainContainer = () => {
                         <label htmlFor='old_password' className="user-data__field-label">
                             Старий пароль
                         </label>
-                        <input type="password" placeholder="Введіть старий пароль" 
+                        <input type={`${ showPassword ? "text": "password" }`} placeholder="Введіть старий пароль" 
                         autoComplete="false"
                         className="user-data__field-input"
                         name="old_password" id="old_password" 
@@ -347,6 +362,9 @@ export const MainContainer = () => {
                         </span> }
 
                         { passwordFormError && <span className="form__message-text">{ passwordFormError }</span> }
+                        <Image src={`${!showPassword ? "/icons/eye-close.svg": "/icons/eye.svg"}`} 
+                            alt="" width="16" height="16" className={`form__eye new-password-eye ${showPassword ? "open-eye" : ""}`} 
+                            onClick={toggleShowPassword} />
                     </div>
                     <div className="user-data__field-group">
                         <div className="user-data__text-block">
@@ -359,7 +377,7 @@ export const MainContainer = () => {
                             </span>
                         </div>
                         <div className="user-data__last-form-input">
-                            <input type="password" placeholder="Введіть новий пароль" autoComplete="false"
+                            <input type={`${ newPasswordShow ? "text": "password" }`} placeholder="Введіть новий пароль" autoComplete="false"
                             className="user-data__field-input" name="new_password" id="new_password" 
                             { ...register("new_password", {
                                 required: "Пароль обов'язковий",
@@ -372,6 +390,9 @@ export const MainContainer = () => {
                                     message: 'Пароль має містити хоча б одну цифру і літеру',
                                 }
                             }) }/>
+                            <Image src={`${!newPasswordShow ? "/icons/eye-close.svg": "/icons/eye.svg"}`} 
+                            alt="" width="16" height="16" className={`form__eye new-password-eye ${newPasswordShow ? "open-eye" : ""}`} 
+                            onClick={ toggleNewPasswordShow } />
                             <div className="user-data__btns-row">
                                 <button className="user-data__submit-btn" type="submit">
                                     Зберегти

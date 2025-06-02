@@ -1,10 +1,37 @@
-import React from 'react'
+"use client";
+
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { FilterForm } from '../shared'
+import { fetchData } from '../../utils';
+import Endpoints from '../../endpoints';
 
 export const BoardGamesFilters = () => {
+
+    const [boardGameAge, setBoardGameAge] = useState([])
+    const [boardGameBrands, setBoardGameBrands] = useState([])
+    const [boardGameSeries, setBoardGameSeries] = useState([])
+    const [boardGameLanguages, setBoardGameLanguages] = useState([])
+
+    useEffect(() => {
+        fetchData(Endpoints.ALL_BOARD_GAME_AGES, setBoardGameAge, "game_ages")
+    }, [])
+
+    useEffect(() => {
+        fetchData(Endpoints.ALL_BOARD_GAME_BRANDS, setBoardGameBrands, "game_brands")
+    }, [])
+
+    useEffect(() => {
+        fetchData(Endpoints.ALL_BOARD_GAME_SERIES, setBoardGameSeries, "game_series")
+    }, [])
+
+    useEffect(() => {
+        fetchData(Endpoints.ALL_BOARD_GAME_LANGUAGES, setBoardGameLanguages, "game_languages")
+    }, [])
+
   return (
     <div className="filters games-filters">
+        { console.log(boardGameAge) }
 
         <FilterForm 
         fields={["Знижка", "Хіти продажу", "Національний кешбек", "Зимова єПідтримка", 
@@ -13,14 +40,13 @@ export const BoardGamesFilters = () => {
         formTitle="Фільтри"
         />
 
-        <FilterForm 
-        fields={["Підліткам", "Від 9 до 12 років", "Від 6 до 8 років", "Від 3 до 5 років", 
-        "Батькам", "До 2-х років"
-        ]}
-        formTitle="Вік"
-        />
+        { boardGameAge.length > 0 && <FilterForm 
+            fields={ boardGameAge.map(item => item.age) }
+            formTitle={"Вік"}
+        /> }
 
-        <form className="filters__form">
+        { boardGameBrands.length > 0 && (
+            <form className="filters__form">
                 <p className="filters__form-title">
                     Бренд
                 </p>
@@ -29,65 +55,41 @@ export const BoardGamesFilters = () => {
                     placeholder="Пошук бренду"/> 
                     <Image src="/icons/search.svg" alt="" width="17" height="17" />   
                 </div>
+
+                { boardGameBrands.map((brand, index) => (
+                    <div className="filters__form-field" key={ index }>
+                        <label className="filters__form-label custom-checkbox">
+                            <input type="checkbox" className="filters__form-checkbox" />
+                            <span className="filters__form-custom-box"></span>
+                            { brand.title }
+                        </label>
+                    </div>
+                )) }
                 
-                <div className="filters__form-field">
-                    <label className="filters__form-label custom-checkbox">
-                    <input type="checkbox" className="filters__form-checkbox" />
-                    <span className="filters__form-custom-box"></span>
-                        Winning Moves
-                    </label>
-                </div>
-                <div className="filters__form-field">
-                    <label className="filters__form-label custom-checkbox">
-                    <input type="checkbox" className="filters__form-checkbox" />
-                    <span className="filters__form-custom-box"></span>
-                        Djeco
-                    </label>
-                </div>
-                <div className="filters__form-field">
-                    <label className="filters__form-label custom-checkbox">
-                    <input type="checkbox" className="filters__form-checkbox" />
-                    <span className="filters__form-custom-box"></span>
-                        Ravensburger
-                    </label>
-                </div>
-                <div className="filters__form-field">
-                    <label className="filters__form-label custom-checkbox">
-                    <input type="checkbox" className="filters__form-checkbox" />
-                    <span className="filters__form-custom-box"></span>
-                        Strateg
-                    </label>
-                </div>
-                <div className="filters__form-field">
-                    <label className="filters__form-label custom-checkbox">
-                    <input type="checkbox" className="filters__form-checkbox" />
-                    <span className="filters__form-custom-box"></span>
-                        Energy Plus
-                    </label>
-                </div>
                 <button className="filters__show-all">
                     Показати всі 
                 <Image src="/icons/arrow-left.svg" alt="" 
                 width="15" height="15" />
             </button>
         </form>
+        ) }
 
-        <FilterForm 
-        fields={["Waddingtons No.1", "Чарівний світ", "MemoBox", "Top Trump Quiz", "FunBox",
-        "Guess Who", "National Geographic dinosaur 3D puzzle", "Create & Play", "Розумні ігри", 
-        "Одягалка Fashion Look", "TV Series Classic Board Game", "Розкажи історію", "Hello Kitty",
-        "Warhammer 40,000", "3D Animals", "Monopoly", "Game of Thrones"
-        ]}
-        formTitle="Серія іграшок"
-        isScroll={ true }
+        { boardGameSeries.length > 0 && (
+            <FilterForm 
+            fields={ boardGameSeries.map(item => item.title) }
+            formTitle="Серія іграшок"
+            isScroll={ true }
         /> 
+        ) }
 
-        <FilterForm 
-        fields={["Українська", "Російська", "Англійська", "Французька", "Німецька", 
-        "Чеська", "Словацька", "Іспанська", "Румунська", "Польська", "Угорська"]}
-        formTitle="Мова"
-        isScroll={ true }
-        />
+
+        { boardGameLanguages.length > 0 && (
+            <FilterForm fields={ boardGameLanguages } 
+            formTitle="Мова"
+            isScroll={ true }
+            />
+        ) }
+
 
         <FilterForm 
         fields={["Товари в наявності", "Готові до відправки"]}

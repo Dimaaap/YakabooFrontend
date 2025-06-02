@@ -14,6 +14,10 @@ const Endpoints = {
     CREATE_WISHLIST: "http://localhost:8003/wishlist/create",
     CHANGE_PASSWORD_WITH_EMAIL: "http://localhost:8003/auth/user/change-password-with-email",
     USER_LOGOUT: "http://localhost:8003/auth/jwt/logout",
+    ALL_BOARD_GAME_AGES: "http://localhost:8003/game-ages/all",
+    ALL_BOARD_GAME_BRANDS: "http://localhost:8003/game-brands/all",
+    ALL_BOARD_GAME_SERIES: "http://localhost:8003/game-series/all",
+    ALL_BOARD_GAME_LANGUAGES: 'http://localhost:8003/game-ages/languages/all'
 }
 
 export default Endpoints;
