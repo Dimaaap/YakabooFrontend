@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { deleteCookie, getCookie } from "../../../../utils"
+import { CookiesWorker } from "../../../../services"
 import Endpoints from "../../../../endpoints"
 import { useRedirectAfterLogoutStore } from "../../../../states"
 
@@ -14,7 +14,7 @@ export default function MyAccountLogout() {
 
     useEffect(() => {
         const logoutUser = async() => {
-            const refreshToken = getCookie("refresh_token")
+            const refreshToken = CookiesWorker.get("refresh_token")
 
             if(refreshToken){
                 try {
@@ -34,7 +34,7 @@ export default function MyAccountLogout() {
                 "access_token", "refresh_token", "token_type",
                 "email", "phone_number", "first_name", "last_name",
                 "birth_date", "is_login"
-            ].forEach(deleteCookie);
+            ].forEach(CookiesWorker.delete);
 
             localStorage.setItem("is_auth", "false");
             localStorage.removeItem("auth_expires");

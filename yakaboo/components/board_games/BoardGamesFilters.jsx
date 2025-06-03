@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { FilterForm } from '../shared'
-import { fetchData } from '../../utils';
+import { fetchData } from '../../services';
 import Endpoints from '../../endpoints';
 
 export const BoardGamesFilters = () => {

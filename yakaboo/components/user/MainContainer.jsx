@@ -1,131 +1,48 @@
 "use client"
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useForm } from "react-hook-form"
 
 import Image from "next/image";
-import { dateFormat, getCookie, getUniqueErrorField, getUserFullName, setCookies, setCookiesWithTimer } from '../../utils';
+import { useUserData } from '../../hooks';
+import { changeUserPassword, updateUserData } from '../../services/user.service';
+import { DateTime } from '../../services';
+import { getUniqueErrorField, getUserFullName } from '../../utils';
+import { CookiesWorker } from '../../services/cookies.service';
 import { FlashMessage, NoneSpan } from '../shared';
-import Endpoints from '../../endpoints';
 
 export const MainContainer = () => {
 
-    const [dataToUpdate, setDataToUpdate] = useState({})
+    const { userData, updateFieldValue, getDataToUpdate } = useUserData();
+
     const [showPassword, setShowPassword] = useState(false);
     const [newPasswordShow, setNewPasswordShow] = useState(false);
     const [visibleForms, setVisibleForms] = useState([])
     const [showFlashMessage, setShowFlashMessage] = useState(false)
     const [passwordFormError, setPasswordFormError] = useState(null)
-    const [userSubscribed, setUserSubscribed] = useState(false);
     const [uniqueError, setUniqueError] = useState({email: "", phone_number: ""})
-    const [userData, setUserData] = useState({
-        first_name: getCookie("first_name"),
-        last_name: getCookie("last_name"),
-        email: getCookie("email"),
-        phone_number: getCookie("phone_number"),
-        birth_date: getCookie("birth_date") || ""
-    })
+    
+    const {register, handleSubmit, formState: { errors }} = useForm();
 
-    const {register, handleSubmit, watch, formState: { errors }} = useForm();
- 
-    useEffect(() => {
-        checkUserSubscription();
-    }, [userSubscribed])
+    const THREE_DAYS = 60 * 24 * 3;
+    const PHONE_EXISTS_MSG = "Користувач з таким номером телефону вже зареєстрований"
+    const EMAIL_EXISTS_MSG = "Користувач з таким email уже зареєстрований"
+    const dateTime = new DateTime()
 
-    const toggleShowPassword = () => {
-        if(showPassword) {
-            setShowPassword(false)
-        } else {
-            setShowPassword(true)
-        }
-    }
-
-    const toggleNewPasswordShow = () => {
-        if(newPasswordShow){
-            setNewPasswordShow(false)
-        } else {
-            setNewPasswordShow(true)
-        }
-    }
-
-    const checkUserSubscription = async () => {
-        try {
-            const response = await fetch(`http://127.0.0.1:8003/subs/check/${getCookie("email")}`)
-
-            if(response.ok){
-                const res = await response.json();
-                setUserSubscribed(res.exists);
-            } else {
-                console.error(response.text)
-            }
-        } catch(error){
-            console.error(error);
-        }
-    }
-
-    const openForm = formId => {
-        setVisibleForms([...visibleForms, formId])
-    }
-
-    const closeForm = formId => {
-        setVisibleForms(visibleForms.filter(id => id !== formId))
-    }
-
-    const updateFieldValue = (e, fieldTitle) => {
-        let newValue = e.target.value;
-
-        if(fieldTitle === "phone_number") {
-            newValue = newValue.slice(1)
-        }
-
-        setUserData(prevState => ({
-            ...prevState,
-            [fieldTitle]: newValue
-        }))
-    }
-
-    const formDataToUpdate = () => {
-        const newDataToUpdate = {};
-
-        Object.keys(userData).forEach(field => {
-            const currentValue = userData[field];
-            const cookieValue = getCookie(field);
-
-            if(currentValue !== cookieValue){
-                newDataToUpdate[field] = currentValue
-            }
-        })
-
-        setDataToUpdate(newDataToUpdate);
-    }
 
     const handleChangePasswordForm = async (data) => {
-        const requestBody = {
-            "user_email": getCookie("email"),
-            "current_password": data.old_password,
-            "new_password": data.new_password
-        }
 
         try {
-            const response = await fetch(Endpoints.USER_CHANGE_PASSWORD, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(requestBody)
-            })
-
+            const response = await changeUserPassword(data)
             if(response.ok){
-                const resp = await response.json();
                 setShowFlashMessage(true);
                 closeForm(4);
                 setPasswordFormError(null);
             } else {
-                if(response.status === 401){
-                    setPasswordFormError("Ви ввели неправильний пароль")
-                } else {
-                    setPasswordFormError("Помилка сервера")
-                }
+                setPasswordFormError(response.status === 401 
+                    ? "Ви ввели неправильний пароль"
+                    : "Помилка сервера"
+                )
             }
         } catch(err){
             console.error(err)
@@ -134,57 +51,34 @@ export const MainContainer = () => {
 
     const handleSaveChangesButton = async(e, formId) => {
         e.preventDefault();
-        const userEmail = getCookie("email")
-        formDataToUpdate()
-
-        const newDataToUpdate = {};
-
-        Object.keys(userData).forEach(field => {
-            const currentValue = userData[field];
-            const cookieValue = getCookie(field) || "";
-
-            if(currentValue !== cookieValue){
-                newDataToUpdate[field] = currentValue;
-            }
-        })
+        const userEmail = CookiesWorker.get("email")
+        const updates = getDataToUpdate()
 
         const body = {
-            "phone_number": getCookie("phone_number"),
-            ...newDataToUpdate
+            "phone_number": CookiesWorker.get("phone_number"),
+            ...updates
         }
 
         try {
-            const response = await fetch(`http://localhost:8003/auth/user/update/${userEmail}`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(body)
-            })
+            const response = await updateUserData(body, userEmail)
+            const responseData = await response.json();
 
             if(response.ok) {
-                const resp = await response.json();
-                Object.keys(resp).forEach(key => {
-                    if(resp[key]){
-                        setCookiesWithTimer(key, resp[key], 60 * 24 * 3)
-                    }
-                })
-
+                CookiesWorker.saveCookies(responseData);
                 setShowFlashMessage(true)
                 closeForm(formId)
                 setUniqueError({phone_number: "", email: ""})
             } else {
-                const message = await response.json();
                 const errorField = getUniqueErrorField(message.detail);
                 if(errorField === "phone_number"){
                     setUniqueError(prevState => ({
                         ...prevState,
-                        phone_number: "Користувач з таким номером телефону вже зареєстрований"
+                        phone_number: PHONE_EXISTS_MSG
                     }))
                 } else {
                     setUniqueError(prevState => ({
                         ...prevState,
-                        email: "Користувач з таким email уже зареєстрований"
+                        email: EMAIL_EXISTS_MSG
                     }))
                 }
             }
@@ -192,6 +86,15 @@ export const MainContainer = () => {
             console.error(error)
         }
     }
+
+
+    const toggle = setter => setter(prev => !prev);
+
+    const toggleShowPassword = () => toggle(setShowPassword)
+    const toggleNewPasswordShow = () => toggle(setNewPasswordShow)
+
+    const openForm = formId => setVisibleForms([...visibleForms, formId])
+    const closeForm = formId => setVisibleForms(visibleForms.filter(id => id !== formId))
 
   return (
     <div className="user-data">
@@ -255,7 +158,7 @@ export const MainContainer = () => {
                         Електронна пошта
                     </span>
                     <p className="user-data__user-info">
-                        { getCookie("email") }
+                        { CookiesWorker.get("email") }
                     </p>
                 </div>
                 <button className="user-data__change" type="button"
@@ -295,7 +198,7 @@ export const MainContainer = () => {
                         Номер телефону
                     </span>
                     <p className="user-data__user-info">
-                        +{ getCookie("phone_number") }
+                        +{ CookiesWorker.get("phone_number") }
                     </p>
                 </div>
                 <button className="user-data__change" type="button"
@@ -418,12 +321,12 @@ export const MainContainer = () => {
                         Дата народження
                     </span>
                     <p className="user-data__user-info">
-                        { dateFormat(getCookie("birth_date")) }
+                        { dateTime.dateFormat(CookiesWorker.get("birth_date")) }
                     </p>
                 </div>
                 <button className="user-data__change" type="button"
                 onClick={() => openForm(5)}>
-                    { getCookie("birth_date") ? "Змінити": "Додати" }
+                    { CookiesWorker.get("birth_date") ? "Змінити": "Додати" }
                 </button>
             </div>    
         ) : (

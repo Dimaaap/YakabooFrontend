@@ -5,7 +5,8 @@ import Image from "next/image"
 
 import { CreateWishListModal, FlashMessage, WishlistSidebar, WishlistsMainContainer } from "../../../../components";
 import { useProfileSettingsModalStore, useWishListModalStore } from "../../../../states";
-import { fetchData, getCookie } from "../../../../utils";
+import { fetchData } from "../../../../services";
+import { CookiesWorker } from "../../../../services";
 import { useProtectedPage } from "../../../../hooks";
 import { UserLoginModal } from "../../../../components/modals/UserLoginModal";
 import { ProfileSettingsModal } from "../../../../components/modals/ProfileSettingsModal";
@@ -48,7 +49,7 @@ export default function WishListPage() {
     }
 
     useEffect(() => {
-        const userEmail = getCookie("email")
+        const userEmail = CookiesWorker.get("email")
         fetchData(`http://localhost:8003/wishlist/${userEmail}`, 
             setWishlists, 
             `${userEmail}_wishlists`

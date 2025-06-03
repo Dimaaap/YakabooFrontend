@@ -2,8 +2,9 @@
 
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+
 import { useWishListModalStore } from '../../states';
-import { getCookie } from '../../utils';
+import { CookiesWorker } from '../../services';
 import Endpoints from '../../endpoints';
 import { FlashMessage } from '../shared';
 
@@ -11,13 +12,13 @@ import Image from 'next/image';
 
 export const CreateWishListModal = ({ addWishlist }) => {
   
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const { isWishlistModalOpen, setIsWishlistModalOpen } = useWishListModalStore();
 
   const [serverError, setServerError] = useState(null)
 
   const onSubmit = async (data) => {
-    const userEmail = getCookie("email");
+    const userEmail = CookiesWorker.get("email");
 
     if(userEmail){
       data.email = userEmail

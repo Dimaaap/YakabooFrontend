@@ -6,7 +6,8 @@ import { useUserLoginModalStore } from '../../states';
 
 import { useForm } from "react-hook-form"
 import Endpoints from '../../endpoints';
-import { setCookiesWithTimer, validateEmailRegex } from '../../utils';
+import { validateEmailRegex } from '../../utils';
+import { CookiesWorker } from '../../services';
 
 export const UserLoginModal = ({ afterClose = null }) => {
 
@@ -152,13 +153,13 @@ export const UserLoginModal = ({ afterClose = null }) => {
                 const result = await response.json();
                 const access_token = result.access_token;
                 const refresh_token = result.refresh_token;
-                setCookiesWithTimer("access_token", access_token, 30)
-                setCookiesWithTimer("refresh_token", refresh_token, 60 * 24 * 7)
-                setCookiesWithTimer("token_type", result.token_type)
-                setCookiesWithTimer("email", result.user.email)
-                setCookiesWithTimer("first_name", result.user.first_name)
-                setCookiesWithTimer("last_name", result.user.last_name)
-                setCookiesWithTimer("phone_number", result.user.phone_number)
+                CookiesWorker.setWithTimer("access_token", access_token, 30)
+                CookiesWorker.setWithTimer("refresh_token", refresh_token, 60 * 24 * 7)
+                CookiesWorker.setWithTimer("token_type", result.token_type, 60 * 24 * 7)
+                CookiesWorker.setWithTimer("email", result.user.email, 60 * 24 * 7)
+                CookiesWorker.setWithTimer("first_name", result.user.first_name, 60 * 24 * 7)
+                CookiesWorker.setWithTimer("last_name", result.user.last_name, 60 * 24 * 7)
+                CookiesWorker.setWithTimer("phone_number", result.user.phone_number, 60 * 24 * 7)
                 setServerError(null)
                 setIsLoginModalOpen(false);
             }

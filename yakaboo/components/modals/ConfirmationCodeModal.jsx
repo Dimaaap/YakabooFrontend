@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useConfirmationCodeStore } from '../../states'
 import Image from "next/image";
 
-import { getCookie, setCookiesWithTimer } from '../../utils'
+import { CookiesWorker } from '../../services';
 import Endpoints from '../../endpoints'
 import { FlashMessage } from '../shared'
 
@@ -47,7 +47,7 @@ export const ConfirmationCodeModal = () => {
 
     const handleSubmit = async() => {
         const verificationCode = code.join("");
-        const phoneNumber = getCookie("phone_number")
+        const phoneNumber = CookiesWorker.get("phone_number")
 
         try {
             setLoading(true);
@@ -64,10 +64,10 @@ export const ConfirmationCodeModal = () => {
 
             if(response.ok){
                 const data = await response.json();
-                setCookiesWithTimer("access_token", data.access_token, 30)
-                setCookiesWithTimer("refresh_token", data.refresh_token, ONE_WEEK)
-                setCookiesWithTimer("token_type", data.token_type, ONE_WEEK)
-                setIsConfirmationModalOpen(false);
+                CookiesWorker.setWithTimer("access_token", data.access_token, 30)
+                CookiesWorker.setWithTimer("refresh_token", data.refresh_token, ONE_WEEK)
+                CookiesWorker.setWithTimer("token_type", data.token_type, ONE_WEEK)
+                CookiesWorker.setWithTimer(false);
                 setMessage("Ви успішно авторизувались")
             } else {
                 const errorData = await response.json()
@@ -108,7 +108,7 @@ export const ConfirmationCodeModal = () => {
     }, [isConfirmationModalOpen])
     
 
-    const phoneNumber = getCookie("phone_number")
+    const phoneNumber = CookiesWorker.get("phone_number")
 
   return (
     <div className="menu code-modal" onClick={ handleBackdropClick }>

@@ -1,13 +1,13 @@
 "use client"
 
 import React, { useState, useEffect } from 'react'
-import { getTimeLeft } from '../../utils'
+import { DateTime } from '../../services';
 
 export const PromoTimer = ({ endDate }) => {
 
     const ONE_MINUTE_IN_MS = 60000;
 
-    const [timeLeft, setTimeLeft] = useState(getTimeLeft(endDate));
+    const [timeLeft, setTimeLeft] = useState(TimeLeft.getTimeLeft(endDate));
 
 
     useEffect(() => {

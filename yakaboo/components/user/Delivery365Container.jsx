@@ -1,6 +1,7 @@
 import React from 'react'
-import { NoneSpan } from '../shared'
 import Image from 'next/image'
+
+import { NoneSpan } from '../shared'
 
 export const Delivery365Container = () => {
   return (

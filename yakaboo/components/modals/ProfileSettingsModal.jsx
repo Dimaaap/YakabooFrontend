@@ -4,7 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect } from 'react'
 import { useProfileSettingsModalStore } from '../../states';
-import { getCookie, getUserFullName } from '../../utils';
+import { getUserFullName } from '../../utils';
+import { CookiesWorker } from '../../services';
 
 export const ProfileSettingsModal = () => {
 
@@ -55,7 +56,7 @@ export const ProfileSettingsModal = () => {
                                 { getUserFullName() }
                             </p>
                             <span className="settings-header__user_phone">
-                                +{ getCookie("phone_number") }
+                                +{ CookiesWorker.get("phone_number") }
                             </span>
                         </div>
                     </div>

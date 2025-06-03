@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 
 import Endpoints from '../../endpoints';
-import { fetchData } from '../../utils';
+import { fetchData } from '../../services';
 
 import Link from "next/link";
 

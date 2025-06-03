@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useBookCategoriesModalStore } from '../../states';
-import { fetchData } from '../../utils';
+import { fetchData } from '../../services';
 import Endpoints from '../../endpoints';
 import Image from 'next/image';
 import Link from 'next/link';

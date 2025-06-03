@@ -3,14 +3,14 @@
 import React, { useEffect, useState } from 'react'
 import Image from "next/image";
 import Link from 'next/link';
-import { useUserLoginModalStore, useConfirmationCodeStore } from '../../states';
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
-
 import PhoneInput from 'react-phone-input-2';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import 'react-phone-input-2/lib/high-res.css';
 import { useForm } from 'react-hook-form';
+
+import { useUserLoginModalStore, useConfirmationCodeStore } from '../../states';
 import Endpoints from '../../endpoints';
-import {  setCookiesWithTimer } from '../../utils';
+import { CookiesWorker } from '../../services';
 import { FlashMessage } from '../shared';
 
 export const UserRegisterModal = () => {
@@ -95,7 +95,7 @@ export const UserRegisterModal = () => {
                         "email": result.email
                     }
                 Object.entries(userData).forEach(([key, value]) => {
-                    setCookiesWithTimer(key, value, 4320)
+                    CookiesWorker.setWithTimer(key, value, 4320)
                 })
                 setServerError(null)
                 setIsRegisterModalOpen(false);

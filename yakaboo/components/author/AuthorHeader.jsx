@@ -1,7 +1,8 @@
 import React from 'react'
-import "../../styles/main.scss";
 import Image from 'next/image';
+
 import { AuthorFacts } from '../shared';
+import "../../styles/main.scss";
 
 export const AuthorHeader = () => {
   return (

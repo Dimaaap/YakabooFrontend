@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
-import { fetchData } from '../../utils'
+import { fetchData } from '../../services'
 import Endpoints from '../../endpoints'
 
 export const Footer = () => {

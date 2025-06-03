@@ -1,11 +1,11 @@
 import React from 'react'
-import { getCookie } from '../../utils'
+import { CookiesWorker } from '../../services'
 
 export const UserProfileButton = () => {
 
     const getUserFirstLetters = () => {
-        const firstName = getCookie("first_name")
-        const lastName = getCookie("last_name")
+        const firstName = CookiesWorker.get("first_name")
+        const lastName = CookiesWorker.get("last_name")
 
         let firstLetters = "";
 
