@@ -6,6 +6,7 @@ import { useUpdateWishlistModalStore } from '../../states';
 import { FlashMessage } from '../shared';
 
 import Image from "next/image";
+import { handleBackdropClick } from '../../services';
 
 export const UpdateWishlistModal = ({ wishlist, updateWishlistTitle }) => {
     
@@ -43,15 +44,9 @@ export const UpdateWishlistModal = ({ wishlist, updateWishlistTitle }) => {
             setServerError(err)
         }
     }
-
-    const handleBackdropClick = (e) => {
-        if (e.target === e.currentTarget){
-            setIsUpdateWishlistModalOpen(false);
-        }
-    }
     
     return (
-        <div className="menu login-modal wishlist-modal" onClick={ handleBackdropClick }>
+        <div className="menu login-modal wishlist-modal" onClick={ e => handleBackdropClick(e, setIsUpdateWishlistModalOpen) }>
             { serverError && <FlashMessage message={ serverError } onClose={() => setServerError(null)} /> }
             <div className="login-modal__content wishlist-modal__content">
                 <button className="menu__close login-modal__close" type="button" 

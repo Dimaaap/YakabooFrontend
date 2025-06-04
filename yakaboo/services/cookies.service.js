@@ -7,7 +7,7 @@ export class CookiesWorker {
     }
 
     static delete(name){
-        if(this.get(name)){
+        if(CookiesWorker.get(name)){
             document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;`;
         }
     }
@@ -32,7 +32,7 @@ export class CookiesWorker {
     static saveCookies(data){
         Object.entries(data).forEach(([key, value]) => {
             if(value){
-                this.setWithTimer(key, value, THREE_DAYS)
+                CookiesWorker.setWithTimer(key, value, THREE_DAYS)
             }
         })
     }

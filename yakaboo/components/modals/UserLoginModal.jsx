@@ -1,15 +1,18 @@
 "use client";
 
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useUserLoginModalStore } from '../../states';
 
 import { useForm } from "react-hook-form"
 import Endpoints from '../../endpoints';
-import { validateEmailRegex } from '../../utils';
-import { CookiesWorker } from '../../services';
+import { CookiesWorker, FormValidator, handleBackdropClick } from '../../services';
+import { useBlockBodyScroll } from '../../hooks';
 
 export const UserLoginModal = ({ afterClose = null }) => {
+
+    const TWO_MINUTES = 2 * 60 * 1000;
+    const ONE_WEEK = 60 * 24 * 7
 
     const { isLoginModalOpen, setIsLoginModalOpen, setIsRegisterModalOpen } = useUserLoginModalStore();
     const [showPassword, setShowPassword] = useState(false);
@@ -21,85 +24,15 @@ export const UserLoginModal = ({ afterClose = null }) => {
   
     const {register, handleSubmit, formState: {errors}, getValues, setError} = useForm();
 
-    const REG_EMAIL_VALIDATOR = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
-    const REG_EMAIL_FAILED_MESSAGE = "Некоректний email"
-    const REG_PASSWORD_VALIDATOR = /^(?=.*\d)(?=.*[a-zA-Zа-яА-Я]).{8,}$/
-    const REG_PASSWORD_FAILED_MESSAGE = "Пароль має містити хоча б одну цифру і літеру"
-    const TWO_MINUTES = 2 * 60 * 1000;
+    const formValidator = new FormValidator();
+    useBlockBodyScroll(isLoginModalOpen)
 
-
-    const handleBackdropClick = (e) => {
-        if (e.target === e.currentTarget){
-            setIsLoginModalOpen(false);
-        }
-    }
-
-    useEffect(() => {
-        if(isLoginModalOpen) {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "";
-        }
-    
-        return() => {
-            document.body.style.overflow = ""
-        }
-    }, [isLoginModalOpen])
 
     const toggleShowPassword = () => {
         if(showPassword) {
             setShowPassword(false)
         } else {
             setShowPassword(true)
-        }
-    }
-
-    const handleUserForgotPassword = async(event) => {
-        event.preventDefault()
-        setServerError(null)
-
-        const email = getValues("email")
-        console.log(email)
-
-        if(!email){
-            setEmailError("Це поле обов'язкове")
-        } else if(!validateEmailRegex(email)){
-            setEmailError("Неправильний формат email")
-        } else {
-            try {
-                setSendingLoading(true)
-                setEmailError(null)
-                const response = await fetch(Endpoints.CHANGE_PASSWORD_WITH_EMAIL, {
-                    method: "PATCH",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        user_email: email
-                    })
-                })
-
-                if(response.ok){
-                    const resp = await response.json();
-
-                    setInfoMessage(`Відправили вам оновлений пароль на email: ${email}`)
-
-                    setTimeout(() => {
-                        setInfoMessage(null)
-                    }, 10000)
-
-                    setIsButtonDisabled(true)
-                    setTimeout(() => setIsButtonDisabled(false), TWO_MINUTES)
-                } else {
-                    const error = await response.json();
-                    console.error(error);
-                    setServerError("Користувач з таким email не зареєстрований")
-                }
-            } catch(error){
-                setServerError("Користувач з таким email не зареєстрований")
-            } finally {
-                setSendingLoading(false)
-            }
         }
     }
 
@@ -121,6 +54,53 @@ export const UserLoginModal = ({ afterClose = null }) => {
         setIsLoginModalOpen(false);
         if(afterClose){
             afterClose()
+        }
+    }
+
+    const handleUserForgotPassword = async(event) => {
+        event.preventDefault()
+        setServerError(null)
+
+        const email = getValues("email")
+        console.log(email)
+
+        if(!email){
+            setEmailError("Це поле обов'язкове")
+        } else if(!formValidator.validateEmailRegex(email)){
+            setEmailError("Неправильний формат email")
+        } else {
+            try {
+                setSendingLoading(true)
+                setEmailError(null)
+                const response = await fetch(Endpoints.CHANGE_PASSWORD_WITH_EMAIL, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        user_email: email
+                    })
+                })
+
+                if(response.ok){
+                    setInfoMessage(`Відправили вам оновлений пароль на email: ${email}`)
+
+                    setTimeout(() => {
+                        setInfoMessage(null)
+                    }, 10000)
+
+                    setIsButtonDisabled(true)
+                    setTimeout(() => setIsButtonDisabled(false), TWO_MINUTES)
+                } else {
+                    const error = await response.json();
+                    console.error(error);
+                    setServerError("Користувач з таким email не зареєстрований")
+                }
+            } catch(error){
+                setServerError("Користувач з таким email не зареєстрований")
+            } finally {
+                setSendingLoading(false)
+            }
         }
     }
 
@@ -153,13 +133,46 @@ export const UserLoginModal = ({ afterClose = null }) => {
                 const result = await response.json();
                 const access_token = result.access_token;
                 const refresh_token = result.refresh_token;
-                CookiesWorker.setWithTimer("access_token", access_token, 30)
-                CookiesWorker.setWithTimer("refresh_token", refresh_token, 60 * 24 * 7)
-                CookiesWorker.setWithTimer("token_type", result.token_type, 60 * 24 * 7)
-                CookiesWorker.setWithTimer("email", result.user.email, 60 * 24 * 7)
-                CookiesWorker.setWithTimer("first_name", result.user.first_name, 60 * 24 * 7)
-                CookiesWorker.setWithTimer("last_name", result.user.last_name, 60 * 24 * 7)
-                CookiesWorker.setWithTimer("phone_number", result.user.phone_number, 60 * 24 * 7)
+                const dataForCookies = [
+                    {
+                        title: "access_token",
+                        value: access_token,
+                        time: 30
+                    },
+                    {
+                        title: "refresh_token",
+                        value: refresh_token,
+                        time: ONE_WEEK
+                    } ,
+                    {
+                        title: "token_type",
+                        value: result.token_type,
+                        time: ONE_WEEK
+                    },
+                    {
+                        title: "email",
+                        value: result.user.email,
+                        time: ONE_WEEK
+                    },
+                    {
+                        title: "first_name",
+                        value: result.user.first_name,
+                        time: ONE_WEEK
+                    },
+                    {
+                        title: "last_name",
+                        value: result.user.last_name,
+                        time: ONE_WEEK
+                    },
+                    {
+                        title: "phone_number",
+                        value: result.user.phone_number,
+                        time: ONE_WEEK
+                    }
+                ]
+                dataForCookies.map((data) => (
+                    CookiesWorker.setWithTimer(data.title, data.value, data.time)
+                ))
                 setServerError(null)
                 setIsLoginModalOpen(false);
             }
@@ -170,7 +183,7 @@ export const UserLoginModal = ({ afterClose = null }) => {
     }
 
   return (
-    <div className="menu login-modal" onClick={handleBackdropClick}>
+    <div className="menu login-modal" onClick={e => handleBackdropClick(e, setIsLoginModalOpen)}>
       <div className="login-modal__content">
         <button className="menu__close login-modal__close" type="button" onClick={() => setIsLoginModalOpen(false)}>
             <Image src="/icons/close-smaller.svg" alt="" width="22" height="22" onClick={ handleCloseModal } />
@@ -208,8 +221,8 @@ export const UserLoginModal = ({ afterClose = null }) => {
                 {...register("email", {
                     required: "Це поле обов'язкове",
                     pattern: {
-                        value: REG_EMAIL_VALIDATOR,
-                        message: REG_EMAIL_FAILED_MESSAGE
+                        value: formValidator.EMAIL_REGEX,
+                        message: formValidator.REG_EMAIL_FAILED_MESSAGE
                     }
                 })}/>
                 { errors.email && (
@@ -248,8 +261,8 @@ export const UserLoginModal = ({ afterClose = null }) => {
                             message: "Пароль повинен містити не менше 8 символів"
                         },
                         pattern: {
-                            value: REG_PASSWORD_VALIDATOR,
-                            message: REG_PASSWORD_FAILED_MESSAGE
+                            value: formValidator.REG_PASSWORD_VALIDATOR,
+                            message: formValidator.REG_PASSWORD_FAILED_MESSAGE
                         }
                     })}/>
 

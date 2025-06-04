@@ -1,27 +1,20 @@
 import React from 'react'
-import Image from 'next/image'
 import { useCartModalStore } from '../../states'
+import { handleBackdropClick } from '../../services'
+import { ModalCloseBtn } from '../shared'
 
 export const CartModal = () => {
 
   const { isCartModalOpen, setIsCartModalOpen } = useCartModalStore()
 
-  const handleBackdropClick = (e) => {
-    if(e.target === e.currentTarget){
-      setIsCartModalOpen(false);
-    }
-  }
-
   return (
-    <div className="menu" onClick={handleBackdropClick}>
+    <div className="menu" onClick={e => handleBackdropClick(e, setIsCartModalOpen)}>
       <div className={`menu__content cart-content ${isCartModalOpen ? 'active': ''}`}>
         <div className="menu__header cart-header">
             <p className="cart-header__title">
                 Кошик
             </p>
-            <button className="menu__close" type="button" onClick={() => setIsCartModalOpen(false)}>
-                <Image src="/icons/close-smaller.svg" alt="" width="20" height="20" />
-            </button>
+            <ModalCloseBtn clickHandler={() => setIsCartModalOpen(false)} />
         </div>
         <div className="menu__body cart-body">
             <div className="cart-body__text-container">

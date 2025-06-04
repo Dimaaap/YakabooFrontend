@@ -4,13 +4,15 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useConfirmationCodeStore } from '../../states'
 import Image from "next/image";
 
-import { CookiesWorker } from '../../services';
+import { CookiesWorker, handleBackdropClick } from '../../services';
 import Endpoints from '../../endpoints'
-import { FlashMessage } from '../shared'
+import { FlashMessage, ModalCloseBtn } from '../shared'
+import { useBlockBodyScroll } from '../../hooks';
 
 export const ConfirmationCodeModal = () => {
 
     const { isConfirmationModalOpen, setIsConfirmationModalOpen } = useConfirmationCodeStore();
+    useBlockBodyScroll(isConfirmationModalOpen)
 
     const [seconds, setSeconds] = useState(100);
     const [isDisabled, setIsDisabled] = useState(true);
@@ -30,12 +32,6 @@ export const ConfirmationCodeModal = () => {
 
         if(value && index < 5){
             inputRefs.current[index + 1].focus()
-        }
-    }
-
-    const handleBackdropClick = (e) => {
-        if (e.target === e.currentTarget){
-            setIsConfirmationModalOpen(false);
         }
     }
 
@@ -67,10 +63,9 @@ export const ConfirmationCodeModal = () => {
                 CookiesWorker.setWithTimer("access_token", data.access_token, 30)
                 CookiesWorker.setWithTimer("refresh_token", data.refresh_token, ONE_WEEK)
                 CookiesWorker.setWithTimer("token_type", data.token_type, ONE_WEEK)
-                CookiesWorker.setWithTimer(false);
+                CookiesWorker.set("is_auth", false);
                 setMessage("Ви успішно авторизувались")
             } else {
-                const errorData = await response.json()
                 setMessage("Неправильний код")
             }
         } catch(error){
@@ -93,30 +88,14 @@ export const ConfirmationCodeModal = () => {
 
         return () => clearInterval(timer);
     }, [seconds, isDisabled])
-
-
-    useEffect(() => {
-        if(isConfirmationModalOpen) {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "";
-        }
-        
-        return(() => {
-            document.body.style.overflow = ""
-        })
-    }, [isConfirmationModalOpen])
     
-
     const phoneNumber = CookiesWorker.get("phone_number")
 
   return (
-    <div className="menu code-modal" onClick={ handleBackdropClick }>
-         { message && <FlashMessage message={message} onClose={() => setMessage(null)} /> }
+    <div className="menu code-modal" onClick={ e => handleBackdropClick(e, setIsConfirmationModalOpen) }>
+        { message && <FlashMessage message={message} onClose={() => setMessage(null)} /> }
       <div className="code-modal__content">
-        <button className="menu__close code-modal__close" type="button" onClick={() => setIsConfirmationModalOpen(false)}>
-            <Image src="/icons/close-smaller.svg" alt="" width="22" height="22" />
-        </button>
+        <ModalCloseBtn clickHandler={() => setIsConfirmationModalOpen(false)} />
         <div className="code-modal__text-container">
             <p className="code-modal__main-info">
                 Введіть код підтвердження

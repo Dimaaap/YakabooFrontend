@@ -2,19 +2,14 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { useMenuModalStore } from '../../states'
+import { handleBackdropClick } from '../../services'
 
 export const MenuModal = () => {
 
-    const { isMenuModalOpen, setIsMenuModalOpen } = useMenuModalStore();
-
-    const handleBackdropClick = (e) => {
-        if (e.target === e.currentTarget){
-            setIsMenuModalOpen(false);
-        }
-    }
+  const { isMenuModalOpen, setIsMenuModalOpen } = useMenuModalStore();
 
   return (
-    <div className="menu" onClick={handleBackdropClick}>
+    <div className="menu" onClick={e => handleBackdropClick(e, setIsMenuModalOpen)}>
       <div className={`menu__content ${isMenuModalOpen ? 'active': ''}`}>
         <div className="menu__header">
             <Link href="/" className="menu__logo">

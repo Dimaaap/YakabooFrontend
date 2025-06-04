@@ -20,3 +20,4 @@ export { FlashMessageWithAgreement } from "./FlashMessageWithAgreement";
 export { OrdersSidebar } from "./OrdersSidebar";
 export { FilterForm } from "./FilterForm";
 export { ProductCard } from "./ProductCard";
+export { ModalCloseBtn } from "./ModalCloseBtn"

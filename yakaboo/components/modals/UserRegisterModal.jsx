@@ -1,17 +1,18 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Image from "next/image";
 import Link from 'next/link';
 import PhoneInput from 'react-phone-input-2';
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import 'react-phone-input-2/lib/high-res.css';
+
 import { useForm } from 'react-hook-form';
 
 import { useUserLoginModalStore, useConfirmationCodeStore } from '../../states';
 import Endpoints from '../../endpoints';
-import { CookiesWorker } from '../../services';
+import { CookiesWorker, FormValidator, handleBackdropClick } from '../../services';
 import { FlashMessage } from '../shared';
+import { useBlockBodyScroll } from '../../hooks';
 
 export const UserRegisterModal = () => {
 
@@ -22,29 +23,11 @@ export const UserRegisterModal = () => {
     const [serverError, setServerError] = useState(null);
     const [selectedCountry, setSelectedCountry] = useState("UA");
 
+    useBlockBodyScroll(isRegisterModalOpen)
+    let formValidator = new FormValidator()
+
     const {register, handleSubmit, formState: { errors }, setValue} = useForm();
 
-    const REG_NAME_VALIDATIOR = /^[A-Za-zА-Яа-яЇїІіЄєґҐ\-\'']+$/
-    const REG_FAILED_MESSAGE = "Використовуйте лише літери, апостроф та дефіс"
-    const REG_EMAIL_VALIDATOR = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
-    const REG_EMAIL_FAILED_MESSAGE = "Некоректний email"
-    const REG_PASSWORD_VALIDATOR = /^(?=.*\d)(?=.*[a-zA-Zа-яА-Я]).{8,}$/
-    const REG_PASSWORD_FAILED_MESSAGE = "Пароль має містити хоча б одну цифру і літеру"
-
-    const handleCountryChange = code => {
-        setSelectedCountry(code);
-    }
-
-    const handleBackdropClick = (e) => {
-        if (e.target === e.currentTarget){
-            setIsRegisterModalOpen(false);
-        }
-    }
-
-    const validatePhoneNumber = value => {
-        const phoneNumber = parsePhoneNumberFromString(value);
-        return phoneNumber && phoneNumber.isValid();
-    }
 
     const onSubmit = async data => {
         try {
@@ -109,21 +92,8 @@ export const UserRegisterModal = () => {
         }
     }
 
-
-    useEffect(() => {
-        if(isRegisterModalOpen) {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "";
-        }
-        
-        return(() => {
-            document.body.style.overflow = ""
-        })
-    }, [isRegisterModalOpen])
-
   return (
-    <div className="menu login-modal" onClick={handleBackdropClick}>
+    <div className="menu login-modal" onClick={e => handleBackdropClick(e, setIsRegisterModalOpen)}>
         { serverError && <FlashMessage message={ serverError } onClose={() => setServerError(null)} /> }
         <div className="login-modal__content register-content">
             <button className="menu__close login-modal__close" type="button" onClick={() => setIsRegisterModalOpen(false)}>
@@ -146,8 +116,8 @@ export const UserRegisterModal = () => {
                     {...register("first_name", {
                         required: "Це поле обов'язкове",
                         pattern: {
-                            value: REG_NAME_VALIDATIOR,
-                            message: REG_FAILED_MESSAGE
+                            value: formValidator.REG_NAME_VALIDATOR,
+                            message: formValidator.REG_NAME_FAILED_MESSAGE
                         }
                     })}/>
                     { errors.first_name && (
@@ -164,8 +134,8 @@ export const UserRegisterModal = () => {
                     {...register("last_name", {
                         required: "Це поле обов'язкове",
                         pattern: {
-                            value: REG_NAME_VALIDATIOR,
-                            message: REG_FAILED_MESSAGE
+                            value: formValidator.REG_NAME_VALIDATOR,
+                            message: formValidator.REG_NAME_FAILED_MESSAGE
                         }
                     })}/>
                     { errors.last_name && (
@@ -191,7 +161,7 @@ export const UserRegisterModal = () => {
                         />
                         <input type="hidden" {...register("phone_number", {
                             required: "Номер телефону обов'язковий",
-                            validate: validatePhoneNumber
+                            validate: formValidator.validatePhoneNumber
                         })} />
                     </div>
                     {errors.phone_number && (
@@ -207,8 +177,8 @@ export const UserRegisterModal = () => {
                     type="email" {...register("email", {
                         required: "Це поле обов'язкове",
                         pattern: {
-                            value: REG_EMAIL_VALIDATOR,
-                            message: REG_EMAIL_FAILED_MESSAGE
+                            value: formValidator.REG_NAME_VALIDATOR,
+                            message: formValidator.REG_NAME_FAILED_MESSAGE
                         }
                     })}/>
                     { errors.email && (
@@ -236,8 +206,8 @@ export const UserRegisterModal = () => {
                                     message: "Пароль повинен містити не менше 8 символів"
                                 },
                                 pattern: {
-                                    value: REG_PASSWORD_VALIDATOR,
-                                    message: REG_PASSWORD_FAILED_MESSAGE
+                                    value: formValidator.REG_PASSWORD_VALIDATOR,
+                                    message: formValidator.REG_PASSWORD_FAILED_MESSAGE
                                 }
                             })}
                         />    

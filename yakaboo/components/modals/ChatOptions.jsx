@@ -3,29 +3,36 @@ import Link from 'next/link'
 import React from 'react'
 
 export const ChatOptions = () => {
+
+  const chatOptions = [
+    {
+      imageSrc: "/icons/social/telegram.svg",
+      wrapper: ""
+    },
+    {
+      imageSrc: "/icons/social/viber.svg",
+      wrapper: "purple"
+    },
+    {
+      imageSrc: "/icons/social/mail.svg",
+      wrapper: ""
+    },
+    {
+      imageSrc: "/icons/social/phone.svg",
+      wrapper: "green"
+    }
+  ]
+
   return (
     <div className="chat-options">
       <div className="chat-options__wrapper">
-        <Link href="#" className="chat-options__link">
-            <span className="chat-options__icon-wrapper">
-                <Image src="/icons/social/telegram.svg" alt="" width="50" height="50" />
+        { chatOptions.map((option, index) => (
+          <Link href="#" className="chat-options__link" key={ index }>
+            <span className={`chat-options__icon-wrapper ${option.wrapper ? option.wrapper + "-wrapper": ""}`}>
+              <Image src={ option.imageSrc } alt="" width="50" height="50" />
             </span>
-        </Link>
-        <Link href="#" className="chat-options__link">
-            <span className="chat-options__icon-wrapper purple-wrapper">
-                <Image src="/icons/social/viber.svg" alt="" width="50" height="50" />
-            </span>
-        </Link>
-        <Link href="#" className="chat-options__link">
-            <span className="chat-options__icon-wrapper">
-                <Image src="/icons/social/mail.svg" alt="" width="50" height="50" />
-            </span>
-        </Link>
-        <Link href="#" className="chat-options__link">
-            <span className="chat-options__icon-wrapper green-wrapper">
-                <Image src="/icons/social/phone.svg" alt="" width="50" height="50" />
-            </span>
-        </Link>
+          </Link>
+        )) }
       </div>
     </div>
   )

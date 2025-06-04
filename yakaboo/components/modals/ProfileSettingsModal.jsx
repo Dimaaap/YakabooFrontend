@@ -1,42 +1,27 @@
 "use client";
 
+import React from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useEffect } from 'react'
+
 import { useProfileSettingsModalStore } from '../../states';
 import { getUserFullName } from '../../utils';
-import { CookiesWorker } from '../../services';
+import { CookiesWorker, handleBackdropClick } from '../../services';
+import { useBlockBodyScroll } from '../../hooks';
+import { linksContainer } from '../../links_container';
 
 export const ProfileSettingsModal = () => {
 
     const { isProfileSettingsModalOpen, setIsProfileSettingsModalOpen } = useProfileSettingsModalStore();
 
-    const handleBackdropClick = (e) => {
-        if(e.target === e.currentTarget){
-          setIsProfileSettingsModalOpen(false);
-        }
+    useBlockBodyScroll(isProfileSettingsModalOpen)
+
+    const handleLinkClick = () => {
+        setIsProfileSettingsModalOpen(false);
     }
 
-    useEffect(() => {
-            if(isProfileSettingsModalOpen) {
-                document.body.style.overflow = "hidden";
-            } else {
-                document.body.style.overflow = "";
-            }
-            
-            return(() => {
-                document.body.style.overflow = ""
-            })
-        }, [isProfileSettingsModalOpen])
-
-
-        const handleLinkClick = () => {
-            setIsProfileSettingsModalOpen(false);
-        }
-
-
     return (
-        <div className="menu settings" onClick={ handleBackdropClick }>
+        <div className="menu settings" onClick={ e => handleBackdropClick(e, setIsProfileSettingsModalOpen) }>
             <div className="menu__content settings-content">
                 <div className="menu__header settings-header">
                     <p className="settings-header__title">
@@ -65,7 +50,7 @@ export const ProfileSettingsModal = () => {
                 <div className="menu__body settings-body">
                     <ul className="settings-menu">
                         <li className="settings-point">
-                            <Link href="/my-account/orders" className="settings-link" onClick={ () => handleLinkClick() }>
+                            <Link href={ linksContainer.account.orders } className="settings-link" onClick={ () => handleLinkClick() }>
                                 <span className="settings__icon-wrapper">
                                     <Image src="/icons/truck-pink.svg" alt="" width="18" height="18" />
                                 </span>
@@ -75,7 +60,7 @@ export const ProfileSettingsModal = () => {
                             </Link>
                         </li>
                         <li className="settings-point">
-                            <Link href="/my-account/library" className="settings-link" onClick={ () => handleLinkClick() }>
+                            <Link href={ linksContainer.account.library } className="settings-link" onClick={ () => handleLinkClick() }>
                                 <span className="settings__icon-wrapper">
                                     <Image src="/icons/done.svg" alt="" width="18" height="18" />
                                 </span>
@@ -85,7 +70,7 @@ export const ProfileSettingsModal = () => {
                             </Link>
                         </li>
                         <li className="settings-point">
-                            <Link href="/my-account/wishlist" className="settings-link" onClick={ () => handleLinkClick() }>
+                            <Link href={ linksContainer.account.wishlist } className="settings-link" onClick={ () => handleLinkClick() }>
                                 <span className="settings__icon-wrapper">
                                     <Image src="/icons/heart-pink.svg" alt="" width="18" height="18" />
                                 </span>
@@ -95,7 +80,7 @@ export const ProfileSettingsModal = () => {
                             </Link>
                         </li>
                         <li className="settings-point">
-                            <Link href="/my-account/waiting-list" className="settings-link" onClick={ () => handleLinkClick() }>
+                            <Link href={ linksContainer.account.waitingList } className="settings-link" onClick={ () => handleLinkClick() }>
                                 <span className="settings__icon-wrapper">
                                     <Image src="/icons/waiting.svg" alt="" width="18" height="18" />
                                 </span>
@@ -105,7 +90,7 @@ export const ProfileSettingsModal = () => {
                             </Link>
                         </li>
                         <li className="settings-point">
-                            <Link href="/my-account/bonuses" className="settings-link" onClick={ () => handleLinkClick() }>
+                            <Link href={ linksContainer.account.bonuses } className="settings-link" onClick={ () => handleLinkClick() }>
                                 <span className="settings__icon-wrapper">
                                     <Image src="/icons/bonuses.svg" alt="" width="18" height="18" />
                                 </span>
@@ -120,7 +105,7 @@ export const ProfileSettingsModal = () => {
                 <div className="menu__body settings-body">
                     <ul className="settings-menu">
                         <li className="settings-point">
-                            <Link href="/my-account" className="settings-link" onClick={ () => handleLinkClick() }>
+                            <Link href={ linksContainer.account.settings } className="settings-link" onClick={ () => handleLinkClick() }>
                                 <span className="settings__icon-wrapper">
                                     <Image src="/icons/user-pink.svg" alt="" width="18" height="18" />
                                 </span>
@@ -135,7 +120,7 @@ export const ProfileSettingsModal = () => {
                 <div className="menu__body settings-body">
                     <ul className="settings-menu">
                         <li className="settings-point">
-                            <Link href="/my-account/logout" className="settings-link" onClick={ () => handleLinkClick() }>
+                            <Link href={ linksContainer.account.logout } className="settings-link" onClick={ () => handleLinkClick() }>
                                 <span className="settings__icon-wrapper">
                                     <Image src="/icons/logout.svg" alt="" width="18" height="18" />
                                 </span>

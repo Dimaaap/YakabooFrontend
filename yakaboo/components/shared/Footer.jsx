@@ -15,6 +15,28 @@ export const Footer = () => {
         })
     }
     
+    const socialIcons = [
+        {
+            title: "instagram",
+            link: "#",
+            icon: "/icons/instagram.svg"
+        },
+        {
+            title: "youtube",
+            link: "#",
+            icon: "/icons/youtube.svg"
+        },
+        {
+            title: "facebook",
+            link: "#",
+            icon: "/icons/facebook.svg"
+        },
+        {
+            title: "telegram",
+            link: "#",
+            icon: "/icons/telegram.svg"
+        }
+    ]
     const [links, setLinks] = useState([])
 
     useEffect(() => {
@@ -51,26 +73,13 @@ export const Footer = () => {
                     </span>
                 </div>
                 <ul className="footer__social-links">
-                    <li className="footer__social-link">
-                        <Link href="#" className="footer__social">
-                            <Image src="/icons/instagram.svg" width="30" height="30" alt="" />
-                        </Link>
-                    </li>
-                    <li className="footer__social-link">
-                        <Link href="#" className="footer__social">
-                            <Image src="/icons/youtube.svg" width="30" height="30" alt="" />
-                        </Link>
-                    </li>
-                    <li className="footer__social-link">
-                        <Link href="#" className="footer__social">
-                            <Image src="/icons/facebook.svg" width="30" height="30" alt="" />
-                        </Link>
-                    </li>
-                    <li className="footer__social-link">
-                        <Link href="#" className="footer__social">
-                            <Image src="/icons/telegram.svg" width="30" height="30" alt="" />
-                        </Link>
-                    </li>
+                    { socialIcons.map((icon, index) => (
+                        <li className="footer__social-link" key={ index }>
+                            <Link href={ icon.link } className="footer__social">
+                                <Image src={ icon.icon } width="30" height="30" alt="" />
+                            </Link>
+                        </li>
+                    )) }
                 </ul>
             </div>
             <ul className="footer__list">

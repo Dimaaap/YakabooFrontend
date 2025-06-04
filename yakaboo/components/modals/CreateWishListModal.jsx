@@ -1,21 +1,23 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { useWishListModalStore } from '../../states';
-import { CookiesWorker } from '../../services';
+import { CookiesWorker, handleBackdropClick } from '../../services';
 import Endpoints from '../../endpoints';
-import { FlashMessage } from '../shared';
+import { FlashMessage, ModalCloseBtn } from '../shared';
 
-import Image from 'next/image';
+import { useBlockBodyScroll } from '../../hooks';
 
 export const CreateWishListModal = ({ addWishlist }) => {
   
-  const { register, handleSubmit, formState: { errors } } = useForm();
   const { isWishlistModalOpen, setIsWishlistModalOpen } = useWishListModalStore();
-
   const [serverError, setServerError] = useState(null)
+  
+  useBlockBodyScroll(isWishlistModalOpen)
+
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = async (data) => {
     const userEmail = CookiesWorker.get("email");
@@ -45,32 +47,12 @@ export const CreateWishListModal = ({ addWishlist }) => {
       setServerError(error)
     }
   }
-
-  const handleBackdropClick = (e) => {
-    if (e.target === e.currentTarget){
-        setIsWishlistModalOpen(false);
-    }
-  }
-
-useEffect(() => {
-  if(isWishlistModalOpen) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "";
-  }
-    return(() => {
-      document.body.style.overflow = ""
-    })
-  }, [isWishlistModalOpen])
   
   return (
-    <div className="menu login-modal wishlist-modal" onClick={ handleBackdropClick }>
+    <div className="menu login-modal wishlist-modal" onClick={ e => handleBackdropClick(e, setIsWishlistModalOpen) }>
       { serverError && <FlashMessage message={ serverError } onClose={() => setServerError(null)} /> }
       <div className="login-modal__content wishlist-modal__content">
-        <button className="menu__close login-modal__close" type="button" 
-        onClick={() => setIsWishlistModalOpen(false)}>
-            <Image src="/icons/close-smaller.svg" alt="" width="22" height="22" />
-        </button>
+        <ModalCloseBtn clickHandler={() => setIsWishlistModalOpen(false)} />
         <p className="wishlist-modal__title">
           Додавання товару до списку бажань
         </p>
