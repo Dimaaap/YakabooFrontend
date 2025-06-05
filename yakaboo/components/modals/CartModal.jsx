@@ -3,7 +3,7 @@ import { useCartModalStore } from '../../states'
 import { handleBackdropClick } from '../../services'
 import { ModalCloseBtn } from '../shared'
 
-export const CartModal = () => {
+const CartModal = () => {
 
   const { isCartModalOpen, setIsCartModalOpen } = useCartModalStore()
 
@@ -32,3 +32,4 @@ export const CartModal = () => {
   )
 }
 
+export default CartModal

@@ -1,7 +1,5 @@
 export class CookiesWorker {
 
-    THREE_DAYS = 60 * 24 * 3;
-
     static set(name, value){
         document.cookie = `${name}=${value || ""}; path=/`;
     }
@@ -30,6 +28,7 @@ export class CookiesWorker {
     }
 
     static saveCookies(data){
+        let THREE_DAYS = 60 * 24 * 3;
         Object.entries(data).forEach(([key, value]) => {
             if(value){
                 CookiesWorker.setWithTimer(key, value, THREE_DAYS)

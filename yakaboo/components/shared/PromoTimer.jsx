@@ -7,7 +7,7 @@ export const PromoTimer = ({ endDate }) => {
 
     const ONE_MINUTE_IN_MS = 60000;
 
-    const [timeLeft, setTimeLeft] = useState(TimeLeft.getTimeLeft(endDate));
+    const [timeLeft, setTimeLeft] = useState(timeLeft.getTimeLeft(endDate));
 
 
     useEffect(() => {

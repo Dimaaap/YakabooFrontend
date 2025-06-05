@@ -15,29 +15,12 @@ export const Footer = () => {
         })
     }
     
-    const socialIcons = [
-        {
-            title: "instagram",
-            link: "#",
-            icon: "/icons/instagram.svg"
-        },
-        {
-            title: "youtube",
-            link: "#",
-            icon: "/icons/youtube.svg"
-        },
-        {
-            title: "facebook",
-            link: "#",
-            icon: "/icons/facebook.svg"
-        },
-        {
-            title: "telegram",
-            link: "#",
-            icon: "/icons/telegram.svg"
-        }
-    ]
     const [links, setLinks] = useState([])
+    const [contacts, setContacts] = useState([])
+
+    useEffect(() => {
+        fetchData(Endpoints.ALL_CONTACTS, setContacts, "contact_links")
+    }, [])
 
     useEffect(() => {
         fetchData(Endpoints.ALL_FOOTER_LINKS, setLinks, "footer_links")
@@ -72,15 +55,18 @@ export const Footer = () => {
                         Без вихідних, з 9 до 20
                     </span>
                 </div>
-                <ul className="footer__social-links">
-                    { socialIcons.map((icon, index) => (
-                        <li className="footer__social-link" key={ index }>
-                            <Link href={ icon.link } className="footer__social">
-                                <Image src={ icon.icon } width="30" height="30" alt="" />
-                            </Link>
-                        </li>
-                    )) }
-                </ul>
+                { contacts.length > 0 && (
+                    <ul className="footer__social-links">
+                        { contacts.map((contact, index) => (
+                            <li className="footer__social-link" key={ index }>
+                                <Link href={ contact.link } className="footer__social">
+                                    <Image src={`/icons/${contact.icon_title}`} width="30" 
+                                    height="30" alt="" />
+                                </Link>
+                            </li>
+                        )) }
+                    </ul>
+                ) }
             </div>
             <ul className="footer__list">
                 <p className="footer__list-title">

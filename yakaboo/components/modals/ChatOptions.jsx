@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-export const ChatOptions = () => {
+const ChatOptions = () => {
 
   const chatOptions = [
     {
@@ -38,3 +38,4 @@ export const ChatOptions = () => {
   )
 }
 
+export default ChatOptions

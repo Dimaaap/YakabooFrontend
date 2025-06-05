@@ -10,7 +10,7 @@ import { CookiesWorker, handleBackdropClick } from '../../services';
 import { useBlockBodyScroll } from '../../hooks';
 import { linksContainer } from '../../links_container';
 
-export const ProfileSettingsModal = () => {
+const ProfileSettingsModal = () => {
 
     const { isProfileSettingsModalOpen, setIsProfileSettingsModalOpen } = useProfileSettingsModalStore();
 
@@ -145,3 +145,5 @@ export const ProfileSettingsModal = () => {
     )
 }
 
+
+export default ProfileSettingsModal

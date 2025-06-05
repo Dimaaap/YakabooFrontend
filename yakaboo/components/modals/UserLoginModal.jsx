@@ -9,7 +9,7 @@ import Endpoints from '../../endpoints';
 import { CookiesWorker, FormValidator, handleBackdropClick } from '../../services';
 import { useBlockBodyScroll } from '../../hooks';
 
-export const UserLoginModal = ({ afterClose = null }) => {
+const UserLoginModal = ({ afterClose = null }) => {
 
     const TWO_MINUTES = 2 * 60 * 1000;
     const ONE_WEEK = 60 * 24 * 7
@@ -295,3 +295,6 @@ export const UserLoginModal = ({ afterClose = null }) => {
     </div>
   )
 }
+
+
+export default UserLoginModal

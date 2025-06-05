@@ -4,7 +4,7 @@ import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
 import Endpoints from '../../endpoints';
 
-export const MainHeader = () => {
+const MainHeader = () => {
 
     const SIX_HOURS = 6 * 60 * 60 * 1000
 
@@ -61,3 +61,5 @@ export const MainHeader = () => {
     </div>
   )
 }
+
+export default MainHeader

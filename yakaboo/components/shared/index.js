@@ -3,7 +3,6 @@ export { Badge } from "./Badge";
 export { BookInfoBadge } from "./BookInfoBadge";
 export { Stars } from "./Stars";
 export { Footer } from "./Footer";
-export { ChatBtn } from "./ChatBtn";
 export { Breadcrumbs } from "./Breadcrumbs";
 export { AuthorFacts } from "./AuthorFacts";
 export { Filters } from "./Filters";
@@ -21,3 +20,7 @@ export { OrdersSidebar } from "./OrdersSidebar";
 export { FilterForm } from "./FilterForm";
 export { ProductCard } from "./ProductCard";
 export { ModalCloseBtn } from "./ModalCloseBtn"
+export { HomeClient } from "./HomeClient";
+export { MyAccountClient } from "./MyAccountClient";
+export { WishlistClient } from "./WishlistClient";
+export { LogoutClient } from "./LogoutClient";

@@ -14,7 +14,7 @@ import { CookiesWorker, FormValidator, handleBackdropClick } from '../../service
 import { FlashMessage } from '../shared';
 import { useBlockBodyScroll } from '../../hooks';
 
-export const UserRegisterModal = () => {
+const UserRegisterModal = () => {
 
     const {isRegisterModalOpen, setIsRegisterModalOpen, setIsLoginModalOpen} = useUserLoginModalStore();
     const { setIsConfirmationModalOpen } = useConfirmationCodeStore();
@@ -257,3 +257,4 @@ export const UserRegisterModal = () => {
   )
 }
 
+export default UserRegisterModal

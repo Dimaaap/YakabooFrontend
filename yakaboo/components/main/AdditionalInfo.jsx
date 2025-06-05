@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const AdditionalInfo = () => {
+const AdditionalInfo = () => {
   return (
     <div className="add-info">
         <h5 className="add-info__title">
@@ -14,4 +14,6 @@ export const AdditionalInfo = () => {
     </div>
   )
 }
+
+export default AdditionalInfo
 

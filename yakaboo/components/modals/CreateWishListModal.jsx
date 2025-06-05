@@ -2,15 +2,16 @@
 
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import Image from "next/image";
 
 import { useWishListModalStore } from '../../states';
 import { CookiesWorker, handleBackdropClick } from '../../services';
 import Endpoints from '../../endpoints';
-import { FlashMessage, ModalCloseBtn } from '../shared';
+import { FlashMessage, ModalCloseBtn} from '../shared';
 
 import { useBlockBodyScroll } from '../../hooks';
 
-export const CreateWishListModal = ({ addWishlist }) => {
+const CreateWishListModal = ({ addWishlist }) => {
   
   const { isWishlistModalOpen, setIsWishlistModalOpen } = useWishListModalStore();
   const [serverError, setServerError] = useState(null)
@@ -52,7 +53,8 @@ export const CreateWishListModal = ({ addWishlist }) => {
     <div className="menu login-modal wishlist-modal" onClick={ e => handleBackdropClick(e, setIsWishlistModalOpen) }>
       { serverError && <FlashMessage message={ serverError } onClose={() => setServerError(null)} /> }
       <div className="login-modal__content wishlist-modal__content">
-        <ModalCloseBtn clickHandler={() => setIsWishlistModalOpen(false)} />
+        <ModalCloseBtn clickHandler={ () => setIsWishlistModalOpen(false) } 
+        extraClasses="login-modal__close" />
         <p className="wishlist-modal__title">
           Додавання товару до списку бажань
         </p>
@@ -81,3 +83,5 @@ export const CreateWishListModal = ({ addWishlist }) => {
   )
 }
 
+
+export default CreateWishListModal

@@ -2,7 +2,7 @@ import React from 'react'
 import Image from 'next/image';
 import { useChatModalStore } from '../../states';
 
-export const ChatBtn = ({ onClick }) => {
+const ChatBtn = ({ onClick }) => {
 
    const { isChatModalOpen } = useChatModalStore();
 
@@ -18,3 +18,5 @@ export const ChatBtn = ({ onClick }) => {
     </div>
   )
 }
+
+export default ChatBtn

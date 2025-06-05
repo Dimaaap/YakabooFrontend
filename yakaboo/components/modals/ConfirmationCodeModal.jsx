@@ -9,7 +9,7 @@ import Endpoints from '../../endpoints'
 import { FlashMessage, ModalCloseBtn } from '../shared'
 import { useBlockBodyScroll } from '../../hooks';
 
-export const ConfirmationCodeModal = () => {
+const ConfirmationCodeModal = () => {
 
     const { isConfirmationModalOpen, setIsConfirmationModalOpen } = useConfirmationCodeStore();
     useBlockBodyScroll(isConfirmationModalOpen)
@@ -134,3 +134,6 @@ export const ConfirmationCodeModal = () => {
     </div>
   )
 }
+
+
+export default ConfirmationCodeModal

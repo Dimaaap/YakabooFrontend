@@ -17,7 +17,9 @@ const Endpoints = {
     ALL_BOARD_GAME_AGES: "http://localhost:8003/game-ages/all",
     ALL_BOARD_GAME_BRANDS: "http://localhost:8003/game-brands/all",
     ALL_BOARD_GAME_SERIES: "http://localhost:8003/game-series/all",
-    ALL_BOARD_GAME_LANGUAGES: 'http://localhost:8003/game-ages/languages/all'
+    ALL_BOARD_GAME_LANGUAGES: 'http://localhost:8003/game-ages/languages/all',
+    ALL_CONTACTS: "http://localhost:8003/contacts/all",
+    
 }
 
 export default Endpoints;

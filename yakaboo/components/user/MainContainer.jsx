@@ -11,7 +11,7 @@ import { getUniqueErrorField, getUserFullName } from '../../utils';
 import { CookiesWorker } from '../../services/cookies.service';
 import { FlashMessage, NoneSpan } from '../shared';
 
-export const MainContainer = () => {
+const MainContainer = () => {
 
     const { userData, updateFieldValue, getDataToUpdate } = useUserData();
 
@@ -24,7 +24,6 @@ export const MainContainer = () => {
     
     const {register, handleSubmit, formState: { errors }} = useForm();
 
-    const THREE_DAYS = 60 * 24 * 3;
     const PHONE_EXISTS_MSG = "Користувач з таким номером телефону вже зареєстрований"
     const EMAIL_EXISTS_MSG = "Користувач з таким email уже зареєстрований"
     const dateTime = new DateTime()
@@ -370,3 +369,6 @@ export const MainContainer = () => {
     </div>
   )
 }
+
+
+export default MainContainer

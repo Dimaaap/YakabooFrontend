@@ -4,7 +4,7 @@ import React from 'react'
 import { useMenuModalStore } from '../../states'
 import { handleBackdropClick } from '../../services'
 
-export const MenuModal = () => {
+const MenuModal = () => {
 
   const { isMenuModalOpen, setIsMenuModalOpen } = useMenuModalStore();
 
@@ -164,4 +164,6 @@ export const MenuModal = () => {
     </div>
   )
 }
+
+export default MenuModal
 

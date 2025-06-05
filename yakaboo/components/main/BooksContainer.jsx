@@ -3,7 +3,7 @@ import Link from 'next/link'
 import React from 'react'
 import { Badge, BookInfoBadge, Stars } from '../shared'
 
-export const BooksContainer = () => {
+const BooksContainer = () => {
   return (
     <div className="categories">
         <div className="books-container">
@@ -618,3 +618,6 @@ export const BooksContainer = () => {
     </div>
   )
 }
+
+
+export default BooksContainer

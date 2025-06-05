@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { useBlockBodyScroll } from '../../hooks';
 import { ModalCloseBtn } from '../shared';
 
-export const BookCategoriesWithSubcategoriesModal = () => {
+const BookCategoriesWithSubcategoriesModal = () => {
 
     const { isCategoriesModalOpen, setIsCategoriesModalOpen } = useBookCategoriesModalStore();
     useBlockBodyScroll(isCategoriesModalOpen)
@@ -120,3 +120,5 @@ export const BookCategoriesWithSubcategoriesModal = () => {
   )
 }
 
+
+export default BookCategoriesWithSubcategoriesModal
