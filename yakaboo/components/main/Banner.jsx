@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState, useEffect, useRef } from 'react'
 
-const Banner = () => {
+export const Banner = () => {
 
     const intervalRef = useRef(null);
     const [index, setIndex] = useState(0)
@@ -104,5 +104,3 @@ const Banner = () => {
     </div>
   )
 }
-
-export default Banner

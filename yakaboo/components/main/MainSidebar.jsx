@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react'
 import Endpoints from '../../endpoints';
 
 
-const MainSidebar = () => {
+export const MainSidebar = () => {
 
     const [sidebars, setSidebars] = useState([]);
 
@@ -62,5 +62,4 @@ const MainSidebar = () => {
   )
 }
 
-export default MainSidebar
 

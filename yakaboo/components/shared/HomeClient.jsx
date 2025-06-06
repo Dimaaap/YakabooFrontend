@@ -19,8 +19,8 @@ import {
     UserRegisterModal, 
     MenuModal,
     UserLoginModal, ChatBtn, 
-    Banner, BooksContainer, MainHeader, 
-    MainSidebar, AdditionalInfo} from '../dynamic';
+    BooksContainer, MainHeader, AdditionalInfo} from '../dynamic';
+import { Banner, MainSidebar } from '../main';
 
 export const HomeClient = () => {
   const { isChatModalOpen, setIsChatModalOpen } = useChatModalStore();

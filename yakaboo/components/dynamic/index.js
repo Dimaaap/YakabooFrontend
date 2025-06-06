@@ -1,9 +1,7 @@
 import dynamic from "next/dynamic";
 
-export const Banner = dynamic(() => import("../main/Banner"), {ssr: false})
 export const BooksContainer = dynamic(() => import("../main/BooksContainer"))
 export const MainHeader = dynamic(() => import("../main/MainHeader"), {ssr: false})
-export const MainSidebar = dynamic(() => import("../main/MainSidebar"), {ssr: false})
 export const AdditionalInfo = dynamic(() => import("../main/AdditionalInfo"))
 
 export const CartModal = dynamic(() => import("../modals/CartModal"))
