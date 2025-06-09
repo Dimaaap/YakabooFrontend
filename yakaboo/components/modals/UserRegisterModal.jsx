@@ -23,6 +23,8 @@ const UserRegisterModal = () => {
     const [serverError, setServerError] = useState(null);
     const [selectedCountry, setSelectedCountry] = useState("UA");
 
+    const ONE_MONTH = 43_200;
+
     useBlockBodyScroll(isRegisterModalOpen)
     let formValidator = new FormValidator()
 
@@ -78,7 +80,7 @@ const UserRegisterModal = () => {
                         "email": result.email
                     }
                 Object.entries(userData).forEach(([key, value]) => {
-                    CookiesWorker.setWithTimer(key, value, 4320)
+                    CookiesWorker.setWithTimer(key, value, ONE_MONTH)
                 })
                 setServerError(null)
                 setIsRegisterModalOpen(false);
@@ -177,7 +179,7 @@ const UserRegisterModal = () => {
                     type="email" {...register("email", {
                         required: "Це поле обов'язкове",
                         pattern: {
-                            value: formValidator.REG_NAME_VALIDATOR,
+                            value: formValidator.EMAIL_REGEX,
                             message: formValidator.REG_NAME_FAILED_MESSAGE
                         }
                     })}/>

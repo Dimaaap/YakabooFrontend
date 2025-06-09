@@ -1,0 +1,46 @@
+@use '../helpers' as *;
+
+.product-format {
+  display: flex;
+  flex-direction: column;
+  gap: rem(5);
+
+  &__title {
+    font-weight: 600;
+    font-size: rem(14);
+  }
+
+  &__tail {
+    display: flex;
+    flex-direction: column;
+    gap: rem(5);
+    border: rem(1) solid var(--color-pink-10);
+    align-self: self-start;
+    padding: 1.5%;
+    border-radius: rem(10);
+    background-color: #fcedf8;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: rem(5);
+
+    & img {
+      width: rem(20);
+      height: rem(20);
+    }
+  }
+
+  &__format-name {
+    font-size: rem(14);
+    font-weight: 500;
+    color: var(--color-pink-10);
+  }
+
+  & h5 {
+    font-size: rem(18);
+    font-weight: 600;
+    color: var(--color-red-10);
+  }
+}

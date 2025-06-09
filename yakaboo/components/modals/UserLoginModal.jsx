@@ -13,6 +13,7 @@ const UserLoginModal = ({ afterClose = null }) => {
 
     const TWO_MINUTES = 2 * 60 * 1000;
     const ONE_WEEK = 60 * 24 * 7
+    const ONE_MONTH = 43_200;
 
     const { isLoginModalOpen, setIsLoginModalOpen, setIsRegisterModalOpen } = useUserLoginModalStore();
     const [showPassword, setShowPassword] = useState(false);
@@ -152,22 +153,22 @@ const UserLoginModal = ({ afterClose = null }) => {
                     {
                         title: "email",
                         value: result.user.email,
-                        time: ONE_WEEK
+                        time: ONE_MONTH
                     },
                     {
                         title: "first_name",
                         value: result.user.first_name,
-                        time: ONE_WEEK
+                        time: ONE_MONTH
                     },
                     {
                         title: "last_name",
                         value: result.user.last_name,
-                        time: ONE_WEEK
+                        time: ONE_MONTH
                     },
                     {
                         title: "phone_number",
                         value: result.user.phone_number,
-                        time: ONE_WEEK
+                        time: ONE_MONTH
                     }
                 ]
                 dataForCookies.map((data) => (

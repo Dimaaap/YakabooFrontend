@@ -64,7 +64,8 @@ const ConfirmationCodeModal = () => {
                 CookiesWorker.setWithTimer("refresh_token", data.refresh_token, ONE_WEEK)
                 CookiesWorker.setWithTimer("token_type", data.token_type, ONE_WEEK)
                 CookiesWorker.set("is_auth", false);
-                setMessage("Ви успішно авторизувались")
+                setMessage("Ви успішно авторизувались");
+                setIsConfirmationModalOpen(false);
             } else {
                 setMessage("Неправильний код")
             }
@@ -95,7 +96,7 @@ const ConfirmationCodeModal = () => {
     <div className="menu code-modal" onClick={ e => handleBackdropClick(e, setIsConfirmationModalOpen) }>
         { message && <FlashMessage message={message} onClose={() => setMessage(null)} /> }
       <div className="code-modal__content">
-        <ModalCloseBtn clickHandler={() => setIsConfirmationModalOpen(false)} />
+        <ModalCloseBtn clickHandler={() => setIsConfirmationModalOpen(false)} extraClasses="code-modal__close" />
         <div className="code-modal__text-container">
             <p className="code-modal__main-info">
                 Введіть код підтвердження

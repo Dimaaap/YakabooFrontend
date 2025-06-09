@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { OrdersSidebar } from "."
+import { OrdersSidebar } from "../shared"
 import { ProfileSettingsModal, UserLoginModal, BookCategoriesWithSubcategoriesModal, MenuModal } from "../dynamic"
 import { useProtectedPage } from "../../hooks"
 import { useProfileSettingsModalStore, useMenuModalStore, useBookCategoriesModalStore } from "../../states"

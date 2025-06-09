@@ -18,6 +18,9 @@ const Endpoints = {
     ALL_BOARD_GAME_BRANDS: "http://localhost:8003/game-brands/all",
     ALL_BOARD_GAME_SERIES: "http://localhost:8003/game-series/all",
     ALL_BOARD_GAME_LANGUAGES: 'http://localhost:8003/game-ages/languages/all',
+    ALL_BOARD_GAME_TYPES: "http://localhost:8003/game-ages/types/all",
+    ALL_BOARD_GAME_KINDS: "http://localhost:8003/game-ages/kinds/all",
+    ALL_BOARD_GAME_PLAYERS_COUNT: "http://localhost:8003/game-ages/players-count/all",
     ALL_CONTACTS: "http://localhost:8003/contacts/all",
     
 }

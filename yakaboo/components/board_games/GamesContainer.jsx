@@ -29,6 +29,7 @@ export const GamesContainer = () => {
             ]}
             />
             <ProductCard title="Український Їдломарафон" 
+            productLink='board-games/board-game/idlomarafon'
             imageSrc='https://static.yakaboo.ua/media/cloudflare/product/webp/352x340/i/m/img342_cr_5.jpg' 
             oldPrice={ 1500 } bonusesCount={ 750 } productCode='1500083' />
             <ProductCard title="Настільна економічна гра Ranok Creative Монополія (10120186)" 

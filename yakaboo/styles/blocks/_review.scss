@@ -1,0 +1,23 @@
+@use '../helpers' as *;
+
+.review {
+  display: flex;
+  align-items: center;
+  gap: rem(5);
+
+  &__stars {
+    display: flex;
+    align-items: center;
+
+    & img {
+      width: rem(12);
+      height: rem(12);
+    }
+  }
+
+  &__count {
+    font-size: rem(13);
+    font-weight: 500;
+    color: var(--color-pink-10);
+  }
+}

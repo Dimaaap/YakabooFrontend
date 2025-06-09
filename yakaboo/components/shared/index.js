@@ -19,10 +19,8 @@ export { FlashMessageWithAgreement } from "./FlashMessageWithAgreement";
 export { OrdersSidebar } from "./OrdersSidebar";
 export { FilterForm } from "./FilterForm";
 export { ProductCard } from "./ProductCard";
-export { ModalCloseBtn } from "./ModalCloseBtn"
-export { HomeClient } from "./HomeClient";
-export { MyAccountClient } from "./MyAccountClient";
-export { WishlistClient } from "./WishlistClient";
-export { LogoutClient } from "./LogoutClient";
-export { BonusesClient } from "./BonusesClient"
-export { BookTypesClient } from "./BookTypesClient";
+export { ModalCloseBtn } from "./ModalCloseBtn";
+export { BuyBtn } from "./BuyBtn";
+export { PayByParts } from "./PayByParts";
+export { Delivery } from "./Delivery";
+export { DeliveryTerms } from "./DeliveryTerms"

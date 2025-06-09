@@ -1,0 +1,19 @@
+@use '../helpers' as *;
+
+.product-container {
+  background-color: var(--color-light);
+  display: flex;
+  gap: 2%;
+  padding: 2%;
+
+  &__center-part {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: rem(15);
+  }
+
+  &__right-part {
+    width: 25%;
+  }
+}

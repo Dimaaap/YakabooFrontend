@@ -1,0 +1,44 @@
+@use '../helpers' as *;
+
+.container-photo {
+  width: 25%;
+  position: sticky;
+  top: 5%;
+  z-index: 10;
+  height: 100%;
+
+  &__add-to-fav-button {
+    border: none;
+    padding: 4% 5%;
+    border-radius: rem(25);
+    background-color: var(--color-gray-40);
+  }
+
+  &__image-container {
+    padding: rem(2);
+    border: rem(2) solid var(--color-light);
+    width: 100%;
+
+    &.active {
+      border-radius: rem(5);
+      border-color: var(--color-black);
+    }
+  }
+
+  &__images {
+    display: flex;
+    flex-direction: column;
+    gap: rem(5);
+    align-items: start;
+    cursor: pointer;
+
+    & img {
+      width: 100%;
+    }
+  }
+
+  &__rest-images {
+    display: flex;
+    gap: rem(5);
+  }
+}

@@ -17,3 +17,4 @@ export const CreateWishListModal = dynamic(() => import("../modals/CreateWishLis
 export const MainContainer = dynamic(() => import("../user/MainContainer"), { ssr: false })
 
 export const ChatBtn = dynamic(() => import("../shared/ChatBtn"))
+export const DescriptionText = dynamic(() => import("../board_games/DecriptionText"))

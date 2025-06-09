@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const DescriptionText = () => {
+const DescriptionText = () => {
   return (
     <div className="category-description">
         <p className="category-description__desc">
@@ -63,4 +63,6 @@ export const DescriptionText = () => {
     </div>
   )
 }
+
+export default DescriptionText
 

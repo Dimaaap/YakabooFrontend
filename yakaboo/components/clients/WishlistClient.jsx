@@ -7,7 +7,7 @@ import { useProtectedPage } from "../../hooks";
 import { useProfileSettingsModalStore, useWishListModalStore } from "../../states";
 import { fetchData, CookiesWorker } from "../../services";
 import { UserLoginModal, ProfileSettingsModal, CreateWishListModal } from "../dynamic";
-import { FlashMessage, WishlistSidebar, WishlistsMainContainer } from ".";
+import { FlashMessage, WishlistSidebar, WishlistsMainContainer } from "../shared";
 
 
 export const WishlistClient = () => {

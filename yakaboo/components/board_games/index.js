@@ -1,4 +1,6 @@
-export{ GamesContainer } from './GamesContainer';
+export { GamesContainer } from './GamesContainer';
 export { BoardGamesHeader } from './BoardGamesHeader'
 export { BoardGamesFilters } from "./BoardGamesFilters"; 
-export { DescriptionText } from "./DecriptionText";
+export { GameContainer } from "./GameContainer";
+export { ContainerPhoto } from "./ContainerPhoto";
+export { Advertisment } from "./Advertisment";

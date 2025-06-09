@@ -1,5 +1,5 @@
-import { MyAccountClient } from "../../../../components";
+import { LogoutClient } from "../../../../components";
 
 export default function MyAccountLogoutPage() {
-    return <MyAccountClient />
+    return <LogoutClient />
 }

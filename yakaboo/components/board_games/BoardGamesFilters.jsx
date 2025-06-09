@@ -12,6 +12,9 @@ export const BoardGamesFilters = () => {
     const [boardGameBrands, setBoardGameBrands] = useState([])
     const [boardGameSeries, setBoardGameSeries] = useState([])
     const [boardGameLanguages, setBoardGameLanguages] = useState([])
+    const [boardGameTypes, setBoardGameTypes] = useState([])
+    const [boardGameKinds, setBoardGameKinds] = useState([])
+    const [playerCounts, setPlayerCounts] = useState([])
 
     useEffect(() => {
         fetchData(Endpoints.ALL_BOARD_GAME_AGES, setBoardGameAge, "game_ages")
@@ -29,9 +32,20 @@ export const BoardGamesFilters = () => {
         fetchData(Endpoints.ALL_BOARD_GAME_LANGUAGES, setBoardGameLanguages, "game_languages")
     }, [])
 
+    useEffect(() => {
+        fetchData(Endpoints.ALL_BOARD_GAME_TYPES, setBoardGameTypes, "game_types")
+    }, [])
+
+    useEffect(() => {
+        fetchData(Endpoints.ALL_BOARD_GAME_KINDS, setBoardGameKinds, "game_kinds")
+    }, [])
+
+    useEffect(() => {
+        fetchData(Endpoints.ALL_BOARD_GAME_PLAYERS_COUNT, setPlayerCounts, "players_count")
+    }, [])
+
   return (
     <div className="filters games-filters">
-        { console.log(boardGameAge) }
 
         <FilterForm 
         fields={["Знижка", "Хіти продажу", "Національний кешбек", "Зимова єПідтримка", 
@@ -96,28 +110,29 @@ export const BoardGamesFilters = () => {
         formTitle="Наявність"
         />
 
-        <FilterForm 
-        fields={["Сімейні", "Карткові", "Розвиваючі", "Для вечірки", "Логічні", 
-        "Економічні", "На спритність", "Ходилки", "Азартні", "Романтичні", "Рольові", 
-        "Для офісу"]}
-        formTitle="Тип"
-        isScroll={true}
-        />
+        { boardGameTypes.length > 0 && (
+            <FilterForm 
+            fields={ boardGameTypes }
+            formTitle="Тип"
+            isScroll={ true }
+            />
+        ) }
 
 
-        <FilterForm 
-        fields={["Guess Who?", "Cluedo", "Веселі", "Стратегічні", "Навчальні", 
-        "Інтелектуальні", "Активні", "Монополія", "Дорожні", "Військові", 
-        "Лото", "Доміно", "Дженга"]} 
-        formTitle="Вид" 
-        isScroll={true} />
-
-        <FilterForm 
-        fields={["Для 2-х", "Від 2 до 4", "Від 2 до 5", 
-        "Від 1 до 8", "Від 3 до 16", "Від 3 до 12", "Від 4 до 16", 
-        "Від 7-ми", "Від 2 до 6", "Від 3 до 8"]} 
-        formTitle="Кількість гравців" 
-        isScroll={true} />
+        { boardGameKinds.length > 0 && (
+            <FilterForm 
+            fields={ boardGameKinds }
+            formTitle="Вид"
+            isScroll={ true } />
+        ) }
+        
+        { playerCounts.length > 0 && (
+            <FilterForm 
+            fields={ playerCounts }
+            formTitle="Кількість гравців"
+            isScroll={ true }
+            />
+        ) }
     </div>
   )
 }
