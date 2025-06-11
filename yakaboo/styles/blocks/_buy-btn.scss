@@ -1,0 +1,25 @@
+@use '../helpers' as *;
+
+.buy-btn {
+  width: 85%;
+  display: flex;
+  gap: rem(4);
+  align-items: center;
+  background-color: var(--color-red-10);
+  border: none;
+  color: var(--color-light);
+  font-weight: 600;
+  padding-block: 4%;
+  border-radius: rem(10);
+  justify-content: center;
+  text-align: center;
+  transition: all var(--transition-duration) ease;
+
+  & img {
+    filter: invert(1);
+  }
+
+  &:hover {
+    opacity: 0.9;
+  }
+}

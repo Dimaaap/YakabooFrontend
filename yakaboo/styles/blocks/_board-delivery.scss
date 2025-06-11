@@ -1,0 +1,29 @@
+@use '../helpers' as *;
+
+.board-delivery {
+  background-color: var(--color-gray-40);
+  padding: 3%;
+  display: flex;
+  align-items: center;
+  gap: rem(10);
+  width: 85%;
+  margin-bottom: 5%;
+  border-radius: rem(10);
+  cursor: pointer;
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: rem(5);
+  }
+
+  &__city-title {
+    color: var(--color-blue-10);
+    font-weight: 500;
+  }
+
+  &__city-description {
+    font-weight: 500;
+    color: var(--color-gray-30);
+  }
+}

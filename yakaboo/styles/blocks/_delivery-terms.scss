@@ -1,0 +1,46 @@
+@use '../helpers' as *;
+
+.delivery-terms {
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+  gap: rem(3);
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: rem(1) solid var(--color-gray-50);
+    padding-block: 4%;
+    cursor: pointer;
+  }
+
+  &__cell {
+    display: flex;
+    align-items: center;
+    gap: rem(3);
+    font-weight: 500;
+  }
+
+  &__title {
+    font-weight: 500;
+  }
+
+  &__price {
+    color: var(--color-gray-30);
+    font-weight: 500;
+  }
+
+  &__additional {
+    padding-top: 2%;
+    display: flex;
+    flex-direction: column;
+    gap: rem(5);
+  }
+
+  &__seller-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

@@ -1,0 +1,53 @@
+@use '../helpers' as *;
+
+.container-info {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10%;
+  font-size: rem(14);
+
+  &__price-container-title {
+    font-size: rem(26);
+    font-weight: 600;
+
+    &.orange-text {
+      color: var(--color-red-10);
+    }
+  }
+
+  &__old-price {
+    color: var(--color-gray-20);
+    text-decoration: line-through;
+    font-weight: 500;
+    font-size: rem(16);
+  }
+
+  &__status {
+    display: flex;
+    gap: rem(3);
+    color: var(--color-green-10);
+    font-weight: 500;
+
+    & img {
+      filter: invert(1) sepia(1) saturate(4000%) hue-rotate(100deg)
+        brightness(0.6);
+    }
+  }
+
+  & .dot {
+    width: rem(2);
+    height: rem(2);
+    background-color: var(--color-gray-30);
+  }
+
+  &__type {
+    font-weight: 500;
+    color: var(--color-gray-30);
+  }
+
+  &__row {
+    display: flex;
+    gap: rem(7);
+    align-items: center;
+  }
+}

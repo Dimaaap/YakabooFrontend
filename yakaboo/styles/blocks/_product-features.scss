@@ -1,0 +1,56 @@
+@use '../helpers' as *;
+
+.product-features {
+  display: flex;
+  flex-direction: column;
+  gap: rem(7);
+
+  &__title {
+    font-size: rem(18);
+  }
+
+  &__table {
+    display: flex;
+    flex-direction: column;
+    gap: rem(2);
+    font-size: rem(14);
+    color: var(--color-gray-30);
+    font-weight: 500;
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: 2%;
+    border-bottom: rem(1) solid var(--color-gray-50);
+  }
+
+  &__text {
+    color: var(--color-black);
+  }
+
+  &__value {
+    &.link {
+      color: var(--color-blue-30);
+    }
+  }
+
+  &__hide-all {
+    background-color: transparent;
+    width: 50%;
+    font-size: rem(14);
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: rem(4);
+    padding: 0;
+    margin-top: 2%;
+    color: var(--color-gray-20);
+    font-weight: 500;
+
+    & img {
+      transform: rotate(180deg);
+    }
+  }
+}

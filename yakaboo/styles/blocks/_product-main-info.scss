@@ -1,0 +1,29 @@
+@use '../helpers' as *;
+
+.product-main-info {
+  &__section {
+    display: flex;
+    align-items: center;
+    gap: rem(40);
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: rem(8);
+    font-size: rem(14);
+  }
+
+  &__title {
+    font-weight: 600;
+  }
+
+  &__description {
+    margin-left: 0%;
+    background-color: var(--color-gray-50);
+    padding: rem(7);
+    font-weight: 500;
+    border-radius: rem(5);
+  }
+}

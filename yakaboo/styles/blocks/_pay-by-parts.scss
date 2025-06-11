@@ -1,0 +1,46 @@
+@use '../helpers' as *;
+
+.pay-by-parts {
+  border: rem(1) solid var(--color-gray-50);
+  width: 85%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  padding: 3%;
+  border-radius: rem(10);
+  display: flex;
+  flex-direction: column;
+  gap: rem(5);
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: rem(5);
+    font-weight: 500;
+
+    & span {
+      cursor: pointer;
+    }
+  }
+
+  &__banks {
+    display: flex;
+    gap: rem(7);
+    justify-content: space-between;
+  }
+
+  &__bank {
+    display: flex;
+    align-items: center;
+    gap: rem(4);
+
+    &-title {
+      font-weight: 500;
+      color: var(--color-gray-30);
+    }
+  }
+
+  &__count {
+    font-weight: 500;
+    text-decoration: dotted;
+  }
+}

@@ -1,0 +1,87 @@
+@use '../helpers' as *;
+
+.text-review {
+  background-color: var(--color-gray-40);
+  font-size: rem(14);
+  padding: 2%;
+  border-radius: rem(10);
+  display: flex;
+  flex-direction: column;
+  gap: rem(10);
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__author {
+    display: flex;
+    flex-direction: column;
+    gap: rem(3);
+
+    &-name {
+      font-weight: 500;
+    }
+  }
+
+  &__stars-container {
+    display: flex;
+    flex-direction: column;
+    gap: rem(3);
+  }
+
+  &__grade {
+    font-size: rem(12);
+    font-weight: 500;
+    color: var(--color-pink-10);
+    align-self: self-end;
+  }
+
+  &__stars {
+    display: flex;
+    align-items: center;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: rem(5);
+  }
+
+  &__main-theme {
+    font-weight: 600;
+  }
+
+  &__text {
+    font-weight: 500;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__read-full {
+    background-color: transparent;
+    border: none;
+    font-weight: 600;
+    color: var(--color-gray-30);
+    padding: 0;
+  }
+
+  &__grades-btns {
+    display: flex;
+    align-items: center;
+    gap: rem(5);
+  }
+
+  &__grade-btn {
+    border: none;
+    background-color: var(--color-gray-50);
+    padding: rem(5);
+    padding-inline: rem(14);
+    border-radius: rem(50);
+  }
+}

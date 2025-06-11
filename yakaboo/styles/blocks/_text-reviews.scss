@@ -1,0 +1,66 @@
+@use '../helpers' as *;
+
+.text-reviews {
+  display: flex;
+  flex-direction: column;
+  gap: rem(12);
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: rem(10);
+  }
+
+  &__write-review {
+    border: none;
+    font-size: rem(14);
+    font-weight: 600;
+    color: var(--color-gray-30);
+    padding-block: 2%;
+    border-radius: rem(10);
+  }
+
+  &__pagination {
+    display: flex;
+    width: 30%;
+    justify-content: space-between;
+
+    &-btn {
+      border-radius: rem(10);
+      padding: 2%;
+      padding-inline: 4%;
+      cursor: default;
+      border: rem(1) solid transparent;
+
+      &.active {
+        background-color: transparent;
+        border: rem(1) solid var(--color-gray-50);
+        cursor: pointer;
+      }
+
+      &.prev-btn {
+        & img {
+          transform: rotate(90deg);
+        }
+      }
+
+      &.next-btn {
+        & img {
+          transform: rotate(270deg);
+        }
+      }
+    }
+  }
+
+  &__pages-number {
+    display: flex;
+    align-items: center;
+    gap: rem(10);
+  }
+}
