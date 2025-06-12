@@ -1,5 +1,9 @@
-import { BoardGamesClient } from "../../../components";
+import { BoardGamesClient } from '../../../components';
 
 export default function BoardGamesPage() {
-    return <BoardGamesClient />    
+  return (
+    <>
+      <BoardGamesClient />
+    </>
+  );
 }

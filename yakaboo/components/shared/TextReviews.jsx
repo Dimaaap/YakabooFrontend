@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import Image from 'next/image';
 
 export const TextReviews = ({
@@ -8,14 +10,24 @@ export const TextReviews = ({
   reviewDate = '20 лютого 2022р.',
   grade = 5,
 }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const MAX_LENGTH = 224;
+
   const getTrueWordForm = (grade) => {
     if (grade === 1) {
       return 'Бал';
-    } else if (2 <= grade <= 4) {
+    } else if (grade >= 2 && grade <= 4) {
       return 'Бали';
     } else {
       return 'Балів';
     }
+  };
+
+  const handleToggleText = () => setIsExpanded(!isExpanded);
+
+  const getDisplayText = () => {
+    if (isExpanded || reviewText.length <= MAX_LENGTH) return reviewText;
+    return reviewText.slice(0, MAX_LENGTH) + '...';
   };
 
   return (
@@ -35,7 +47,7 @@ export const TextReviews = ({
                   alt=""
                   width="15"
                   height="15"
-                  className={`text-review__star ${index + 1 < grade ? 'active-start' : ''}`}
+                  className={`text-review__star ${index + 1 <= grade ? 'active-star' : ''}`}
                   key={index}
                 />
               ))}
@@ -48,12 +60,16 @@ export const TextReviews = ({
 
       <div className="text-review__body">
         <p className="text-review__main-theme">{reviewTheme}</p>
-        <p className="text-review__text">{reviewText}</p>
+        <p className="text-review__text">{getDisplayText()}</p>
       </div>
 
       <div className="text-review__footer">
-        <button className="text-review__read-full" type="button">
-          Читати повністю
+        <button
+          className="text-review__read-full"
+          type="button"
+          onClick={handleToggleText}
+        >
+          {isExpanded ? 'Згорнути' : 'Читати повністю'}
         </button>
 
         <div className="text-review__grades-btns">

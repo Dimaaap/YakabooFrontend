@@ -63,4 +63,20 @@
     align-items: center;
     gap: rem(10);
   }
+
+  &__number-count {
+    background-color: transparent;
+    border: rem(1) solid var(--color-gray-50);
+    border-radius: rem(10);
+    font-size: rem(14);
+    font-weight: 500;
+    height: rem(30);
+    width: rem(40);
+    cursor: pointer;
+
+    &.active-page {
+      background-color: var(--color-gray-40);
+      cursor: default;
+    }
+  }
 }

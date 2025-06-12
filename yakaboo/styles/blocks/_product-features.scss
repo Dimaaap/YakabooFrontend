@@ -49,6 +49,12 @@
     color: var(--color-gray-20);
     font-weight: 500;
 
+    &.show {
+      & img {
+        transform: rotate(0);
+      }
+    }
+
     & img {
       transform: rotate(180deg);
     }

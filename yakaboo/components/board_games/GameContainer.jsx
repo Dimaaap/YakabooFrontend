@@ -1,5 +1,7 @@
+'use client';
+
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Breadcrumbs,
   BuyBtn,
@@ -17,6 +19,8 @@ export const GameContainer = () => {
     'https://static.yakaboo.ua/media/cloudflare/product/webp/600x840/i/m/img_52333.jpg',
     'https://static.yakaboo.ua/media/cloudflare/product/webp/600x840/i/m/img_52333.jpg',
   ];
+
+  const [showAllFeatures, setShowAllFeatures] = useState(false);
 
   return (
     <div className="container game-container product-container">
@@ -122,51 +126,72 @@ export const GameContainer = () => {
                 Від 6 до 8 років
               </Link>
             </div>
-            <div className="product-features__row">
-              <p className="product-features__text">Ілюстрації</p>
-              <p className="product-features__value">Кольорові</p>
-            </div>
-            <div className="product-features__row">
-              <p className="product-features__text">Видавництво</p>
-              <Link className="product-features__value link" href="#">
-                Зірка
-              </Link>
-            </div>
-            <div className="product-features__row">
-              <p className="product-features__text">ISBN</p>
-              <p className="product-features__value">9786176341383</p>
-            </div>
-            <div className="product-features__row">
-              <p className="product-features__text">Формат боксу</p>
-              <p className="product-features__value">305x205x25 мм</p>
-            </div>
-            <div className="product-features__row">
-              <p className="product-features__text">Мова</p>
-              <p className="product-features__value">Українська</p>
-            </div>
-            <div className="product-features__row">
-              <p className="product-features__text">Тип обкладинки</p>
-              <p className="product-features__value">Коробка</p>
-            </div>
-            <div className="product-features__row">
-              <p className="product-features__text">Рік видання</p>
-              <p className="product-features__value">2020</p>
-            </div>
-            <div className="product-features__row">
-              <p className="product-features__text">Папір</p>
-              <p className="product-features__value">Картон</p>
-            </div>
-          </div>
 
-          <button className="product-features__hide-all">
-            Приховати всі Характеристики
-            <Image
-              src="/icons/chevron-down.svg"
-              alt=""
-              width="20"
-              height="20"
-            />
-          </button>
+            {!showAllFeatures && (
+              <button
+                className="product-features__hide-all show"
+                onClick={() => setShowAllFeatures(true)}
+              >
+                Показати всі характеристики
+                <Image
+                  src="/icons/chevron-down.svg"
+                  alt=""
+                  width="20"
+                  height="20"
+                />
+              </button>
+            )}
+            {showAllFeatures && (
+              <>
+                <div className="product-features__row">
+                  <p className="product-features__text">Ілюстрації</p>
+                  <p className="product-features__value">Кольорові</p>
+                </div>
+                <div className="product-features__row">
+                  <p className="product-features__text">Видавництво</p>
+                  <Link className="product-features__value link" href="#">
+                    Зірка
+                  </Link>
+                </div>
+                <div className="product-features__row">
+                  <p className="product-features__text">ISBN</p>
+                  <p className="product-features__value">9786176341383</p>
+                </div>
+                <div className="product-features__row">
+                  <p className="product-features__text">Формат боксу</p>
+                  <p className="product-features__value">305x205x25 мм</p>
+                </div>
+                <div className="product-features__row">
+                  <p className="product-features__text">Мова</p>
+                  <p className="product-features__value">Українська</p>
+                </div>
+                <div className="product-features__row">
+                  <p className="product-features__text">Тип обкладинки</p>
+                  <p className="product-features__value">Коробка</p>
+                </div>
+                <div className="product-features__row">
+                  <p className="product-features__text">Рік видання</p>
+                  <p className="product-features__value">2020</p>
+                </div>
+                <div className="product-features__row">
+                  <p className="product-features__text">Папір</p>
+                  <p className="product-features__value">Картон</p>
+                </div>
+                <button
+                  className="product-features__hide-all"
+                  onClick={() => setShowAllFeatures(false)}
+                >
+                  Приховати всі Характеристики
+                  <Image
+                    src="/icons/chevron-down.svg"
+                    alt=""
+                    width="20"
+                    height="20"
+                  />
+                </button>
+              </>
+            )}
+          </div>
         </div>
 
         <div className="container__text-reviews text-reviews">
@@ -199,26 +224,41 @@ export const GameContainer = () => {
             <TextReviews
               grade={4}
               reviewTheme="Странный подбор географических локаций"
-              reviewText="В целом игра понравилась, кроме порванной упаковки, впрочем на
-                  сам игровой картон это не повлияло. Геймплей хорошо подобран,
-                  чтобы играть было интересно. Что меня удивило, это выбор
-                  некоторых странных локаций, хотя..."
+              reviewText="В целом игра понравилась, кроме порванной упаковки, впрочем на сам игровой картон 
+              это не повлияло. Геймплей хорошо подобран, чтобы играть было интересно. Что меня удивило, 
+              это выбор некоторых странных локаций, хотя на полноту никто и не расчитывал. Представлены 
+              следующие 'не государства': остров Пасхи (это можно понять), Тасмания (тоже известный остров), 
+              Бали (туристический остров), Тенерифе. При этом Эстония, Португалия, Словения место им не нашлось, 
+              зато есть Западная Сахара, Палестина? У меня вопрос, к чему они тут?"
             />
 
             <TextReviews
-              reviewTheme="Странный подбор географических локаций"
-              reviewText="В целом игра понравилась, кроме порванной упаковки, впрочем на
-                  сам игровой картон это не повлияло. Геймплей хорошо подобран,
-                  чтобы играть было интересно. Что меня удивило, это выбор
-                  некоторых странных локаций, хотя..."
+              reviewDate="20 липня 2021р."
+              reviewAuthor="Allavtor"
+              reviewTheme="Цікава гра"
+              reviewText="Придбала гру 'Подорожуємо світом. Гра-ходилка' для доньки та її друзів. Діти одразу ж 
+              полюбили грати у цю гру. Правила гри зрозумілі навіть найменшим: треба кидати кубик та ходити певну 
+              кількість ходів фішками. Гра захоплює учасників, інколи доводиться пересунути фішку далеко назад, або 
+              перелетіти слідуючи стрілці уперід, все це сповено щирими дитячими емоціями. Гра досить яскрава, гарно 
+              оформлена, ігрове поле добре продумане. Діти під час гри вивчають різні країни та їх особливості. Нам 
+              усією сім'єю подобається грати у цю корисну гру. Рекомендуємо до придбання!"
             />
 
             <TextReviews
-              reviewTheme="Странный подбор географических локаций"
-              reviewText="В целом игра понравилась, кроме порванной упаковки, впрочем на
-                  сам игровой картон это не повлияло. Геймплей хорошо подобран,
-                  чтобы играть было интересно. Что меня удивило, это выбор
-                  некоторых странных локаций, хотя..."
+              reviewDate="10 липня 2021р."
+              reviewAuthor="Rina Forsait"
+              reviewTheme="Подорожуємо світом. Гра-ходилка"
+              reviewText='Мої учні та студенти обожнюють грати у настільні ігри. Тому, я стараюся завжди використовувати для 
+              представлення нової теми. "Подорожуємо світом. Гра-ходилка" - стала моїм незамінним помічником для висвітлення 
+              тем: "Travelling", "Countries and Nationalities", "Geography", "Landmarks" та багатьох інших. Сама дошка 
+              для гри зроблена з цупкого картону, фішки та кубик - були в комплекті. Гра приїхала у картонній коробці, 
+              яка була геть подерта. Не знаю, чи то - брак, чи - наша чудо Укрпошта. Але саме ігрове поле, на щастя не 
+              постраждало, тому - все о.к. Ігрове поле я заламінувала і тепер йому точно нічого не загрожує. Гарне кольорове 
+              оформлення, багато підступних ходів і переходів, діти були в захваті. Усі написи зроблені чітким розбірливим 
+              шрифтом українською мовою. Тому я додала ще один варіант використання гри - переклад на англійську. В 
+              такій динамічній та цікавій формі студентам набагато легше запам`ятовувати географічні назви. Це - 
+              більш ефективно, ніж просто зазубрити назви країн з підручника. Грою я дуже задоволена! Чекаю чогось подібного 
+              в англомовному варіанті) Дякую Yakaboo!'
             />
           </div>
 

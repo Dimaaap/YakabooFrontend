@@ -43,6 +43,12 @@
     align-items: center;
   }
 
+  &__star {
+    &:not(.active-star) {
+      filter: opacity(0.2);
+    }
+  }
+
   &__body {
     display: flex;
     flex-direction: column;
