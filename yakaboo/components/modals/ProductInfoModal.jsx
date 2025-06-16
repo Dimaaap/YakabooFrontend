@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 
-export const ProductInfoModal = ({
+const ProductInfoModal = ({
   productImage,
   productTitle,
   productPrice,
@@ -21,10 +21,10 @@ export const ProductInfoModal = ({
           <p className="container-info__old-price cancelled-text">
             {oldPrice} грн
           </p>
-          <buton className="product-info__buy-btn">
+          <button className="product-info__buy-btn">
             <Image src="/icons/cart.svg" alt="" width="18" height="18" />
             Купити
-          </buton>
+          </button>
         </div>
         <div className="product-info__row container-info__row">
           <div className="container-info__status">
@@ -38,3 +38,5 @@ export const ProductInfoModal = ({
     </div>
   );
 };
+
+export default ProductInfoModal;

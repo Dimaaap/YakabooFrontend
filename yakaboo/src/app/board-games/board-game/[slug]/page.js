@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { GameContainer, ProductInfoModal } from '../../../../../components';
+import { GameContainer } from '../../../../../components';
+import { ProductInfoModal } from '../../../../../components/dynamic';
 
 export default function BoardGamePage() {
   const [showProductModal, setShowProductModal] = useState(false);

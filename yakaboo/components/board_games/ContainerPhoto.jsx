@@ -1,7 +1,14 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import Image from 'next/image';
+import { useProductImagesStore } from '../../states';
 
 export const ContainerPhoto = ({ images = null }) => {
+  const { setIsProductImagesOpen } = useProductImagesStore();
+
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+
   return (
     <div className="container__left-part container-photo">
       <button className="container-photo__add-to-fav-button">
@@ -9,14 +16,23 @@ export const ContainerPhoto = ({ images = null }) => {
       </button>
 
       <div className="container-photo__images">
-        <div className="container-photo__big-image">
-          <Image src={images[0]} alt="" width="250" height="150" />
+        <div
+          className="container-photo__big-image"
+          onClick={() => setIsProductImagesOpen(true)}
+        >
+          <Image
+            src={images[activeImageIndex]}
+            alt=""
+            width="200"
+            height="150"
+          />
         </div>
         <div className="container-photo__rest-images">
           {images.map((image, index) => (
             <div
-              className={`container-photo__image-container ${index === 0 ? 'active' : ''}`}
+              className={`container-photo__image-container ${index === activeImageIndex ? 'active' : ''}`}
               key={index}
+              onClick={() => setActiveImageIndex(index)}
             >
               <Image src={image} width="30" height="20" alt="" />
             </div>

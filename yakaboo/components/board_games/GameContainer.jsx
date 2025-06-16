@@ -12,20 +12,34 @@ import {
 } from '../shared';
 import Link from 'next/link';
 import { Advertisment, ContainerPhoto } from '.';
+import { useDeliveryModalStore, useProductImagesStore } from '../../states';
+import { ProductImagesModal } from '../dynamic';
+import { DeliveryInfoModal } from '../modals/DeliveryInfoModal';
 
 export const GameContainer = () => {
   const IMAGES = [
     'https://static.yakaboo.ua/media/cloudflare/product/webp/600x840/i/m/img_52333.jpg',
-    'https://static.yakaboo.ua/media/cloudflare/product/webp/600x840/i/m/img_52333.jpg',
-    'https://static.yakaboo.ua/media/cloudflare/product/webp/600x840/i/m/img_52333.jpg',
+    'https://static.yakaboo.ua/media/cloudflare/product/webp/600x840/i/m/img_52332.jpg',
+    'https://static.yakaboo.ua/media/cloudflare/product/webp/600x840/i/m/img_52361.jpg',
+    'https://static.yakaboo.ua/media/cloudflare/product/webp/600x840/i/m/img_52362.jpg',
   ];
 
   const [showAllFeatures, setShowAllFeatures] = useState(false);
+  const { isProductImagesOpen } = useProductImagesStore();
+  const { isDeliveryModalOpen } = useDeliveryModalStore();
 
   return (
     <div className="container game-container product-container">
       <ContainerPhoto images={IMAGES} />
 
+      {isProductImagesOpen && (
+        <ProductImagesModal
+          productTitle="Подорожуємо світом. Гра-ходилка"
+          images={IMAGES}
+        />
+      )}
+
+      {isDeliveryModalOpen && <DeliveryInfoModal />}
       <div className="product-container__center-part container-main">
         <Breadcrumbs
           linksList={{

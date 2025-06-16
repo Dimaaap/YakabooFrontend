@@ -1,0 +1,87 @@
+@use '../helpers' as *;
+
+.product-images {
+  &__content {
+    position: absolute;
+    height: 100vh;
+    top: 0 !important;
+    left: 80% !important;
+    background-color: var(--color-light);
+    width: rem(1000);
+    height: 100vh !important;
+    padding-inline: 2%;
+    padding-block: 1%;
+    display: flex;
+    flex-direction: column;
+    gap: rem(8);
+    overflow: hidden;
+  }
+
+  &__close {
+    position: fixed;
+    right: 2%;
+  }
+
+  &__title {
+    font-weight: 500;
+  }
+
+  &__body {
+    display: flex;
+    gap: rem(10);
+    flex: 1;
+  }
+
+  &__images-container {
+    width: 80%;
+    height: 90vh;
+    background-color: var(--color-gray-50);
+    border-radius: rem(10);
+    padding: 3%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: rem(10);
+
+    & img {
+      width: 100%;
+      border-radius: rem(10);
+      object-fit: cover;
+    }
+  }
+
+  &__small-images {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    gap: rem(5);
+
+    & p {
+      font-size: rem(14);
+      font-weight: 500;
+    }
+  }
+
+  &__images-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: rem(3);
+  }
+
+  &__image-wrapper {
+    justify-content: center;
+    width: 100%;
+    padding-inline: rem(5);
+    cursor: pointer;
+
+    &.is-active {
+      border: rem(1) solid var(--color-black);
+      border-radius: rem(3);
+    }
+
+    & img {
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+}

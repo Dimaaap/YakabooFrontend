@@ -7,6 +7,15 @@
   z-index: 10;
   height: 100%;
 
+  &__big-image {
+    height: rem(220);
+
+    & img {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
   &__add-to-fav-button {
     border: none;
     padding: 4% 5%;
