@@ -47,14 +47,14 @@
     font-weight: 600;
   }
 
-  &__input {
-    height: rem(45);
-    background-color: var(--color-gray-40);
-    border: rem(1) solid var(--color-gray-50);
-    border-radius: rem(10);
-    padding-inline: 2%;
-    font-weight: 500;
-  }
+  // &__input {
+  //   height: rem(45);
+  //   background-color: var(--color-gray-40);
+  //   border: rem(1) solid var(--color-gray-50);
+  //   border-radius: rem(10);
+  //   padding-inline: 2%;
+  //   font-weight: 500;
+  // }
 
   &__save-btn {
     background-color: var(--color-blue-10);
