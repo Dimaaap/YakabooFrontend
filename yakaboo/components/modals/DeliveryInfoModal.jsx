@@ -4,20 +4,131 @@ import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 
 import { fetchData, handleBackdropClick } from '../../services';
-import { useDeliveryModalStore } from '../../states';
+import { useDeliveryModalStore, useSelectedCountryAndCity } from '../../states';
 import { ModalCloseBtn } from '../shared';
 import Endpoints from '../../endpoints';
 
-export const DeliveryInfoModal = () => {
+const DeliveryInfoModal = () => {
   const { setIsDeliveryModalOpen } = useDeliveryModalStore();
-  const [countries, setCountries] = useState([]);
-  const [selectedCountry, setSelectedCountry] = useState(null);
+
+  const {
+    countries,
+    setCountries,
+    selectedCountry,
+    setSelectedCountry,
+    citiesList,
+    setCitiesList,
+    selectedCity,
+    setSelectedCity,
+  } = useSelectedCountryAndCity();
+
+  const selectFieldsCommonStyles = {
+    placeholder: (provided) => ({
+      ...provided,
+      color: 'black',
+    }),
+    option: (provided, countries) => ({
+      ...provided,
+      backgroundColor: countries.isFocused ? '#E6E8EE' : '#F2F3F6',
+      border: 'none',
+      paddingTop: 0,
+      marginTop: '0px',
+      fontWeight: 500,
+      color: countries.isSelected ? '#ff00c5' : 'black',
+      borderBottom: '1px solid #E6E8EE',
+      paddingTop: '10px',
+      cursor: 'pointer',
+    }),
+    control: (base) => ({
+      ...base,
+      width: '100%',
+      backgroundColor: '#F2F3F6',
+      color: 'red',
+      fontWeight: 500,
+      height: '45px',
+      border: 'none',
+      borderRadius: '10px',
+      paddingLeft: '5px',
+    }),
+    groupHeading: (base) => ({
+      ...base,
+      color: 'black',
+      fontWeight: 500,
+      fontFamily: 'Montserrat',
+    }),
+  };
 
   useEffect(() => {
     fetchData(Endpoints.ALL_COUNTRIES, setCountries, 'countries');
-    const ukraine = countries.find((c) => c.value === 'Україна');
-    setSelectedCountry(ukraine || countries[0]);
   }, []);
+
+  useEffect(() => {
+    if (countries.length) {
+      const defaultCountry = countries[0];
+      setSelectedCountry({
+        value: defaultCountry.title,
+        label: defaultCountry.title,
+      });
+
+      const defaultCity = defaultCountry.cities[0];
+
+      setCitiesList(defaultCountry.cities);
+      setSelectedCity({
+        value: defaultCity.title,
+        lable: defaultCity.title,
+      });
+    }
+  }, [countries]);
+
+  const handleChangeSelectedCountry = (selected) => {
+    setSelectedCountry(selected);
+    const matchedCountry = countries.find(
+      (country) => country.title === selected.value
+    );
+
+    if (matchedCountry) {
+      setCitiesList(matchedCountry.cities);
+      const firstCity = matchedCountry.cities[0];
+      console.log(firstCity);
+
+      if (firstCity) {
+        setSelectedCity({
+          value: firstCity.title,
+          label: firstCity.title,
+        });
+      } else {
+        setSelectedCity(null);
+      }
+    }
+  };
+
+  const createListCitiesAndRegions = () => {
+    const groupedCities = [];
+
+    const regionMap = {};
+
+    citiesList.forEach((city) => {
+      const region = city.region || 'Без регіону';
+
+      if (!regionMap[region]) {
+        regionMap[region] = [];
+      }
+
+      regionMap[region].push({
+        value: city.title,
+        label: city.title,
+      });
+    });
+
+    for (const region in regionMap) {
+      groupedCities.push({
+        label: region,
+        options: regionMap[region],
+      });
+    }
+
+    return groupedCities;
+  };
 
   return (
     <div
@@ -38,60 +149,45 @@ export const DeliveryInfoModal = () => {
               </label>
               {countries.length && (
                 <Select
+                  id="country"
+                  name="country"
                   options={countries.map((country) => ({
                     value: country.title,
                     label: country.title,
                   }))}
-                  value={selectedCountry}
-                  onChange={setSelectedCountry}
+                  //value={selectedCountry}
+                  onChange={(selected) => handleChangeSelectedCountry(selected)}
                   className="delivery-modal__input"
-                  defaultValue={selectedCountry}
-                  placeholder={selectedCountry}
-                  styles={{
-                    placeholder: (provided) => ({
-                      ...provided,
-                      color: 'black',
-                    }),
-                    option: (provided, state) => ({
-                      ...provided,
-                      backgroundColor: '#F2F3F6',
-                      border: 'none',
-                      paddingTop: 0,
-                      marginTop: '0px',
-                      fontWeight: 500,
-                      color: state.isSelected ? '#ff00c5' : 'black',
-                      borderBottom: '1px solid #E6E8EE',
-                      paddingTop: '10px',
-                      cursor: 'pointer',
-                    }),
-                    control: (base) => ({
-                      ...base,
-                      width: '100%',
-                      backgroundColor: '#F2F3F6',
-                      color: 'red',
-                      fontWeight: 500,
-                      height: '45px',
-                      border: 'none',
-                      borderRadius: '10px',
-                      paddingLeft: '5px',
-                    }),
-                  }}
+                  placeholder={countries[0]?.title || selectedCountry}
+                  styles={selectFieldsCommonStyles}
                 />
               )}
-              {(selectedCountry && console.log(selectedCountry)) ||
-                console.log('null')}
             </div>
             <div className="delivery-modal__field-group">
+              {}
               <label htmlFor="city" className="delivery-modal__label">
                 Місто *
               </label>
-              <input
-                type="select"
-                defaultValue="Київ"
-                className="delivery-modal__input"
-                name="city"
-                id="city"
-              />
+              {console.log(selectedCity)}
+              {citiesList && (
+                <Select
+                  id="city"
+                  name="city"
+                  options={createListCitiesAndRegions()}
+                  defaultValue={selectedCity}
+                  onChange={(selected) => setSelectedCity(selected)}
+                  className="delivery-modal__input"
+                  placeholder={selectedCity?.title || ''}
+                  styles={selectFieldsCommonStyles}
+                  formatOptionLabel={(data, { context }) =>
+                    context === 'menu' ? (
+                      <span style={{ paddingLeft: '12px' }}>{data.label}</span>
+                    ) : (
+                      data.label
+                    )
+                  }
+                />
+              )}
             </div>
             <button className="delivery-modal__save-btn" type="submit">
               Зберегти
@@ -102,3 +198,5 @@ export const DeliveryInfoModal = () => {
     </div>
   );
 };
+
+export default DeliveryInfoModal;

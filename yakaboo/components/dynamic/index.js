@@ -45,6 +45,10 @@ export const ProductInfoModal = dynamic(
   () => import('../modals/ProductInfoModal')
 );
 
+export const DeliveryInfoModal = dynamic(
+  () => import('../modals/DeliveryInfoModal')
+);
+
 export const ChatBtn = dynamic(() => import('../shared/ChatBtn'));
 export const DescriptionText = dynamic(
   () => import('../board_games/DecriptionText')

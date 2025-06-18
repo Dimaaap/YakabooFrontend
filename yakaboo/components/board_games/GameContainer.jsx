@@ -13,8 +13,7 @@ import {
 import Link from 'next/link';
 import { Advertisment, ContainerPhoto } from '.';
 import { useDeliveryModalStore, useProductImagesStore } from '../../states';
-import { ProductImagesModal } from '../dynamic';
-import { DeliveryInfoModal } from '../modals/DeliveryInfoModal';
+import { ProductImagesModal, DeliveryInfoModal } from '../dynamic';
 
 export const GameContainer = () => {
   const IMAGES = [
