@@ -4,13 +4,18 @@ import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 
 import { fetchData, handleBackdropClick } from '../../services';
-import { useDeliveryModalStore, useSelectedCountryAndCity } from '../../states';
+import {
+  useDeliveryCityStore,
+  useDeliveryModalStore,
+  useSelectedCountryAndCity,
+} from '../../states';
 import { ModalCloseBtn } from '../shared';
 import Endpoints from '../../endpoints';
 
 const DeliveryInfoModal = () => {
   const { setIsDeliveryModalOpen } = useDeliveryModalStore();
 
+  const { deliveryCity, setDeliveryCity } = useDeliveryCityStore();
   const {
     countries,
     setCountries,
@@ -89,7 +94,6 @@ const DeliveryInfoModal = () => {
     if (matchedCountry) {
       setCitiesList(matchedCountry.cities);
       const firstCity = matchedCountry.cities[0];
-      console.log(firstCity);
 
       if (firstCity) {
         setSelectedCity({
@@ -130,6 +134,15 @@ const DeliveryInfoModal = () => {
     return groupedCities;
   };
 
+  const handleDeliveryClick = () => {
+    if (selectedCity) {
+      setDeliveryCity(selectedCity.value);
+    } else {
+      setDeliveryCity(selectedCountry.value);
+    }
+    setIsDeliveryModalOpen(false);
+  };
+
   return (
     <div
       className="menu delivery-modal"
@@ -155,7 +168,6 @@ const DeliveryInfoModal = () => {
                     value: country.title,
                     label: country.title,
                   }))}
-                  //value={selectedCountry}
                   onChange={(selected) => handleChangeSelectedCountry(selected)}
                   className="delivery-modal__input"
                   placeholder={countries[0]?.title || selectedCountry}
@@ -168,7 +180,6 @@ const DeliveryInfoModal = () => {
               <label htmlFor="city" className="delivery-modal__label">
                 Місто *
               </label>
-              {console.log(selectedCity)}
               {citiesList && (
                 <Select
                   id="city"
@@ -189,7 +200,11 @@ const DeliveryInfoModal = () => {
                 />
               )}
             </div>
-            <button className="delivery-modal__save-btn" type="submit">
+            <button
+              className="delivery-modal__save-btn"
+              type="button"
+              onClick={handleDeliveryClick}
+            >
               Зберегти
             </button>
           </form>

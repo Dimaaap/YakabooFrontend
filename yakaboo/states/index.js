@@ -12,3 +12,4 @@ export { useRedirectAfterLogoutStore } from './RedirectAfterLogout';
 export { useProductImagesStore } from './ProductImagesModalStore';
 export { useDeliveryModalStore } from './DeliveryModalStore';
 export { useSelectedCountryAndCity } from './SelectedCountryAndCity';
+export { useDeliveryCityStore } from './DeliveryCityStore';

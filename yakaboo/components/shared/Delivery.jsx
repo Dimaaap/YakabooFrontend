@@ -1,9 +1,10 @@
 import React from 'react';
 import Image from 'next/image';
-import { useDeliveryModalStore } from '../../states';
+import { useDeliveryCityStore, useDeliveryModalStore } from '../../states';
 
-export const Delivery = ({ city = 'Київ' }) => {
+export const Delivery = () => {
   const { setIsDeliveryModalOpen } = useDeliveryModalStore();
+  const { deliveryCity } = useDeliveryCityStore();
 
   return (
     <div
@@ -14,9 +15,13 @@ export const Delivery = ({ city = 'Київ' }) => {
         <Image src="/icons/location.svg" alt="" height="40" width="40" />
       </div>
       <div className="board-delivery__text">
-        <p className="board-delivery__city-title">{city}</p>
+        <p className="board-delivery__city-title">
+          {deliveryCity ? deliveryCity : 'Вказати місто доставки'}
+        </p>
         <p className="board-delivery__city-description">
-          Нижче наведені умови доставки
+          {deliveryCity
+            ? 'Нижче наведені умови доставки'
+            : 'Щоб бачити точні умови доставки'}
         </p>
       </div>
     </div>

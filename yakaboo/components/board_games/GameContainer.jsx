@@ -333,7 +333,7 @@ export const GameContainer = () => {
 
           <PayByParts />
 
-          <Delivery city="Київ" />
+          <Delivery />
 
           <DeliveryTerms />
         </div>
