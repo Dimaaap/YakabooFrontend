@@ -1,31 +1,20 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 
 import { fetchData, handleBackdropClick } from '../../services';
-import {
-  useDeliveryCityStore,
-  useDeliveryModalStore,
-  useSelectedCountryAndCity,
-} from '../../states';
+
 import { ModalCloseBtn } from '../shared';
 import Endpoints from '../../endpoints';
+import { useDeliveryModalStore } from '../../states';
 
 const DeliveryInfoModal = () => {
-  const { setIsDeliveryModalOpen } = useDeliveryModalStore();
+  const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedCity, setSelectedCity] = useState(null);
 
-  const { deliveryCity, setDeliveryCity } = useDeliveryCityStore();
-  const {
-    countries,
-    setCountries,
-    selectedCountry,
-    setSelectedCountry,
-    citiesList,
-    setCitiesList,
-    selectedCity,
-    setSelectedCity,
-  } = useSelectedCountryAndCity();
+  const { setIsDeliveryModalOpen } = useDeliveryModalStore();
 
   const selectFieldsCommonStyles = {
     placeholder: (provided) => ({
@@ -68,79 +57,44 @@ const DeliveryInfoModal = () => {
   }, []);
 
   useEffect(() => {
-    if (countries.length) {
+    if (countries.length > 0 && !selectedCountry) {
       const defaultCountry = countries[0];
-      setSelectedCountry({
-        value: defaultCountry.title,
-        label: defaultCountry.title,
-      });
+      setSelectedCountry(defaultCountry);
 
-      const defaultCity = defaultCountry.cities[0];
-
-      setCitiesList(defaultCountry.cities);
-      setSelectedCity({
-        value: defaultCity.title,
-        lable: defaultCity.title,
-      });
+      if (defaultCountry?.cities?.length) {
+        setSelectedCity(defaultCountry.cities[0]);
+      }
     }
   }, [countries]);
 
-  const handleChangeSelectedCountry = (selected) => {
-    setSelectedCountry(selected);
+  const handleChangeSelectedCountry = (selectedCountry) => {
     const matchedCountry = countries.find(
-      (country) => country.title === selected.value
+      (country) => country.title === selectedCountry.value
     );
 
-    if (matchedCountry) {
-      setCitiesList(matchedCountry.cities);
-      const firstCity = matchedCountry.cities[0];
+    setSelectedCountry(matchedCountry);
 
-      if (firstCity) {
-        setSelectedCity({
-          value: firstCity.title,
-          label: firstCity.title,
-        });
-      } else {
-        setSelectedCity(null);
-      }
+    if (matchedCountry?.cities?.length) {
+      setSelectedCity(matchedCountry.cities[0]);
+    } else {
+      setSelectedCity(null);
     }
   };
 
-  const createListCitiesAndRegions = () => {
-    const groupedCities = [];
+  const handleChangeSelectedCity = (selectedCity) => {
+    const matchedCity = selectedCountry?.cities?.find(
+      (city) => city.title === selectedCity.value
+    );
+    setSelectedCity(matchedCity);
+  };
 
-    const regionMap = {};
-
-    citiesList.forEach((city) => {
-      const region = city.region || 'Без регіону';
-
-      if (!regionMap[region]) {
-        regionMap[region] = [];
-      }
-
-      regionMap[region].push({
+  const getCountryCities = () => {
+    return (
+      selectedCountry?.cities?.map((city) => ({
         value: city.title,
         label: city.title,
-      });
-    });
-
-    for (const region in regionMap) {
-      groupedCities.push({
-        label: region,
-        options: regionMap[region],
-      });
-    }
-
-    return groupedCities;
-  };
-
-  const handleDeliveryClick = () => {
-    if (selectedCity) {
-      setDeliveryCity(selectedCity.value);
-    } else {
-      setDeliveryCity(selectedCountry.value);
-    }
-    setIsDeliveryModalOpen(false);
+      })) || []
+    );
   };
 
   return (
@@ -168,43 +122,42 @@ const DeliveryInfoModal = () => {
                     value: country.title,
                     label: country.title,
                   }))}
-                  onChange={(selected) => handleChangeSelectedCountry(selected)}
+                  value={
+                    selectedCountry
+                      ? {
+                          value: selectedCountry.title,
+                          label: selectedCountry.title,
+                        }
+                      : null
+                  }
+                  onChange={handleChangeSelectedCountry}
+                  placeholder={selectedCountry?.title}
                   className="delivery-modal__input"
-                  placeholder={countries[0]?.title || selectedCountry}
                   styles={selectFieldsCommonStyles}
                 />
               )}
             </div>
             <div className="delivery-modal__field-group">
-              {}
+              {console.log(selectedCity)}
               <label htmlFor="city" className="delivery-modal__label">
                 Місто *
               </label>
-              {citiesList && (
-                <Select
-                  id="city"
-                  name="city"
-                  options={createListCitiesAndRegions()}
-                  defaultValue={selectedCity}
-                  onChange={(selected) => setSelectedCity(selected)}
-                  className="delivery-modal__input"
-                  placeholder={selectedCity?.title || ''}
-                  styles={selectFieldsCommonStyles}
-                  formatOptionLabel={(data, { context }) =>
-                    context === 'menu' ? (
-                      <span style={{ paddingLeft: '12px' }}>{data.label}</span>
-                    ) : (
-                      data.label
-                    )
-                  }
-                />
-              )}
+              <Select
+                id="city"
+                name="city"
+                options={getCountryCities()}
+                value={
+                  selectedCity
+                    ? { value: selectedCity.title, label: selectedCity.title }
+                    : ''
+                }
+                styles={selectFieldsCommonStyles}
+                onChange={handleChangeSelectedCity}
+                placeholder={selectedCity?.title}
+                className="delivery-modal__input"
+              />
             </div>
-            <button
-              className="delivery-modal__save-btn"
-              type="button"
-              onClick={handleDeliveryClick}
-            >
+            <button className="delivery-modal__save-btn" type="button">
               Зберегти
             </button>
           </form>
