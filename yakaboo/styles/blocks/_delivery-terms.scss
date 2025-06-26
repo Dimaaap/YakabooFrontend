@@ -8,11 +8,39 @@
 
   &__row {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: rem(15);
     border-bottom: rem(1) solid var(--color-gray-50);
     padding-block: 4%;
     cursor: pointer;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: rem(10);
+    transition: all 0.2s ease;
+
+    &.hidden-body {
+      @include visually-hidden;
+    }
+  }
+
+  &__delivery {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    .delivery-cell {
+      max-width: 50%;
+    }
   }
 
   &__cell {
@@ -20,6 +48,14 @@
     align-items: center;
     gap: rem(3);
     font-weight: 500;
+
+    & img {
+      transition: all 0.3s ease;
+    }
+
+    & .rotated-img {
+      rotate: 180deg;
+    }
   }
 
   &__title {
@@ -28,7 +64,7 @@
 
   &__price {
     color: var(--color-gray-30);
-    font-weight: 500;
+    font-weight: 600;
   }
 
   &__additional {
