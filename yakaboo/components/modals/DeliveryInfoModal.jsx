@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Select from 'react-select';
 
-import { fetchData, handleBackdropClick } from '../../services';
+import { CookiesWorker, fetchData, handleBackdropClick } from '../../services';
 
 import { ModalCloseBtn } from '../shared';
 import Endpoints from '../../endpoints';
-import { useDeliveryModalStore } from '../../states';
+import { useDeliveryCityStore, useDeliveryModalStore } from '../../states';
 
 const DeliveryInfoModal = () => {
   const [countries, setCountries] = useState([]);
@@ -15,6 +15,8 @@ const DeliveryInfoModal = () => {
   const [selectedCity, setSelectedCity] = useState(null);
 
   const { setIsDeliveryModalOpen } = useDeliveryModalStore();
+  const { setDeliveryLocation, setDeliveryLocationType } =
+    useDeliveryCityStore();
 
   const selectFieldsCommonStyles = {
     placeholder: (provided) => ({
@@ -97,6 +99,37 @@ const DeliveryInfoModal = () => {
     );
   };
 
+  const handleSaveDeliveryLocation = () => {
+    setIsDeliveryModalOpen(false);
+    if (!selectedCity) {
+      CookiesWorker.set('delivery', selectedCountry.title);
+      CookiesWorker.set('delivery_location_type', 'country');
+      setDeliveryLocation(selectedCountry);
+      setDeliveryLocationType('country');
+    } else {
+      CookiesWorker.set('delivery', selectedCity.title);
+      CookiesWorker.set('delivery_location_type', 'city');
+      setDeliveryLocation(selectedCity);
+      setDeliveryLocationType('city');
+    }
+  };
+
+  const selectedCountryOption = useMemo(() => {
+    return selectedCountry
+      ? {
+          value: selectedCountry.title,
+          label: selectedCountry.title,
+        }
+      : null;
+  }, [selectedCountry]);
+
+  let countriesOptions = useMemo(() => {
+    return countries.map((country) => ({
+      value: country.title,
+      label: country.title,
+    }));
+  }, [countries]);
+
   return (
     <div
       className="menu delivery-modal"
@@ -118,18 +151,8 @@ const DeliveryInfoModal = () => {
                 <Select
                   id="country"
                   name="country"
-                  options={countries.map((country) => ({
-                    value: country.title,
-                    label: country.title,
-                  }))}
-                  value={
-                    selectedCountry
-                      ? {
-                          value: selectedCountry.title,
-                          label: selectedCountry.title,
-                        }
-                      : null
-                  }
+                  options={countriesOptions}
+                  value={selectedCountryOption}
                   onChange={handleChangeSelectedCountry}
                   placeholder={selectedCountry?.title}
                   className="delivery-modal__input"
@@ -138,7 +161,6 @@ const DeliveryInfoModal = () => {
               )}
             </div>
             <div className="delivery-modal__field-group">
-              {console.log(selectedCity)}
               <label htmlFor="city" className="delivery-modal__label">
                 Місто *
               </label>
@@ -157,7 +179,11 @@ const DeliveryInfoModal = () => {
                 className="delivery-modal__input"
               />
             </div>
-            <button className="delivery-modal__save-btn" type="button">
+            <button
+              className="delivery-modal__save-btn"
+              type="button"
+              onClick={handleSaveDeliveryLocation}
+            >
               Зберегти
             </button>
           </form>

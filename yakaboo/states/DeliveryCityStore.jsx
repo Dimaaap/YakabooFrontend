@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 
 export const useDeliveryCityStore = create((set) => ({
-  deliveryCity: null,
-  deliveryCountry: null,
-  setDeliveryCountry: (value) => set({ deliveryCountry: value }),
-  setDeliveryCity: (value) => set({ deliveryCity: value }),
+  deliveryLocation: null,
+  deliveryLocationType: null,
+  setDeliveryLocation: (value) => set({ deliveryLocation: value }),
+  setDeliveryLocationType: (value) => set({ deliveryLocationType: value }),
 }));

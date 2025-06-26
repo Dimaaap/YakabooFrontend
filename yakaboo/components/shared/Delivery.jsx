@@ -4,7 +4,7 @@ import { useDeliveryCityStore, useDeliveryModalStore } from '../../states';
 
 export const Delivery = () => {
   const { setIsDeliveryModalOpen } = useDeliveryModalStore();
-  const { deliveryCity } = useDeliveryCityStore();
+  const { deliveryLocation } = useDeliveryCityStore();
 
   return (
     <div
@@ -16,10 +16,10 @@ export const Delivery = () => {
       </div>
       <div className="board-delivery__text">
         <p className="board-delivery__city-title">
-          {deliveryCity ? deliveryCity : 'Вказати місто доставки'}
+          {deliveryLocation ? deliveryLocation.title : 'Вказати місто доставки'}
         </p>
         <p className="board-delivery__city-description">
-          {deliveryCity
+          {deliveryLocation
             ? 'Нижче наведені умови доставки'
             : 'Щоб бачити точні умови доставки'}
         </p>

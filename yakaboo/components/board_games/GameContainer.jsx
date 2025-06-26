@@ -12,7 +12,11 @@ import {
 } from '../shared';
 import Link from 'next/link';
 import { Advertisment, ContainerPhoto } from '.';
-import { useDeliveryModalStore, useProductImagesStore } from '../../states';
+import {
+  useDeliveryCityStore,
+  useDeliveryModalStore,
+  useProductImagesStore,
+} from '../../states';
 import { ProductImagesModal, DeliveryInfoModal } from '../dynamic';
 
 export const GameContainer = () => {
@@ -26,6 +30,7 @@ export const GameContainer = () => {
   const [showAllFeatures, setShowAllFeatures] = useState(false);
   const { isProductImagesOpen } = useProductImagesStore();
   const { isDeliveryModalOpen } = useDeliveryModalStore();
+  const { deliveryLocation } = useDeliveryCityStore();
 
   return (
     <div className="container game-container product-container">
@@ -334,8 +339,9 @@ export const GameContainer = () => {
           <PayByParts />
 
           <Delivery />
-
-          <DeliveryTerms />
+          {deliveryLocation && (
+            <DeliveryTerms deliveryLocation={deliveryLocation} />
+          )}
         </div>
       </div>
     </div>
