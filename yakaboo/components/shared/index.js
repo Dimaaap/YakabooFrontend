@@ -20,8 +20,5 @@ export { OrdersSidebar } from './OrdersSidebar';
 export { FilterForm } from './FilterForm';
 export { ProductCard } from './ProductCard';
 export { ModalCloseBtn } from './ModalCloseBtn';
-export { BuyBtn } from './BuyBtn';
-export { PayByParts } from './PayByParts';
-export { Delivery } from './Delivery';
 export { DeliveryTerms } from './DeliveryTerms';
 export { TextReviews } from './TextReviews';

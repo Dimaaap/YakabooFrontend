@@ -1,0 +1,41 @@
+@use '../helpers' as *;
+
+.letters {
+  font-size: rem(16);
+  width: 100%;
+  background-color: var(--color-light);
+  display: grid;
+  padding-block: 1%;
+  padding-inline: 2%;
+  row-gap: rem(5);
+  grid-template-columns: repeat(29, 1fr);
+  border-radius: rem(10);
+  font-weight: 500;
+  column-gap: rem(1);
+
+  &__letter-link {
+    padding: 0%;
+    justify-content: center;
+    text-align: center;
+    background-color: transparent;
+    border-radius: rem(50);
+    object-fit: contain;
+    width: rem(30);
+    height: rem(30);
+    padding-top: rem(4);
+    transition: all 0.3s ease;
+
+    &.is-active {
+      background-color: var(--color-blue-10);
+      color: var(--color-light);
+
+      &:hover {
+        background-color: var(--color-blue-10);
+      }
+    }
+
+    &:hover {
+      background-color: var(--color-gray-40);
+    }
+  }
+}

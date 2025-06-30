@@ -2,22 +2,22 @@
 
 import Image from 'next/image';
 import React, { useState } from 'react';
-import {
-  Breadcrumbs,
-  BuyBtn,
-  Delivery,
-  DeliveryTerms,
-  PayByParts,
-  TextReviews,
-} from '../shared';
+import { Breadcrumbs, DeliveryTerms, TextReviews } from '../shared';
 import Link from 'next/link';
-import { Advertisment, ContainerPhoto } from '.';
+import { ContainerPhoto } from '.';
 import {
   useDeliveryCityStore,
   useDeliveryModalStore,
   useProductImagesStore,
 } from '../../states';
-import { ProductImagesModal, DeliveryInfoModal } from '../dynamic';
+import {
+  ProductImagesModal,
+  DeliveryInfoModal,
+  Delivery,
+  PayByParts,
+  BuyBtn,
+  Advertisment,
+} from '../dynamic';
 
 export const GameContainer = () => {
   const IMAGES = [

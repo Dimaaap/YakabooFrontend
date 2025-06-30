@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { useDeliveryCityStore, useDeliveryModalStore } from '../../states';
 
-export const Delivery = () => {
+const Delivery = () => {
   const { setIsDeliveryModalOpen } = useDeliveryModalStore();
   const { deliveryLocation } = useDeliveryCityStore();
 
@@ -27,3 +27,5 @@ export const Delivery = () => {
     </div>
   );
 };
+
+export default Delivery;

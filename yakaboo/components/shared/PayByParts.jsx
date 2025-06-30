@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export const PayByParts = () => {
+const PayByParts = () => {
   return (
     <div className="container-info__pay-by-parts pay-by-parts">
       <p className="pay-by-parts__title">
@@ -39,3 +39,5 @@ export const PayByParts = () => {
     </div>
   );
 };
+
+export default PayByParts;

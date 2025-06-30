@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-export const Advertisment = ({ href = '#' }) => {
+const Advertisment = ({ href = '#' }) => {
   return (
     <Link href={href} className="container-info__ad advertisment">
       <div className="advertisment__red-badge">Акція</div>
@@ -11,3 +11,5 @@ export const Advertisment = ({ href = '#' }) => {
     </Link>
   );
 };
+
+export default Advertisment;

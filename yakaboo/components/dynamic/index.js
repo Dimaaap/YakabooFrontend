@@ -53,3 +53,10 @@ export const ChatBtn = dynamic(() => import('../shared/ChatBtn'));
 export const DescriptionText = dynamic(
   () => import('../board_games/DecriptionText')
 );
+
+export const Delivery = dynamic(() => import('../shared/Delivery'));
+export const PayByParts = dynamic(() => import('../shared/PayByParts'));
+export const BuyBtn = dynamic(() => import('../shared/BuyBtn'));
+export const Advertisment = dynamic(
+  () => import('../board_games/Advertisment')
+);
