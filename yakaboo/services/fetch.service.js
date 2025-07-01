@@ -1,3 +1,5 @@
+import Endpoints from '../endpoints';
+
 const getDataFromLocalStorage = (setState, localStorageName) => {
   if (typeof window === 'undefined') return false;
 
@@ -47,5 +49,17 @@ export const fetchData = async (
     }
   } catch (error) {
     console.error('Помилка', error);
+  }
+};
+
+export const fetchSearchResults = async (query, setResults) => {
+  try {
+    const res = await fetch(
+      `http://127.0.0.1:8003/publishing/search/?query=${query}`
+    );
+    const data = await res.json();
+    setResults(data);
+  } catch (err) {
+    console.error(err);
   }
 };

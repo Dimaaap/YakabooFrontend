@@ -1,0 +1,28 @@
+@use '../helpers' as *;
+
+.data {
+  width: 100%;
+  background-color: var(--color-light);
+  border-radius: rem(10);
+  padding: 2%;
+
+  &__container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: rem(40);
+    font-size: rem(16);
+    font-weight: 500;
+
+    &-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  &__books-count {
+    color: var(--color-gray-30);
+    font-size: rem(14);
+    font-weight: 500;
+  }
+}
