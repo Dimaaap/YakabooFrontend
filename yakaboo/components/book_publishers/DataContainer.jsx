@@ -19,7 +19,7 @@ export const DataContainer = () => {
       fetchSearchResults(debouncedSearchValue, setPublishings);
     } else {
       fetchData(
-        `http://localhost:8003/publishing/first-letter/${activeLetter}`,
+        `http://localhost:8004/publishing/first-letter/${activeLetter || 'А'}`,
         setPublishings
       );
     }
@@ -31,7 +31,7 @@ export const DataContainer = () => {
         {publishings &&
           publishings.map((pub) => (
             <Link
-              href={`book_publisher/view/${pub.slug}`}
+              href={`/book_publisher/view/${pub.slug}`}
               key={pub.id}
               className="data__container-link"
             >

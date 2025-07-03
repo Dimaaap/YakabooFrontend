@@ -1,0 +1,8 @@
+@use '../helpers' as *;
+
+.publisher {
+  padding: 1% 2%;
+  display: flex;
+  flex-direction: column;
+  gap: rem(15);
+}

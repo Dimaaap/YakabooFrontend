@@ -1,0 +1,35 @@
+@use '../helpers' as *;
+
+.publishing-header {
+  background-color: var(--color-light);
+  border-radius: rem(10);
+  padding: 2%;
+  display: flex;
+  flex-direction: column;
+  gap: rem(20);
+
+  &__title {
+    font-weight: 600;
+  }
+
+  &__section {
+    .right-section {
+      display: flex;
+      flex-direction: column;
+      gap: rem(20);
+    }
+  }
+
+  &__container {
+    display: grid;
+    grid-template-columns: 20% 75%;
+    width: 100%;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  &__description {
+    font-size: rem(14);
+    font-weight: 500;
+  }
+}
