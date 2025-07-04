@@ -48,7 +48,7 @@ export const fetchData = async (
       setState(data);
     }
   } catch (error) {
-    console.error('Помилка', error);
+    console.error(error);
   }
 };
 
