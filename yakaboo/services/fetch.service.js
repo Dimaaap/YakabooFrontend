@@ -55,7 +55,7 @@ export const fetchData = async (
 export const fetchSearchResults = async (query, setResults) => {
   try {
     const res = await fetch(
-      `http://127.0.0.1:8003/publishing/search/?query=${query}`
+      `http://127.0.0.1:8004/publishing/search/?query=${query}`
     );
     const data = await res.json();
     setResults(data);

@@ -16,7 +16,7 @@
     .right-section {
       display: flex;
       flex-direction: column;
-      gap: rem(20);
+      gap: rem(30);
     }
   }
 
@@ -25,11 +25,27 @@
     grid-template-columns: 20% 75%;
     width: 100%;
     gap: 1rem;
-    align-items: center;
+    align-items: start;
   }
 
   &__description {
     font-size: rem(14);
     font-weight: 500;
+  }
+
+  &__view-more {
+    background-color: transparent;
+    display: flex;
+    font-size: rem(14);
+    border: none;
+    margin-top: rem(10);
+    margin-left: 0;
+    align-items: center;
+    font-weight: 500;
+    color: var(--color-gray-30);
+  }
+
+  &__rotated-img {
+    transform: rotate(180deg);
   }
 }
