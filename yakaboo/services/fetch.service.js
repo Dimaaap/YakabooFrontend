@@ -52,11 +52,21 @@ export const fetchData = async (
   }
 };
 
-export const fetchSearchResults = async (query, setResults) => {
+export const fetchSearchResults = async (
+  query,
+  setResults,
+  authors = false
+) => {
   try {
-    const res = await fetch(
-      `http://127.0.0.1:8004/publishing/search/?query=${query}`
-    );
+    let res = null;
+    if (!authors) {
+      res = await fetch(
+        `http://127.0.0.1:8004/publishing/search/?query=${query}`
+      );
+    } else {
+      res = await fetch(`http://localhost:8004/authors/search/?query=${query}`);
+    }
+
     const data = await res.json();
     setResults(data);
   } catch (err) {

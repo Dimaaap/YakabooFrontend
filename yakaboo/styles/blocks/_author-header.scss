@@ -1,120 +1,124 @@
-@use "../helpers" as *;
+@use '../helpers' as *;
 
 .author-header {
-    background-color: var(--color-light);
+  background-color: var(--color-light);
+  display: flex;
+  gap: 1%;
+  border-radius: rem(20);
+  padding: 1.5%;
+
+  &__left {
+    width: 30%;
+  }
+
+  &__images {
     display: flex;
+    flex-direction: column;
+    gap: rem(10);
+    width: 100%;
+  }
+
+  &__main-image {
+    width: fluid(250, 150);
+  }
+
+  & img {
+    border-radius: rem(10);
+    cursor: pointer;
+  }
+
+  &__small-images-row {
+    display: flex;
+    gap: rem(12);
+
+    & img {
+      border-radius: rem(5);
+      width: fluid(40);
+      height: rem(40);
+    }
+  }
+
+  &__center {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: rem(20);
+  }
+
+  &__title {
+    @include fluid-text(23, 18);
+    font-weight: 600;
+  }
+
+  &__info-table {
+    font-size: rem(14);
+    font-weight: 500;
+    color: var(--color-gray-20);
+    display: flex;
+    flex-direction: column;
     gap: 1%;
-    border-radius: rem(20);
-    padding: 1.5%;
+    width: 40%;
+  }
 
-    &__left {
-        width: 30%;
+  &__table-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1%;
+    padding-bottom: 2%;
+
+    &:first-child {
+      border-bottom: rem(2) solid var(--color-gray-40);
     }
 
-    &__images {
-        display: flex;
-        flex-direction: column;
-        gap: rem(10);
-        width: 100%;
+    &:last-child {
+      padding-top: 2%;
     }
+  }
 
-    &__main-image {
-        width: fluid(250, 150);
+  &__table-cell {
+    &.left-cell {
+      color: var(--color-black);
+    }
+  }
+
+  &__short-desc,
+  &__long-desc {
+    font-size: rem(14);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  &__long-desc-title {
+    @include fluid-text(20, 16);
+    font-weight: 600;
+  }
+
+  &__more-info {
+    display: flex;
+    align-items: center;
+    gap: rem(5);
+    font-size: rem(14);
+    font-weight: 500;
+    color: var(--color-gray-30);
+    border: none;
+    background-color: transparent;
+    padding: 0;
+
+    &:hover {
+      color: var(--color-gray-20);
     }
 
     & img {
-        border-radius: rem(10);
-        cursor: pointer;
+      width: rem(12);
+      transition: all 0.3s ease;
+
+      &.rotated {
+        transform: rotate(180deg);
+      }
     }
+  }
 
-    &__small-images-row {
-        display: flex;
-        gap: rem(12);
-
-        & img {
-            border-radius: rem(5);
-            width: fluid(40);
-            height: rem(40);
-            
-        }
-    }
-
-    &__center {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: rem(20);
-    }
-
-    &__title {
-        @include fluid-text(23, 18);
-        font-weight: 600;
-    }
-
-    &__info-table {
-        font-size: rem(14);
-        font-weight: 500;
-        color: var(--color-gray-20);
-        display: flex;
-        flex-direction: column;
-        gap: 1%;
-        width: 40%;
-    }
-
-    &__table-row {
-        display: flex;
-        justify-content: space-between;
-        gap: 1%;
-        padding-bottom: 2%;
-
-        &:first-child {
-            border-bottom: rem(2) solid var(--color-gray-40);
-        }
-
-        &:last-child {
-            padding-top: 2%;
-        }
-    }
-
-    &__table-cell {
-        &.left-cell {
-            color: var(--color-black);
-        }
-    }
-
-    &__short-desc,
-    &__long-desc {
-        font-size: rem(14);
-        font-weight: 500;
-        letter-spacing: 0.01em;
-    }
-
-    &__long-desc-title {
-        @include fluid-text(20, 16);
-        font-weight: 600;
-    }
-
-    &__more-info {
-        display: flex;
-        align-items: center;
-        gap: rem(5);
-        font-size: rem(14);
-        font-weight: 500;
-        color: var(--color-gray-30);
-        border: none;
-        background-color: transparent;
-        padding: 0;
-
-        &:hover {
-            color: var(--color-gray-20);
-        }
-
-        & img {
-            width: rem(12);
-        }
-    }
-
-    &__right {
-        width: 30%;
-    }
+  &__right {
+    width: 30%;
+  }
 }

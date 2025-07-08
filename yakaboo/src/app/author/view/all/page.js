@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  DataContainer,
   LanguagesSidebar,
   SearchBar,
 } from '../../../../../components/book_publishers';
@@ -21,6 +22,7 @@ export default function AllAuthorsPage() {
         <div className="authors__right-section publishers__section publishers__right-section">
           <Letters lang={activeLang} />
           <SearchBar />
+          <DataContainer bookPublishers={false} />
         </div>
       </div>
     </div>
