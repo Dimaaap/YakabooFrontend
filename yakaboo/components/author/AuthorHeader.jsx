@@ -106,9 +106,9 @@ export const AuthorHeader = ({ author }) => {
         )}
       </div>
 
-      <div className="author-header__right">
+      {/*<div className="author-header__right">
         <AuthorFacts factText="Кінг встановив для себе певну письменницьку 'квоту' - 2000 слів кожен день." />
-      </div>
+      </div>*/}
     </div>
   );
 };
