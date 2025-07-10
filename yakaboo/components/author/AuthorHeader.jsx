@@ -9,12 +9,20 @@ import { fetchData } from '../../services';
 
 export const AuthorHeader = ({ author }) => {
   const [authorImages, setAuthorImages] = useState([]);
+  const [authorFact, setAuthorFact] = useState(null);
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     fetchData(
       `http://localhost:8004/authors/${author.id}/images`,
       setAuthorImages
+    );
+  }, []);
+
+  useEffect(() => {
+    fetchData(
+      `http://localhost:8004/author_facts/author/${author.id}`,
+      setAuthorFact
     );
   }, []);
 
@@ -106,9 +114,11 @@ export const AuthorHeader = ({ author }) => {
         )}
       </div>
 
-      {/*<div className="author-header__right">
-        <AuthorFacts factText="Кінг встановив для себе певну письменницьку 'квоту' - 2000 слів кожен день." />
-      </div>*/}
+      {authorFact && authorFact.length > 0 && (
+        <div className="author-header__right">
+          <AuthorFacts factText={authorFact.fact_text} />
+        </div>
+      )}
     </div>
   );
 };
