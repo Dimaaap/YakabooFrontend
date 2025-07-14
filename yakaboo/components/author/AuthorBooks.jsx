@@ -3,7 +3,7 @@ import React from 'react'
 import Link from 'next/link';
 import { BookInfoBadge, Badge, Stars } from '../shared';
 
-export const AuthorBooks = () => {
+export const AuthorBooks = ({authorId}) => {
   return (
     <div className="author-books">
       <div className="author-books__header">
