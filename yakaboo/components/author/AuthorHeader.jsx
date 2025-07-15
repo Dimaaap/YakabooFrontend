@@ -12,8 +12,6 @@ export const AuthorHeader = ({ author }) => {
   const [authorFact, setAuthorFact] = useState(null);
   const [showAll, setShowAll] = useState(false);
 
-  console.log(author.id)
-
   useEffect(() => {
     fetchData(
       `http://localhost:8004/authors/${author.id}/images`,
@@ -91,15 +89,16 @@ export const AuthorHeader = ({ author }) => {
             )}
           </div>
         )}
-
-        {showAll && author.description || author.description ? (
-          <p className="author-header__long-desc">{author.description}</p>
-        ) : (
-          <p className="author-header__short-desc">
-            {author.short_description}
-          </p>
-        )}
-        {author.short_description && (
+        { showAll && author.description && (
+          <p className="author-header__long-desc">{ author.description }</p>
+        ) }
+        { !showAll && (
+        <p className="author-header__short-desc">
+          { author.short_description }
+        </p>    
+        ) }
+        
+        {author.description && (
           <button
             className="author-header__more-info"
             onClick={handleChangeShowAll}
@@ -115,9 +114,7 @@ export const AuthorHeader = ({ author }) => {
           </button>
         )}
       </div>
-      
-      {console.log(authorFact)}
-      {authorFact && (
+      {authorFact && authorFact.fact_text && (
         <div className="author-header__right">
           <AuthorFacts factText={authorFact.fact_text} />
         </div>

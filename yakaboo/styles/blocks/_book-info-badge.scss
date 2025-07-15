@@ -1,17 +1,18 @@
 @use "../helpers" as *;
 
 .info-badge {
-    font-size: rem(14);
+    font-size: rem(12);
     font-weight: 600;
     background-color: var(--color-gray-40);
-    border-radius: rem(10);
+    border-radius: rem(5);
     color: var(--color-blue-10);
     padding-block: 2%;
-    padding-inline: 7%;
+    padding-inline: 5%;
+
 
     & img {
         filter: invert(20%);
-        width: rem(25);
-        height: rem(25);
+        width: rem(20);
+        height: rem(20);
     }
 }

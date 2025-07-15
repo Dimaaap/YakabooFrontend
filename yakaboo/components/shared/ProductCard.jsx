@@ -1,5 +1,5 @@
 import React from 'react';
-import { Badge } from '.';
+import { Badge, BookInfoBadge } from '.';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -14,12 +14,13 @@ export const ProductCard = ({
   newPrice = null,
   bonusesCount = 0,
   inStock = true,
+  extraClass=""
 }) => {
   return (
-    <Link className="product-card" href={productLink}>
+    <Link className={`product-card ${extraClass}`}href={productLink}>
       <div className="product-card__header">
-        <Badge text={productCode} backgroundColor="#F4F6F8" />
-        <div className="badge" style={{ backgroundColor: '#F4F6F8' }}>
+        <BookInfoBadge text={productCode} backgroundColor="#F4F6F8" />
+        <div className="info-badge" style={{ backgroundColor: '#F4F6F8' }}>
           <svg
             width="20"
             height="16"

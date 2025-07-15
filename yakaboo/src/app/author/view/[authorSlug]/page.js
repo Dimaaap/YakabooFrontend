@@ -29,7 +29,7 @@ export default function AuthorPage() {
       {author && <AuthorHeader author={author} />}
       <div className="author__flex-container">
         <Filters />
-        <AuthorBooks />
+        { author && (<AuthorBooks authorId={author.id} />) }
       </div>
     </div>
   );
