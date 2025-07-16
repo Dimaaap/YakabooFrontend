@@ -17,7 +17,7 @@ export const ProductCard = ({
   extraClass=""
 }) => {
   return (
-    <Link className={`product-card ${extraClass}`}href={productLink}>
+    <Link className={`product-card ${extraClass}`} href={productLink}>
       <div className="product-card__header">
         <BookInfoBadge text={productCode} backgroundColor="#F4F6F8" />
         <div className="info-badge" style={{ backgroundColor: '#F4F6F8' }}>

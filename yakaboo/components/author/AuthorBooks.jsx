@@ -25,8 +25,8 @@ export const AuthorBooks = ({authorId}) => {
       <div className="author-books__books-container">
         { authorsBooks.length > 0 && (
             authorsBooks.map((book, index) => (
-                <ProductCard key={ index } href={`/book/${book.slug}`} extraClass="author-books__book"
-                title={book.title} brand={book.publishing.title} imageSrc='/images/holli.jpg'
+                <ProductCard key={ index } productLink={`/book/${book.slug}`} extraClass="author-books__book"
+                title={book.title} brand={book.publishing.title} imageSrc={book.images[0]?.image_url ?? "/images/holli.jpg"}
                 badges={
                     [
                         book.stars > 0 && (<Stars count={book.stars} isSmaller={true} />),
