@@ -1,45 +1,35 @@
 import dynamic from 'next/dynamic';
 
 export const BooksContainer = dynamic(() => import('../main/BooksContainer'));
-export const MainHeader = dynamic(() => import('../main/MainHeader'), {
-  ssr: false,
-});
+export const MainHeader = dynamic(() => import('../main/MainHeader'));
 export const AdditionalInfo = dynamic(() => import('../main/AdditionalInfo'));
 
 export const CartModal = dynamic(() => import('../modals/CartModal'));
 export const BookCategoriesWithSubcategoriesModal = dynamic(
-  () => import('../modals/BookCategoriesWithSubcategoriesModal'),
-  { ssr: false }
+  () => import('../modals/BookCategoriesWithSubcategoriesModal')
 );
 export const ChatOptions = dynamic(() => import('../modals/ChatOptions'));
 export const ConfirmationCodeModal = dynamic(
-  () => import('../modals/ConfirmationCodeModal'),
-  { ssr: false }
+  () => import('../modals/ConfirmationCodeModal')
 );
 export const MenuModal = dynamic(() => import('../modals/MenuModal'));
 export const UserRegisterModal = dynamic(
-  () => import('../modals/UserRegisterModal'),
-  { ssr: false }
+  () => import('../modals/UserRegisterModal')
 );
 export const UserLoginModal = dynamic(
-  () => import('../modals/UserLoginModal'),
-  { ssr: false }
+  () => import('../modals/UserLoginModal')
 );
 export const ProfileSettingsModal = dynamic(
-  () => import('../modals/ProfileSettingsModal'),
-  { ssr: false }
+  () => import('../modals/ProfileSettingsModal')
 );
 export const CreateWishListModal = dynamic(
-  () => import('../modals/CreateWishListModal'),
-  { ssr: false }
+  () => import('../modals/CreateWishListModal')
 );
 export const ProductImagesModal = dynamic(
   () => import('../modals/ProductImagesModal')
 );
 
-export const MainContainer = dynamic(() => import('../user/MainContainer'), {
-  ssr: false,
-});
+export const MainContainer = dynamic(() => import('../user/MainContainer')  );
 
 export const ProductInfoModal = dynamic(
   () => import('../modals/ProductInfoModal')

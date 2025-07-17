@@ -1,0 +1,49 @@
+@use "../helpers" as *;
+
+.tile {
+    border: rem(1) solid var(--color-gray-50);
+    padding: 2% 3%;
+    border-radius: rem(10);
+    display: flex;
+    flex-direction: column;
+    gap: rem(5);   
+    cursor: pointer;
+
+    &.small-tile {
+        padding: 5% 8%;
+        font-weight: 500;
+        font-size: rem(16);
+        color: var(--color-gray-20);
+
+        &.current {
+            background-color: var(--color-gray-50);
+            color: black;
+        }
+    }
+
+    &.active {
+        border: rem(2) solid var(--color-pink-10);
+        background-color: var(--color-pink-light);
+
+        color: var(--color-pink-10);
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        gap: 5%;
+
+        & img {
+            &.active-img {
+                filter: brightness(0) saturate(100%) invert(13%) sepia(100%) saturate(10000%) hue-rotate(300deg) brightness(1.2);
+            }
+        }
+
+        
+    }
+
+    &__title {
+        font-weight: 500;
+        font-size: rem(14);
+    }
+}

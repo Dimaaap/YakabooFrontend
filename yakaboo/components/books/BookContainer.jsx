@@ -1,15 +1,23 @@
+"use client"
+
 import Image from "next/image"
-import { Breadcrumbs } from "../shared"
+import { Breadcrumbs, DeliveryTerms } from "../shared"
 import Link from "next/link"
+import { Delivery, DeliveryInfoModal } from "../dynamic";
+import { useDeliveryCityStore, useDeliveryModalStore } from "../../states";
 
 const MAX_STARS = 5;
 
 export const BookContainer = ({book, breadcrumbLinks}) => {
+
+    const { isDeliveryModalOpen } = useDeliveryModalStore();
+    const { deliveryLocation } = useDeliveryCityStore()
+
     const activeStars = Math.round(book.book_info.rate);
     return(
         <div className="book-container">
             <div className="book-container__section left-section">
-                <div className="book-container__price-section">
+                <div className="book-container__btns-section">
                     <button className="book-container__header-btn add-to-fav">
                         <svg
                             width="20"
@@ -33,6 +41,7 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                         <button className="book-container__slider-btn prev-btn slider-btn">
                             <Image src="/icons/arrow-left.svg" alt="" width="20" height="20" />
                         </button>
+                        
                         <Image src={book.images[0]?.image_url ?? "/images/holli.jpg"} width="250" height="350" alt={`${book.title}_1`} />
                         <button className="book-container__slider-btn next-btn slider-btn">
                             <Image src="/icons/arrow-left.svg" alt="" width="20" height="20" />
@@ -40,8 +49,8 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                     </div>
                     <div className="book-container__rest-images">
                         {book.images.length > 1 && (
-                            book.images.slice(1).map((image, index) => (
-                                <Image src={image.image_url} alt={`${book.title}_${index + 2}`} width="70" height="70" key={index} />
+                            book.images.map((image, index) => (
+                                <Image src={image.image_url} alt={`${book.title}_${index + 2}`} width="50" height="50" key={index} />
                             ))
                         )}
                     </div>
@@ -62,9 +71,14 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                 {book.book_info.rate && (
                     <div className="book-container__grades">
                         {[...Array(MAX_STARS)].map((_, index) => (
-                            <Image src="/icons/star-inactive.svg" alt="" width="15" key={ index }
-                            height="15" className={`${index + 1 <= activeStars ? "active": ""}`} />
+                            <Image 
+                            src={index + 1 <= activeStars ? "/icons/active-star.svg" : "/icons/star-inactive.svg"} 
+                            alt="" width="12" key={ index }
+                            height="12" />
                         ))} 
+                        <span className="book-container__grade-count">
+                            4
+                        </span>
                     </div>     
                 )}
                 
@@ -79,8 +93,8 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                     </p>    
                     <div className="book-container__tiles-block">
                         <div className={`book-container__tile tile ${book.book_info.format === "Паперова" ? "active": ""}`}>
-                            <div className="tile__header">
-                                <Image src="/icons/book.svg" alt="" width="18" height="18" />
+                            <div className="book-container__tile-header tile__header">
+                                <Image src="/icons/book.svg" alt="" width="18" height="18" className={`${book.book_info.format === "Паперова" ? "active-img": ""}`} />
                                 <p className="tile__title">
                                     Паперова
                                 </p>
@@ -92,7 +106,7 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
 
                         <div className={`book-container__tile tile ${book.book_info.format === "Електронна" ? "active": ""}`}>
                             <div className="tile__header">
-                                <Image src="/icons/book.svg" alt="" width="18" height="18" />
+                                <Image src="/icons/gadget.svg" alt="" width="18" height="18" className={`${book.book_info.format === "Електронна" ? "active-img": ""}`} />
                                 <p className="tile__title">
                                     Електронна
                                 </p>
@@ -104,19 +118,19 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                     </div>
                 </div>
 
-                <div className="book-container__block-container">
+                <div className="book-container__blocks">
                     <div className="book-container__block language-block">
                         <p className="book-container__block-title">
                             Мова книги
                         </p>   
                         <div className="book-container__tiles-block">
-                            <div className={`book-container__tile small-tile ${ book.book_info.language === "Українська" ? "current": "" }`}>
+                            <div className={`book-container__tile tile small-tile ${ book.book_info.language === "Українська" ? "current": "" }`}>
                                 <p className="tile__desc">
                                     Українська
                                 </p>
                             </div>
 
-                            <div className={`book-container__tile small-tile ${ book.book_info.language === "Англійська" ? "current": "" }`}>
+                            <div className={`book-container__tile tile small-tile ${ book.book_info.language === "Англійська" ? "current": "" }`}>
                                 <p className="tile__desc">
                                     Англійська
                                 </p>
@@ -129,7 +143,7 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                             Видавництво
                         </p>   
                         <div className="book-container__tiles-block">
-                            <div className='book-container__tile small-tile active'>
+                            <div className='book-container__tile tile small-tile current'>
                                 <Link className="book-container__link publishing-link" href={`/book_publisher/${book.publishing.slug}`}>
                                     {book.publishing.title}
                                 </Link>
@@ -143,7 +157,7 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                                 Рік видання
                             </p>   
                             <div className="book-container__tiles-block">
-                                <div className='book-container__tile small-tile active'>
+                                <div className='book-container__tile tile small-tile current'>
                                     <p className="tile__desc">
                                         {book.book_info.publishing_year}
                                     </p>
@@ -156,9 +170,9 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
 
                 { book.book_info.description && (
                     <div className="book-container__block-container">
-                        <h2 className="book-container__header">
+                        <h3 className="book-container__header">
                             Опис книги
-                        </h2>
+                        </h3>
                         <p className="book-container__text">
                             {book.book_info.description}
                         </p>
@@ -266,8 +280,100 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                         </div>
                     </div>
                 </div>
+
+                <div className="book-container__block-container">
+                    <h2 className="book-container__header">
+                        Про автора
+                    </h2>
+                    
+                    <div className="book-container__author-desc">
+                        <p className="book-contianer__description">
+                            {book.authors[0]?.description}
+                        </p>
+                        <div className="book-container__author-image">
+                            <Image src={book.authors[0]?.images[0]?.image_path} alt="" width="80" height="80" />
+                        </div>
+                    </div>
+
+                    <Link href={`/author/view/${book.authors[0]?.slug}`} className="book-container__link extended-link">
+                        Детальніше про автора
+                        <Image src="/icons/chevron-down.svg" alt="" width="20" height="20" />
+                    </Link>
+                </div>
+
+                <div className="book-container__block-container">
+                    <div className="book-container__reviews">
+                        <h3 className="book-container__header h3-header">
+                            Відгуки
+                        </h3>
+
+                        <button className="book-container__write-review book-contianer__btn">
+                            Залишити відгук
+                        </button>
+
+                    </div>
+                </div>
             </div>
 
+            <div className="book-container__section right-section">
+                <div className="book-container__block price-block">
+                    <div className="book-container__row">
+                        <h1 className="book-container__header book-container__h1">
+                            {book.price} грн
+                        </h1>
+                        { book.book_info.bonuses && (
+                            <div className="book-container__bonuses product-bonuses">
+                                <Image src="/icons/bonus.svg" alt="" width="20" height="20" />
+                                <p className="product-bonuses__bonuses-count">{book.book_info.bonuses}</p>
+                            </div>    
+                        ) }
+                        
+                    </div>
+
+                    <div className="book-container__row">
+                        <div className="book-container__text">
+                            { book.book_info.in_stock ? (
+                                <span className="book-info__book-status">
+                                    <Image src="/icons/green-truck.svg" alt="" width="18" height="18" />
+                                    В наявності
+                                </span>
+                            ) : (
+                                <span className="book-info__book-status not-in-stock">
+                                    <Image src="/icons/truck-pink.svg" alt="" width="18" height="18" />
+                                    Немає в наявності
+                                </span>
+                            ) }
+                        </div>
+                        <div className="book-container__dot-separator" />
+                        <p className="book-container__text">
+                            {book.book_info.format} книга
+                        </p>
+                    </div>
+                </div>
+                
+                {book.book_info.is_has_esupport && (
+                    <div className="book-container__block collection-block product-collection">
+                        <div className="product-collection__green-badge">
+                            Добірка
+                        </div>
+                        <p className="product-collection__info-text">
+                            Купити з програмою "Зимова єПідтримка"
+                        </p>
+                    </div>    
+                )}
+                <button className="book-container__pink-buy-btn pink-buy-btn">
+                    Купити
+                </button>
+
+                <Delivery />
+
+                { isDeliveryModalOpen && <DeliveryInfoModal /> }
+
+                {deliveryLocation && (
+                    <DeliveryTerms deliveryLocation={deliveryLocation} />    
+                )}
+                
+            </div>
         </div>    
     )
     
