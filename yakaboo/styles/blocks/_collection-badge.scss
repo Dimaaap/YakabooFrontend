@@ -1,0 +1,15 @@
+@use "../helpers" as *;
+
+.collection-badge {
+    &.blue-badge {
+        background-color: #333377;
+        width: max-content;
+        color: var(--color-light);
+        font-weight: 500;
+        font-size: rem(12);
+        padding: 0.5% 1.5%;
+        border-radius: 0 rem(5) rem(5) 0;
+        position: absolute;
+        left: 0;
+    }
+}

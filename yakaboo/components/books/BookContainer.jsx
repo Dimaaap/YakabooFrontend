@@ -1,5 +1,7 @@
 "use client"
 
+import { useState } from "react";
+
 import Image from "next/image"
 import { Breadcrumbs, DeliveryTerms } from "../shared"
 import Link from "next/link"
@@ -11,7 +13,9 @@ const MAX_STARS = 5;
 export const BookContainer = ({book, breadcrumbLinks}) => {
 
     const { isDeliveryModalOpen } = useDeliveryModalStore();
-    const { deliveryLocation } = useDeliveryCityStore()
+    const { deliveryLocation } = useDeliveryCityStore();
+
+    const [showAllInfo, setShowAllInfo] = useState(false);
 
     const activeStars = Math.round(book.book_info.rate);
     return(
@@ -186,7 +190,7 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
 
                     <div className="book-container__table-info">
                         <div className="book-container__row">
-                            <div className="book-container__cell">
+                            <div className="book-container__cell cell-title">
                                 <p>Автор</p>
                             </div>
                             <div className="book-container__cell">
@@ -197,7 +201,7 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                         </div>
 
                         <div className="book-container__row">
-                            <div className="book-container__cell">
+                            <div className="book-container__cell cell-title">
                                 <p>Видавництво</p>
                             </div>
                             <div className="book-container__cell">
@@ -208,7 +212,7 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                         </div>
 
                         <div className="book-container__row">
-                            <div className="book-container__cell">
+                            <div className="book-container__cell cell-title">
                                 <p>Кількість сторінок</p>
                             </div>
                             <div className="book-container__cell">
@@ -216,68 +220,110 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                             </div>
                         </div>
 
-                        <div className="book-container__row">
-                            <div className="book-container__cell">
-                                <p>Рік видання</p>
-                            </div>
-                            <div className="book-container__cell">
-                               <p>{ book.book_info.publishing_year }</p>
-                            </div>
-                        </div>
+                        { !showAllInfo && (
+                            <button className="book-container__show-all btn" type="button"
+                            onClick={() => setShowAllInfo(true)}>
+                                Показати все 
+                                <Image src="/icons/chevron-down.svg" alt="" width="18" height="18" />
+                            </button>    
+                        ) }
+                        
 
-                        <div className="book-container__row">
-                            <div className="book-container__cell">
-                                <p>Мова</p>
+                        { showAllInfo && (
+                           <>
+                            <div className="book-container__row">
+                                <div className="book-container__cell cell-title">
+                                    <p>Рік видання</p>
+                                </div>
+                                <div className="book-container__cell">
+                                <p>{ book.book_info.publishing_year }</p>
+                                </div>
                             </div>
-                            <div className="book-container__cell">
-                               <p>{ book.book_info.language}</p>
-                            </div>
-                        </div>
 
-                        <div className="book-container__row">
-                            <div className="book-container__cell">
-                                <p>Ілюстрації</p>
+                            <div className="book-container__row">
+                                <div className="book-container__cell cell-title">
+                                    <p>Мова</p>
+                                </div>
+                                <div className="book-container__cell">
+                                <p>{ book.book_info.language}</p>
+                                </div>
                             </div>
-                            <div className="book-container__cell">
-                               <p>{ book.book_info.illustrations || "Немає ілюстрацій"}</p>
-                            </div>
-                        </div>
 
-                        <div className="book-container__row">
-                            <div className="book-container__cell">
-                                <p>Тип</p>
+                            <div className="book-container__row">
+                                <div className="book-container__cell cell-title">
+                                    <p>Ілюстрації</p>
+                                </div>
+                                <div className="book-container__cell">
+                                <p>{ book.book_info.illustrations || "Немає ілюстрацій"}</p>
+                                </div>
                             </div>
-                            <div className="book-container__cell">
-                               <p>{ book.book_info.format}</p>
-                            </div>
-                        </div>
 
-                        <div className="book-container__row">
-                            <div className="book-container__cell">
-                                <p>Тип обкладинки</p>
+                            <div className="book-container__row">
+                                <div className="book-container__cell cell-title">
+                                    <p>Тип</p>
+                                </div>
+                                <div className="book-container__cell">
+                                <p>{ book.book_info.format}</p>
+                                </div>
                             </div>
-                            <div className="book-container__cell">
-                               <p>{ book.book_info.cover_type}</p>
-                            </div>
-                        </div>
 
-                        <div className="book-container__row">
-                            <div className="book-container__cell">
-                                <p>ISBN</p>
+                            <div className="book-container__row">
+                                <div className="book-container__cell cell-title">
+                                    <p>Тип обкладинки</p>
+                                </div>
+                                <div className="book-container__cell">
+                                <p>{ book.book_info.cover_type}</p>
+                                </div>
                             </div>
-                            <div className="book-container__cell">
-                               <p>{ book.book_info.ISBN}</p>
-                            </div>
-                        </div>
 
-                        <div className="book-container__row">
-                            <div className="book-container__cell">
-                                <p>Код</p>
+                            { book.book_info.weight && (
+                                <div className="book-container__row">
+                                    <div className="book-container__cell cell-title">
+                                        <p>Вага</p>
+                                    </div>
+                                    <div className="book-container__cell">
+                                        <p>{ book.book_info.weight }</p>
+                                    </div>
+                                </div>    
+                            ) }
+                            
+                            { book.book_info.original_name && (
+                                <div className="book-container__row">
+                                    <div className="book-container__cell cell-title">
+                                        <p>Оригінальна назва</p>
+                                    </div>
+                                    <div className="book-container__cell">
+                                        <p>{ book.book_info.original_name }</p>
+                                    </div>
+                                </div>
+                            ) }
+
+                            <div className="book-container__row">
+                                <div className="book-container__cell cell-title">
+                                    <p>ISBN</p>
+                                </div>
+                                <div className="book-container__cell">
+                                <p>{ book.book_info.ISBN}</p>
+                                </div>
                             </div>
-                            <div className="book-container__cell">
-                               <p>{ book.book_info.code}</p>
+
+                            <div className="book-container__row">
+                                <div className="book-container__cell cell-title">
+                                    <p>Код</p>
+                                </div>
+                                <div className="book-container__cell">
+                                <p>{ book.book_info.code}</p>
+                                </div>
                             </div>
-                        </div>
+                            <button className="book-container__show-all btn"
+                            type="button" onClick={() => setShowAllInfo(false)}>
+                                Сховати
+                                <Image src="/icons/chevron-down.svg"
+                                className="book-container__rotated-img"
+                                alt="" width="18" height="18" />
+                            </button>
+                           </> 
+                        ) }
                     </div>
                 </div>
 
@@ -287,18 +333,20 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                     </h2>
                     
                     <div className="book-container__author-desc">
-                        <p className="book-contianer__description">
-                            {book.authors[0]?.description}
-                        </p>
+                        <div className="book-container__desc-container">
+                            <p className="book-contianer__description">
+                                {book.authors[0]?.description}
+                            </p>  
+                            <Link href={`/author/view/${book.authors[0]?.slug}`} className="book-container__link extended-link">
+                                Детальніше про автора
+                                <Image src="/icons/chevron-down.svg" alt="" width="20" height="20" />
+                            </Link>  
+                        </div>
+                        
                         <div className="book-container__author-image">
                             <Image src={book.authors[0]?.images[0]?.image_path} alt="" width="80" height="80" />
                         </div>
                     </div>
-
-                    <Link href={`/author/view/${book.authors[0]?.slug}`} className="book-container__link extended-link">
-                        Детальніше про автора
-                        <Image src="/icons/chevron-down.svg" alt="" width="20" height="20" />
-                    </Link>
                 </div>
 
                 <div className="book-container__block-container">
@@ -307,7 +355,7 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                             Відгуки
                         </h3>
 
-                        <button className="book-container__write-review book-contianer__btn">
+                        <button className="book-container__write-review write-review book-contianer__btn">
                             Залишити відгук
                         </button>
 
@@ -317,51 +365,39 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
 
             <div className="book-container__section right-section">
                 <div className="book-container__block price-block">
-                    <div className="book-container__row">
-                        <h1 className="book-container__header book-container__h1">
+                    <div className="book-container__price-row">
+                        <h2 className="book-container__header book-container__h2">
                             {book.price} грн
-                        </h1>
+                        </h2>
                         { book.book_info.bonuses && (
                             <div className="book-container__bonuses product-bonuses">
                                 <Image src="/icons/bonus.svg" alt="" width="20" height="20" />
-                                <p className="product-bonuses__bonuses-count">{book.book_info.bonuses}</p>
+                                <p className="product-bonuses__bonuses-count">+{book.book_info.bonuses} бонусів</p>
                             </div>    
                         ) }
-                        
                     </div>
-
-                    <div className="book-container__row">
-                        <div className="book-container__text">
-                            { book.book_info.in_stock ? (
-                                <span className="book-info__book-status">
-                                    <Image src="/icons/green-truck.svg" alt="" width="18" height="18" />
-                                    В наявності
-                                </span>
-                            ) : (
-                                <span className="book-info__book-status not-in-stock">
-                                    <Image src="/icons/truck-pink.svg" alt="" width="18" height="18" />
-                                    Немає в наявності
-                                </span>
-                            ) }
-                        </div>
+                    <div className="book-container__in-stock-row">
+                        <span className={`book-container__book-status ${book.book_info.in_stock ? "green-text": "gray-text"}`}>
+                            {book.book_info.in_stock ? "В наявності" : "Немає в наявності"}
+                        </span>
                         <div className="book-container__dot-separator" />
-                        <p className="book-container__text">
-                            {book.book_info.format} книга
-                        </p>
+                        <span className="book-container__text">
+                            { book.book_info.format } книга
+                        </span>
                     </div>
                 </div>
                 
                 {book.book_info.is_has_esupport && (
                     <div className="book-container__block collection-block product-collection">
-                        <div className="product-collection__green-badge">
-                            Добірка
+                        <div className="collection-block__blue-badge collection-badge blue-badge">
+                            Кешбек
                         </div>
-                        <p className="product-collection__info-text">
+                        <p className="collection-block__info-text">
                             Купити з програмою "Зимова єПідтримка"
                         </p>
                     </div>    
                 )}
-                <button className="book-container__pink-buy-btn pink-buy-btn">
+                <button className="book-container__pink-buy-btn buy-btn buy-btn-pink">
                     Купити
                 </button>
 
@@ -370,7 +406,7 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                 { isDeliveryModalOpen && <DeliveryInfoModal /> }
 
                 {deliveryLocation && (
-                    <DeliveryTerms deliveryLocation={deliveryLocation} />    
+                    <DeliveryTerms deliveryLocation={deliveryLocation} productCode={book.book_info.code} />    
                 )}
                 
             </div>

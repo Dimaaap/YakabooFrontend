@@ -5,6 +5,7 @@
     @include abs-center;
 
     position: absolute;
+    font-size: rem(14);
     width: rem(550);
     height: rem(330);
     background-color: var(--color-light);

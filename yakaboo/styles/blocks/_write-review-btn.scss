@@ -1,0 +1,16 @@
+@use "../helpers" as *;
+
+.write-review {
+    width: 100%;
+    border: none;
+    border-radius: rem(10);
+    font-size: rem(14);
+    font-weight: 600;
+    padding-block: 2%;
+    color: var(--color-gray-20);
+    transition: all 0.3s ease;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}

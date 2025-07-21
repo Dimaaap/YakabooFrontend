@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 
-export const DeliveryTerms = (deliveryLocation) => {
+export const DeliveryTerms = (deliveryLocation, productCode) => {
   const [openedDeliveryTerms, setOpenedDeliveryTerms] = useState([]);
 
   try {
@@ -308,7 +308,7 @@ export const DeliveryTerms = (deliveryLocation) => {
         </div>
         <div className="delivery-terms__seller-info">
           <Image src="/icons/logo.svg" alt="" width="80" height="30" />
-          <p className="delivery-terms__cell">1245917</p>
+          <p className="delivery-terms__cell">{ productCode }</p>
         </div>
       </div>
     </div>

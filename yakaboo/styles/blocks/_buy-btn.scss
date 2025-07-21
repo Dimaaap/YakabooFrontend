@@ -15,11 +15,19 @@
   text-align: center;
   transition: all var(--transition-duration) ease;
 
+  &.buy-btn-pink {
+    background-color: var(--color-pink-10);
+    width: 100%;
+    padding-block: 4%;
+    font-weight: 500;
+    font-size: rem(14);
+  }
+
   & img {
     filter: invert(1);
   }
 
   &:hover {
-    opacity: 0.9;
+    opacity: 0.8;
   }
 }

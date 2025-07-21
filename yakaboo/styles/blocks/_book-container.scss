@@ -76,7 +76,7 @@
         transition: all 0.3s ease;
 
         &.next-btn {
-            left: 90%;
+            left: 82%;
 
             & img {
                 transform: rotate(270deg);
@@ -117,6 +117,10 @@
         font-weight: 500;
         transition: all 0.3s ease;
 
+        &.extended-link {
+            color: var(--color-gray-30);
+        }
+
         &:hover {
             text-decoration: underline;
         }
@@ -126,6 +130,12 @@
         display: flex;
         align-items: center;
         gap: rem(2);
+    }
+
+    &__desc-container {
+        display: flex;
+        flex-direction: column;
+        gap: rem(3);
     }
 
     &__grade-count {
@@ -148,6 +158,12 @@
 
         &-title {
             font-weight: 600;
+        }
+
+        &.price-block {
+            display: flex;
+            flex-direction: column;
+            gap: rem(0);
         }
     }
 
@@ -178,7 +194,7 @@
     }
 
     &__text {
-        font-size: rem(16);
+        font-size: rem(14);
         font-weight: 500;
     }
 
@@ -187,9 +203,97 @@
         flex-direction: column;
     }
 
+    &__rotated-img {
+        transform: rotate(180deg);
+    }
+
+    &__show-all {
+        width: max-content;
+        border: none;
+        background-color: transparent;
+        font-size: rem(14);
+        display: flex;
+        align-items: center;
+        padding: 0;
+        gap: rem(5);
+        font-weight: 600;
+        margin-top: 2%;
+        color: var(--color-gray-10);
+    }
+
     &__row {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        padding-block: rem(12);
+        font-size: rem(14);
+        border-bottom: rem(1) solid var(--color-gray-50);
+    }
+
+    &__cell {
+        font-weight: 500;
+
+        &.cell-title {
+            color: var(--color-gray-30);
+        }
+    }
+
+    &__author-desc {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+    }
+
+    &__author-image {
+        & img {
+            clip-path: circle();
+        }
+    }
+
+    &__dot-separator {
+        background-color: var(--color-black);
+        width: rem(2);
+        height: rem(2);
+    }
+
+    &__reviews {
+        display: flex;
+        flex-direction: column;
+        gap: rem(10);
+    }
+
+    &__price-row {
+        display: flex;
+        align-items: center;
+        gap: rem(5);        
+
+        & h2 {
+            font-weight: 600;
+        }
+    }
+
+    &__in-stock-row {
+        display: flex;
+        align-items: center;
+        gap: rem(5);
+        font-size: rem(14);
+    }
+
+    &__book-status {
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+
+        &.green-text {
+            color: var(--color-green-10);
+        }
+
+        &.gray-text {
+            color: var(--color-gray-30);
+        }
+
+        & img {
+            background-color: transparent;
+        }
     }
 }

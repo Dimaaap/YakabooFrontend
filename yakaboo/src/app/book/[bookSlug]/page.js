@@ -3,10 +3,16 @@
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from 'react';
 import { fetchData } from "../../../../services";
-import { BookContainer, Breadcrumbs } from "../../../../components";
+import { BookContainer} from "../../../../components";
+import { useConfirmationCodeStore, useProfileSettingsModalStore, useUserLoginModalStore } from "../../../../states";
+import { ConfirmationCodeModal, ProfileSettingsModal, UserLoginModal, UserRegisterModal } from "../../../../components/dynamic";
 
 
 export default function BookPage() {
+    const { isLoginModalOpen, isRegisterModalOpen } = useUserLoginModalStore();
+    const { isConfirmationModalOpen } = useConfirmationCodeStore();
+    const { isProfileSettingsModalOpen } = useProfileSettingsModalStore();
+
     const [book, setBook] = useState(null);
 
     const pathname = usePathname();
@@ -23,6 +29,10 @@ export default function BookPage() {
     return(
         <div className="book">
             { book && <BookContainer book={ book } breadcrumbLinks={breadcrumbsObject} /> }
+            { isLoginModalOpen && <UserLoginModal /> }
+            { isRegisterModalOpen && <UserRegisterModal /> }
+            { isConfirmationModalOpen && <ConfirmationCodeModal /> }
+            { isProfileSettingsModalOpen && <ProfileSettingsModal /> }
         </div>
     )
 }

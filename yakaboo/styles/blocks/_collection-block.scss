@@ -1,0 +1,17 @@
+@use "../helpers" as *;
+
+.collection-block {
+    font-size: rem(14) !important;
+    padding: 4% 3%;
+    position: relative;
+    border-radius: rem(10);
+    border: rem(1) solid red;
+    display: flex;
+    flex-direction: column;
+    gap: rem(15);
+
+    &__info-text {
+        margin-top: 10%;
+        font-weight: 500;
+    }
+}
