@@ -8,6 +8,11 @@
     gap: 5%;
     width: 100%;
 
+    &__big-image {
+        max-width: rem(280) !important;
+        min-width: rem(280) !important;
+    }
+
     &__section {
         display: flex;
         flex-direction: column;
@@ -76,7 +81,7 @@
         transition: all 0.3s ease;
 
         &.next-btn {
-            left: 82%;
+            left: 90%;
 
             & img {
                 transform: rotate(270deg);
@@ -103,6 +108,11 @@
         & img {
             border-radius: rem(10);
             cursor: pointer;
+
+            &.cur-img {
+                border: rem(2) solid var(--color-black);
+                border-radius: rem(10);
+            }
         }
     }
 

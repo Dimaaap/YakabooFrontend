@@ -1,12 +1,12 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 import Image from "next/image"
 import { Breadcrumbs, DeliveryTerms } from "../shared"
 import Link from "next/link"
-import { Delivery, DeliveryInfoModal } from "../dynamic";
-import { useDeliveryCityStore, useDeliveryModalStore } from "../../states";
+import { AddToWishlistBtn, Delivery, DeliveryInfoModal, ProductImagesModal } from "../dynamic";
+import { useDeliveryCityStore, useDeliveryModalStore, useProductImagesStore } from "../../states";
 
 const MAX_STARS = 5;
 
@@ -14,47 +14,83 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
 
     const { isDeliveryModalOpen } = useDeliveryModalStore();
     const { deliveryLocation } = useDeliveryCityStore();
+    const { isProductImagesOpen, setIsProductImagesOpen } = useProductImagesStore();
+
+    const [readPart, setReadPart] = useState(false);
+    const [activeImage, setActiveImage] = useState(0);
 
     const [showAllInfo, setShowAllInfo] = useState(false);
 
-    const activeStars = Math.round(book.book_info.rate);
+    const showNextImage = () => {
+        if(activeImage < book.images?.length - 1){
+            setActiveImage(activeImage + 1)
+        } else {
+            setActiveImage(0);
+        }
+    }
+
+    const showPrevImage = () => {
+        if(activeImage > 0){
+            setActiveImage(activeImage-1)
+        } else {
+            setActiveImage(book.images.length - 1)
+        }
+    }
+
+    const activeStars = useMemo(() => {
+        return Math.round(book.book_info.rate)
+    }, [book.book_info.rate]);
+
+    const images = useMemo(() => {
+        return book.images
+    }, [book.images]);
+
+
+    const pageImages = useMemo(() => {
+        return book.images
+        .filter(img => img.type === "page")
+        .map(img => img.image_url)
+    }, [book.images]);
+
     return(
         <div className="book-container">
+            { isProductImagesOpen && <ProductImagesModal productTitle={book.title} isBook={true} bookImages={images } /> }
+            { readPart && <ProductImagesModal productTitle={book.title} images={pageImages} withCover={false} /> }
             <div className="book-container__section left-section">
                 <div className="book-container__btns-section">
-                    <button className="book-container__header-btn add-to-fav">
-                        <svg
-                            width="20"
-                            height="16"
-                            viewBox="0 0 16 14"
-                            fill="#333373"
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="ui-btn-favorite__img"
-                        >
-                            <path d="M0.595215 4.64648C0.595215 7.78125 3.21729 10.8721 7.31152 13.5088C7.53857 13.6479 7.80957 13.7871 7.99268 13.7871C8.18311 13.7871 8.4541 13.6479 8.67383 13.5088C12.7681 10.8721 15.3901 7.78125 15.3901 4.64648C15.3901 1.9585 13.5371 0.0834961 11.1348 0.0834961C9.74316 0.0834961 8.65186 0.728027 7.99268 1.69482C7.34814 0.735352 6.24951 0.0834961 4.85059 0.0834961C2.45557 0.0834961 0.595215 1.9585 0.595215 4.64648ZM2.07471 4.64648C2.07471 2.78613 3.29053 1.53369 4.93115 1.53369C6.25684 1.53369 6.99658 2.33936 7.45801 3.04248C7.66309 3.33545 7.80225 3.43066 7.99268 3.43066C8.19043 3.43066 8.30762 3.32812 8.52734 3.04248C9.01807 2.34668 9.74316 1.53369 11.0615 1.53369C12.7021 1.53369 13.918 2.78613 13.918 4.64648C13.918 7.23926 11.2153 10.103 8.13184 12.1538C8.06592 12.1978 8.02197 12.2271 7.99268 12.2271C7.96338 12.2271 7.91943 12.1978 7.85352 12.1538C4.77002 10.103 2.07471 7.23926 2.07471 4.64648Z"></path>
-                        </svg>
-                    </button>
-                    <button className="book-container__header-btn read-part">
-                        <Image src="/icons/book.svg" alt="" width="25" height="25" />
-                        Читати уривок
-                    </button>
+                    <AddToWishlistBtn />
+                    {pageImages.length > 0 && (
+                        <button className="book-container__header-btn read-part" onClick={() => setReadPart(true)}>
+                            <Image src="/icons/book.svg" alt="" width="25" height="25" />
+                            Читати уривок
+                        </button>    
+                    )}
                 </div>
 
                 <div className="book-container__images-carousel">
                     <div className="book-container__main-image">
-                        <button className="book-container__slider-btn prev-btn slider-btn">
-                            <Image src="/icons/arrow-left.svg" alt="" width="20" height="20" />
-                        </button>
+                        {book.images?.length > 1 && (
+                            <button className="book-container__slider-btn prev-btn slider-btn" onClick={showPrevImage}>
+                                <Image src="/icons/arrow-left.svg" alt="" width="20" height="20" />
+                            </button>    
+                        )}
+                        <Image src={book.images[activeImage]?.image_url ?? "/images/holli.jpg"} width="250" 
+                        height="350" alt={`${book.title}_1`} className="book-container__big-image" 
+                        onClick={ () => setIsProductImagesOpen(true) }/>
                         
-                        <Image src={book.images[0]?.image_url ?? "/images/holli.jpg"} width="250" height="350" alt={`${book.title}_1`} />
-                        <button className="book-container__slider-btn next-btn slider-btn">
-                            <Image src="/icons/arrow-left.svg" alt="" width="20" height="20" />
-                        </button>
+                        {book.images?.length > 1 && (
+                            <button className="book-container__slider-btn next-btn slider-btn" onClick={showNextImage}>
+                                <Image src="/icons/arrow-left.svg" alt="" width="20" height="20" />
+                            </button>    
+                        )}
+                       
                     </div>
                     <div className="book-container__rest-images">
                         {book.images.length > 1 && (
                             book.images.map((image, index) => (
-                                <Image src={image.image_url} alt={`${book.title}_${index + 2}`} width="50" height="50" key={index} />
+                                <Image src={image.image_url} alt={`${book.title}_${index + 2}`} width="50" height="50" key={index}
+                                className={`${activeImage === index ? "cur-img": ""}`} 
+                                onClick={() => setActiveImage(index)}/>
                             ))
                         )}
                     </div>

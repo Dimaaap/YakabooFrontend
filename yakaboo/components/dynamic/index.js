@@ -50,3 +50,5 @@ export const BuyBtn = dynamic(() => import('../shared/BuyBtn'));
 export const Advertisment = dynamic(
   () => import('../board_games/Advertisment')
 );
+
+export const AddToWishlistBtn = dynamic(() => import('../shared/AddToWishlistBtn'))
