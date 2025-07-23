@@ -190,7 +190,6 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                             </div>
                         </div> 
                     </div>
-                    
                     {book.book_info.publishing_year && (
                         <div className="book-container__block publishing-block">
                             <p className="book-container__block-title">
@@ -293,6 +292,22 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                                 <p>{ book.book_info.illustrations || "Немає ілюстрацій"}</p>
                                 </div>
                             </div>
+
+                            { book.translators.length > 0 && (
+                                <div className="book-container__row">
+                                    <div className="book-container__cell cell-title">
+                                        <p>Перекладачі</p>
+                                    </div>
+                                    <div className="book-container__cell flex-cell">   
+                                        {book.translators.map((translator, index) => (
+                                            <Link href={`/book_translator/view/${translator.slug}`} 
+                                            className="book-container__link publishing-link" key={ index }>
+                                                {`${translator.first_name} ${translator.last_name}`}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            ) }
 
                             <div className="book-container__row">
                                 <div className="book-container__cell cell-title">
