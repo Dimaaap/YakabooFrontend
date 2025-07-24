@@ -222,7 +222,7 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                     <h2 className="book-container__header">
                         Характеристики
                     </h2>
-
+                    { console.log(book) }
                     <div className="book-container__table-info">
                         <div className="book-container__row">
                             <div className="book-container__cell cell-title">
@@ -284,12 +284,26 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                                 </div>
                             </div>
 
+                            {book.literature_period && (
+                                <div className="book-container__row">
+                                    <div className="book-container__cell cell-title">
+                                        <p>Література за періодами</p>
+                                    </div>
+                                    <div className="book-container__cell">
+                                        <Link href={`/literature-periods/view/${book.literature_period.slug}`}
+                                        className="book-container__link publishing-link">
+                                            {book.literature_period.title}
+                                        </Link>
+                                    </div>
+                                </div>
+                            )}
+
                             <div className="book-container__row">
                                 <div className="book-container__cell cell-title">
                                     <p>Ілюстрації</p>
                                 </div>
                                 <div className="book-container__cell">
-                                <p>{ book.book_info.illustrations || "Немає ілюстрацій"}</p>
+                                    <p>{ book.book_info.illustrations || "Немає ілюстрацій"}</p>
                                 </div>
                             </div>
 

@@ -10,6 +10,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     column-gap: rem(40);
+    row-gap: rem(10);
     font-size: rem(16);
     font-weight: 500;
 
@@ -17,6 +18,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      &.period-link {
+        color: var(--color-blue-20);
+        font-weight: 500;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
   }
 

@@ -40,6 +40,11 @@ export const MainSidebar = () => {
   return (
     <div className="sidebar">
       <ul className="sidebar__list">
+        <Link href="/literature-periods/view/all" className="sidebar__item">
+          <li className="sidebar__point-flex">
+            Література за періодами
+          </li>
+        </Link>
         {sidebars.length > 0 ? (
           sidebars.map((sidebar, i) => (
             <Link
@@ -54,7 +59,8 @@ export const MainSidebar = () => {
                 {sidebar.title}
               </li>
             </Link>
-          ))
+          )
+        )
         ) : (
           <>
             {[

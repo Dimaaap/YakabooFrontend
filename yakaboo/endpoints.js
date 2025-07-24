@@ -26,6 +26,7 @@ const Endpoints = {
     'http://localhost:8004/game-ages/players-count/all',
   ALL_CONTACTS: 'http://localhost:8004/contacts/all',
   ALL_COUNTRIES: 'http://localhost:8004/countries/all',
+  ALL_LITERATURE_PERIODS: "http://localhost:8004/literature_period/all"
 };
 
 export default Endpoints;

@@ -55,7 +55,8 @@ export const fetchData = async (
 export const fetchSearchResults = async (
   query,
   setResults,
-  authors = false
+  authors = false,
+  literaturePeriods = false
 ) => {
   try {
     let res = null;
@@ -63,6 +64,10 @@ export const fetchSearchResults = async (
       res = await fetch(
         `http://127.0.0.1:8004/publishing/search/?query=${query}`
       );
+    } else if(literaturePeriods){
+      res = await fetch(
+        `http://localhost:8004/literature_period/search/?query=${query}`
+      )
     } else {
       res = await fetch(`http://localhost:8004/authors/search/?query=${query}`);
     }
