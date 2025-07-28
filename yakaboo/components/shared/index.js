@@ -22,3 +22,5 @@ export { ProductCard } from './ProductCard';
 export { ModalCloseBtn } from './ModalCloseBtn';
 export { DeliveryTerms } from './DeliveryTerms';
 export { TextReviews } from './TextReviews';
+export { CardsContainer } from './CardsContainer';
+export { BoookCharacteristics } from './BookCharacteristics'

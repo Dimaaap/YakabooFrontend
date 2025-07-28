@@ -17,9 +17,6 @@ export default function AllLiteraturePeriodsPage() {
     const debouncedSearchValue = useDebounce(searchValue, 500);
 
     useEffect(() => {
-        console.log(debouncedSearchValue);
-        console.log(searchValue)
-        console.log(periods)
         if(debouncedSearchValue?.trim()){
             fetchSearchResults(debouncedSearchValue, setPeriods, false, true)
         } else {

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { Badge, Stars, ProductCard } from '../shared';
 import { fetchData } from '../../services';
 
-export const AuthorBooks = ({authorId}) => {
+export const AuthorBooks = ({authorId, periodId=null}) => {
 
     const [authorsBooks, setAuthorBooks] = useState([])
 

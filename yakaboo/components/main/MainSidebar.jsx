@@ -40,9 +40,9 @@ export const MainSidebar = () => {
   return (
     <div className="sidebar">
       <ul className="sidebar__list">
-        <Link href="/literature-periods/view/all" className="sidebar__item">
+        <Link href="/book-translator/view/all" className="sidebar__item">
           <li className="sidebar__point-flex">
-            Література за періодами
+            Перекладачі
           </li>
         </Link>
         {sidebars.length > 0 ? (
