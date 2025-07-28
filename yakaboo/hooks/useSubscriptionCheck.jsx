@@ -10,7 +10,7 @@ export const useSubscriptionChecked = () => {
         const check = async() => {
             try {
                 const email = CookiesWorker.get("email");
-                const res = await fetch(`http://127.0.0.1:8003/subs/check/${email}`);
+                const res = await fetch(`http://127.0.0.1:8006/subs/check/${email}`);
 
                 if(res.ok){
                     const data = await res.json();

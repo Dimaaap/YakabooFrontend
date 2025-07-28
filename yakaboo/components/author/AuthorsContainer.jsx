@@ -19,7 +19,7 @@ export const AuthorsContainer = () => {
       fetchSearchResults(debouncedSearchValue, setAuthors, true);
     } else {
       fetchData(
-        `http://localhost:8004/authors/first-letter/${activeLetter || 'А'}`,
+        `http://localhost:8006/authors/first-letter/${activeLetter || 'А'}`,
         setAuthors
       );
     }

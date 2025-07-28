@@ -23,7 +23,7 @@ export default function BookPage() {
     }
 
     useEffect(() => {
-        fetchData(`http://localhost:8004/books/${bookSlug}`, setBook)
+        fetchData(`http://localhost:8006/books/${bookSlug}`, setBook)
     }, [])
 
     return(

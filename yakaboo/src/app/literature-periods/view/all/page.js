@@ -18,8 +18,10 @@ export default function AllLiteraturePeriodsPage() {
 
     useEffect(() => {
         console.log(debouncedSearchValue);
+        console.log(searchValue)
+        console.log(periods)
         if(debouncedSearchValue?.trim()){
-            fetchSearchResults(debouncedSearchValue, setPeriods, literaturePeriods=true)
+            fetchSearchResults(debouncedSearchValue, setPeriods, false, true)
         } else {
             fetchData(Endpoints.ALL_LITERATURE_PERIODS, setPeriods)
         }
@@ -35,7 +37,7 @@ export default function AllLiteraturePeriodsPage() {
                 <div className="data__container">
                     {periods && (
                         periods.map((period) => (
-                            <Link href={`/literature_period/view/${period.slug}`}
+                            <Link href={`/literature-periods/view/${period.slug}`}
                             key={ period.id } className="data__container-link period-link">
                                 { period.title }
                                 <span className="data__books-count">

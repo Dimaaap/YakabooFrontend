@@ -20,7 +20,7 @@ export default function AuthorPage() {
   };
 
   useEffect(() => {
-    fetchData(`http://localhost:8004/authors/${authorSlug}`, setAuthor);
+    fetchData(`http://localhost:8006/authors/${authorSlug}`, setAuthor);
   }, []);
 
   return (

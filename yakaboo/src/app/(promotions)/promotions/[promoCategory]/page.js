@@ -13,7 +13,7 @@ export default function PromoCategoryPage() {
     const [promotions, setPromotions] = useState([])
 
     useEffect(() => {
-        fetchData(`http://localhost:8003/promotions/category/by-slug/${categorySlug}`, setPromotions, `promotions_${categorySlug}`)
+        fetchData(`http://localhost:8006/promotions/category/by-slug/${categorySlug}`, setPromotions, `promotions_${categorySlug}`)
     }, [categorySlug])
 
     return(

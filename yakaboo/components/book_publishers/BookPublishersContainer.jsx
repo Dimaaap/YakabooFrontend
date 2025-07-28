@@ -19,7 +19,7 @@ export const BookPublishersContainer = () => {
       fetchSearchResults(debouncedSearchValue, setPublishings);
     } else {
       fetchData(
-        `http://localhost:8004/publishing/first-letter/${activeLetter || 'А'}`,
+        `http://localhost:8006/publishing/first-letter/${activeLetter || 'А'}`,
         setPublishings
       );
     }

@@ -26,7 +26,7 @@ export default function PromoDetailsPage() {
 
 
     useEffect(() => {
-        fetchData(`http://localhost:8003/promotions/by-slug/${promoSlug}`, setCurrentPromo)
+        fetchData(`http://localhost:8006/promotions/by-slug/${promoSlug}`, setCurrentPromo)
     }, [])
 
     const promoEndDate = getTimeLeft(currentPromo?.end_date);

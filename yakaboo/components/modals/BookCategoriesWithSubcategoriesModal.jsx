@@ -29,7 +29,7 @@ const BookCategoriesWithSubcategoriesModal = () => {
 
     useEffect(() => {
         if(hoveredCategory){
-            fetchData(`http://localhost:8003/categories/${hoveredCategory.id}/subcategories`, 
+            fetchData(`http://localhost:8006/categories/${hoveredCategory.id}/subcategories`, 
                 setSubcategories, 
                 `category_${hoveredCategory.id}_subcategories`)
         } else {

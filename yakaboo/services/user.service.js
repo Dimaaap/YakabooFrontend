@@ -19,7 +19,7 @@ export const changeUserPassword = async (data) => {
 }
 
 export const updateUserData = async(body, email) => {
-    const res = await fetch(`http://localhost:8003/auth/user/update/${email}`, {
+    const res = await fetch(`http://localhost:8006/auth/user/update/${email}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)

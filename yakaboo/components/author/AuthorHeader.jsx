@@ -14,14 +14,14 @@ export const AuthorHeader = ({ author }) => {
 
   useEffect(() => {
     fetchData(
-      `http://localhost:8004/authors/${author.id}/images`,
+      `http://localhost:8006/authors/${author.id}/images`,
       setAuthorImages
     );
   }, []);
 
   useEffect(() => {
     fetchData(
-      `http://localhost:8004/author_facts/author/${author.id}`,
+      `http://localhost:8006/author_facts/author/${author.id}`,
       setAuthorFact
     );
   }, []);

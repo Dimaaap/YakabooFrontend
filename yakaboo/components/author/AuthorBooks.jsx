@@ -10,7 +10,7 @@ export const AuthorBooks = ({authorId}) => {
     const [authorsBooks, setAuthorBooks] = useState([])
 
     useEffect(() => {
-        fetchData(`http://localhost:8004/authors/author/${authorId}/books`, setAuthorBooks)
+        fetchData(`http://localhost:8006/authors/author/${authorId}/books`, setAuthorBooks)
     }, [])
 
   return (

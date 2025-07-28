@@ -58,18 +58,22 @@ export const fetchSearchResults = async (
   authors = false,
   literaturePeriods = false
 ) => {
+  console.log(query)
   try {
     let res = null;
-    if (!authors) {
-      res = await fetch(
-        `http://127.0.0.1:8004/publishing/search/?query=${query}`
-      );
-    } else if(literaturePeriods){
-      res = await fetch(
-        `http://localhost:8004/literature_period/search/?query=${query}`
+    if (literaturePeriods) {
+       res = await fetch(
+        `http://127.0.0.1:8006/literature_period/search/?query=${query}`
       )
+      console.log("Res", res)
+    } else if(authors){
+      res = await fetch(
+        `http://127.0.0.1:8006/authors/search/?query=${query}`
+      );
     } else {
-      res = await fetch(`http://localhost:8004/authors/search/?query=${query}`);
+      res = await fetch(
+        `http://127.0.0.1:8006/publishing/search/?query=${query}`
+      );
     }
 
     const data = await res.json();
