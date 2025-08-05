@@ -5,17 +5,34 @@ import { FilterForm } from '.';
 import { fetchData } from '../../services';
 import Endpoints from '../../endpoints';
 
-export const Filters = ({ withPublishers = true, needLanguages = true }) => {
+export const Filters = ({ 
+  withPublishers = true, 
+  needLanguages = true, 
+  needBookTypes = true, 
+  needAuthors = true, 
+  needCategories = true,
+  needBrands = false  
+}) => {
   const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
 
   useEffect(() => {
-    fetchData(Endpoints.ALL_BOOK_CATEGORIES, setCategories, 'categories');
+    if(needCategories) {
+      fetchData(Endpoints.ALL_BOOK_CATEGORIES, setCategories, 'categories');  
+    } else if (needBrands){
+      fetchData(Endpoints.ALL_HOBBY_BRANDS, setBrands)
+    }
   }, []);
 
   const categoriesTitle = useMemo(
     () => categories.map((category) => category.title),
     [categories]
   );
+
+  const brandsTitle = useMemo(
+    () => brands.map((brand) => brand.title),
+    [brands]
+  )
 
   const filtersFields = [
     'Новинки',
@@ -30,7 +47,7 @@ export const Filters = ({ withPublishers = true, needLanguages = true }) => {
     <div className="filters games-filters">
       <FilterForm fields={filtersFields} formTitle="Фільтри" />
 
-      {categories && (
+      {categories && needCategories && (
         <FilterForm
           fields={categoriesTitle}
           formTitle="Категорія"
@@ -38,12 +55,25 @@ export const Filters = ({ withPublishers = true, needLanguages = true }) => {
         />
       )}
 
-      <FilterForm fields={['Паперова', 'Електронна']} formTitle="Тип книги" />
+      { needBookTypes && (
+        <FilterForm fields={['Паперова', 'Електронна']} formTitle="Тип книги" />  
+      ) }
+      
 
       <FilterForm
         fields={['Товари в наявності', 'Готові до відправки']}
         formTitle="Наявність"
       />
+
+      { needBrands && (
+        <FilterForm 
+          fields={ brandsTitle }
+          formTitle="Бренди"
+          withSearch={true}
+          searchPlaceholder="Пошук бренду"
+          withShowMore={true}
+        />
+      ) }
 
       {withPublishers ? (
         <FilterForm
@@ -60,7 +90,7 @@ export const Filters = ({ withPublishers = true, needLanguages = true }) => {
           searchPlaceholder="Пошук видавництва"
           withShowMore={true}
         />
-      ) : (
+      ) : needAuthors ?  (
         <FilterForm
           fields={[
             'Джоан Роулінг',
@@ -74,7 +104,7 @@ export const Filters = ({ withPublishers = true, needLanguages = true }) => {
           searchPlaceholder="Пошук авторів"
           withShowMore={true}
         />
-      )}
+      ) : (<></>)}
 
       {needLanguages && (
         <FilterForm

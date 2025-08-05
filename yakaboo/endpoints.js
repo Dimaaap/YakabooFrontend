@@ -27,7 +27,9 @@ const Endpoints = {
   ALL_CONTACTS: 'http://localhost:8006/contacts/all',
   ALL_COUNTRIES: 'http://localhost:8006/countries/all',
   ALL_LITERATURE_PERIODS: "http://localhost:8006/literature_period/all",
-  ALL_TRANSLATORS: "http://localhost:8006/translators/all"
+  ALL_TRANSLATORS: "http://localhost:8006/translators/all",
+  ALL_HOBBY_CATEGORIES: "http://127.0.0.1:8006/hobby-categories/all",
+  ALL_HOBBY_BRANDS: "http://127.0.0.1:8006/hobby-brands/all"
 };
 
 export default Endpoints;
