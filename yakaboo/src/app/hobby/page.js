@@ -1,6 +1,17 @@
-import { Filters, HobbyCategories } from "../../../components";
+'use client'
+
+import { Filters, HobbiesContainer, HobbyCategories } from "../../../components";
+import { useEffect, useState } from "react";
+import { fetchData } from "../../../services";
+import Endpoints from "../../../endpoints";
 
 export default function HobbyPage() {
+    const [hobbies, setHobbies] = useState([])
+
+    useEffect(() => {
+        fetchData(Endpoints.ALL_HOBBIES, setHobbies)
+    }, [])
+
     return (
         <div className="hobby-container">
             <HobbyCategories />
@@ -8,6 +19,9 @@ export default function HobbyPage() {
             <div className="hobby-container__main-content">
                 <Filters withPublishers={ false } needLanguages={ false } needBookTypes = { false } needAuthors = { false } 
                 needCategories = { false } needBrands={ true } />
+                
+                { console.log(hobbies) }
+                { hobbies.length > 0 && <HobbiesContainer hobbiesList={ hobbies } /> }
             </div>
         </div>
     )

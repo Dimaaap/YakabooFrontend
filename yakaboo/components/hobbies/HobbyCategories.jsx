@@ -19,7 +19,6 @@ export const HobbyCategories = () => {
                 categories.map((category, index) => (
                     <Link className="hobby-categories__category" href={`/hobby/${category.slug}`} key={index}>
                         <div className="hobby-categories__image-container">
-                            { console.log(category.images_src) }
                             {category.images_src.length > 0 && (
                                 category.images_src.map((image, i) => (
                                     <Image src={image} key={ i } alt="" width="80" height="80" className="hobby-categories__image" />
