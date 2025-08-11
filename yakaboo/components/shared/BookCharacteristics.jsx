@@ -19,7 +19,7 @@ export const BookCharacteristics = ({ book }) => {
                     <div className="book-container__cell cell-title">
                         <p>Автор</p>
                     </div>
-                     <div className="book-container__cell">
+                    <div className="book-container__cell">
                         <Link className="book-container__link author-link" href={`/author/view/${book.authors[0]?.slug}`}>
                             {book.authors[0]?.first_name} {book.authors[0]?.last_name}
                         </Link>

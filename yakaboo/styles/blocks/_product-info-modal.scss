@@ -3,6 +3,7 @@
 .product-info {
   position: fixed;
   bottom: 0;
+  left: 0;
   width: 100%;
   z-index: 100;
   background-color: var(--color-light);
@@ -20,8 +21,14 @@
     font-weight: 500;
   }
 
+
+
+  &__row {
+    display: flex;
+    align-items: start;
+  }
+
   &__buy-btn {
-    background-color: var(--color-orange-10);
     border-radius: rem(10);
     border: none;
     display: flex;
@@ -34,6 +41,7 @@
     justify-content: center;
     text-align: center;
     transition: all var(--transition-duration) ease;
+    max-width: 50%;
 
     & img {
       filter: invert(1);

@@ -19,8 +19,6 @@ export default function HobbyPage() {
             <div className="hobby-container__main-content">
                 <Filters withPublishers={ false } needLanguages={ false } needBookTypes = { false } needAuthors = { false } 
                 needCategories = { false } needBrands={ true } />
-                
-                { console.log(hobbies) }
                 { hobbies.length > 0 && <HobbiesContainer hobbiesList={ hobbies } /> }
             </div>
         </div>

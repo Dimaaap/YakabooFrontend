@@ -5,9 +5,10 @@
   flex-direction: column;
   row-gap: 10%;
   font-size: rem(14);
+  width: 15%;
 
   &__price-container-title {
-    font-size: rem(26);
+    font-size: rem(24);
     font-weight: 600;
 
     &.orange-text {
@@ -47,7 +48,7 @@
 
   &__row {
     display: flex;
-    gap: rem(7);
-    align-items: center;
+    gap: rem(15);
+    align-items: start;
   }
 }

@@ -5,7 +5,7 @@ const ProductInfoModal = ({
   productImage,
   productTitle,
   productPrice,
-  oldPrice,
+  oldPrice=null,
 }) => {
   return (
     <div className="product-info">
@@ -18,11 +18,13 @@ const ProductInfoModal = ({
           <p className="container-info__price-container-title orange-text">
             {productPrice} грн
           </p>
-          <p className="container-info__old-price cancelled-text">
-            {oldPrice} грн
-          </p>
-          <button className="product-info__buy-btn">
-            <Image src="/icons/cart.svg" alt="" width="18" height="18" />
+          { oldPrice && (
+            <p className="container-info__old-price cancelled-text">
+              {oldPrice} грн
+            </p>  
+          ) }
+          
+          <button className="product-info__buy-btn buy-btn buy-btn-pink">
             Купити
           </button>
         </div>
