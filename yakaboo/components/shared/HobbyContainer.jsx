@@ -205,6 +205,17 @@ export const HobbyContainer = ({ hobby, breadcrubmbLink }) => {
                             </div>
                         ) }
 
+                        { hobby.details_count && (
+                            <div className="book-container__row hobby-page__row">
+                                <div className="book-container__cell hobby-page__cel cell-title">
+                                    <p>Кількість елементів</p>
+                                </div>
+                                <div className="book-container__cell hobby-page__cel">
+                                    { hobby.details_count }
+                                </div>
+                            </div>
+                        ) }
+
                         { !showAllCharacteristics && (
                             <button className="book-container__show-all btn hobby-page__show-all" type="button"
                             onClick={() => setShowAllCharacteristics(true)}>

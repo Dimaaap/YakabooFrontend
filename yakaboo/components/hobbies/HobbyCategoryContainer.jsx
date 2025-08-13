@@ -6,7 +6,7 @@ export const HobbyCategoryContainer = ({ categories }) => {
             { console.log(categories) }
             <Filters needPublishers={ false } needLanguages={ false } needBookTypes={ false }
             needCategories={ false } needBrands={ true } needTheme={ true } needFilters={ false } 
-            needAuthors={ false } needPrice={ false } />
+            needAuthors={ false } needPrice={ false } needDifficultLevel={ true } />
             { categories && (
                 <CardsContainer booksList={ categories } isHobbies={ true } />    
             ) }

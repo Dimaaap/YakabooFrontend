@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useMemo } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { FilterForm } from '.';
 import { fetchData } from '../../services';
 import Endpoints from '../../endpoints';
@@ -15,8 +16,11 @@ export const Filters = ({
   needTheme = false,
   needFilters = true,
   needPrice = true,
-  onApplyFilters = () => {}
+  needDifficultLevel= false
 }) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
   const [hobbyThemes, setHobbyThemes] = useState([]);
@@ -32,6 +36,7 @@ export const Filters = ({
     authors: [],
     themes: [],
     filters: [],
+    difficultLevels: [],
     inStockOnly: false,
     priceFrom: "",
     priceTo: ""
@@ -66,6 +71,28 @@ export const Filters = ({
   }, []);
 
 
+  useEffect(() => {
+    const getArray = name => {
+      const value = searchParams.get(name);
+      return value ? value.split(',') : []
+    };
+
+    setFilters({
+      categories: getArray("categories"),
+      brands: getArray("brands"),
+      publishers: getArray("publishers"),
+      languages: getArray('languages'),
+      bookTypes: getArray("book_types"),
+      authors: getArray("authors"),
+      themes: getArray("themes"),
+      filters: getArray("filters"),
+      difficultLevels: getArray("difficulty_level"),
+      inStockOnly: searchParams.get('in_stock') === "true",
+      priceFrom: searchParams.get("price_min") || "",
+      priceTo: searchParams.get("price_max") || ""
+    })
+  }, [searchParams.toString()])
+
   const categoriesTitle = useMemo(
     () => categories.map((category) => category.title),
     [categories]
@@ -87,6 +114,8 @@ export const Filters = ({
   const publishingTitles = useMemo(
     () => publishings.map((publishing) => publishing.title), [publishings]
   )
+
+  const diffLevels = ["1", "2", "3", "4", "5"]
 
 
   const filtersFields = [
@@ -136,6 +165,10 @@ export const Filters = ({
       queryParams.append('authors', filters.authors.join(','))
     }
 
+    if(filters.difficultLevels.length){
+      queryParams.append("difficulty_level", filters.difficultLevels.join(","))
+    }
+
     if(filters.inStockOnly){
       queryParams.append("in_stock", "true")
     }
@@ -150,9 +183,8 @@ export const Filters = ({
 
     const queryString = queryParams.toString()
 
-    onApplyFilters(queryString)
-    console.log("click")
-    console.log(queryString)
+    router.push(`?${queryString}`, { shallow: true })
+    
   }
 
   return (
@@ -194,18 +226,31 @@ export const Filters = ({
         />
       ) }
 
-      <div className="filters__form-field">
-        <label className="filters__form-label custom-checkbox">
-          <input 
-          type="checkbox"
-          className="filters__form-checkbox"
-          checked={filters.inStockOnly}
-          onChange={() => updateValueFilter('inStockOnly', !filters.inStockOnly)}
-        />
-        <span className="filters__form-custom-box"></span>
-        Товари в наявності
-        </label>
-      </div>
+      { needDifficultLevel && (
+        <FilterForm 
+          fields={ diffLevels }
+          formTitle="Рівень складності"
+          selected={ filters.difficultLevels }
+          onChange={(values) => updateArrayFilter("difficultLevels", values)}
+          />
+      ) }
+
+      <form className="filters__form" onSubmit={e => e.preventDefault()}>
+        <p className="filters__form-title">В наявності</p>
+        <div className="filters__form-field">
+          <label className="filters__form-label custom-checkbox">
+            <input 
+              type="checkbox"
+              className="filters__form-checkbox"
+              checked={filters.inStockOnly}
+              onChange={() => updateValueFilter('inStockOnly', !filters.inStockOnly)}
+            />
+            <span className="filters__form-custom-box"></span>
+            Товари в наявності
+          </label>
+        </div>
+      </form>
+      
 
       {needPublishers ? (
         <FilterForm
