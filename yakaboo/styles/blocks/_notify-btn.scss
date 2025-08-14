@@ -1,0 +1,9 @@
+@use "../helpers" as *;
+
+.notify-btn-gray {
+    background-color: var(--color-gray-50);
+    font-size: rem(14);
+    color: var(--color-black);
+    font-weight: 500;
+    cursor: pointer;
+}

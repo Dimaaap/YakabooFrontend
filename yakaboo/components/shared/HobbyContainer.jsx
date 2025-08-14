@@ -71,7 +71,8 @@ export const HobbyContainer = ({ hobby, breadcrubmbLink }) => {
                 <ProductInfoModal 
                 productImage={hobby.images[0].image_url}
                 productTitle={hobby.title} 
-                productPrice={hobby.price} />    
+                productPrice={hobby.price}
+                isInStock={hobby.is_in_stock} />    
             ) }
             { isProductImagesOpen && <ProductImagesModal productTitle={ hobby.title } images={ images } /> }
 
@@ -248,6 +249,39 @@ export const HobbyContainer = ({ hobby, breadcrubmbLink }) => {
                                     </div>
                                 ) }
 
+                                { hobby.packing && (
+                                    <div className="book-container__row hobby-page__row">
+                                        <div className="book-container__cell hobby-page__cell cell-title">
+                                            <p>Пакування</p>
+                                        </div>
+                                        <div className="book-container__cell hobby-page__cell">
+                                            { hobby.packing }
+                                        </div>
+                                    </div>
+                                ) }
+
+                                { hobby.color && (
+                                    <div className="book-container__row hobby-page__row">
+                                        <div className="book-container__cell hobby-page__cell cell-title">
+                                            <p>Колір</p>
+                                        </div>
+                                        <div className="book-container__cell hobby-page__cell">
+                                            { hobby.color }
+                                        </div>
+                                    </div>
+                                ) }
+
+                                { hobby.type && (
+                                    <div className="book-container__row hobby-page__row">
+                                        <div className="book-container__cell hobby-page__cell cell-title">
+                                            <p>Тип</p>
+                                        </div>
+                                        <div className="book-container__cell hobby-page__cell">
+                                            { hobby.type }
+                                        </div>
+                                    </div>
+                                )}
+
                                 { hobby.ages?.length > 0 && (
                                     <div className="book-container__row hobby-page__row">
                                         <div className="book-container__cell cell-title hobby-page__cell">
@@ -305,10 +339,13 @@ export const HobbyContainer = ({ hobby, breadcrubmbLink }) => {
             <div className="book-container__section hobby-page__section right-section">
                 <div className="book-container__block price-block hobby-page__price-block">
                     <div className="book-container__price-row hobby-page__price-row">
-                        <h2 className="book-container__header book-container__h2 hobby-page__header">
-                            { hobby.price } грн
-                        </h2>
-                        { hobby.bonuses && (
+                        { hobby.is_in_stock && (
+                            <h2 className="book-container__header book-container__h2 hobby-page__header">
+                                { hobby.price } грн
+                            </h2>    
+                        ) }
+                        
+                        { hobby.is_in_stock && hobby.bonuses && (
                             <div className="book-container__bonuses hobby-page__bonuses product-bonuses">
                                 <Image src="/icons/bonus.svg" alt="" width="20" height="20" />
                                 <p className="product-bonuses__bonuses-count">+{ hobby.bonuses } бонусів</p>
@@ -320,16 +357,19 @@ export const HobbyContainer = ({ hobby, breadcrubmbLink }) => {
                             { hobby.is_in_stock ? "В наявності" : "Немає в наявності" }
                         </span>
                     </div>
-                    <div className="book-container__pink-buy-btn buy-btn buy-btn-pink">
-                        Купити
+                    <div className={`book-container__pink-buy-btn buy-btn ${hobby.is_in_stock ? "buy-btn-pink" : "notify-btn-gray"}`}>
+                        { hobby.is_in_stock ? "Купити" : "Сповістити про наявність" }
                     </div>
-                    
-                    <Delivery />
+                    { hobby.is_in_stock && (
+                        <>
+                            <Delivery />
 
-                    { isDeliveryModalOpen && <DeliveryInfoModal /> }
+                        { isDeliveryModalOpen && <DeliveryInfoModal /> }
 
-                    { deliveryLocation && (
-                        <DeliveryTerms deliveryLocation={ deliveryLocation } productCode={ hobby.code } />
+                        { deliveryLocation && (
+                            <DeliveryTerms deliveryLocation={ deliveryLocation } productCode={ hobby.code } />
+                        ) }
+                        </>
                     ) }
                 </div>
             </div>
