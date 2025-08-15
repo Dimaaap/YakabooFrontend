@@ -18,15 +18,15 @@
     display: flex;
     align-items: center;
     gap: rem(10);
+    width: 50%;
     font-weight: 500;
   }
 
-
-
   &__row {
     display: flex;
-    align-items: start;
+    align-items: center;
   }
+
 
   &__buy-btn {
     border-radius: rem(10);
@@ -37,11 +37,11 @@
     color: var(--color-light);
     font-weight: 600;
     padding-block: 4%;
-    width: rem(150);
+    width: rem(180);
     justify-content: center;
     text-align: center;
     transition: all var(--transition-duration) ease;
-    max-width: 50%;
+    max-width: 100%;
 
     & img {
       filter: invert(1);

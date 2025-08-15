@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 import { useConfirmationCodeStore, useProfileSettingsModalStore, useUserLoginModalStore } from "../../../../../states"
-import Endpoints from "../../../../../endpoints";
 import Link from "next/link";
 import { fetchData } from "../../../../../services";
 import { HobbyCategoryContainer } from "../../../../../components";
+import { ConfirmationCodeModal, ProfileSettingsModal, UserLoginModal, UserRegisterModal } from "../../../../../components/dynamic";
 
 
 export default function AllCategoryHobbies() {
@@ -38,7 +38,10 @@ export default function AllCategoryHobbies() {
             { category && (
                 <HobbyCategoryContainer categories={ category.hobbies } />    
             ) }
-            
+            { isLoginModalOpen && <UserLoginModal /> }
+            { isRegisterModalOpen && <UserRegisterModal /> }
+            { isConfirmationModalOpen && <ConfirmationCodeModal /> }
+            { isProfileSettingsModalOpen && <ProfileSettingsModal /> }
         </div>
     )
 
