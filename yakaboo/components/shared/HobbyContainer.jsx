@@ -13,6 +13,7 @@ export const HobbyContainer = ({ hobby, breadcrubmbLink }) => {
     const { deliveryLocation } = useDeliveryCityStore();
     const { isProductImagesOpen, setIsProductImagesOpen } = useProductImagesStore();
 
+    const [isSingle, setIsSingle] = useState(null)
     const [activeImage, setActiveImage] = useState(0);
     const [showAll, setShowAll] = useState(false);
     const [showAllCharacteristics, setShowAllCharacteristics] = useState(false)
@@ -36,10 +37,18 @@ export const HobbyContainer = ({ hobby, breadcrubmbLink }) => {
         }
     }
 
+    const isSingleParagraph = doc => {
+        const paragraphs = doc.querySelectorAll("p")
+
+        const isSingle = paragraphs.length === 1;
+        return isSingle
+    }
+
     const firstParagraph = useMemo(() => {
         if(!hobby.description) return ""
         const parser = new DOMParser();
         const doc = parser.parseFromString(hobby.description, "text/html");
+        setIsSingle(isSingleParagraph(doc))
         const firstP = doc.querySelector("p");
         return firstP ? firstP.outerHTML : ""
     }, [hobby.description])
@@ -49,6 +58,7 @@ export const HobbyContainer = ({ hobby, breadcrubmbLink }) => {
     }, [hobby.images])
 
     useEffect(() => {
+        console.log(isSingle)
         const handleScroll = () => {
             const scrollY = window.scrollY;
             if(scrollY > SCROLL_OFFSET){
@@ -147,23 +157,26 @@ export const HobbyContainer = ({ hobby, breadcrubmbLink }) => {
                             className="book-container__text hobby-page__text"
                             dangerouslySetInnerHTML={{__html: showAll ? hobby.description : firstParagraph}} 
                         />
-                        { !showAll ? (
-                            <button
-                                onClick={() => setShowAll(true)}
-                                className="hobby-page__show-more"
-                            >
-                                Показати все
-                                <Image src="/icons/chevron-down.svg" alt="" width="18" height="18" />
-                            </button>
-                        ) : (
-                            <button 
-                            onClick={() => setShowAll(false)}
-                            className="hobby-page__show-more">
-                                Показати менше
-                                <Image src="/icons/chevron-down.svg" alt="" width="18" height="18"
-                                className="rotated" />
-                            </button>
-                        )}
+                        { !isSingle && (
+                           
+                            !showAll ? (
+                                <button
+                                    onClick={() => setShowAll(true)}
+                                    className="hobby-page__show-more"
+                                >
+                                    Показати все
+                                    <Image src="/icons/chevron-down.svg" alt="" width="18" height="18" />
+                                </button>
+                            ) : (
+                                <button 
+                                onClick={() => setShowAll(false)}
+                                className="hobby-page__show-more">
+                                    Показати менше
+                                    <Image src="/icons/chevron-down.svg" alt="" width="18" height="18"
+                                    className="rotated" />
+                                </button>
+                            )
+                        ) }
                     </div>
                 ) }
 

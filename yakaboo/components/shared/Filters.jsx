@@ -16,7 +16,8 @@ export const Filters = ({
   needTheme = false,
   needFilters = true,
   needPrice = true,
-  needDifficultLevel= false
+  needDifficultLevel= false,
+  needAge = false
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -25,7 +26,8 @@ export const Filters = ({
   const [brands, setBrands] = useState([]);
   const [hobbyThemes, setHobbyThemes] = useState([]);
   const [authors, setAuthors] = useState([])
-  const [publishings, setPublishings] = useState([])
+  const [publishings, setPublishings] = useState([]);
+  const [age, setAge] = useState([])
 
   const [filters, setFilters] = useState({
     categories: [],
@@ -37,6 +39,7 @@ export const Filters = ({
     themes: [],
     filters: [],
     difficultLevels: [],
+    ages: [],
     inStockOnly: false,
     priceFrom: "",
     priceTo: ""
@@ -68,6 +71,10 @@ export const Filters = ({
     if(needPublishers){
       fetchData(Endpoints.ALL_PUBLISHINGS, setPublishings)
     }
+
+    if(needAge) {
+      fetchData(Endpoints.ALL_BOARD_GAME_AGES, setAge)
+    }
   }, []);
 
 
@@ -87,6 +94,7 @@ export const Filters = ({
       themes: getArray("themes"),
       filters: getArray("filters"),
       difficultLevels: getArray("difficulty_level"),
+      ages: getArray("ages"),
       inStockOnly: searchParams.get('in_stock') === "true",
       priceFrom: searchParams.get("price_min") || "",
       priceTo: searchParams.get("price_max") || ""
@@ -113,6 +121,10 @@ export const Filters = ({
 
   const publishingTitles = useMemo(
     () => publishings.map((publishing) => publishing.title), [publishings]
+  )
+
+  const gameAgesTitle = useMemo(
+    () => age.map((a) => a.title), [age]
   )
 
   const diffLevels = ["1", "2", "3", "4", "5"]
@@ -151,6 +163,10 @@ export const Filters = ({
 
     if(filters.bookTypes.length){
       queryParams.append("book_types", filters.bookTypes.join(','))
+    }
+
+    if(filters.age.length) {
+      queryParams.append("ages", filters.ages.join(','))
     }
 
     if(filters.filters.length){
@@ -223,6 +239,15 @@ export const Filters = ({
           withShowMore={true}
           selected={filters.brands}
           onChange={(values) => updateArrayFilter('brands', values)}
+        />
+      ) }
+
+      { needAge && (
+        <FilterForm 
+          fields={ gameAgesTitle }
+          forTitle="Вік"
+          selected={ filters.ages }
+          onChange={ (values) => updateArrayFilter("ages", values) }
         />
       ) }
 

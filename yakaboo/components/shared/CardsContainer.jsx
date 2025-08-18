@@ -26,6 +26,7 @@ export const CardsContainer = ({booksList, isHobbies=false}) => {
             authors: getArray("authors"),
             themes: getArray("themes"),
             filters: getArray("filters"),
+            ages: getArray("ages"),
             difficultyLevels: getArray("difficulty_level").map(Number),
             inStockOnly: searchParams.get("in_stock") === "true",
             priceFrom: searchParams.get("price_min") || "",
@@ -34,13 +35,14 @@ export const CardsContainer = ({booksList, isHobbies=false}) => {
     }, [searchParams.toString()])
 
     const filterBooks = useMemo(() => {
-        return booksList.filter(book => {
+        return booksList?.filter(book => {
             if(filters.categories.length && !filters.categories.includes(book.category_slug)) return false 
             if(filters.brands.length && !filters.brands.includes(book?.brand?.title)) return false 
             if(filters.publishers.length && !filters.brands.includes(book?.publishing?.title)) return false 
             if(filters.languages.length && !filters.languages.includes(book?.book_info?.languages)) return false 
             if(filters.bookTypes.length && !filters.bookTypes.includes(book?.book_info?.format)) return false 
             if(filters.themes.length && !filters.themes.includes(book?.theme)) return false
+            if(filters.ages.length && !filters.ages.includes(book?.age)) return false
             if(filters.difficultyLevels.length && !filters.difficultyLevels.includes(Number(book?.difficulty_level))) return false 
             if(filters.inStockOnly && !(book?.book_info?.in_stock || book.is_in_stock)) return false
             if(filters.priceFrom && book.price < Number(filters.priceFrom)) return false
@@ -54,7 +56,7 @@ export const CardsContainer = ({booksList, isHobbies=false}) => {
             { console.log(filters.difficultyLevels) }
             { console.log(booksList) }
             <div className="author-books__header">
-                <h5 className="author-books__count">{`${ filterBooks.length } ${wordDeclension(filterBooks.length)}`}</h5>
+                <h5 className="author-books__count">{`${ filterBooks?.length } ${wordDeclension(filterBooks?.length)}`}</h5>
                 <span className="author-books__select">
                     За популярністю 
                     <Image src="/icons/arrow-left.svg" alt="" width="15" height="15" />

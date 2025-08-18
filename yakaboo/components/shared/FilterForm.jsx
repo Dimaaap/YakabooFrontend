@@ -19,7 +19,7 @@ export const FilterForm = ({
 
   const filterFields = useMemo(() => {
     return fields.filter(field => 
-      field.toLowerCase().includes(searchTerm.toLowerCase())
+      field?.toLowerCase().includes(searchTerm.toLowerCase())
     )
   }, [fields, searchTerm])
 

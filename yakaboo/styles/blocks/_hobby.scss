@@ -23,4 +23,16 @@
         align-items: start;
         gap: 3%;
     }
+
+    &__categories {
+        display: flex;
+        align-items: center;
+        gap: 3%;
+
+        &-category {
+            display: flex;
+            flex-direction: column;
+            gap: rem(5);
+        }
+    }
 }
