@@ -42,7 +42,7 @@ export const CardsContainer = ({booksList, isHobbies=false}) => {
             if(filters.languages.length && !filters.languages.includes(book?.book_info?.languages)) return false 
             if(filters.bookTypes.length && !filters.bookTypes.includes(book?.book_info?.format)) return false 
             if(filters.themes.length && !filters.themes.includes(book?.theme)) return false
-            if(filters.ages.length && !filters.ages.includes(book?.age)) return false
+            if(filters.ages.length && !book?.ages.some(a => filters.ages.includes(a.age))) return false
             if(filters.difficultyLevels.length && !filters.difficultyLevels.includes(Number(book?.difficulty_level))) return false 
             if(filters.inStockOnly && !(book?.book_info?.in_stock || book.is_in_stock)) return false
             if(filters.priceFrom && book.price < Number(filters.priceFrom)) return false
@@ -53,7 +53,6 @@ export const CardsContainer = ({booksList, isHobbies=false}) => {
 
     return (
         <div className="author-books">
-            { console.log(filters.difficultyLevels) }
             { console.log(booksList) }
             <div className="author-books__header">
                 <h5 className="author-books__count">{`${ filterBooks?.length } ${wordDeclension(filterBooks?.length)}`}</h5>
@@ -68,7 +67,8 @@ export const CardsContainer = ({booksList, isHobbies=false}) => {
                     key={ index } 
                     productLink={!isHobbies ? `/book/${book.slug}` : `/hobby/${book.slug}`}
                     extraClass="author-books__book" 
-                    title={ book?.title } brand={ book?.publishing?.title || book?.brand?.title}
+                    title={ book?.title } 
+                    brand={ book?.publishing?.title || book?.brand?.title}
                     imageSrc={book.images[0]?.image_url ?? "/images/holli.jpg"}
                     badges={
                         [

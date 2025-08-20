@@ -124,7 +124,7 @@ export const Filters = ({
   )
 
   const gameAgesTitle = useMemo(
-    () => age.map((a) => a.title), [age]
+    () => age.map((a) => a.age), [age]
   )
 
   const diffLevels = ["1", "2", "3", "4", "5"]
@@ -165,7 +165,7 @@ export const Filters = ({
       queryParams.append("book_types", filters.bookTypes.join(','))
     }
 
-    if(filters.age.length) {
+    if(filters.ages.length) {
       queryParams.append("ages", filters.ages.join(','))
     }
 
@@ -241,11 +241,10 @@ export const Filters = ({
           onChange={(values) => updateArrayFilter('brands', values)}
         />
       ) }
-
       { needAge && (
         <FilterForm 
           fields={ gameAgesTitle }
-          forTitle="Вік"
+          formTitle="Вік"
           selected={ filters.ages }
           onChange={ (values) => updateArrayFilter("ages", values) }
         />

@@ -29,7 +29,7 @@ export default function AllSubcategoryHobbies() {
     
     return (
         <div className="book hobby hobby-subcategory">
-            { subCategory && <HobbySubcategoryContainer /> }
+            { subCategory && <HobbySubcategoryContainer subCategory={ subCategory } breadcrumbsLink={ breadcrumbsObject } /> }
             { isLoginModalOpen && <UserLoginModal />}
             { isRegisterModalOpen && <UserRegisterModal /> }
             { isConfirmationModalOpen && <ConfirmationCodeModal /> }

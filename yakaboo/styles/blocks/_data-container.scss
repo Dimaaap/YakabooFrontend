@@ -18,6 +18,14 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border-radius: rem(10);
+      padding: 1%;
+      padding-inline: 3%;
+      font-size: rem(14);
+
+      &:hover {
+        background-color: var(--color-gray-40);
+      }
 
       &.period-link {
         color: var(--color-blue-20);
