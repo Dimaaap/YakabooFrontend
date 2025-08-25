@@ -1,6 +1,8 @@
 export const ImagesLinks = {
     BONUS: "/icons/bonus.svg",
-    CHEVRON_DOWN: "/icons/chevron-down.svg"
+    CHEVRON_DOWN: "/icons/chevron-down.svg",
+    DEFAULT_IMAGE: "/images/default-image.jpg",
+    FAVOURITE_IMAGE: "/icons/heart.svg"
 }
 
 export const ImagesConfig = {
