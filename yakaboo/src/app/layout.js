@@ -1,6 +1,6 @@
 import { Montserrat } from "next/font/google";
-import '@fortawesome/fontawesome-free/css/all.min.css';
 import { Header, Footer } from "../../components/shared";
+import "../../styles/main.scss"
 
 const monserrat = Montserrat(
   {
