@@ -4,9 +4,9 @@ export default function NotFound() {
     return (
         <div className="not-found-page">
             <div className="not-found-page__top-section">
-                <h1 className="not-found-page__title">
+                <h2 className="not-found-page__title">
                     Сторінку не знайдено
-                </h1>
+                </h2>
                 <p className="not-found-page__text">
                     Помилка 404
                 </p>
@@ -48,7 +48,7 @@ export default function NotFound() {
                 <div className="not-found-page__text-container">
                     <p className="not-foung-page__paragraph">
                         Якщо ви впевнені, що не помилились набираючи адресу сторінки, і сторінка повинна бути, 
-                        <Link className="not-found-page__link" href="mailto:support@yakaboo.com">повідомте про помилку </Link> {" "}
+                        {" "}<Link className="not-found-page__link" href="mailto:support@yakaboo.com">повідомте про помилку </Link> {" "}
                         адміністартора сайту, за що ми будемо дуже вдячні.
                     </p>
                 </div>

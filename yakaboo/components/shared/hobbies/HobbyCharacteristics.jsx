@@ -9,12 +9,12 @@ import { ImagesLinks, HrefsConfig } from '../../../site.config';
 import { CharacteristicsRow } from '../CharacteristicsRow';
 import { AgesRow } from '../AgesRow';
 
-export const HobbyCharacteristics = ({ hobby }) => {
+export const HobbyCharacteristics = ({ hobby, isAccessory }) => {
 
     const showAllCharacteristics = useAllCharacteristics((state) => state.showAllCharacteristics)
 
     const baseCharacteristics = [
-        ["Бренд", hobby.brand.title, HrefsConfig.childrenBrand(hobby.brand.slug)],
+        ["Бренд", hobby.brand.title, isAccessory ? HrefsConfig.childrenBrand(hobby.brand.slug) : HrefsConfig.giftBrand(hobby.brand.slug)],
         ["Артикул", hobby.article],
         ["Тематика", hobby?.theme || null],
         ["Кількість елементів", hobby?.details_count || null],
@@ -24,6 +24,7 @@ export const HobbyCharacteristics = ({ hobby }) => {
         ["Розмір товару", hobby?.size],
         ["Рівень складності", hobby?.difficulty_level],
         ["Пакування", hobby?.packing],
+        ["Серія", hobby?.seria],
         ["Колір", hobby?.color],
         ["Тип", hobby?.type],
         ["Код", hobby.code]

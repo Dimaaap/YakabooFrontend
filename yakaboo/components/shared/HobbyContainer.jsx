@@ -14,7 +14,7 @@ import { HobbyDescriptionContainer } from "./hobbies/HobbyDescriptionContainer";
 import { HobbyCharacteristics } from "./hobbies/HobbyCharacteristics";
 import { PriceContainer } from "./hobbies/PriceContainer";
 
-export const HobbyContainer = ({ hobby, breadcrubmbLink }) => {
+export const HobbyContainer = ({ hobby, breadcrubmbLink, isAccessory=false }) => {
     const { isProductImagesOpen } = useProductImagesStore();
 
     const showProductInfoModal = useProductInfoState((state) => state.showProductInfoModal)
@@ -69,7 +69,8 @@ export const HobbyContainer = ({ hobby, breadcrubmbLink }) => {
                     <h2 className="book-container__book-title hobby-page__hobby-title">
                         { hobby.title }
                     </h2>
-                    <Link className="book-container__link hobby-page__link author-link brand-link" href={`/children-brand/${hobby.brand.slug}`}>
+                    <Link className="book-container__link hobby-page__link author-link brand-link" 
+                    href={isAccessory ? `/knyzhkovi-aksesuary/brands/view/${hobby.brand.slug}` : `/children-brand/${hobby.brand.slug}`}>
                         { hobby.brand.title }
                     </Link>
                     <p className="book-container__code hobby-page__code">

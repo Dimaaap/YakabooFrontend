@@ -7,7 +7,7 @@ import { useMemo } from 'react'
 import { ProductCard, Stars, Badge } from '.'
 import { wordDeclension } from '../../services/word-declension.service'
 
-export const CardsContainer = ({booksList, isHobbies=false}) => {
+export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false}) => {
 
     const searchParams = useSearchParams();
 
@@ -27,6 +27,7 @@ export const CardsContainer = ({booksList, isHobbies=false}) => {
             themes: getArray("themes"),
             filters: getArray("filters"),
             ages: getArray("ages"),
+            accessoriesBrands: getArray("accessories_brands"),
             difficultyLevels: getArray("difficulty_level").map(Number),
             inStockOnly: searchParams.get("in_stock") === "true",
             priceFrom: searchParams.get("price_min") || "",
@@ -42,6 +43,7 @@ export const CardsContainer = ({booksList, isHobbies=false}) => {
             if(filters.languages.length && !filters.languages.includes(book?.book_info?.languages)) return false 
             if(filters.bookTypes.length && !filters.bookTypes.includes(book?.book_info?.format)) return false 
             if(filters.themes.length && !filters.themes.includes(book?.theme)) return false
+            if(filters.accessoriesBrands.length && !filters.accessoriesBrands.includes(book?.brand?.title)) return false
             if(filters.ages.length && !book?.ages.some(a => filters.ages.includes(a.age))) return false
             if(filters.difficultyLevels.length && !filters.difficultyLevels.includes(Number(book?.difficulty_level))) return false 
             if(filters.inStockOnly && !(book?.book_info?.in_stock || book.is_in_stock)) return false
@@ -51,9 +53,18 @@ export const CardsContainer = ({booksList, isHobbies=false}) => {
         })
     }, [booksList, filters])
 
+    const returnLink = (slug) => {
+        if(isAccessories) {
+            return `/knyzhkovi-aksesuary/${slug}`
+        } else if(isHobbies){
+            return `/hobby/${slug}`
+        } else {
+            return `/book/${slug}`
+        }
+    }
+
     return (
         <div className="author-books">
-            { console.log(booksList) }
             <div className="author-books__header">
                 <h5 className="author-books__count">{`${ filterBooks?.length } ${wordDeclension(filterBooks?.length)}`}</h5>
                 <span className="author-books__select">
@@ -65,7 +76,7 @@ export const CardsContainer = ({booksList, isHobbies=false}) => {
                 {filterBooks && filterBooks.map((book, index) => (
                     <ProductCard 
                     key={ index } 
-                    productLink={!isHobbies ? `/book/${book.slug}` : `/hobby/${book.slug}`}
+                    productLink={ returnLink(book.slug) }
                     extraClass="author-books__book" 
                     title={ book?.title } 
                     brand={ book?.publishing?.title || book?.brand?.title}
@@ -73,7 +84,8 @@ export const CardsContainer = ({booksList, isHobbies=false}) => {
                     badges={
                         [
                             book.stars > 0 && (<Stars count={ book.stars } isSmaller={ true } />),
-                            book.is_top && (<Badge text="Хіт" backgroundColor="rgb(175, 57, 231)" />),
+                            book.is_top || book.is_in_top && (<Badge text="Хіт" backgroundColor="rgb(175, 57, 231)" />),
+                            book.is_new && (<Badge text="Новинка" backgroundColor="#85EF9A" /> ),
                             book?.book_info?.is_has_cashback && (<Badge text="Кешбек" backgroundColor="rgb(51, 51, 119)"/>)    
                         ]
                     }

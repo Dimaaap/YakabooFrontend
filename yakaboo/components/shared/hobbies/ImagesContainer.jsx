@@ -20,7 +20,7 @@ export const ImagesContainer = ( { images, hobby } ) => {
                 ) }
 
                 <Image src={ images[activeImage] ?? ImagesLinks.DEFAULT_IMAGE } 
-                width="250"
+                width="200"
                 height="350" alt={`${hobby.title}_1`} 
                 className="book-container__big-image hobby-page__big-image" 
                 onClick={() => setIsProductImagesOpen(true)} />

@@ -20,7 +20,8 @@ export const Filters = ({
   needFilters = true,
   needPrice = true,
   needDifficultLevel= false,
-  needAge = false
+  needAge = false,
+  needAccessoriesBrands = false
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -32,6 +33,7 @@ export const Filters = ({
   const [authors, setAuthors] = useState([])
   const [publishings, setPublishings] = useState([]);
   const [age, setAge] = useState([])
+  const [accessoriesBrands, setAccessoriesBrands] = useState([])
 
   const fetchConfig = [
     { need: needCategories, endpoint: Endpoints.ALL_BOOK_CATEGORIES, setter: setCategories, key: "categories" },
@@ -51,6 +53,12 @@ export const Filters = ({
   }, []);
 
   useEffect(() => {
+    if(needAccessoriesBrands){
+      fetchData(Endpoints.ALL_ACCESSORIES_BRANDS, setAccessoriesBrands)
+    }
+  }, [])
+
+  useEffect(() => {
     if(searchParams){
       fromSearchParams(searchParams)
     }
@@ -63,6 +71,7 @@ export const Filters = ({
   const authorsName = authors.map(a => `${a.first_name} ${a.last_name}`);
   const publishingTitles = publishings.map(p => p.title);
   const gameAgesTitle = age.map(a => a.age);
+  const accessoriesBrandsTitle = accessoriesBrands.map(b => b.title)
 
   const applyFilters = () => {
     const queryString = toQueryString()
@@ -88,6 +97,19 @@ export const Filters = ({
         />
       )}
 
+      { accessoriesBrands && needAccessoriesBrands && (
+        <FilterForm 
+          fields={ accessoriesBrandsTitle }
+          formTitle="Бренди"
+          isScroll={ false }
+          withSearch={ true }
+          searchPlaceholder="Пошук бренду"
+          withShowMore={ true }
+          selected={ filters.accessoriesBrands }
+          onChange={ (values) => setArrayFilters("accessoriesBrands", values) }
+        />
+      ) }
+
       { needBookTypes && (
         <FilterForm 
         fields={bookTypesFields} 
@@ -95,6 +117,8 @@ export const Filters = ({
         selected={ filters.bookTypes }
         onChange={(values) => setArrayFilters('bookTypes', values)}/>  
       ) }
+
+      {  }
 
       { needBrands && (
         <FilterForm 

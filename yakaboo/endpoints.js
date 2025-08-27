@@ -34,6 +34,9 @@ const Endpoints = {
   ALL_HOBBY_THEMES: "http://localhost:8006/hobbies/all-hobby-themes",
   ALL_AUTHORS: "http://localhost:8006/authors/all",
   ALL_PUBLISHINGS: "http://localhost:8006/publishing/all",
+  ALL_ACCESSORIES: "http://localhost:8006/accessories/all",
+  ALL_ACCESSORIES_CATEGORIES: "http://localhost:8006/accessories-categories/all",
+  ALL_ACCESSORIES_BRANDS: "http://localhost:8006/accessories-brands/all"
 };
 
 export default Endpoints;

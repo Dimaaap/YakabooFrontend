@@ -20,6 +20,11 @@
     gap: rem(10);
     width: 50%;
     font-weight: 500;
+
+    & img {
+      max-height: rem(90);
+      border-radius: rem(10);
+    }
   }
 
   &__row {
@@ -45,6 +50,7 @@
 
     & img {
       filter: invert(1);
+      max-width: rem(80);
     }
 
     &:hover {

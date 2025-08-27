@@ -12,6 +12,7 @@ export const ImagesConfig = {
 
 export const HrefsConfig =  {
     childrenBrand: (brandSlug) => `/children-brand/view/${brandSlug}`,
+    giftBrand: (brandSlug) => `/knyzhkovi-podarunky/brands/view/${brandSlug}`,
     agePage: (ageSlug) =>`/age/${ageSlug}`
 }
 
@@ -25,6 +26,7 @@ export const filtersMapping = {
     themes: "themes",
     filters: "filters",
     difficultLevels: "difficulty_level",
+    accessoriesBrands: "accessories_brands",
     ages: "ages",
     inStockOnly: "in_stock",
     priceFrom: "price_min",
@@ -42,6 +44,7 @@ export const initialState = {
     filters: [],
     difficultLevels: [],
     ages: [],
+    accessoriesBrands: [],
     inStockOnly: false,
     priceFrom: "",
     priceTo: ""
