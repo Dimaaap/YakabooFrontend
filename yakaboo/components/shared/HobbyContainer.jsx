@@ -20,8 +20,8 @@ export const HobbyContainer = ({ hobby, breadcrubmbLink, isAccessory=false }) =>
     const showProductInfoModal = useProductInfoState((state) => state.showProductInfoModal)
 
     const images = useMemo(() => {
-        return hobby.images.map(img => img.image_url)
-    }, [hobby.images])
+        return hobby?.images?.map(img => img?.image_url)
+    }, [hobby?.images])
 
     useEffect(() => {
         const handleScroll = () => handleScrollForProductInfoModal(90)
@@ -40,6 +40,7 @@ export const HobbyContainer = ({ hobby, breadcrubmbLink, isAccessory=false }) =>
 
     return(
         <div className="book-container hobby-page">
+            { console.log(hobby) }
             { showProductInfoModal && (
                 <ProductInfoModal 
                 productImage={hobby.images[0].image_url}
@@ -56,10 +57,15 @@ export const HobbyContainer = ({ hobby, breadcrubmbLink, isAccessory=false }) =>
 
                 <div className="book-container__images-carousel hobby-page__images-carousel">
                     <div className="book-container__main-image hobby-page__main-image">
-                        <ImagesContainer images={ images } hobby={ hobby } />
+                        { images && images?.length > 0 && (
+                            <ImagesContainer images={ images } hobby={ hobby } />    
+                        ) }
+                        
                     </div>
-
-                    <RestImagesContainer images={ images } hobby={ hobby } />
+                    { images && images?.length > 0 && (
+                        <RestImagesContainer images={ images } hobby={ hobby } />    
+                    ) }
+                    
                 </div>
             </div>
 
@@ -70,8 +76,8 @@ export const HobbyContainer = ({ hobby, breadcrubmbLink, isAccessory=false }) =>
                         { hobby.title }
                     </h2>
                     <Link className="book-container__link hobby-page__link author-link brand-link" 
-                    href={isAccessory ? `/knyzhkovi-aksesuary/brands/view/${hobby.brand.slug}` : `/children-brand/${hobby.brand.slug}`}>
-                        { hobby.brand.title }
+                    href={isAccessory ? `/knyzhkovi-aksesuary/brands/view/${hobby?.brand?.slug}` : `/children-brand/${hobby?.brand?.slug}`}>
+                        { hobby?.brand?.title }
                     </Link>
                     <p className="book-container__code hobby-page__code">
                         Код товару: { hobby.code }
@@ -83,8 +89,9 @@ export const HobbyContainer = ({ hobby, breadcrubmbLink, isAccessory=false }) =>
                         Категорія
                     </p>
                     <Link className="book-container__tile hobby-page__tile tile small-tile"
-                    href={`/hobby/categories/${hobby.category.slug}`}>
-                        { hobby.category.title }
+                    href={ !isAccessory ? `/hobby/categories/${hobby?.category?.slug}` 
+                    : `/knyzhkovi-aksesuary/category/${hobby?.category?.slug}`}>
+                        { hobby?.category?.title }
                     </Link>
                 </div>
 

@@ -16,15 +16,15 @@ export const HobbyCategories = ({ fetchCategories=null }) => {
         }, [])
 
     const allCategories = fetchCategories || categories
-    const needAccessoriesLink = fetchCategories.length > 0
+    const needAccessoriesLink = fetchCategories?.length > 0
 
     return(
         <div className="hobby-categories__container">
-            { console.log(allCategories) }
             { allCategories && (
                 allCategories.map((category, index) => (
                     <Link className="hobby-categories__category" 
-                    href={!needAccessoriesLink ? `/hobby/category/${category.slug}` : `/knyzkovi-aksesuary/${category.slug}`} key={index}>
+                    href={!needAccessoriesLink ? `/hobby/category/${category.slug}` 
+                    : `/knyzhkovi-aksesuary/category/${category.slug}`} key={index}>
                         <div className="hobby-categories__image-container">
                             {category?.images_src?.length > 0 && (
                                 category.images_src.map((image, i) => (

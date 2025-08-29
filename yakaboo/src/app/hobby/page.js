@@ -14,12 +14,13 @@ export default function HobbyPage() {
 
     return (
         <div className="hobby-container">
+            { console.log(hobbies) }
             <HobbyCategories />
 
             <div className="hobby-container__main-content">
                 <Filters needPublishers={ false } needLanguages={ false } needBookTypes = { false } needAuthors = { false } 
                 needCategories = { false } needBrands={ true } />
-                { hobbies.length > 0 && <HobbiesContainer hobbiesList={ hobbies } /> }
+                { hobbies?.length > 0 && <HobbiesContainer hobbiesList={ hobbies } /> }
             </div>
         </div>
     )

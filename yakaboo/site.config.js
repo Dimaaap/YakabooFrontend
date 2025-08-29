@@ -12,7 +12,7 @@ export const ImagesConfig = {
 
 export const HrefsConfig =  {
     childrenBrand: (brandSlug) => `/children-brand/view/${brandSlug}`,
-    giftBrand: (brandSlug) => `/knyzhkovi-podarunky/brands/view/${brandSlug}`,
+    giftBrand: (brandSlug) => `/knyzhkovi-aksesuary/brands/view/${brandSlug}`,
     agePage: (ageSlug) =>`/age/${ageSlug}`
 }
 
