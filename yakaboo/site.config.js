@@ -63,3 +63,10 @@ export const filtersFields = [
 
 export const bookTypesFields = ["Паперова", "Електронна"]
 export const languageFields = ["Українська", "Російська", "Англійська"]
+
+
+export const badgeColors = {
+    purple: "rgb(175, 57, 231)",
+    green: "#51a261ff",
+    blue: "rgb(51, 51, 119)"
+}

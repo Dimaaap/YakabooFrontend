@@ -6,6 +6,7 @@ import { useMemo } from 'react'
 
 import { ProductCard, Stars, Badge } from '.'
 import { wordDeclension } from '../../services/word-declension.service'
+import { badgeColors, ImagesConfig, ImagesLinks } from '../../site.config';
 
 export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false}) => {
 
@@ -80,13 +81,13 @@ export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false}
                     extraClass="author-books__book" 
                     title={ book?.title } 
                     brand={ book?.publishing?.title || book?.brand?.title}
-                    imageSrc={book.images[0]?.image_url ?? "/images/holli.jpg"}
+                    imageSrc={ book.images[0]?.image_url ?? ImagesLinks.DEFAULT_IMAGE }
                     badges={
                         [
                             book.stars > 0 && (<Stars count={ book.stars } isSmaller={ true } />),
-                            book.is_top || book.is_in_top && (<Badge text="Хіт" backgroundColor="rgb(175, 57, 231)" />),
-                            book.is_new && (<Badge text="Новинка" backgroundColor="#85EF9A" /> ),
-                            book?.book_info?.is_has_cashback && (<Badge text="Кешбек" backgroundColor="rgb(51, 51, 119)"/>)    
+                            book.is_top || book.is_in_top && (<Badge text="Хіт" backgroundColor={ badgeColors.purple }/>),
+                            book.is_new && (<Badge text="Новинка" backgroundColor={ badgeColors.green } /> ),
+                            book?.book_info?.is_has_cashback && (<Badge text="Кешбек" backgroundColor={ badgeColors.blue }/>)    
                         ]
                     }
                     productCode={book?.book_info?.code || book.code}
