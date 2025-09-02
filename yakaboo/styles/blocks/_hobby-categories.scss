@@ -24,6 +24,7 @@
     }
 
     &__image {
+        object-fit: contain;
         max-width: rem(60);
         max-height: rem(60);
     }

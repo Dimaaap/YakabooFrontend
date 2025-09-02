@@ -36,7 +36,9 @@ const Endpoints = {
   ALL_PUBLISHINGS: "http://localhost:8006/publishing/all",
   ALL_ACCESSORIES: "http://localhost:8006/accessories/all",
   ALL_ACCESSORIES_CATEGORIES: "http://localhost:8006/accessories-categories/all",
-  ALL_ACCESSORIES_BRANDS: "http://localhost:8006/accessories-brands/all"
+  ALL_ACCESSORIES_BRANDS: "http://localhost:8006/accessories-brands/all",
+  ALL_NOTEBOOK_CATEGORIES: "http://localhost:8006/notebook_categories/all",
+  ALL_NOTEBOOKS: "http://localhost:8006/books/notebooks/all",
 };
 
 export default Endpoints;

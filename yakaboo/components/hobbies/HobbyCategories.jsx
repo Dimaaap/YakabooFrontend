@@ -6,7 +6,7 @@ import Endpoints from "../../endpoints"
 import Link from "next/link"
 import Image from "next/image"
 
-export const HobbyCategories = ({ fetchCategories=null }) => {
+export const HobbyCategories = ({ fetchCategories=null, isNotebooks=false }) => {
     const [categories, setCategories] = useState([])
 
     useEffect(() => {
@@ -14,6 +14,16 @@ export const HobbyCategories = ({ fetchCategories=null }) => {
             fetchData(Endpoints.ALL_HOBBY_CATEGORIES, setCategories)
         }
         }, [])
+
+    const getCategoryLink = (categorySlug) => {
+        if(!needAccessoriesLink){
+            return `/hobby/category/${categorySlug}`
+        } else if(isNotebooks){
+            return `/notes/category/${categorySlug}`
+        } else {
+            return `/knyzhkovi-aksesuary/category/${categorySlug}`
+        }
+    }
 
     const allCategories = fetchCategories || categories
     const needAccessoriesLink = fetchCategories?.length > 0
@@ -23,8 +33,7 @@ export const HobbyCategories = ({ fetchCategories=null }) => {
             { allCategories && (
                 allCategories.map((category, index) => (
                     <Link className="hobby-categories__category" 
-                    href={!needAccessoriesLink ? `/hobby/category/${category.slug}` 
-                    : `/knyzhkovi-aksesuary/category/${category.slug}`} key={index}>
+                    href={ getCategoryLink(category.slug) } key={index}>
                         <div className="hobby-categories__image-container">
                             {category?.images_src?.length > 0 && (
                                 category.images_src.map((image, i) => (
