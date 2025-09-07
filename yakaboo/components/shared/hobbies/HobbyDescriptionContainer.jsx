@@ -1,11 +1,16 @@
 "use client"
 
 import Image from 'next/image'
-import { useHobbyDescriptionStore, setShowAll } from '../../../states/hobbies/HobbyDescriptionStore'
+import { useHobbyDescriptionStore, setShowAll, setDescription } from '../../../states/hobbies/HobbyDescriptionStore'
+import { useEffect } from 'react'
 
 export const HobbyDescriptionContainer = ({ hobby }) => {
 
     const { firstParagraph, showAll, isSingle } = useHobbyDescriptionStore()
+
+    useEffect(() => {
+        setDescription(hobby.description)
+    }, [hobby.description])
     
     return (
         <div className="book-container__block-container hobby-page__block-container">

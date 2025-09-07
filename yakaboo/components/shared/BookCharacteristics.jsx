@@ -104,7 +104,7 @@ export const BookCharacteristics = ({ book }) => {
                                 <div className="book-container__cell flex-cell">   
                                     {book.translators.map((translator, index) => (
                                         <React.Fragment key={ index }>
-                                            <Link href={`/book_translator/view/${translator.slug}`} 
+                                            <Link href={`/book-translator/view/${translator.slug}`} 
                                             className="book-container__link publishing-link">
                                                 {`${translator.first_name} ${translator.last_name}`}
                                             </Link>    

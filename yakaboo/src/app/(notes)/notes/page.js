@@ -29,7 +29,7 @@ export default function NotebooksPage() {
                 <Filters needPublishers={ true } needLanguages={ false } needBookTypes={ false } needAuthors={ false }
                 needAge={ false } needCategories={ false } needBrands={ false } needAccessoriesBrands={ false } />
 
-                { notebooks.length > 0 && <CardsContainer booksList={ notebooks } /> }
+                { notebooks.length > 0 && <CardsContainer booksList={ notebooks } isNotebooks={ true } /> }
             </div>
         </div>
     )

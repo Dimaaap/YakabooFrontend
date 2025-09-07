@@ -14,7 +14,7 @@ const ProductImagesModal = ({ productTitle, images = [], isBook=false, bookImage
 
   const SCROLL_BUFFER = 50;
 
-  const { isProductImagesOpen, setIsProductImagesOpen } =
+  const { isProductImagesOpen, setIsProductImagesOpen, isReadPart, setIsReadPart } =
     useProductImagesStore();
 
   const [activeIndex, setActiveIndex] = useState(0)
@@ -80,15 +80,20 @@ const ProductImagesModal = ({ productTitle, images = [], isBook=false, bookImage
     })
   }
 
+  const handleClose = () => {
+    setIsReadPart(false)
+    setIsProductImagesOpen(false)
+  }
 
   return (
     <div
       className="menu product-images"
       onClick={(e) => handleBackdropClick(e, setIsProductImagesOpen)}
     >
+      { console.log(isReadPart, isProductImagesOpen) }
       <div className="menu__content product-images__content">
         <ModalCloseBtn
-          clickHandler={() => setIsProductImagesOpen(false)}
+          clickHandler={ handleClose }
           extraClasses="product-images__close"
         />
         <p className="product-images__title">{productTitle}</p>

@@ -33,46 +33,8 @@ export const PublishingHeader = ({ publisher }) => {
               </div>
             )}
 
-            <div className="publishing-header__section right-section">
-              <p
-                className={`publishing-header__description ${showFull ? 'visually-hidden' : ''}`}
-              >
-                {publisher.short_description}...
-              </p>
-              <button
-                className={`publishing-header__view-more ${showFull ? 'visually-hidden' : ''}`}
-                type="button"
-                onClick={changeShowFull}
-              >
-                Показати повністю
-                <Image
-                  src="/icons/chevron-down.svg"
-                  alt=""
-                  width="17"
-                  height="17"
-                />
-              </button>
-              <p
-                className={`publishing-header__description ${showFull ? '' : 'visually-hidden'}`}
-              >
-                {publisher.long_description}
-              </p>
-
-              <button
-                className={`publishing-header__view-more ${showFull ? '' : 'visually-hidden'}`}
-                type="button"
-                onClick={changeShowFull}
-              >
-                Показати менше
-                <Image
-                  src="/icons/chevron-down.svg"
-                  alt=""
-                  width="17"
-                  height="17"
-                  className="publishing-header__rotated-img"
-                />
-              </button>
-            </div>
+            <div className="publishing-header__section right-section"
+            dangerouslySetInnerHTML={{__html:publisher.long_description}} />
           </div>
         </div>
       ) : (

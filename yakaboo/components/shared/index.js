@@ -25,3 +25,4 @@ export { TextReviews } from './TextReviews';
 export { CardsContainer } from './CardsContainer';
 export { BoookCharacteristics } from './BookCharacteristics';
 export { HobbiesContainer } from "./HobbiesContainer";
+export { TopBadge } from "./TopBadge"

@@ -4,11 +4,11 @@ import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { useMemo } from 'react'
 
-import { ProductCard, Stars, Badge } from '.'
+import { ProductCard, Stars, Badge, TopBadge } from '.'
 import { wordDeclension } from '../../services/word-declension.service'
-import { badgeColors, ImagesConfig, ImagesLinks } from '../../site.config';
+import { badgeColors, ImagesLinks } from '../../site.config';
 
-export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false}) => {
+export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false, isNotebooks=false}) => {
 
     const searchParams = useSearchParams();
 
@@ -59,6 +59,8 @@ export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false}
             return `/knyzhkovi-aksesuary/${slug}`
         } else if(isHobbies){
             return `/hobby/${slug}`
+        } else if(isNotebooks){
+            return `/notes/${slug}`
         } else {
             return `/book/${slug}`
         }
@@ -84,15 +86,15 @@ export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false}
                     imageSrc={ book.images[0]?.image_url ?? ImagesLinks.DEFAULT_IMAGE }
                     badges={
                         [
-                            book.stars > 0 && (<Stars count={ book.stars } isSmaller={ true } />),
-                            book.is_top || book.is_in_top && (<Badge text="Хіт" backgroundColor={ badgeColors.purple }/>),
+                            <Stars count={ book.stars } isSmaller={ true } />,
+                            (book?.is_top || book.is_in_top) && (<TopBadge />),
                             book.is_new && (<Badge text="Новинка" backgroundColor={ badgeColors.green } /> ),
                             book?.book_info?.is_has_cashback && (<Badge text="Кешбек" backgroundColor={ badgeColors.blue }/>)    
                         ]
                     }
                     productCode={book?.book_info?.code || book.code}
                     oldPrice={ book.price }
-                    inStock={book?.book_info?.in_stock || book.is_in_stock}
+                    inStock={book?.book_info?.in_stock || book.is_in_stock || false}
                     bonusesCount={book?.book_info?.bonuses || book.bonuses}
                 />
                 ))}

@@ -8,6 +8,7 @@ import Link from "next/link"
 import { AddToWishlistBtn, Delivery, DeliveryInfoModal, ProductImagesModal } from "../dynamic";
 import { useDeliveryCityStore, useDeliveryModalStore, useProductImagesStore } from "../../states";
 import { BookCharacteristics } from "../shared/BookCharacteristics";
+import { HobbyDescriptionContainer } from "../shared/hobbies/HobbyDescriptionContainer";
 
 const MAX_STARS = 5;
 
@@ -15,13 +16,12 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
 
     const { isDeliveryModalOpen } = useDeliveryModalStore();
     const { deliveryLocation } = useDeliveryCityStore();
-    const { isProductImagesOpen, setIsProductImagesOpen } = useProductImagesStore();
+    const { isProductImagesOpen, isReadPart, setIsReadPart, setIsProductImagesOpen } = useProductImagesStore();
 
-    const [readPart, setReadPart] = useState(false);
     const [activeImage, setActiveImage] = useState(0);
 
     const showNextImage = () => {
-        if(activeImage < book.images?.length - 1){
+        if(activeImage < coverImages - 1){
             setActiveImage(activeImage + 1)
         } else {
             setActiveImage(0);
@@ -32,34 +32,45 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
         if(activeImage > 0){
             setActiveImage(activeImage-1)
         } else {
-            setActiveImage(book.images.length - 1)
+            setActiveImage(coverImages.length - 1)
         }
     }
 
+    const viewReadPartClick = () => {
+        setIsReadPart(true)
+        setIsProductImagesOpen(true)
+    }
+
     const activeStars = useMemo(() => {
-        return Math.round(book.book_info.rate)
-    }, [book.book_info.rate]);
+        return Math.round(book?.book_info?.rate)
+    }, [book?.book_info?.rate]);
 
     const images = useMemo(() => {
         return book.images
     }, [book.images]);
 
 
-    const pageImages = useMemo(() => {
+    const coverImages = useMemo(() => {
         return book.images
-        .filter(img => img.type === "page")
+        .filter(img => img.type === "cover")
         .map(img => img.image_url)
-    }, [book.images]);
+    })
+
+    const pageImages = useMemo(() => {
+        return book?.images
+        ?.filter(img => img.type === "page")
+    }, [book?.images]);
 
     return(
         <div className="book-container">
-            { isProductImagesOpen && <ProductImagesModal productTitle={book.title} isBook={true} bookImages={images } /> }
-            { readPart && <ProductImagesModal productTitle={book.title} images={pageImages} withCover={false} /> }
+            { console.log(coverImages) }
+            { (isProductImagesOpen && !isReadPart) && <ProductImagesModal productTitle={book.title} isBook={true} bookImages={images } />}
+            { isReadPart && <ProductImagesModal productTitle={book.title} images={pageImages} withCover={false} /> }
             <div className="book-container__section left-section">
                 <div className="book-container__btns-section">
                     <AddToWishlistBtn />
-                    {pageImages.length > 0 && (
-                        <button className="book-container__header-btn read-part" onClick={() => setReadPart(true)}>
+                    {pageImages && pageImages.length > 0 && (
+                        <button className="book-container__header-btn read-part" onClick={() => viewReadPartClick()}>
                             <Image src="/icons/book.svg" alt="" width="25" height="25" />
                             Читати уривок
                         </button>    
@@ -68,16 +79,16 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
 
                 <div className="book-container__images-carousel">
                     <div className="book-container__main-image">
-                        {book.images?.length > 1 && (
+                        {coverImages.length > 1 && (
                             <button className="book-container__slider-btn prev-btn slider-btn" onClick={showPrevImage}>
                                 <Image src="/icons/arrow-left.svg" alt="" width="20" height="20" />
                             </button>    
                         )}
-                        <Image src={book.images[activeImage]?.image_url ?? "/images/holli.jpg"} width="250" 
+                        <Image src={coverImages[activeImage] ?? "/images/holli.jpg"} width="250" 
                         height="350" alt={`${book.title}_1`} className="book-container__big-image" 
                         onClick={ () => setIsProductImagesOpen(true) }/>
                         
-                        {book.images?.length > 1 && (
+                        {coverImages.length > 1 && (
                             <button className="book-container__slider-btn next-btn slider-btn" onClick={showNextImage}>
                                 <Image src="/icons/arrow-left.svg" alt="" width="20" height="20" />
                             </button>    
@@ -87,9 +98,12 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                     <div className="book-container__rest-images">
                         {book.images.length > 1 && (
                             book.images.map((image, index) => (
-                                <Image src={image.image_url} alt={`${book.title}_${index + 2}`} width="50" height="50" key={index}
-                                className={`${activeImage === index ? "cur-img": ""}`} 
-                                onClick={() => setActiveImage(index)}/>
+                                image.type === "cover" && (
+                                    <Image src={image.image_url || ""} alt={`${book.title}_${index + 2}`} width="50" height="50" key={index}
+                                    className={`${activeImage === index ? "cur-img": ""}`} 
+                                    onClick={() => setActiveImage(index)}/>     
+                                )
+                                
                             ))
                         )}
                     </div>
@@ -206,16 +220,7 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                     
                 </div>
 
-                { book.book_info.description && (
-                    <div className="book-container__block-container">
-                        <h3 className="book-container__header">
-                            Опис книги
-                        </h3>
-                        <p className="book-container__text">
-                            {book.book_info.description}
-                        </p>
-                    </div>    
-                ) }
+                <HobbyDescriptionContainer hobby={ book.book_info } />    
                 
                 <BookCharacteristics book={book} />
 

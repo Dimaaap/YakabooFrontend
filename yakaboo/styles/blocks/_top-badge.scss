@@ -1,0 +1,7 @@
+@use "../helpers" as *;
+
+.top-badge {
+    border: rem(2) solid var(--color-purple-10);
+    border-radius: rem(5);
+    color: var(--color-purple-10) !important;
+}

@@ -3,16 +3,9 @@
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from 'react';
 import { fetchData } from "../../../../services";
-import { BookContainer} from "../../../../components";
-import { useConfirmationCodeStore, useProfileSettingsModalStore, useUserLoginModalStore } from "../../../../states";
-import { ConfirmationCodeModal, ProfileSettingsModal, UserLoginModal, UserRegisterModal } from "../../../../components/dynamic";
-
+import { BookComponent } from "../../../../components";
 
 export default function BookPage() {
-    const { isLoginModalOpen, isRegisterModalOpen } = useUserLoginModalStore();
-    const { isConfirmationModalOpen } = useConfirmationCodeStore();
-    const { isProfileSettingsModalOpen } = useProfileSettingsModalStore();
-
     const [book, setBook] = useState(null);
 
     const pathname = usePathname();
@@ -23,16 +16,12 @@ export default function BookPage() {
     }
 
     useEffect(() => {
-        fetchData(`http://localhost:8006/books/${bookSlug}`, setBook)
+        fetchData(`http://localhost:8006/books/${bookSlug}`, setBook)    
     }, [])
 
     return(
-        <div className="book">
-            { book && <BookContainer book={ book } breadcrumbLinks={breadcrumbsObject} /> }
-            { isLoginModalOpen && <UserLoginModal /> }
-            { isRegisterModalOpen && <UserRegisterModal /> }
-            { isConfirmationModalOpen && <ConfirmationCodeModal /> }
-            { isProfileSettingsModalOpen && <ProfileSettingsModal /> }
-        </div>
+        book && (
+            <BookComponent book={ book } breadcrumbs={ breadcrumbsObject } />
+        )
     )
 }

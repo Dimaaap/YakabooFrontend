@@ -1,9 +1,9 @@
 import { create } from "zustand"
 
 export const useHobbyDescriptionStore = create(() => ({
-    isSingle: null,
+    isSingle: false,
     firstParagraph: "",
-    showAll: false
+    showAll: false,
 }))
 
 export const setDescription = html => {

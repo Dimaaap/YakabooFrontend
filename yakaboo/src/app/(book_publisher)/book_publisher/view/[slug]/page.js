@@ -81,7 +81,7 @@ export default function BookPublisherPage() {
 
   useEffect(() => {
     fetchData(
-      `http://127.0.0.1:8004/publishing/${publisherTitle}`,
+      `http://127.0.0.1:8006/publishing/${publisherTitle}`,
       setPublisher
     );
   }, []);
