@@ -15,16 +15,19 @@ export const BookCharacteristics = ({ book }) => {
                 Характеристики
             </h2>
             <div className="book-container__table-info">
-                <div className="book-container__row">
-                    <div className="book-container__cell cell-title">
-                        <p>Автор</p>
-                    </div>
-                    <div className="book-container__cell">
-                        <Link className="book-container__link author-link" href={`/author/view/${book.authors[0]?.slug}`}>
-                            {book.authors[0]?.first_name} {book.authors[0]?.last_name}
-                        </Link>
-                    </div>
-                </div>
+                { book.authors[0]?.first_name || book.authors[0]?.last_name && (
+                    <div className="book-container__row">
+                        <div className="book-container__cell cell-title">
+                            <p>Автор</p>
+                        </div>
+                        <div className="book-container__cell">
+                            <Link className="book-container__link author-link" href={`/author/view/${book.authors[0]?.slug}`}>
+                                {book.authors[0]?.first_name} {book.authors[0]?.last_name}
+                            </Link>
+                        </div>
+                    </div>    
+                ) }
+               
 
                 <div className="book-container__row">
                     <div className="book-container__cell cell-title">
@@ -36,16 +39,29 @@ export const BookCharacteristics = ({ book }) => {
                         </Link>
                     </div>
                 </div>
+                
+                { book.book_info.pages_count > 0 && (
+                    <div className="book-container__row">
+                        <div className="book-container__cell cell-title">
+                            <p>Кількість сторінок</p>
+                        </div>
+                        <div className="book-container__cell">
+                            <p>{ book.book_info.pages_count }</p>
+                        </div>
+                    </div>    
+                ) }
 
-                <div className="book-container__row">
-                    <div className="book-container__cell cell-title">
-                        <p>Кількість сторінок</p>
-                    </div>
-                    <div className="book-container__cell">
-                        <p>{ book.book_info.pages_count }</p>
-                    </div>
-                </div>
-
+                { book?.book_info?.pages_format && (
+                    <div className="book-container__row">
+                        <div className="book-container__cell cell-title">
+                            <p>Формат</p>
+                        </div>
+                        <div className="book-container__cell">
+                            <p>{ book.book_info.pages_format }</p>
+                        </div>
+                    </div>    
+                ) }
+                
                 { !showAllInfo && (
                     <button className="book-container__show-all btn" type="button"
                     onClick={() => setShowAllInfo(true)}>
@@ -55,14 +71,17 @@ export const BookCharacteristics = ({ book }) => {
                 ) }
                 { showAllInfo && (
                     <>
-                        <div className="book-container__row">
-                            <div className="book-container__cell cell-title">
-                                <p>Рік видання</p>
-                            </div>
-                            <div className="book-container__cell">
-                                <p>{ book.book_info.publishing_year }</p>
-                            </div>
-                        </div>
+                        { book.book_info.publishing_year > 0 && (
+                            <div className="book-container__row">
+                                <div className="book-container__cell cell-title">
+                                    <p>Рік видання</p>
+                                </div>
+                                <div className="book-container__cell">
+                                    <p>{ book.book_info.publishing_year }</p>
+                                </div>
+                            </div>    
+                        ) }
+                        
 
                         <div className="book-container__row">
                             <div className="book-container__cell cell-title">
@@ -86,6 +105,61 @@ export const BookCharacteristics = ({ book }) => {
                                 </div>
                             </div>
                         )}
+
+                        { book?.book_info?.papers && (
+                            <div className="book-container__row">
+                                <div className="book-container__cell cell-title">
+                                    <p>Листи</p>
+                                </div>
+                                <div className="book-container__cell">
+                                    <p>{ book.book_info.papers }</p>
+                                </div>
+                            </div>
+                        ) }
+
+                        { book?.book_info?.size && (
+                            <div className="book-container__row">
+                                <div className="book-container__cell cell-title">
+                                    <p>Розмір</p>
+                                </div>
+                                <div className="book-container__cell">
+                                    <p>{ book.book_info.size }</p>
+                                </div>
+                            </div>
+                        ) }
+
+                        { book?.book_info?.color && (
+                            <div className="book-container__row">
+                                <div className="book-container__cell cell-title">
+                                    <p>Колір</p>
+                                </div>
+                                <div className="book-container__cell">
+                                    { book.book_info.color }
+                                </div>
+                            </div>
+                        ) }
+
+                        { book?.book_info?.type && (
+                            <div className="book-container__row">
+                                <div className="book-container__cell cell-title">
+                                    <p>Тип</p>
+                                </div>
+                                <div className="book-container__cell">
+                                    { book.book_info.type }
+                                </div>
+                            </div>
+                        ) }
+
+                        { book?.book_info?.pages_color && (
+                            <div className="book-container__row">
+                                <div className="book-container__cell cell-title">
+                                    <p>Колір сторінок</p>
+                                </div>
+                                <div className="book-container__cell">
+                                    { book.book_info.pages_color }
+                                </div>
+                            </div>
+                        ) }
 
                         <div className="book-container__row">
                             <div className="book-container__cell cell-title">
@@ -117,7 +191,7 @@ export const BookCharacteristics = ({ book }) => {
 
                         <div className="book-container__row">
                             <div className="book-container__cell cell-title">
-                                <p>Тип</p>
+                                <p>Паперова /аудіо /електронна</p>
                             </div>
                             <div className="book-container__cell">
                             <p>{ book.book_info.format}</p>
@@ -133,7 +207,7 @@ export const BookCharacteristics = ({ book }) => {
                             </div>
                         </div>
 
-                        { book.book_info.weight && book.book_info.weight > 0 && (
+                        { book.book_info.weight > 0 && (
                             <div className="book-container__row">
                                 <div className="book-container__cell cell-title">
                                     <p>Вага</p>

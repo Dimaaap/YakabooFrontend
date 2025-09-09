@@ -9,8 +9,8 @@
     width: 100%;
 
     &__big-image {
-        max-width: rem(250);
-        min-width: rem(335);
+        min-width: rem(250);
+        height: rem(300);
     }
 
     &__section {
@@ -81,7 +81,7 @@
         transition: all 0.3s ease;
 
         &.next-btn {
-            left: 90%;
+            left: 83%;
 
             & img {
                 transform: rotate(270deg);

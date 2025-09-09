@@ -9,6 +9,7 @@ import { AddToWishlistBtn, Delivery, DeliveryInfoModal, ProductImagesModal } fro
 import { useDeliveryCityStore, useDeliveryModalStore, useProductImagesStore } from "../../states";
 import { BookCharacteristics } from "../shared/BookCharacteristics";
 import { HobbyDescriptionContainer } from "../shared/hobbies/HobbyDescriptionContainer";
+import { ImagesLinks } from "../../site.config";
 
 const MAX_STARS = 5;
 
@@ -21,7 +22,7 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
     const [activeImage, setActiveImage] = useState(0);
 
     const showNextImage = () => {
-        if(activeImage < coverImages - 1){
+        if(activeImage < coverImages.length - 1){
             setActiveImage(activeImage + 1)
         } else {
             setActiveImage(0);
@@ -84,7 +85,7 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                                 <Image src="/icons/arrow-left.svg" alt="" width="20" height="20" />
                             </button>    
                         )}
-                        <Image src={coverImages[activeImage] ?? "/images/holli.jpg"} width="250" 
+                        <Image src={coverImages[activeImage] ?? ImagesLinks.DEFAULT_IMAGE} width="250" 
                         height="350" alt={`${book.title}_1`} className="book-container__big-image" 
                         onClick={ () => setIsProductImagesOpen(true) }/>
                         
@@ -95,7 +96,7 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                         )}
                        
                     </div>
-                    <div className="book-container__rest-images">
+                    {/* <div className="book-container__rest-images">
                         {book.images.length > 1 && (
                             book.images.map((image, index) => (
                                 image.type === "cover" && (
@@ -106,6 +107,28 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                                 
                             ))
                         )}
+                    </div> */}
+                    <div className="book-container__rest-images">
+                        { book.images.length > 1 && (
+                            book.images 
+                            .map((image, index) => ({ image, index }))
+                            .filter(({ index }) => {
+                                return index >= activeImage - 1 && index <= activeImage + 3;
+                            })
+                            .map(({ image, index }) => (
+                                image.type === "cover" && (
+                                    <Image 
+                                        key={index}
+                                        src={image.image_url || ""}
+                                        alt={`${book.title}_${index + 1}`}
+                                        width={50}
+                                        height={50}
+                                        className={`${activeImage === index ? "cur-img" : ""}`}
+                                        onClick={() => setActiveImage(index)}
+                                    />
+                                )
+                            ))
+                        ) }
                     </div>
                 </div>
             </div>
@@ -157,7 +180,7 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                             </h4>
                         </div>
 
-                        <div className={`book-container__tile tile ${book.book_info.format === "Електронна" ? "active": ""}`}>
+                        {/* <div className={`book-container__tile tile ${book.book_info.format === "Електронна" ? "active": ""}`}>
                             <div className="tile__header">
                                 <Image src="/icons/gadget.svg" alt="" width="18" height="18" className={`${book.book_info.format === "Електронна" ? "active-img": ""}`} />
                                 <p className="tile__title">
@@ -167,7 +190,7 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                             <h4 className="tile__price">
                                 195 грн
                             </h4>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 
@@ -183,11 +206,11 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                                 </p>
                             </div>
 
-                            <div className={`book-container__tile tile small-tile ${ book.book_info.language === "Англійська" ? "current": "" }`}>
+                            {/* <div className={`book-container__tile tile small-tile ${ book.book_info.language === "Англійська" ? "current": "" }`}>
                                 <p className="tile__desc">
                                     Англійська
                                 </p>
-                            </div>
+                            </div> */}
                         </div> 
                     </div>
 
@@ -197,13 +220,13 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                         </p>   
                         <div className="book-container__tiles-block">
                             <div className='book-container__tile tile small-tile current'>
-                                <Link className="book-container__link publishing-link" href={`/book_publisher/${book.publishing.slug}`}>
+                                <Link className="book-container__link publishing-link" href={`/book_publisher/view/${book.publishing.slug}`}>
                                     {book.publishing.title}
                                 </Link>
                             </div>
                         </div> 
                     </div>
-                    {book.book_info.publishing_year && (
+                    { book.book_info.publishing_year !== 0 && (
                         <div className="book-container__block publishing-block">
                             <p className="book-container__block-title">
                                 Рік видання
@@ -223,28 +246,31 @@ export const BookContainer = ({book, breadcrumbLinks}) => {
                 <HobbyDescriptionContainer hobby={ book.book_info } />    
                 
                 <BookCharacteristics book={book} />
-
-                <div className="book-container__block-container">
-                    <h2 className="book-container__header">
-                        Про автора
-                    </h2>
-                    
-                    <div className="book-container__author-desc">
-                        <div className="book-container__desc-container">
-                            <p className="book-contianer__description">
-                                {book.authors[0]?.description}
-                            </p>  
-                            <Link href={`/author/view/${book.authors[0]?.slug}`} className="book-container__link extended-link">
-                                Детальніше про автора
-                                <Image src="/icons/chevron-down.svg" alt="" width="20" height="20" />
-                            </Link>  
-                        </div>
+                
+                { book.authors.length > 0 && (
+                    <div className="book-container__block-container">
+                        <h2 className="book-container__header">
+                            Про автора
+                        </h2>
                         
-                        <div className="book-container__author-image">
-                            <Image src={book.authors[0]?.images[0]?.image_path} alt="" width="80" height="80" />
+                        <div className="book-container__author-desc">
+                            <div className="book-container__desc-container">
+                                <p className="book-contianer__description">
+                                    {book.authors[0]?.description}
+                                </p>  
+                                <Link href={`/author/view/${book.authors[0]?.slug}`} className="book-container__link extended-link">
+                                    Детальніше про автора
+                                    <Image src="/icons/chevron-down.svg" alt="" width="20" height="20" />
+                                </Link>  
+                            </div>
+                            
+                            <div className="book-container__author-image">
+                                <Image src={book.authors[0]?.images[0]?.image_path} alt="" width="80" height="80" />
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </div>    
+                ) }
+                
 
                 <div className="book-container__block-container">
                     <div className="book-container__reviews">

@@ -1,6 +1,6 @@
 "use client"
 
-import { ProfileSettingsModal } from "../../../../components/modals/ProfileSettingsModal";
+import { ProfileSettingsModal } from "../../../../components/dynamic";
 import { useProtectedPage } from "../../../../hooks"
 import { useProfileSettingsModalStore } from "../../../../states"
 
