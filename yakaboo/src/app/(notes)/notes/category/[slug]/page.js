@@ -60,7 +60,7 @@ export default function NoteCategoryPage() {
             ) }
 
             { category && (
-                <HobbyCategoryContainer categories={ category.notebooks } notebooks={ true } />
+                <HobbyCategoryContainer categories={ category.notebooks } notebooks={ true } isNotebooks={ true } />
             ) }
 
             { isLoginModalOpen && <UserLoginModal/> }

@@ -14,7 +14,7 @@ export const HobbyCharacteristics = ({ hobby, isAccessory }) => {
     const showAllCharacteristics = useAllCharacteristics((state) => state.showAllCharacteristics)
 
     const baseCharacteristics = [
-        ["Бренд", hobby.brand.title, isAccessory ? HrefsConfig.childrenBrand(hobby.brand.slug) : HrefsConfig.giftBrand(hobby.brand.slug)],
+        ["Бренд", hobby?.brand?.title, isAccessory ? HrefsConfig.childrenBrand(hobby?.brand?.slug) : HrefsConfig.giftBrand(hobby?.brand?.slug)],
         ["Артикул", hobby.article],
         ["Тематика", hobby?.theme || null],
         ["Кількість елементів", hobby?.details_count || null],

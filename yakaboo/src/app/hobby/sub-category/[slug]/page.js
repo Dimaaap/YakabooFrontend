@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { usePathname } from "next/navigation"
 import { useConfirmationCodeStore, useProfileSettingsModalStore, useUserLoginModalStore } from '../../../../../states';
 import { ConfirmationCodeModal, ProfileSettingsModal, UserLoginModal, UserRegisterModal } from '../../../../../components/dynamic';
-import { HobbyContainer } from '../../../../../components/shared/HobbyContainer';
 import { HobbySubcategoryContainer } from '../../../../../components/hobbies/SubcategoryContainer';
 import { fetchData } from '../../../../../services';
 

@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { CardsContainer, Filters } from "../shared"
 
 
-export const HobbyCategoryContainer = ({ categories, notebooks=false }) => {
+export const HobbyCategoryContainer = ({ categories, notebooks=false, isNotebooks=false }) => {
 
     const pathname = usePathname();
     const categoryTitle = pathname.split("/")[3];
@@ -32,7 +32,7 @@ export const HobbyCategoryContainer = ({ categories, notebooks=false }) => {
             
             
             { categories && (
-                <CardsContainer booksList={ categories } isHobbies={ true } />    
+                <CardsContainer booksList={ categories } isHobbies={ !isNotebooks } isNotebooks={ isNotebooks } />    
             ) }
         </div>
     )
