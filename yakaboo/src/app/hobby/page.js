@@ -14,7 +14,6 @@ export default function HobbyPage() {
 
     return (
         <div className="hobby-container">
-            { console.log(hobbies) }
             <HobbyCategories />
 
             <div className="hobby-container__main-content">

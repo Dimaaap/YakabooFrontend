@@ -21,7 +21,8 @@ export const Filters = ({
   needPrice = true,
   needDifficultLevel= false,
   needAge = false,
-  needAccessoriesBrands = false
+  needAccessoriesBrands = false,
+  needGiftBrands = false
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -37,7 +38,7 @@ export const Filters = ({
 
   const fetchConfig = [
     { need: needCategories, endpoint: Endpoints.ALL_BOOK_CATEGORIES, setter: setCategories, key: "categories" },
-    { need: needBrands, endpoint: Endpoints.ALL_HOBBY_BRANDS, setter: setBrands },
+    { need: needBrands || needGiftBrands, endpoint: needGiftBrands ? Endpoints.ALL_GIFT_BRANDS : Endpoints.ALL_HOBBY_BRANDS, setter: setBrands },
     { need: needTheme, endpoint: Endpoints.ALL_HOBBY_THEMES, setter: setHobbyThemes, key: "hobby_themes" },
     { need: needAuthors, endpoint: Endpoints.ALL_AUTHORS, setter: setAuthors },
     { need: needPublishers, endpoint: Endpoints.ALL_PUBLISHINGS, setter: setPublishings },
@@ -120,7 +121,7 @@ export const Filters = ({
 
       {  }
 
-      { needBrands && (
+      { needBrands || needGiftBrands && (
         <FilterForm 
           fields={ brandsTitle }
           formTitle="Бренди"

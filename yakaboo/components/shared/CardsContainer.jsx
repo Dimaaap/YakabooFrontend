@@ -8,7 +8,7 @@ import { ProductCard, Stars, Badge, TopBadge } from '.'
 import { wordDeclension } from '../../services/word-declension.service'
 import { badgeColors, ImagesLinks } from '../../site.config';
 
-export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false, isNotebooks=false}) => {
+export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false, isNotebooks=false, isGifts=false}) => {
 
     const searchParams = useSearchParams();
 
@@ -61,7 +61,10 @@ export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false,
             return `/hobby/${slug}`
         } else if(isNotebooks){
             return `/notes/${slug}`
-        } else {
+        } else if(isGifts){
+            return `/gift/${slug}`
+        } 
+        else {
             return `/book/${slug}`
         }
     }
