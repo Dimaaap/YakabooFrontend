@@ -1,0 +1,28 @@
+@use "../helpers" as *;
+
+.gift-categories {
+    &__category {
+        display: flex;
+        flex-direction: column;
+        gap: rem(10);
+    }
+
+    &__image-container {
+        background-color: var(--color-light);
+        padding: 7%;
+        padding-inline: 5%;
+        border-radius: rem(5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1%;
+        height: rem(100);
+        width: 100%;
+    }
+
+    &__image {
+        object-fit: contain;
+        max-width: 30% !important;
+        max-height: rem(70);
+    }
+}

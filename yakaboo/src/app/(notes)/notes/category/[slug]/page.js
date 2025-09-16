@@ -45,7 +45,7 @@ export default function NoteCategoryPage() {
                                 <div className="hobby-categories__image-container">
                                     { sub.images_src.length > 0 && (
                                         sub?.images_src?.map((image, i) => (
-                                            <Image src={ image.image_src } key={i} alt={`${sub.title_}${i}`} width="80" height="80"
+                                            <Image src={ image.image_src } key={i} alt={`${sub.title}_${i}`} width="80" height="80"
                                             className="hobby-categories__image" />
                                         ))
                                     ) }

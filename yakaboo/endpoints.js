@@ -40,7 +40,8 @@ const Endpoints = {
   ALL_NOTEBOOK_CATEGORIES: "http://localhost:8006/notebook_categories/all",
   ALL_NOTEBOOKS: "http://localhost:8006/books/notebooks/all",
   ALL_GIFT_BRANDS: "http://127.0.0.1:8006/gift_brands/all",
-  ALL_GIFT_CATEGORIES: "http://127.0.0.1:8006/gift-categories/all"
+  ALL_GIFT_CATEGORIES: "http://127.0.0.1:8006/gift-categories/all",
+  ALL_GIFTS: "http://localhost:8006/gifts/all"
 };
 
 export default Endpoints;

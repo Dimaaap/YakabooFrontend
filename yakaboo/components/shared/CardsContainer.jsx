@@ -47,7 +47,7 @@ export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false,
             if(filters.accessoriesBrands.length && !filters.accessoriesBrands.includes(book?.brand?.title)) return false
             if(filters.ages.length && !book?.ages.some(a => filters.ages.includes(a.age))) return false
             if(filters.difficultyLevels.length && !filters.difficultyLevels.includes(Number(book?.difficulty_level))) return false 
-            if(filters.inStockOnly && !(book?.book_info?.in_stock || book.is_in_stock)) return false
+            if(filters.inStockOnly && !(book?.book_info?.in_stock || book.is_in_stock || book?.gift_info?.in_stock)) return false
             if(filters.priceFrom && book.price < Number(filters.priceFrom)) return false
             if(filters.priceTo && book.price > Number(filters.priceTo)) return false
             return true
@@ -89,15 +89,15 @@ export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false,
                     imageSrc={ book.images[0]?.image_url ?? ImagesLinks.DEFAULT_IMAGE }
                     badges={
                         [
-                            <Stars count={ book.stars } isSmaller={ true } />,
+                            book.stars ? <Stars count={ book.stars } isSmaller={ true } />: <></>,
                             (book?.is_top || book.is_in_top) && (<TopBadge />),
                             book.is_new && (<Badge text="Новинка" backgroundColor={ badgeColors.green } /> ),
                             book?.book_info?.is_has_cashback && (<Badge text="Кешбек" backgroundColor={ badgeColors.blue }/>)    
                         ]
                     }
-                    productCode={book?.book_info?.code || book.code}
+                    productCode={book?.book_info?.code || book.code || book?.gift_info?.code}
                     oldPrice={ book.price }
-                    inStock={book?.book_info?.in_stock || book.is_in_stock || false}
+                    inStock={book?.book_info?.in_stock || book.is_in_stock || book?.gift_info?.in_stock || false}
                     bonusesCount={book?.book_info?.bonuses || book.bonuses}
                 />
                 ))}
