@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { fetchData } from "../../../../../services";
-import { BookComponent, BookContainer } from "../../../../../components";
+import { BookComponent } from "../../../../../components";
 
 export default function NotebookPage() {
 

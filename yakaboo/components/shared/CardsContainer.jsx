@@ -62,7 +62,7 @@ export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false,
         } else if(isNotebooks){
             return `/notes/${slug}`
         } else if(isGifts){
-            return `/gift/${slug}`
+            return `/gifts/${slug}`
         } 
         else {
             return `/book/${slug}`

@@ -1,6 +1,6 @@
 import { Breadcrumbs, CardsContainer, Filters } from "../shared"
 
-export const HobbySubcategoryContainer = ({ subCategory, breadcrumbsLink, subCategoryLink=null, isNotebooks=false }) => {
+export const HobbySubcategoryContainer = ({ subCategory, breadcrumbsLink, subCategoryLink=null, isHobbies=false, isNotebooks=false, isGifts=false }) => {
     let extendedBreadcrumbs = {...breadcrumbsLink}
     
     if(subCategoryLink){
@@ -25,8 +25,8 @@ export const HobbySubcategoryContainer = ({ subCategory, breadcrumbsLink, subCat
                 needAuthors={ false } needPrice={ false } needDifficultLevel={ false } 
                 needAge={ true }/>
 
-                <CardsContainer booksList={ subCategory?.hobbies || subCategory?.notebooks } 
-                isHobbies={ !isNotebooks } isNotebooks={ isNotebooks } />
+                <CardsContainer booksList={ subCategory?.hobbies || subCategory?.notebooks || subCategory?.gifts } 
+                isHobbies={ isHobbies } isNotebooks={ isNotebooks } isGifts={ isGifts } />
             </div>    
         </div>
         

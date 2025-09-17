@@ -10,9 +10,9 @@
     cursor: pointer;
 
     &.small-tile {
-        padding: 5% 8%;
+        padding: 10%;
         font-weight: 500;
-        font-size: rem(16);
+        font-size: rem(14);
         color: var(--color-gray-20);
 
         &.current {
