@@ -186,13 +186,13 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
                         </p>   
                         <div className="book-container__tiles-block">
                             { !isGift ? (
-                                <div className={`book-container__tile tile small-tile ${ book.book_info.language === "Українська" ? "current": "" }`}>
+                                <div className={`book-container__tile tile ${ book.book_info.language === "Українська" ? "current": "" }`}>
                                     <p className="tile__desc">
                                         Українська
                                     </p>
                                 </div>    
                             ) : (
-                               <div className={`book-container__tile tile small-tile ${ book.gift_info.language === "Українська" ? "current": "" }`}>
+                               <div className={`book-container__tile tile ${ book.gift_info.language === "Українська" ? "current": "" }`}>
                                     <p className="tile__desc">
                                         Українська
                                     </p>
@@ -239,7 +239,7 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
                                 Категорія
                             </p>
                             <div className="book-container__tiles-block">
-                                <div className="book-container__tile tile current">
+                                <div className="book-container__tile tile">
                                     <p className="tile__desc">
                                         { book?.gift_category?.title }
                                     </p>

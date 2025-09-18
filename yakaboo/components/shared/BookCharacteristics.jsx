@@ -3,15 +3,12 @@
 import React, { useState } from "react";
 
 import Image from 'next/image'
-import Link from 'next/link'
 import { Row } from "./Row";
 import { baseFields, extraFields } from "../../services/characteristicsMap.service";
 
 export const BookCharacteristics = ({ book, isGift=false }) => {
 
     const [showAllInfo, setShowAllInfo] = useState(false);
-
-    const info = isGift ? book.gift_info : book.book_info
 
     return (
         <div className="book-container__block-container">

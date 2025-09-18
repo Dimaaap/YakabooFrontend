@@ -8,7 +8,7 @@ import { ProductCard, Stars, Badge, TopBadge } from '.'
 import { wordDeclension } from '../../services/word-declension.service'
 import { badgeColors, ImagesLinks } from '../../site.config';
 
-export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false, isNotebooks=false, isGifts=false}) => {
+export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false, isNotebooks=false, isGifts=false, giftsBrand=null}) => {
 
     const searchParams = useSearchParams();
 
@@ -85,7 +85,7 @@ export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false,
                     productLink={ returnLink(book.slug) }
                     extraClass="author-books__book" 
                     title={ book?.title } 
-                    brand={ book?.publishing?.title || book?.brand?.title}
+                    brand={ book?.publishing?.title || book?.brand?.title || giftsBrand}
                     imageSrc={ book.images[0]?.image_url ?? ImagesLinks.DEFAULT_IMAGE }
                     badges={
                         [
