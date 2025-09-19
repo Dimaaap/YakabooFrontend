@@ -23,6 +23,17 @@
     font-size: rem(14);
   }
 
+  &.disabled-btn {
+    background-color: var(--color-gray-40);
+    color: var(--color-black);
+    font-size: rem(14);
+    font-weight: 500;
+  }
+
+  &[disabled]{
+    cursor: not-allowed;
+  }
+
   & img {
     filter: invert(1);
   }
