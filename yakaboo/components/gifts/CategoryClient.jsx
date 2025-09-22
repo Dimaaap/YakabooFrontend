@@ -2,19 +2,12 @@
 
 import { usePathname } from "next/navigation"
 import { useState, useEffect } from "react";
-import { useConfirmationCodeStore, useProfileSettingsModalStore, useUserLoginModalStore } from "../../states";
 import { fetchData } from "../../services";
 import Link from "next/link";
 import Image from "next/image";
-import { GiftsContainer } from ".";
 import { CardsContainer, Filters } from "../shared";
-import { ConfirmationCodeModal, ProfileSettingsModal, UserLoginModal, UserRegisterModal } from "../dynamic";
 
 export const CategoryClient = () => {
-    const { isLoginModalOpen, isRegisterModalOpen } = useUserLoginModalStore();
-    const { isConfirmationModalOpen } = useConfirmationCodeStore();
-    const { isProfileSettingsModalOpen } = useProfileSettingsModalStore();
-
     const pathname = usePathname();
     const categorySlug = pathname.split("/")[3];
 
@@ -69,11 +62,6 @@ export const CategoryClient = () => {
                     ) }
                 </div>
             ) }
-
-            { isLoginModalOpen && <UserLoginModal/> }
-            { isRegisterModalOpen && <UserRegisterModal /> }
-            { isConfirmationModalOpen && <ConfirmationCodeModal /> }
-            { isProfileSettingsModalOpen && <ProfileSettingsModal /> } 
         </div>
     )
 }

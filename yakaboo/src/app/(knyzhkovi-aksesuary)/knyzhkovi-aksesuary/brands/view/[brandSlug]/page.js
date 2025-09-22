@@ -1,18 +1,11 @@
 "use client"
 
 import { usePathname } from "next/navigation";
-import { useConfirmationCodeStore, useProfileSettingsModalStore, useUserLoginModalStore } from "../../../../../../../states";
 import { useEffect, useState } from "react";
-import { ConfirmationCodeModal, ProfileSettingsModal, UserLoginModal, UserRegisterModal } from "../../../../../../../components/dynamic";
 import { fetchData } from "../../../../../../../services";
 import { Breadcrumbs, CardsContainer, Filters } from "../../../../../../../components";
 
-export default function AccessoryBrandPage() {
-
-    const { isLoginModalOpen, isRegisterModalOpen } = useUserLoginModalStore();
-    const { isConfirmationModalOpen } = useConfirmationCodeStore();
-    const { isProfileSettingsModalOpen } = useProfileSettingsModalStore();
-    
+export default function AccessoryBrandPage() {    
     const pathname = usePathname();
     const brandSlug = pathname.split("/")[4];
 
@@ -47,10 +40,6 @@ export default function AccessoryBrandPage() {
 
                  { <CardsContainer booksList={ brand } isHobbies={ false } isAccessories={ true } /> }
             </div>
-            { isLoginModalOpen && <UserLoginModal /> }
-            { isRegisterModalOpen && <UserRegisterModal /> }
-            { isConfirmationModalOpen && <ConfirmationCodeModal />}
-            { isProfileSettingsModalOpen && <ProfileSettingsModal /> }
         </div>
     )
 }

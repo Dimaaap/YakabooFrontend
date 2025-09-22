@@ -3,3 +3,5 @@ export { SearchBar } from './SearchBar';
 export { DataContainer } from './DataContainer';
 export { PublishingHeader } from './PublishingHeader';
 export { BookPublishersContainer } from './BookPublishersContainer';
+export { BookPublisherClient } from './BookPublisherClient';
+export { AllBookPublishersClient } from './AllBookPublishersClient';

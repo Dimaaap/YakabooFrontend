@@ -1,15 +1,10 @@
 "use client"
 
 import { usePathname } from "next/navigation";
-import { useConfirmationCodeStore, useProfileSettingsModalStore, useUserLoginModalStore } from "../../../../../../states";
 import { useEffect, useState } from "react";
 import { fetchData } from "../../../../../../services";
 
 export default function AccessoryCategoryPage() {
-
-    const { isLoginModalOpen, isRegisterModalOpen } = useUserLoginModalStore();
-    const { isConfirmationModalOpen } = useConfirmationCodeStore();
-    const { isProfileSettingsModalOpen } = useProfileSettingsModalStore();
 
     const pathname = usePathname();
     const categorySlug = pathname.split("/")[3];   

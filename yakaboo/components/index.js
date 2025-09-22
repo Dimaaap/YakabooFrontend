@@ -7,4 +7,7 @@ export * from "./board_games";
 export * from "./clients";
 export * from "./books";
 export * from "./hobbies";
-export * from "./gifts"
+export * from "./gifts";
+export * from "./book_translators";
+export * from "./literature_periods";
+export * from "./knowledge";

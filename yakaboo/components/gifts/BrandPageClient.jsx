@@ -1,16 +1,11 @@
 "use client"
 
 import { usePathname } from "next/navigation";
-import { useConfirmationCodeStore, useProfileSettingsModalStore, useUserLoginModalStore } from "../../states";
 import { useEffect, useState } from "react";
 import { fetchData } from "../../services";
 import { Breadcrumbs, CardsContainer, Filters } from "../shared";
-import { ConfirmationCodeModal, ProfileSettingsModal, UserLoginModal, UserRegisterModal } from "../dynamic";
 
 export const BrandPageClient = () =>{
-    const { isLoginModalOpen, isRegisterModalOpen } = useUserLoginModalStore();
-    const { isConfirmationModalOpen } = useConfirmationCodeStore();
-    const { isProfileSettingsModalOpen } = useProfileSettingsModalStore();
 
     const pathname = usePathname()
     const brandSlug = pathname.split('/')[4];
@@ -47,10 +42,6 @@ export const BrandPageClient = () =>{
                 ) }
                 
             </div>
-            { isLoginModalOpen && <UserLoginModal /> }
-            { isRegisterModalOpen && <UserRegisterModal /> }
-            { isConfirmationModalOpen && <ConfirmationCodeModal />}
-            { isProfileSettingsModalOpen && <ProfileSettingsModal    />}
         </div>
     )
 }
