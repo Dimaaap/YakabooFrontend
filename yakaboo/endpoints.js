@@ -41,7 +41,8 @@ const Endpoints = {
   ALL_NOTEBOOKS: "http://localhost:8006/books/notebooks/all",
   ALL_GIFT_BRANDS: "http://127.0.0.1:8006/gift_brands/all",
   ALL_GIFT_CATEGORIES: "http://127.0.0.1:8006/gift-categories/all",
-  ALL_GIFTS: "http://localhost:8006/gifts/all"
+  ALL_GIFTS: "http://localhost:8006/gifts/all",
+  SIDEBAR_KNOWLEDGE: "http://localhost:8006/knowledge/in-sidebar"
 };
 
 export default Endpoints;

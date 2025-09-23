@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react";
 import { fetchData } from "../../services";
+import { KnowledgeSidebar } from ".";
 
 export const KnowledgeContainer = () => {
     const [knowledge, setKnowledge] = useState(null)
@@ -19,14 +20,14 @@ export const KnowledgeContainer = () => {
             { console.log(knowledge) }
 
             { knowledge && knowledge?.container_title && (
-                <h2 className="knowledge__title">
+                    <h2 className="knowledge__page-title">
                     { knowledge.container_title }
                 </h2>    
             ) }
            
            <div className="knowledge__container">
                 <div className="knowledge__section left-section">
-                    <p>KnowledgeSidebar</p>
+                    <KnowledgeSidebar />
                 </div>
                 <div className="knowledge__section right-section">
                     { knowledge?.content && (

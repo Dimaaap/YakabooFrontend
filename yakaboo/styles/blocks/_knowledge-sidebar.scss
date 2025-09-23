@@ -1,0 +1,25 @@
+@use '../helpers' as *;
+
+.knowledge-sidebar {
+    background-color: var(--color-light);
+    border-radius: rem(10);
+    padding-block: 4%;
+    font-weight: 600;
+    color: var(--color-gray-30);
+    font-size: rem(16);
+
+    &__items {
+        display: flex;
+        flex-direction: column;
+        gap: rem(7);
+    }
+
+    &__point {
+        padding-inline: 5%;
+        padding-block: 1%;
+
+        &.active-link {
+            border-left: rem(2) solid var(--color-pink-10);
+        }
+    }
+}
