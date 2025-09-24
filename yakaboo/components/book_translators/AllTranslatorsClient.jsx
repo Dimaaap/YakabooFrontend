@@ -16,10 +16,7 @@ export const AllTranslatorsClient = () => {
 
     useEffect(() => {
         const fetchTranslators = async() => {
-            const fetchUrl = debouncedSearchValue?.trim() 
-            ? `http://localhost:8006/translators/search/?query=${debouncedSearchValue}`
-            : Endpoints.ALL_TRANSLATORS;
-
+            const fetchUrl = debouncedSearchValue?.trim() ? Endpoints.SEARCH_TRANSLATOR(debouncedSearchValue) : Endpoints.ALL_TRANSLATORS;
             try {
                 fetchData(fetchUrl, setTranslators)
             } catch (err) {

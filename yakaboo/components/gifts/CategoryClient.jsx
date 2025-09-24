@@ -6,6 +6,7 @@ import { fetchData } from "../../services";
 import Link from "next/link";
 import Image from "next/image";
 import { CardsContainer, Filters } from "../shared";
+import Endpoints from "../../endpoints";
 
 export const CategoryClient = () => {
     const pathname = usePathname();
@@ -14,7 +15,7 @@ export const CategoryClient = () => {
     const [category, setCategory] = useState(null)
 
     useEffect(() => {
-        fetchData(`http://localhost:8006/gift-categories/gifts/${categorySlug}`, setCategory)
+        fetchData(Endpoints.GIFT_CATEGORY(categorySlug), setCategory)
     }, [])
 
     return (

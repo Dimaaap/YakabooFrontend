@@ -4,13 +4,14 @@ import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { Badge, Stars, ProductCard } from '../shared';
 import { fetchData } from '../../services';
+import Endpoints from '../../endpoints';
 
 export const AuthorBooks = ({authorId, periodId=null}) => {
 
     const [authorsBooks, setAuthorBooks] = useState([])
 
     useEffect(() => {
-        fetchData(`http://localhost:8006/authors/author/${authorId}/books`, setAuthorBooks)
+        fetchData(Endpoints.AUTHOR_BOOKS(authorId), setAuthorBooks)
     }, [])
 
   return (

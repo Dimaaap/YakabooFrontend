@@ -1,5 +1,6 @@
 export class DateTime{
     getTimeLeft(endDate){
+        console.log(endDate)
         const now = new Date();
         const end = new Date(endDate);
         const diff = end - now;

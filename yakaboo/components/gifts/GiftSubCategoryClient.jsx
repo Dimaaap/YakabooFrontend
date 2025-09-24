@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation";
 import { fetchData } from "../../services";
 import { HobbySubcategoryContainer } from "../hobbies/SubcategoryContainer";
+import Endpoints from "../../endpoints";
 
 export const GiftSubCategoryClient = () => {
     
@@ -17,7 +18,7 @@ export const GiftSubCategoryClient = () => {
     }
 
     useEffect(() => {
-        fetchData(`http://localhost:8006/gift-subcategories/gifts/${subcategorySlug}`, setSubCategory)
+        fetchData(Endpoints.GIFT_SUBCATEGORY(subcategorySlug), setSubCategory)
     }, [])
 
     return(

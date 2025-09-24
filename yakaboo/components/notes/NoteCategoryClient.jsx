@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { fetchData } from "../../services";
 import Link from "next/link";
 import { HobbyCategoryContainer } from "../hobbies";
+import Endpoints from "../../endpoints";
 
 
 
@@ -16,7 +17,7 @@ export const NoteCategoryClient = () => {
     const categorySlug = router.split("/")[3];
 
     useEffect(() => {
-        fetchData(`http://localhost:8006/notebook_categories/books/${categorySlug}`, setCategory)
+        fetchData(Endpoints.NOTEBOOK_CATEGORY(categorySlug), setCategory)
     }, [])
 
     return(

@@ -10,7 +10,7 @@ export const KnowledgeSidebar = () => {
     const [knowledge, setKnowledge] = useState([])
 
     const pathname = usePathname();
-    const slug = pathname.split("/")[1];
+    const slug = pathname.split("/")[2];
 
     useEffect(() => {
         fetchData(Endpoints.SIDEBAR_KNOWLEDGE, setKnowledge, "sidebar_knowledge")
@@ -22,7 +22,7 @@ export const KnowledgeSidebar = () => {
                 <ul className="knowledge-sidebar__items">
                     { knowledge.map((kn, index) => (
                         <li className={`knowledge-sidebar__point ${slug === kn.slug ? "active-link": ""}`} key={ index }>
-                            <Link href={ kn.slug } className="knowledge-sidebar__link">
+                            <Link href={ `/base/${kn.slug}` } className="knowledge-sidebar__link">
                                 { kn.title }
                             </Link>
                         </li>

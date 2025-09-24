@@ -1,4 +1,5 @@
-import { KnowledgeContainer } from "../../../components";
+import { KnowledgeContainer } from "../../../../components";
+
 
 export default function KnowledgePage() {
     return <KnowledgeContainer />

@@ -11,3 +11,4 @@ export * from "./gifts";
 export * from "./book_translators";
 export * from "./literature_periods";
 export * from "./knowledge";
+export * from "./promos";

@@ -77,7 +77,7 @@ export const Footer = () => {
                     .filter(link => link.category === "Yakaboo")
                     .map(link => (
                         <li key={ link.title } className="footer__item">
-                            <Link href={ link.link } className="footer__point">
+                            <Link href={ `/base${link.link}` } className="footer__point">
                                 { link.title }
                             </Link>
                         </li>

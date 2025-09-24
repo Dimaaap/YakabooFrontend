@@ -40,11 +40,6 @@ export const MainSidebar = () => {
   return (
     <div className="sidebar">
       <ul className="sidebar__list">
-        <Link href="/children-brand/view/all" className="sidebar__item">
-          <li className="sidebar__point-flex">
-            Дитячі бренди
-          </li>
-        </Link>
         {sidebars.length > 0 ? (
           sidebars.map((sidebar, i) => (
             <Link

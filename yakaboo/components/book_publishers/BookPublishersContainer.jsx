@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useLetterStore, useSearchPublisherStore } from '../../states';
 import { fetchSearchResults } from '../../services/fetch.service';
 import { useDebounce } from '../../hooks/useDebounce';
+import Endpoints from '../../endpoints';
 
 export const BookPublishersContainer = () => {
   const [publishings, setPublishings] = useState([]);
@@ -18,10 +19,7 @@ export const BookPublishersContainer = () => {
     if (debouncedSearchValue?.trim()) {
       fetchSearchResults(debouncedSearchValue, setPublishings);
     } else {
-      fetchData(
-        `http://localhost:8006/publishing/first-letter/${activeLetter || 'А'}`,
-        setPublishings
-      );
+      fetchData(Endpoints.SEARCH_PUBLISHING(activeLetter),setPublishings);
     }
   }, [activeLetter, debouncedSearchValue]);
 

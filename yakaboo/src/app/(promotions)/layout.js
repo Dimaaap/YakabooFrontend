@@ -1,13 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
-import { ChatBtn, BookCategoriesWithSubcategoriesModal, CartModal, 
-    ChatOptions, MenuModal } from "../../../components";
 import { useBookCategoriesModalStore, useCartModalStore, useChatModalStore, 
     useSubcategoriesModalStore, useMenuModalStore
  } from "../../../states";
 
 import "../../../styles/main.scss";
+import { BookCategoriesWithSubcategoriesModal, CartModal, ChatBtn, ChatOptions, MenuModal } from "../../../components/dynamic";
 
 
 

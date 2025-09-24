@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useLetterStore, useSearchPublisherStore } from '../../states';
 import { fetchSearchResults } from '../../services/fetch.service';
 import { useDebounce } from '../../hooks/useDebounce';
+import Endpoints from '../../endpoints';
 
 export const AuthorsContainer = () => {
   const [authors, setAuthors] = useState([]);
@@ -18,10 +19,7 @@ export const AuthorsContainer = () => {
     if (debouncedSearchValue?.trim()) {
       fetchSearchResults(debouncedSearchValue, setAuthors, true);
     } else {
-      fetchData(
-        `http://localhost:8006/authors/first-letter/${activeLetter || 'А'}`,
-        setAuthors
-      );
+      fetchData(Endpoints.SEARCH_AUTHORS(activeLetter), setAuthors);
     }
   }, [activeLetter, debouncedSearchValue]);
 

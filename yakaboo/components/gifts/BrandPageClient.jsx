@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchData } from "../../services";
 import { Breadcrumbs, CardsContainer, Filters } from "../shared";
+import Endpoints from "../../endpoints";
 
 export const BrandPageClient = () =>{
 
@@ -17,7 +18,7 @@ export const BrandPageClient = () =>{
     }
 
     useEffect(() => {
-        fetchData(`http://localhost:8006/gift_brands/gifts/${brandSlug}`, setBrand)
+        fetchData(Endpoints.GIFT_BRAND(brandSlug), setBrand)
     }, [])
 
     let brandObject = brand && brand.length > 0 && brand[0]

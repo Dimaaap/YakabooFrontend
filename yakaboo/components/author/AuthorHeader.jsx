@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { AuthorFacts } from '../shared';
 import { formatLocalDate } from '../../utils';
 import { fetchData } from '../../services';
+import Endpoints from '../../endpoints';
 
 export const AuthorHeader = ({ author }) => {
   const [authorImages, setAuthorImages] = useState([]);
@@ -14,16 +15,11 @@ export const AuthorHeader = ({ author }) => {
 
   useEffect(() => {
     fetchData(
-      `http://localhost:8006/authors/${author.id}/images`,
-      setAuthorImages
-    );
+      Endpoints.AUTHOR_IMAGES(author.id), setAuthorImages);
   }, []);
 
   useEffect(() => {
-    fetchData(
-      `http://localhost:8006/author_facts/author/${author.id}`,
-      setAuthorFact
-    );
+    fetchData(Endpoints.AUTHOR_FACTS(author.id), setAuthorFact);
   }, []);
 
   const handleChangeShowAll = () => {

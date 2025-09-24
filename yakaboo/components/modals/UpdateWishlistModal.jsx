@@ -7,6 +7,7 @@ import { FlashMessage } from '../shared';
 
 import Image from "next/image";
 import { handleBackdropClick } from '../../services';
+import Endpoints from '../../endpoints';
 
 export const UpdateWishlistModal = ({ wishlist, updateWishlistTitle }) => {
     
@@ -25,7 +26,7 @@ export const UpdateWishlistModal = ({ wishlist, updateWishlistTitle }) => {
         const fetchBody = {title: newTitle, wishlist_id: wishlist.id}
 
         try {
-            const response = await fetch(`http://localhost:8006/wishlist/${ wishlist.id }`, {
+            const response = await fetch(Endpoints.DELETE_WISHLIST(wishlist.id), {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"

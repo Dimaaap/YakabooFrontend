@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { fetchData } from "../../services";
 import { Breadcrumbs, Filters } from "../shared";
 import { AuthorBooks, AuthorHeader } from ".";
+import Endpoints from "../../endpoints";
 
 export const AuthorContainerClient = () => {
     const [author, setAuthor] = useState(null);
@@ -17,7 +18,7 @@ export const AuthorContainerClient = () => {
       };
 
       useEffect(() => {
-        fetchData(`http://localhost:8006/authors/${authorSlug}`, setAuthor)
+        fetchData(Endpoints.AUTHOR(authorSlug), setAuthor)
       }, [])
 
       return (

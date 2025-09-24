@@ -2,8 +2,7 @@
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react";
 import { PromotionsSidebar, Promotions } from "../../../../../components";
-import { fetchData } from "../../../../../utils";
-
+import { fetchData } from "../../../../../services";
 
 export default function PromoCategoryPage() {
     

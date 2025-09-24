@@ -8,7 +8,6 @@ export const HobbyCategoryContainer = ({ categories, notebooks=false, isNotebook
 
     const pathname = usePathname();
     const categoryTitle = pathname.split("/")[3];
-    console.log(categoryTitle)
 
     return (
         <div className="hobby__main-container hobby-category__container">

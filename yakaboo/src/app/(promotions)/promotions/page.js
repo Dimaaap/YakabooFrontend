@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { fetchData } from '../../../../utils';
 import Endpoints from '../../../../endpoints';
 import { PromotionsSidebar, Promotions } from '../../../../components';
+import { fetchData } from '../../../../services';
 
 
 export default function PromotionsPage() {

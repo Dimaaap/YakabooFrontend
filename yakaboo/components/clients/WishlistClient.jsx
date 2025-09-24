@@ -8,6 +8,7 @@ import { useProfileSettingsModalStore, useWishListModalStore } from "../../state
 import { fetchData, CookiesWorker } from "../../services";
 import { UserLoginModal, ProfileSettingsModal, CreateWishListModal } from "../dynamic";
 import { FlashMessage, WishlistSidebar, WishlistsMainContainer } from "../shared";
+import Endpoints from "../../endpoints";
 
 
 export const WishlistClient = () => {
@@ -26,7 +27,7 @@ export const WishlistClient = () => {
 
   const deleteWishlist = async id => {
     try {
-        const response = await fetch(`http://localhost:8003/wishlist/${id}`, {
+        const response = await fetch(Endpoints.DELETE_WISHLIST(id), {
             method: "DELETE"
         })
 
@@ -51,7 +52,7 @@ export const WishlistClient = () => {
     
     if(userEmail){
         fetchData(
-            `http://localhost:8003/wishlist/${userEmail}`,
+            Endpoints.USER_WISHLISTS(userEmail),
             setWishlists,
             `${userEmail}_wishlists`
         )

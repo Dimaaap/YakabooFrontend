@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react";
 import { fetchData } from "../../services";
 import { BookComponent } from "../books";
+import Endpoints from "../../endpoints";
 
 export const GiftClient = () => {
     const pathname = usePathname()
@@ -16,7 +17,7 @@ export const GiftClient = () => {
     }
     
     useEffect(() => {
-        fetchData(`http://localhost:8006/gifts/by-slug/${giftSlug}`, setGift)
+        fetchData(Endpoints.GIFT(giftSlug), setGift)
     }, [])
 
     return (

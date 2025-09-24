@@ -4,20 +4,20 @@ import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react";
 import { fetchData } from "../../services";
 import { KnowledgeSidebar } from ".";
+import Endpoints from "../../endpoints";
 
 export const KnowledgeContainer = () => {
     const [knowledge, setKnowledge] = useState(null)
 
     const pathname = usePathname();
-    const knowledgeSlug = pathname.split("/")[1];
+    const knowledgeSlug = pathname.split("/")[2];
 
     useEffect(() => {
-        fetchData(`http://localhost:8006/knowledge/slug?slug=${knowledgeSlug}`, setKnowledge)
+        fetchData(Endpoints.KNOWLEDGE(knowledgeSlug), setKnowledge)
     }, [])
 
     return (
         <div className="knowledge">
-            { console.log(knowledge) }
 
             { knowledge && knowledge?.container_title && (
                     <h2 className="knowledge__page-title">

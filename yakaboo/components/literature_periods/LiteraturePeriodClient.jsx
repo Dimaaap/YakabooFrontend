@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 import { fetchData } from "../../services"
 import { Breadcrumbs, CardsContainer, Filters } from "../shared"
+import Endpoints from "../../endpoints"
 
 
 export const LiteraturePeriodClient = () => {
@@ -19,12 +20,12 @@ export const LiteraturePeriodClient = () => {
     }
 
     useEffect(() => {
-        fetchData(`http://localhost:8006/literature_period/${periodSlug}`, setPeriod)
+        fetchData(Endpoints.LITERATURE_PERIOD(periodSlug), setPeriod)
     }, [])
 
     useEffect(() => {
         if(periodId){
-            fetchData(`http://localhost:8006/literature_period/period/${period.id}/books`, setPeriodBooks)
+            fetchData(Endpoints.LITERATURE_PERIOD_BOOKS(period.id), setPeriodBooks)
         }
     }, [])
 

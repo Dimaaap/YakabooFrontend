@@ -16,9 +16,7 @@ export const GiftAllBrandsClient = () => {
 
     useEffect(() => {
         const fetchBrands = async() => {
-            const fetchUrl = debouncedSearchValue?.trim() ? 
-             `http://127.0.0.1:8006/gift_brands/search?query=${debouncedSearchValue}`:
-             Endpoints.ALL_GIFT_BRANDS;
+            const fetchUrl = debouncedSearchValue?.trim() ? Endpoints.SEARCH_GIFT_BRAND(debouncedSearchValue): Endpoints.ALL_GIFT_BRANDS;
 
              try {
                 fetchData(fetchUrl, setBrands)

@@ -27,4 +27,5 @@ export { HobbiesContainer } from "./HobbiesContainer";
 export { TopBadge } from "./TopBadge"
 export { SliderCategories } from "./SliderCategories";
 export { Rate } from "./Rate";
-export { PageModals } from "./PageModals"
+export { PageModals } from "./PageModals";
+export { Skeleton } from "./Skeleton"

@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react"
 import { fetchData } from "../../services";
 import { BookComponent } from "../books";
+import Endpoints from "../../endpoints";
 
 export const NoteContainerClient = () => {
     const [notebook, setNotebook] = useState(null);
@@ -15,7 +16,7 @@ export const NoteContainerClient = () => {
     }
 
     useEffect(() => {
-        fetchData(`http://localhost:8006/books/notebook/${notebookSlug}`, setNotebook)
+        fetchData(Endpoints.NOTEBOOK(notebookSlug), setNotebook)
     }, [])
 
     return(

@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react";
 import { fetchData } from "../../services";
 import { Breadcrumbs, CardsContainer, Filters } from "../shared";
+import Endpoints from "../../endpoints";
 
 export const BookTranslatorClient = () => {
     const [translator, setTranslator] = useState(null);
@@ -18,12 +19,12 @@ export const BookTranslatorClient = () => {
     }
 
     useEffect(() => {
-            fetchData(`http://localhost:8006/translators/${translatorSlug}`, setTranslator)
+            fetchData(Endpoints.TRANSLATOR(translatorSlug), setTranslator)
         }, [])
     
     useEffect(() => {
         if(translatorId){
-            fetchData(`http://localhost:8006/translators/translator/${translatorId}/books`, setTranslatorBooks)
+            fetchData(Endpoints.TRANSLATOR_BOOKS(translatorId), setTranslatorBooks)
         }
     }, [translatorId])
 
