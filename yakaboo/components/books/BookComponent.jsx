@@ -3,7 +3,8 @@ import { BookContainer } from ".";
 export const BookComponent = ({ book, breadcrumbs, isGift=false }) => {
     return (
         <div className="book">
-            <BookContainer book={ book } breadcrumbLinks={ breadcrumbs }  isGift={ isGift } />
+            { console.log(book) }
+            <BookContainer book={ book } breadcrumbLinks={ breadcrumbs } isGift={ isGift } />
         </div>
     )
 }

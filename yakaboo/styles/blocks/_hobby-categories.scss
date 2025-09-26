@@ -1,3 +1,4 @@
+
 @use "../helpers" as *;
 
 .hobby-categories {
@@ -7,6 +8,22 @@
         gap: 2%;
         align-items: start;
         position: relative;
+        margin-bottom: 2%;
+
+        @media(max-width: 1750px){
+            grid-template-columns: repeat(6, 1fr);
+        }
+
+        @media(max-width: 1500px){
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        @media(max-width: 1200px){
+            grid-template-columns: repeat(4, 1fr);
+        }
+        @media(max-width: 934px){
+            grid-template-columns: repeat(3, 1fr);
+        }
     }
 
     &__category {

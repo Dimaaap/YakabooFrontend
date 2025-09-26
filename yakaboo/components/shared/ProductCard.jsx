@@ -84,11 +84,17 @@ export const ProductCard = ({
             {inStock ? 'В наявності' : 'Немає в наявності'}
           </span>
         </div>
-
-        <button className="product-card__buy-btn">
-          <Image src="/icons/cart.svg" alt="" width="16" height="16" />
-          Купити
-        </button>
+        { inStock ? (
+          <button className="product-card__buy-btn">
+            <Image src="/icons/cart.svg" alt="" width="16" height="16" />
+            Купити
+          </button>  
+        ) : (
+          <button className="product-card__buy-btn inactive-btn">
+            Сповістити про наявність
+          </button>
+        ) }
+        
       </div>
     </Link>
   );

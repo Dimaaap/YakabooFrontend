@@ -21,7 +21,7 @@ export const NoteContainerClient = () => {
 
     return(
         notebook && (
-            <BookComponent book={ notebook } breadcrumbs={ breadcrumbsObject } />
+            <BookComponent book={ notebook } breadcrumbs={ breadcrumbsObject } isGift={ false } />
         )
     )
 }

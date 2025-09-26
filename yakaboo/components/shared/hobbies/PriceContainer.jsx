@@ -16,7 +16,7 @@ export const PriceContainer = ({ hobby }) => {
             <div className="book-container__price-row hobby-page__price-row">
                 { hobby.is_in_stock && (
                     <h2 className="book-container__header book-container__h2 hobby-page__header">
-                        { hobby.price } грн
+                        { `${hobby.price} грн` }
                     </h2>    
                 ) }
                                 

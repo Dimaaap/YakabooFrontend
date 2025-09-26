@@ -187,6 +187,17 @@
     border-radius: rem(10);
     transition: opacity var(--transition-duration) ease;
 
+    &.inactive-btn {
+      background-color: var(--color-gray-40);
+      color: var(--color-black);
+      margin-top: -10%;
+      border: rem(1) solid var(--color-gray-40);
+
+      &:hover {
+        border-color: var(--color-gray-20);
+      }
+    }
+
     &:hover {
       opacity: 0.8;
     }

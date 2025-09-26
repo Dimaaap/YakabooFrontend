@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from 'next/image'
 
 export const BookInfoBlock = ({ book, info, isGift }) => {
     return(
@@ -51,7 +52,7 @@ export const BookInfoBlock = ({ book, info, isGift }) => {
                 <div className="book-container__block publishing-block">
                     <p className="book-container__block-title">Рік видання</p>
                     <div className="book-container__tiles-block">
-                        <div className="book-container__tile tile small-tile current">
+                        <div className="book-container__tile tile small-tile">
                             <p className="tile__desc">{info?.publishing_year}</p>
                         </div>
                     </div>

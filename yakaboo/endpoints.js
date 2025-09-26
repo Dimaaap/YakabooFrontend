@@ -86,6 +86,7 @@ const Translators = {
 
 const Defaults = {
   ALL_SIDEBARS: `${DOMAIN}sidebars/all`,
+  VISIBLE_SIDEBARS: `${DOMAIN}sidebars/visible`,
   ALL_INTERESTING: `${DOMAIN}interesting/all`,
   ALL_FOOTER_LINKS: `${DOMAIN}footers/all`,
   ALL_BANNERS: `${DOMAIN}banners/all`,

@@ -10,7 +10,7 @@
     cursor: pointer;
 
     &.small-tile {
-        padding: 10%;
+        padding: rem(8);
         font-weight: 500;
         font-size: rem(14);
         color: var(--color-gray-20);

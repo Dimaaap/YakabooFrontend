@@ -40,7 +40,6 @@ export const HobbyContainer = ({ hobby, breadcrubmbLink, isAccessory=false }) =>
 
     return(
         <div className="book-container hobby-page">
-            { console.log(hobby) }
             { showProductInfoModal && (
                 <ProductInfoModal 
                 productImage={hobby.images[0].image_url}

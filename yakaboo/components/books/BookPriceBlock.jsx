@@ -16,7 +16,7 @@ export const BookPriceBlock = ({ book, info, isGift }) => {
                     <h2 className="book-container__header book-container__h2">
                         { book.price } грн
                     </h2>
-                    { info?.bonuses && (
+                    { info?.bonuses > 0 && (
                         <div className="book-container__bonuses product-bonuses">
                             <Image src="/icons/bonus.svg" alt="" width="20" height="20" />
                             <p className="product-bonuses__bonuses-count">+{ info.bonuses } бонусів</p>

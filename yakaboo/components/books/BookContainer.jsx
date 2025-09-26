@@ -16,7 +16,7 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
     const { isProductImagesOpen, isReadPart, setIsReadPart, setIsProductImagesOpen } = useProductImagesStore();
     
     const info = isGift ? book.gift_info : book.book_info;
-    
+
     const images = useMemo(() => book.images || [], [book.images]);
 
     const pageImages = images.filter((img) => img.type === "page");
@@ -50,9 +50,9 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
 
                 <div className="book-container__author-block">
                     <h2 className="book-container__book-title">
-                        { !isGift ? `Книга ${book.title}` : `${book.title}` }
+                        { book.title }
                     </h2>
-                    { !isGift && (
+                    { !isGift && book?.authors.length > 0 && (
                         <Link className="book-container__link author-link" href={`/author/view/${book.authors[0].slug}`}>
                             {book.authors[0].first_name} {book.authors[0].last_name}
                         </Link>       
@@ -75,7 +75,7 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
                 
                 <BookCharacteristics book={book} isGift={ isGift } />
 
-                { !isGift && <BookAuthorBlock author={ book.authors[0] } /> }
+                { !isGift && !book?.is_notebook && <BookAuthorBlock book={ book } author={ book.authors[0] } /> }
 
                 <BookReviewsBlock />
             </div>

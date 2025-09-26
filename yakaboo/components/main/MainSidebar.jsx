@@ -22,7 +22,7 @@ export const MainSidebar = () => {
         return;
       }
 
-      const res = await fetch(Endpoints.ALL_SIDEBARS);
+      const res = await fetch(Endpoints.VISIBLE_SIDEBARS);
       const data = await res.json();
       setSidebars(data);
 
