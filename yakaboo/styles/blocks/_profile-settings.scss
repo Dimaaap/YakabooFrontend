@@ -10,7 +10,9 @@
         gap: rem(5);
         background-color: var(--color-gray-50);
         width: rem(350);
-        height: 100%;
+        flex: 1;
+        height: 100vh;
+        justify-content: space-between;
     }
 
     &-header {

@@ -28,15 +28,20 @@ export const Header = () => {
             <button type="button" id="burger" onClick={() => setIsMenuModalOpen(true)}>
                 <Image src="/icons/line.svg" className="header__icon" width="20" height="1" alt=""/>
                 <Image src="/icons/line.svg" className="header__icon" width="20" height="1" alt=""/>
+                <Image src="/icons/line.svg" className="header__icon" width="20" height="1" alt=""/>
             </button>
             <Link href="/" className="header__logo">
                 <Image src="/icons/logo.svg" width="200" alt="Yakaboo" height="70" />
             </Link>
+            <Link href="/" className="header__logo-hidden">
+                <Image src="/icons/logo-short.svg" width="30" height="30" className="hidden-logo" alt="Yakaboo" />
+            </Link>
+            
         </div>
         <div className="header__section header__center-section">
             <button className="header__categories-btn" onClick={() => setIsCategoriesModalOpen(true)}>
-                <Image src="/icons/menu.svg" className="header__icon menu visually-hidden" width="25" alt="" height="25" />
-                Категорії книг
+                <Image src="/icons/menu.svg" className="header__icon-menu menu-icon" width="25" alt="" height="25" />
+                Каталог
             </button>
             <div className="header__search-container">
                 <input type="search" placeholder='Знайти книгу' className="header__search" />  
@@ -50,15 +55,8 @@ export const Header = () => {
                 <div className="header__section-info-text">
                     <div className="top-row row">
                         <Image src="/icons/phone.svg" alt="" width="15" height="15" className="row__icon" />    
-                        <span className="row__text">
-                            0-800-335-425
-                        </span>
-                        <Image src="/icons/chevron-down.svg" alt="" width="20" height="20" className="row__icon" />
-                    </div>  
-                    <div className="bottom-row row">
-                        <span className="row__text">
-                            Без вихідних, з 9 до 20
-                        </span>
+                        Зв'язатись з нами
+                        <Image src="/icons/chevron-down.svg" alt="" width="15" height="15" />
                     </div>
                     { isContactsOpen && <ContactsModal /> }
                     
@@ -67,7 +65,6 @@ export const Header = () => {
             <div className="header__icons-row">
                 <Link className="header__link" href="#" onClick={() => setIsCartModalOpen(true) }>
                     <Image src="/icons/cart.svg" alt="" className="header__link-icon" width="20" height="20" />
-                    <span className="header__link-text">Кошик</span>
                 </Link>
                 { !isAuthenticated ? (
                     <div className="header__link" onClick={() => setIsLoginModalOpen(true)}>

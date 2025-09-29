@@ -66,6 +66,7 @@ const ConfirmationCodeModal = () => {
                 CookiesWorker.set("is_auth", false);
                 setMessage("Ви успішно авторизувались");
                 setIsConfirmationModalOpen(false);
+                window.location.reload();
             } else {
                 setMessage("Неправильний код")
             }

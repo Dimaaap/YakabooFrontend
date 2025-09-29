@@ -3,12 +3,18 @@
 import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
 import Endpoints from '../../endpoints';
+import { fetchData } from '../../services';
 
 const MainHeader = () => {
 
     const SIX_HOURS = 6 * 60 * 60 * 1000
 
     const [interesting, setInteresting] = useState([]);
+    const [headerTitle, setHeaderTitle] = useState(null);
+
+    useEffect(() => {
+        fetchData(Endpoints.ACTIVE_TITLE, setHeaderTitle)
+    }, [])
 
     const fetchInteresting = async() => {
         try {
@@ -40,9 +46,14 @@ const MainHeader = () => {
 
   return (
     <div className="main-header">
-        <h2 className="main-header__title">
-            Замовляйте книжки - оплачуйте Зимовою єПідтримкою
-        </h2>
+        { headerTitle ? (
+            <h2 className="main-header__title">
+                { headerTitle.title }
+            </h2>    
+        ) : (
+            <div className="main-header__point skeleton-item"></div>            
+        ) }
+        
         <ul className="main-header__items">
             { interesting.length > 0 ? (
                 interesting.map((interest, i) => (

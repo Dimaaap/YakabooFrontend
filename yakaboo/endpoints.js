@@ -125,7 +125,8 @@ const Endpoints = {
   ...Publishings,
   ...Translators,
   ...Wishlists,
-  ...LiteraturePeriods
+  ...LiteraturePeriods,
+  ACTIVE_TITLE: `${DOMAIN}page-title/active`
 };
 
 export default Endpoints;

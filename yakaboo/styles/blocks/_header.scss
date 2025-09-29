@@ -1,12 +1,18 @@
 @use "../helpers" as *;
 
 .header {
-    display: grid;
-    grid-template-columns: 15% 55% 30%;
+    display: flex;
     padding-block: 1%;
-    position: relative;
+    position: sticky;
+    justify-content: space-between;
+    top: 0;
+    z-index: 1009;
     padding-inline: 2%;
     padding-block: 1%;
+    gap: rem(5);
+    background-color: var(--color-light);
+    -webkit-box-shadow: -2px 3px 12px 2px rgba(0,0,0,0.34); 
+    box-shadow: -2px 3px 12px 2px rgba(0,0,0,0.34);
 
     @include tablet {
         grid-template-columns: 30% 30% 30%;
@@ -25,6 +31,15 @@
     &__first-section {
         align-items: center;
         gap: 5%;
+        width: 25%;
+
+        @include tablet {
+            width: 100%;
+        }
+
+        @include mobile {
+            width: 15%;
+        }
     }
 
     & #burger {
@@ -32,35 +47,62 @@
         display: inline-flex;
         flex-direction: column;
         justify-content: space-between;
-        height: 20%;
+        height: 22%;
+        background-color: transparent
     }
 
     &__logo {
         width: fluid(150, 100);
+
+        &-hidden {
+            margin-right: 10%;
+            @include tablet-above {
+                @include visually-hidden;    
+            }
+           
+        }
+
+        @include tablet {
+            @include visually-hidden
+        }
     }
 
     &__center-section {
         display: flex;
         align-self: center;
-        gap: 1%;
+        gap: 3%;
+        padding-inline: 0;
+        width: 50%;
+
+        @include tablet {
+            width: 100%;
+        }
+
+        @include mobile {
+            width: 140%;
+        }
 
         & .header__search-icon {
             position: absolute;
             left: 3.5%;
-            top: 33%;
-            width: fluid(22, 15);
+            top: 30%;
+            width: fluid(20, 15);
             filter: invert(5%);
+
+            @include tablet {
+                @include visually-hidden;
+            }
         }
         
         & .header__search-button {
-            @include fluid-text(16, 14);
+            @include fluid-text(14, 12);
             border: none;
-            height: rem(55);
+            height: rem(50);
             font-weight: 500;
             position: absolute;
             right: 0;
             padding-inline: 4%;
-            border-radius: 0 rem(50) rem(50) 0;
+            border-radius: 0 rem(10) rem(10) 0;
             background-color: var(--color-blue-10);
             color: var(--color-light);
             outline: none;
@@ -69,11 +111,15 @@
                 background-color: var(--color-blue-accent);
             }
 
+            @include tablet {
+                @include visually-hidden;
+            }
+
         }
     }
 
     &__categories-btn {
-        @include fluid-text(16, 14);
+        @include fluid-text(12, 14);
         font-weight: 600;
         display: flex;
         gap: rem(10);
@@ -81,15 +127,31 @@
         background-color: var(--color-blue-10);
         color: var(--color-light);
         border: none;
-        padding-block: 2%;
-        padding-inline: 1%;
-        width: 25%;
-        border-radius: rem(50);
+        padding-block: 1.5%;
+        padding-inline: 4%;
+        border-radius: rem(10);
         text-align: center;
         justify-content: center;
+        transition: all 0.3s ease;
+
+        & img {
+            @include laptop {
+                @include visually-hidden;
+            }
+        }
+
+        &:hover {
+            opacity: 0.8;
+        }
 
         @include tablet {
-            width: 50%;
+            height: rem(50);
+            justify-content: center;
+            align-items: center;
+        }
+
+        @include mobile {
+            @include visually-hidden;
         }
     }
 
@@ -107,22 +169,31 @@
 
     &__search-container {
         position: relative;
-        width: 70%;
+        width: 60%;
 
         @include tablet {
-            @include visually-hidden;
+            flex: 1;
         }
 
+        @include mobile {
+            flex: 1;
+        }
+
+
         & input {
-            @include fluid-text(16, 14);
+            @include fluid-text(14, 12);
             font-weight: 500;
             color: var(--color-gray-30);
             width: 100%;
-            border: none;
+            border: rem(1) solid var(--color-black);
             background-color: var(--color-light);
-            height: rem(55);
-            border-radius: rem(50);
+            height: rem(50);
+            border-radius: rem(10);
             padding-inline: 10%;
+
+            @include tablet {
+                flex: 1;
+            }
         }
     }
 
@@ -130,34 +201,43 @@
         display: flex;
         align-items: center;
         gap: 5%;
+        width: 25%;
+
+        @include tablet {
+            width: 50%;
+            justify-content: end;
+        }
+
+        @include mobile {
+            @include visually-hidden;
+        }
+    }
+
+    &__icon-menu {
+        width: rem(15);
+        filter: invert(1);
     }
 
     &__section-info-text {
+        @include fluid-text(14, 12);
+        font-weight: 500;
         display: flex;
-        flex-direction: column;
         cursor: pointer;
 
         & .row {
             display: flex;
             align-items: center;
-            gap: 3%;
+            gap: rem(5);
+        }
 
-            &__icon {
-                width: fluid(20, 15);
-            }
-
-            &__text {
-                @include fluid-text(16, 14);
-
-                color: var(--color-gray-10);
-                font-weight: 500;
-            }
+        @include tablet {
+            @include visually-hidden;
         }
     }
 
     &__icons-row {
         display: flex;
-        gap: 35%;
+        gap: 25%;
         align-items: center;
         justify-content: space-between;
         font-weight: 500;
@@ -172,11 +252,13 @@
         cursor: pointer;
 
         &-icon {
-            width: fluid(25, 18);
+            width: fluid(20, 15);
+            max-width: none !important;
 
             @include laptop {
                 width: fluid(25, 20);
             }
+
         }
 
         &-text {

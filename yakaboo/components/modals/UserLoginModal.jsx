@@ -184,6 +184,8 @@ const UserLoginModal = ({ afterClose = null }) => {
         );
         setServerError(null);
         setIsLoginModalOpen(false);
+        window.location.reload();
+        
       }
     } catch (error) {
       console.error(error);
