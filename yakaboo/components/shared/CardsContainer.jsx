@@ -71,6 +71,7 @@ export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false,
 
     return (
         <div className="author-books">
+            { console.log(booksList.images) }
             <div className="author-books__header">
                 <h5 className="author-books__count">{`${ filterBooks?.length } ${wordDeclension(filterBooks?.length)}`}</h5>
                 <span className="author-books__select">

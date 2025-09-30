@@ -37,9 +37,9 @@
     }
 
     &__point {
-        @include fluid-text(16, 14);
+        @include fluid-text(14, 12);
         white-space: nowrap;
-        font-weight: 500;
+        font-weight: 600;
         color: var(--color-gray-10);
 
         &.is-active {

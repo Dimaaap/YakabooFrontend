@@ -28,6 +28,7 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
 
     return(
         <div className="book-container">
+            { console.log(book) }
             { (isProductImagesOpen && !isReadPart) && <ProductImagesModal productTitle={book.title} images={ images } />}
             { isReadPart && <ProductImagesModal productTitle={book.title} images={ images } /> }
 

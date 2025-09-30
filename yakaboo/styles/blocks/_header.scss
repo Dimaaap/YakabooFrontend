@@ -89,7 +89,7 @@
             width: fluid(20, 15);
             filter: invert(5%);
 
-            @include tablet {
+            @include mobile {
                 @include visually-hidden;
             }
         }

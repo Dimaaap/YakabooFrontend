@@ -26,9 +26,7 @@ export const Header = () => {
     <div className="header">
         <div className="header__section header__first-section">
             <button type="button" id="burger" onClick={() => setIsMenuModalOpen(true)}>
-                <Image src="/icons/line.svg" className="header__icon" width="20" height="1" alt=""/>
-                <Image src="/icons/line.svg" className="header__icon" width="20" height="1" alt=""/>
-                <Image src="/icons/line.svg" className="header__icon" width="20" height="1" alt=""/>
+                <Image src="/icons/burger.svg" alt="Burger" width="20" height="20" />
             </button>
             <Link href="/" className="header__logo">
                 <Image src="/icons/logo.svg" width="200" alt="Yakaboo" height="70" />

@@ -4,7 +4,7 @@
     width: 15%;
 
     &__list {
-        @include fluid-text(16, 14);
+        @include fluid-text(14, 12);
 
         display: flex;
         flex-direction: column;
@@ -12,11 +12,15 @@
         color: var(--color-gray-20);
         font-weight: 600;
         position: sticky;
-        top: 2%;
+        top: 15%;
         bottom: 2%;
 
         & .loading__text {
             background-color: red;
+        }
+
+        @include tablet {
+            @include visually-hidden;
         }
     }
 

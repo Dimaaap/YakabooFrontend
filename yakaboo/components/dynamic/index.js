@@ -29,6 +29,10 @@ export const ProductImagesModal = dynamic(
   () => import('../modals/ProductImagesModal')
 );
 
+export const MainSidebar = dynamic(
+  () => import("../main/MainSidebar")
+)
+
 export const MainContainer = dynamic(() => import('../user/MainContainer')  );
 
 export const ProductInfoModal = dynamic(

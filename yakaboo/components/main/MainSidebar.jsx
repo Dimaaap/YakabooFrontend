@@ -5,7 +5,7 @@ import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import Endpoints from '../../endpoints';
 
-export const MainSidebar = () => {
+const MainSidebar = () => {
   const [sidebars, setSidebars] = useState([]);
 
   const fetchSidebars = async () => {
@@ -69,3 +69,5 @@ export const MainSidebar = () => {
     </div>
   );
 };
+
+export default MainSidebar

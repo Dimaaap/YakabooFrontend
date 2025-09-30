@@ -1,11 +1,15 @@
+"use client"
+
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { useMenuModalStore } from '../../states'
+import { useDeliveryModalStore, useMenuModalStore, useUserLoginModalStore } from '../../states'
 import { handleBackdropClick } from '../../services'
 
 const MenuModal = () => {
 
+  const { setIsLoginModalOpen } = useUserLoginModalStore();
+  const { setIsDeliveryModalOpen } = useDeliveryModalStore();
   const { isMenuModalOpen, setIsMenuModalOpen } = useMenuModalStore();
 
   return (
@@ -23,7 +27,7 @@ const MenuModal = () => {
             <button className="menu__user-btn" type="button">
                 <Image src="/icons/user-white.svg" alt="" width="20" height="20" />
             </button>
-            <div className="menu__text-container">
+            <div className="menu__text-container" onClick={() => setIsLoginModalOpen(true)}>
                 <p className="menu__subtitle">
                     Вхід або реєстрація
                 </p>
@@ -56,7 +60,7 @@ const MenuModal = () => {
                     </button>
                     <div className="menu__point-text-block">
                         <p className="menu__subtitle">0-800-335-425</p>
-                        <p className="menu__small-text">Без вихідних, з 9 до 20</p>
+                        <p className="menu__small-text">Без вихідних, 09:00-20:00</p>
                     </div>
                 </li>
             </Link>
@@ -101,7 +105,7 @@ const MenuModal = () => {
             </li>
         </ul>
         <div className="menu__choose-city">
-            <div className="menu__city-info">
+            <div className="menu__city-info" onClick={ () => setIsDeliveryModalOpen(true) }>
                 <span className="menu__city">
                     Вказати місто 
                     <Image src="/icons/chevron-down.svg" alt="" width="16" height="16" />
@@ -121,12 +125,12 @@ const MenuModal = () => {
         </div>
 
         <ul className="menu__items simpler">
-            <Link href="#" className="menu-link">
+            <Link href="/promotions" className="menu-link">
                 <li className="menu__point-simple">
                     Акції
                 </li>
             </Link>
-            <Link href="#" className="menu-link">
+            <Link href="/gifts/sub-category/podarunkovi-sertufikaty" className="menu-link">
                 <li className="menu__point-simple">
                     Сертифікати
                 </li>
@@ -134,27 +138,29 @@ const MenuModal = () => {
         </ul>
 
         <ul className="menu__items simpler">
-            <Link href="#" className="menu-link">
+            <Link href="https://promosite.yakaboo.ua/corporate-library?_gl=1*4mu7nd*_gcl_aw*R0NMLjE3NTcwMTg4NTcuQ2owS0NRanc4ZVRGQmhDWEFSSXNBSWtpdU93RjZUX3JJY2NvdkdGQXFRQmVjOVZkTlJuZGk4cEZ0LW1lZ01sOGZOZlJINDRnMi1YU3RwTWFBc1hjRUFMd193Y0I.*_gcl_au*OTc3OTU5NDQ4LjE3NTI0ODQ5Mjc.*_ga*ODIwOTE3NjY1LjE3NTI0ODQ5Mjc.*_ga_NLRLPV7JQ4*czE3NTkyMTk3NTgkbzEzMCRnMSR0MTc1OTIxOTc1OSRqNTkkbDAkaDE2OTcxNTI0MTE." 
+            className="menu-link">
                 <li className="menu__point-simple">
                     Корпоративна бібліотека
                 </li>
             </Link>
-            <Link href="#" className="menu-link">
+            <Link href="/base/about-us" className="menu-link">
                 <li className="menu__point-simple">
                     Про Yakaboo
                 </li>
             </Link>
-            <Link href="#" className="menu-link">
+            <Link href="/base/delivery" className="menu-link">
                 <li className="menu__point-simple">
                     Доставка та оплата
                 </li>
             </Link>
-            <Link href="#" className="menu-link">
+            <Link href="/base/contacts" className="menu-link">
                 <li className="menu__point-simple">
                     Контакти
                 </li>
             </Link>
-            <Link href="#" className="menu-link">
+            <Link href="https://blog.yakaboo.ua/?_gl=1%2A1hqklbw%2A_gcl_aw%2AR0NMLjE3NTcwMTg4NTcuQ2owS0NRanc4ZVRGQmhDWEFSSXNBSWtpdU93RjZUX3JJY2NvdkdGQXFRQmVjOVZkTlJuZGk4cEZ0LW1lZ01sOGZOZlJINDRnMi1YU3RwTWFBc1hjRUFMd193Y0I.%2A_gcl_au%2AOTc3OTU5NDQ4LjE3NTI0ODQ5Mjc.%2A_ga%2AODIwOTE3NjY1LjE3NTI0ODQ5Mjc.%2A_ga_NLRLPV7JQ4%2AczE3NTkyMTk3NTgkbzEzMCRnMSR0MTc1OTIxOTgxMCRqOCRsMCRoMTY5NzE1MjQxMQ.." 
+            className="menu-link">
                 <li className="menu__point-simple">
                     Блог
                 </li>
