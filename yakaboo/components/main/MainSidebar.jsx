@@ -4,9 +4,27 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import Endpoints from '../../endpoints';
+import { useBookCategoriesModalStore } from '../../states';
+import { setActiveButtonStore } from '../../states/BookCategoryActiveButtonStore';
 
 const MainSidebar = () => {
+  const { setIsCategoriesModalOpen } = useBookCategoriesModalStore();
   const [sidebars, setSidebars] = useState([]);
+
+  const sidebarItemToActiveButtonIndexMap = {
+    "books": 1,
+    "ebooks": 2,
+    "audiobooks": 3
+  }
+
+  const openCategoriesSidebar = (sidebarSlug) => {
+    if(sidebarSlug in sidebarItemToActiveButtonIndexMap){
+      setActiveButtonStore(sidebarItemToActiveButtonIndexMap[sidebarSlug])
+    } else {
+      setActiveButtonStore(sidebarItemToActiveButtonIndexMap[0])
+    }
+    setIsCategoriesModalOpen(true)
+  }
 
   const fetchSidebars = async () => {
     try {
@@ -42,7 +60,8 @@ const MainSidebar = () => {
       <ul className="sidebar__list">
         {sidebars.length > 0 ? (
           sidebars.map((sidebar, i) => (
-            <Link
+            !sidebar.is_clickable ? (
+              <Link
               key={i}
               className="sidebar__item"
               href={sidebar.link || sidebar.slug}
@@ -54,6 +73,16 @@ const MainSidebar = () => {
                 {sidebar.title}
               </li>
             </Link>
+            ) : (
+              <div className="sidebar__item" key={i}>
+                <li className="sidebar__point-flex" onClick={ () => openCategoriesSidebar(sidebar.slug) }>
+                  { sidebar.icon && (
+                    <Image src={ sidebar.icon } alt="" width="18" height="22" />
+                  ) }
+                  { sidebar.title }
+                </li>
+              </div>
+            )
           )
         )
         ) : (
@@ -70,4 +99,4 @@ const MainSidebar = () => {
   );
 };
 
-export default MainSidebar
+export default MainSidebar  

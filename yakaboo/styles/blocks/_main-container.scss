@@ -7,7 +7,7 @@
 
     &__top {
         display: flex;
-        gap: 1;
+        gap: 1%;
         padding-inline: var(--container-padding-x);
         padding-bottom: 5%;
     }
@@ -19,7 +19,7 @@
         width: 85%;
         padding-bottom: 5%;
 
-        @include tablet {
+        @include laptop {
             width: 100%;
             flex: 1;
             margin-left: -15%;

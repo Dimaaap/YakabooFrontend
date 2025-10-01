@@ -87,7 +87,7 @@ export const extraFields = [
             href={`/literatiure-periods/view/${book.literature_period.slug}`}
             className="book-container__link publishing-link"
         >
-            {book.literature_period}
+            {book.literature_period.title}
         </Link>
         ),
     },

@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { firstParagraph } from "../../services/paragraphSlicer.service"
 
 export const BookAuthorBlock = ({ book, author }) => {
     return (
@@ -9,17 +10,13 @@ export const BookAuthorBlock = ({ book, author }) => {
                 </h2>
                         
                 <div className="book-container__author-desc">
-                    <div className="book-container__desc-container">
-                        <p className="book-contianer__description">
-                            {book.authors[0]?.description}
-                        </p>  
-                        {!book?.is_notebook && (
-                            <Link href={`/author/view/${book.authors[0]?.slug}`} className="book-container__link extended-link">
-                                Детальніше про автора
-                            </Link>    
-                        )}
-                          
-                    </div>
+                    <div className="book-container__desc-container" 
+                    dangerouslySetInnerHTML={{__html: firstParagraph(book.authors[0]?.description)}} />
+                    {!book?.is_notebook && (
+                        <Link href={`/author/view/${book.authors[0]?.slug}`} className="book-container__link extended-link">
+                            Детальніше про автора
+                        </Link>    
+                    )}
                 </div>
             </div>    
         ) : null

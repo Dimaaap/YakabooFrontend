@@ -10,11 +10,21 @@
         transform: translate(0);
         overflow-y: hidden;
         display: flex;
+        padding-block: 1%;
 
         &.hidden-modal {
             width: rem(350);
             display: block;
         }
+    }
+
+    &__notice-info {
+        background-color: var(--color-gray-50);
+        font-weight: 500;
+        border-radius: rem(10);
+        font-size: rem(14);
+        padding-inline: 3%;
+        padding-block: 1%;
     }
 
     &__header {

@@ -8,18 +8,20 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useBlockBodyScroll } from '../../hooks';
 import { ModalCloseBtn } from '../shared';
+import { activeButtonStore } from '../../states/BookCategoryActiveButtonStore';
+import { setActiveButtonStore } from '../../states/BookCategoryActiveButtonStore';
 
 const BookCategoriesWithSubcategoriesModal = () => {
 
     const { isCategoriesModalOpen, setIsCategoriesModalOpen } = useBookCategoriesModalStore();
     useBlockBodyScroll(isCategoriesModalOpen)
+    const { buttons, activeButton } = activeButtonStore();
     
     const [categories, setCategories] = useState([])
     const [hoveredCategory, setHoveredCategory] = useState(null);
     const [subcategories, setSubcategories] = useState([]);
     const [isHovering, setIsHovering] = useState(false);
 
-    const buttons = ["Всі", "Паперові", "Електронні", "Аудіо"]
 
     useEffect(() => {
         fetchData(Endpoints.ALL_BOOK_CATEGORIES, setCategories, "book_categories");
@@ -68,8 +70,8 @@ const BookCategoriesWithSubcategoriesModal = () => {
                         </div>
                         <div className="categories__row">
                             { buttons.map((btn, index) => (
-                                <button key={index} 
-                                className={`categories__category ${ index === 0 ? "active": "" }`} 
+                                <button key={index} onClick={() => setActiveButtonStore(index)} 
+                                className={`categories__category ${ index === activeButton ? "active": "" }`} 
                                 type="button">
                                     { btn }
                                 </button>
@@ -93,6 +95,11 @@ const BookCategoriesWithSubcategoriesModal = () => {
                             ))
                         ) : <></> }
                     </ul>   
+                    <div className="categories__notice-info">
+                        <p>
+                            Немає потрібної категорії або жанру? Спробуйте знайти його через пошук
+                        </p>
+                    </div>
                 </div>
                 <div className={`categories__modal right-modal ${!hoveredCategory ? "hidden-modal__right" : ""}`}
                 onMouseEnter={() => setIsHovering(true)}

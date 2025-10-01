@@ -251,6 +251,11 @@
         border-bottom: rem(1) solid var(--color-gray-50);
     }
 
+    &__desc-container {
+        font-size: rem(14);
+        font-weight: 500;
+    }
+
     &__cell {
         font-weight: 500;
 
@@ -261,7 +266,9 @@
 
     &__author-desc {
         display: flex;
+        flex-direction: column;
         align-items: start;
+        gap: rem(5);
         justify-content: space-between;
     }
 

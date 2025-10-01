@@ -2,22 +2,17 @@
 
 import React, { useEffect } from 'react'
 
-import { useChatModalStore, useCartModalStore,useSubcategoriesModalStore, useMenuModalStore, useDeliveryModalStore } from '../../states';
-import { CartModal, ChatOptions, MenuModal, ChatBtn, BooksContainer, MainHeader, AdditionalInfo, MainSidebar, DeliveryInfoModal} from '../dynamic';
+import {  useCartModalStore,useSubcategoriesModalStore, useMenuModalStore, useDeliveryModalStore } from '../../states';
+import { CartModal, MenuModal, BooksContainer, MainHeader, AdditionalInfo, MainSidebar, DeliveryInfoModal} from '../dynamic';
 import { Banner } from '../main';
 import { PageModals } from '../shared';
 
 export const HomeClient = () => {
-
-  const { isChatModalOpen, setIsChatModalOpen } = useChatModalStore();
   const { isCartModalOpen } = useCartModalStore();
   const { isMenuModalOpen } = useMenuModalStore();
   const { isDeliveryModalOpen } = useDeliveryModalStore();
   const { setIsHoveringCategory, setIsHoveringSubcategoryModal, setIsSubcategoriesModalOpen } = useSubcategoriesModalStore();
 
-  const toggleContactsOpen = () => {
-    setIsChatModalOpen(!isChatModalOpen);
-  }
 
   useEffect(() => {
     if (!setIsHoveringCategory && !setIsHoveringSubcategoryModal) {
@@ -38,10 +33,7 @@ export const HomeClient = () => {
           <AdditionalInfo />
         </div>  
       </div>
-
-      <ChatBtn onClick={toggleContactsOpen} />
       <PageModals />
-      {isChatModalOpen && <ChatOptions />}
       {isCartModalOpen && <CartModal />}
       { isDeliveryModalOpen && <DeliveryInfoModal /> }
     </div>

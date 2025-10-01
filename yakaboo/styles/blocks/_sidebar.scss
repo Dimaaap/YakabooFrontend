@@ -19,7 +19,7 @@
             background-color: red;
         }
 
-        @include tablet {
+        @include laptop {
             @include visually-hidden;
         }
     }
@@ -39,6 +39,7 @@
         display: flex;
         align-items: center;
         gap: rem(5);
+        cursor: pointer;
 
         img {
             filter: invert(50%);
