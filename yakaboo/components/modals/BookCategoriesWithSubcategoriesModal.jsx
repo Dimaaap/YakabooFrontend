@@ -79,7 +79,7 @@ const BookCategoriesWithSubcategoriesModal = () => {
                     <ul className="categories__list">
                         { categories.length > 0 ? (
                             categories.map((category, i) => (
-                                <Link href={ category.slug } key={ category.id }
+                                <Link href={` books/category/${category.slug}` } key={ category.id }
                                 className="categories__list-link"
                                 onMouseEnter={() => {
                                     setHoveredCategory(category);
@@ -106,7 +106,8 @@ const BookCategoriesWithSubcategoriesModal = () => {
                             </li>
                             { subcategories.map((subcategory) => (
                                 <li className="subcategories__point" key={ subcategory.id }>
-                                    <Link href={ subcategory.slug } className="subcategories__point-link">
+                                    <Link href={ `books/subcategory/${subcategory.slug}` } 
+                                    className="subcategories__point-link">
                                         { subcategory.title }
                                     </Link>
                                 </li>

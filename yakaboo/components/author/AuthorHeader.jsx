@@ -10,6 +10,7 @@ import Endpoints from '../../endpoints';
 
 export const AuthorHeader = ({ author }) => {
   const [authorImages, setAuthorImages] = useState([]);
+  const [activeImage, setActiveImage] = useState(0);
   const [authorFact, setAuthorFact] = useState(null);
   const [showAll, setShowAll] = useState(false);
 
@@ -30,29 +31,62 @@ export const AuthorHeader = ({ author }) => {
     }
   };
 
+  const showNextImage = () => {
+    if(activeImage < authorImages.length - 1){
+      setActiveImage(activeImage + 1)
+    } else {
+      setActiveImage(0)
+    }
+  }
+
+  const showPrevImage = () => {
+    if(activeImage > 0) {
+      setActiveImage(activeImage - 1)
+    } else {
+      setActiveImage(authorImages.length - 1)
+    }
+  }
+
   return (
     <div className="author-header">
       {authorImages.length > 0 && (
         <div className="author-header__left">
-          <div className="author-header__images">
-            <div className="author-header__main-image">
-              <Image
-                src={authorImages[0].image_path}
-                alt={`${author.slug}_1`}
-                width="200"
-                height="200"
-              />
-            </div>
-            <div className="author-header__small-images-row">
-              {authorImages.map((image, index) => (
+          <div className="book-container__images-carousel">
+            <div className="book-container__main-image">
+              { authorImages.length > 1 && (
+                <button className="book-container__slider-btn prev-btn slider-btn"
+                onClick={ showPrevImage }>
+                  <Image src="/icons/arrow-left.svg" alt="" width="20" height="20" />
+                </button>
+              ) }
+              <div className="author__big-image-wrapper">
                 <Image
-                  src={image.image_path}
-                  key={index}
-                  alt={`${author.slug}_${index + 1}`}
-                  width="40"
-                  height="40"
-                />
-              ))}
+                  src={authorImages[activeImage].image_path}
+                  alt={`${author.slug}_1`}
+                  width="250"
+                  height="350"
+                  className="author__big-image"
+                />  
+              </div>
+              { authorImages.length > 1 && (
+                <button className="book-container__slider-btn next-btn slider-btn author-btn"
+                onClick={ showNextImage }>
+                  <Image src="/icons/arrow-left.svg" alt="" width="20" height="20" />
+                </button>
+              ) }
+            </div>
+            <div className="author-header__small-images-row book-container__rest-images">
+              { authorImages.length > 0 && (
+                authorImages 
+                  .map((image, index) => ({ image, index }))
+                  .filter(({ index }) => index >= activeImage - 1 && index <= activeImage + 3)
+                  .map(({ image, index }) => (
+                    <Image key={ index } src={ image.image_path } 
+                    alt={`${author.slug}_${index + 1}`}
+                    width="50" height="50" className={ activeImage === index ? "cur-img": "" }
+                    onClick={ () => setActiveImage(index) } />
+                  ))
+              ) }
             </div>
           </div>
         </div>
@@ -86,12 +120,10 @@ export const AuthorHeader = ({ author }) => {
           </div>
         )}
         { showAll && author.description && (
-          <p className="author-header__long-desc">{ author.description }</p>
+          <div className="author-header__desc-block" dangerouslySetInnerHTML={{ __html: author.description }} />
         ) }
         { !showAll && (
-        <p className="author-header__short-desc">
-          { author.short_description }
-        </p>    
+          <div className="author-header__desc-block" dangerouslySetInnerHTML={{ __html: author.short_description }} />   
         ) }
         
         {author.description && (

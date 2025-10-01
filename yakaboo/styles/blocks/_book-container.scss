@@ -91,6 +91,10 @@
             }
         }
 
+        &.author-btn {
+            left: 77%;
+        }
+
         &:hover {
             background-color: var(--color-light);
         }

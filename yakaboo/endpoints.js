@@ -67,7 +67,7 @@ const Knowledge = {
 
 const Authors = {
   ALL_AUTHORS: `${DOMAIN}authors/all`,
-  AUTHOR_BOOKS: (authorId) => `${DOMAIN}author/${authorId}/books`,
+  AUTHOR_BOOKS: (authorId) => `${DOMAIN}authors/author/${authorId}/books`,
   AUTHOR: (authorSlug) => `${DOMAIN}authors/${authorSlug}`,
   AUTHOR_IMAGES: (authorId) => `${DOMAIN}authors/${authorId}/images`,
   AUTHOR_FACTS: (authorId) => `${DOMAIN}author_facts/author/${authorId}`,

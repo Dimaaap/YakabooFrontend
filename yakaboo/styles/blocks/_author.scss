@@ -10,4 +10,16 @@
       display: flex;
       gap: rem(20);  
     }
+
+    &__big-image-wrapper {
+      width: rem(250);
+      height: rem(350);
+      overflow: hidden;
+    }
+
+    &__big-image {
+      min-height: rem(350);
+      min-width: rem(250);
+      object-fit: cover;
+    }
 }

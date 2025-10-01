@@ -22,7 +22,10 @@ export const PromoContainer = ({ currentPromo }) => {
         <div className="promotion-page__header">
             <div className="promotion-page__text-container">
                 <h4 className="promotion-page__title">{ currentPromo?.title }</h4>
-                <span className="promotion-page__time-left">До кінця акції: { dateTime.getTimeLeft(currentPromo.end_date) }</span>
+                { dateTime.getTimeLeft(currentPromo.end_date) && (
+                    <span className="promotion-page__time-left">До кінця акції: { dateTime.getTimeLeft(currentPromo.end_date) }</span>    
+                ) }
+                
             </div>
             <div className="promotion-page__content">
                 <div className="promotion-page__image-content">

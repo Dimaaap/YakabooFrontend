@@ -1,5 +1,19 @@
 @use "../helpers" as *;
 
+
+.author {
+    &__title {
+        font-weight: 700;
+        margin-block: 2%;
+    }
+
+    &__block {
+        display: flex;
+        flex-direction: column;
+        gap: -10%;
+    }
+}
+
 .author-books {
     background-color: var(--color-light);
     padding: 2%;
