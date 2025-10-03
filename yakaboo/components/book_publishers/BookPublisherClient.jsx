@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react"
 import { fetchData } from "../../services";
-import { Breadcrumbs, Filters } from "../shared";
+import { Breadcrumbs, Filters, Stars } from "../shared";
 import { PublishingHeader } from ".";
 import { GamesContainer } from "../board_games";
 

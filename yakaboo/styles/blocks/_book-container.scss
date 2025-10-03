@@ -1,5 +1,13 @@
 @use "../helpers" as *;
 
+.book {
+    &__list {
+        list-style-type: disc;
+        margin-left: 5%;
+        margin-bottom: 2%;
+    }
+}
+
 .book-container {
     padding: 2%;
     background-color: var(--color-light);

@@ -110,6 +110,11 @@ const LiteraturePeriods = {
   LITERATURE_PERIOD_BOOKS: (periodId) => `${DOMAIN}literature_period/period/${periodId}/books`
 }
 
+const BookSeries = {
+  BOOK_SERIA: (seriaSlug) => `${DOMAIN}book_series/${seriaSlug}`,
+  ALL_SERIA_BOOKS: (seriaSlug) => `${DOMAIN}book_series/books/${seriaSlug}`
+}
+
 
 const Endpoints = {
   ...BoardGames,
@@ -126,6 +131,7 @@ const Endpoints = {
   ...Translators,
   ...Wishlists,
   ...LiteraturePeriods,
+  ...BookSeries,
   ACTIVE_TITLE: `${DOMAIN}page-title/active`
 };
 

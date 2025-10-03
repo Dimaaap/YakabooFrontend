@@ -78,6 +78,26 @@ export const extraFields = [
         show: (book, isGift) => !!(isGift ? book.gift_info?.language : book.book_info?.language),
         render: (book, isGift) => <p>{isGift ? book.gift_info.language : book.book_info.language}</p>,
     },
+    { 
+        key: "seria",
+        title: "Серія",
+        show: (book) => !!book?.seria,
+        render: (book) => (
+            <Link
+                href={`/book/seria/${book.seria.slug}`}
+                className="book-container__link publishing-link">
+                { book.seria.title }
+            </Link>
+        )
+    },
+    {
+      key: "edition",
+      title: "Тираж",
+      show: (book) => !!book?.book_info?.edition,
+      render: (book) => (
+        <p>{ book.book_info.edition }</p>
+      )
+    },
     {
         key: "literature_period",
         title: "Література за періодами",

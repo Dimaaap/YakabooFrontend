@@ -9,7 +9,7 @@ import { AddToWishlistBtn, ProductImagesModal } from "../dynamic";
 import { useProductImagesStore } from "../../states";
 import { BookCharacteristics } from "../shared/BookCharacteristics";
 import { HobbyDescriptionContainer } from "../shared/hobbies/HobbyDescriptionContainer";
-import { BookAuthorBlock, BookImagesCarousel, BookInfoBlock, BookPriceBlock, BookReviewsBlock } from ".";
+import { BookAuthorBlock, BookImagesCarousel, BookInfoBlock, BookPriceBlock, BookReviewsBlock, OtherSeriaBooks } from ".";
 
 
 export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
@@ -75,6 +75,9 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
                 <HobbyDescriptionContainer hobby={ !isGift ? book.book_info : book.gift_info } />    
                 
                 <BookCharacteristics book={book} isGift={ isGift } />
+                { book?.seria && (
+                    <OtherSeriaBooks book={ book } />
+                ) }
 
                 { !isGift && !book?.is_notebook && <BookAuthorBlock book={ book } author={ book.authors[0] } /> }
 

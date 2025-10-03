@@ -37,10 +37,11 @@ export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false,
     }, [searchParams.toString()])
 
     const filterBooks = useMemo(() => {
+        console.log(booksList)
         return booksList?.filter(book => {
             if(filters.categories.length && !filters.categories.includes(book.category_slug)) return false 
             if(filters.brands.length && !filters.brands.includes(book?.brand?.title)) return false 
-            if(filters.publishers.length && !filters.brands.includes(book?.publishing?.title)) return false 
+            if(filters.publishers.length && !filters.publishers.includes(book?.publishing?.title)) return false 
             if(filters.languages.length && !filters.languages.includes(book?.book_info?.languages)) return false 
             if(filters.bookTypes.length && !filters.bookTypes.includes(book?.book_info?.format)) return false 
             if(filters.themes.length && !filters.themes.includes(book?.theme)) return false
@@ -71,7 +72,8 @@ export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false,
 
     return (
         <div className="author-books">
-            { console.log(booksList.images) }
+            { console.log(filterBooks) }
+            { console.log(filters) }
             <div className="author-books__header">
                 <h5 className="author-books__count">{`${ filterBooks?.length } ${wordDeclension(filterBooks?.length)}`}</h5>
                 <span className="author-books__select">

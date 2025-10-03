@@ -1,0 +1,11 @@
+@use "../helpers" as *;
+
+.seria {
+    display: flex;
+    flex-direction: column;
+    gap: 0 !important;
+
+    &__title {
+        margin-top: 0%;
+    }
+}

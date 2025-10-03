@@ -5,4 +5,5 @@ export { LogoutClient } from "./LogoutClient";
 export { BonusesClient } from "./BonusesClient"
 export { BookTypesClient } from "./BookTypesClient";
 export { OrdersClient } from "./OrdersClient";
-export { BoardGamesClient } from "./BoardGamesClient"
+export { BoardGamesClient } from "./BoardGamesClient";
+export { BookSeriaClient } from "./BookSeriaClient";

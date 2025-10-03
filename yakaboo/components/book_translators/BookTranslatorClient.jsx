@@ -33,7 +33,7 @@ export const BookTranslatorClient = () => {
             <Breadcrumbs linksList={breadcrumbsObject} />
     
             { translator && (
-                <h2 className="translator__title author__title">
+                <h2 className="seria__title author__title">
                     { translator.first_name } { translator.last_name }
                 </h2>
                 )
