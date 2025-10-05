@@ -12,7 +12,6 @@ export const BookCharacteristics = ({ book, isGift=false }) => {
 
     return (
         <div className="book-container__block-container">
-            { console.log(book) }
             <h2 className="book-container__header">
                 Характеристики
             </h2>
