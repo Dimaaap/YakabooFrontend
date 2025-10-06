@@ -253,6 +253,7 @@
 
         &-icon {
             width: fluid(20, 15);
+            cursor: pointer;
             max-width: none !important;
 
             @include laptop {

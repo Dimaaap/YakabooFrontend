@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from 'react';
 import { fetchData } from "../../../../services";
 import { BookComponent } from "../../../../components";
+import Endpoints from "../../../../endpoints";
 
 export default function BookPage() {
     const [book, setBook] = useState(null);
@@ -16,7 +17,7 @@ export default function BookPage() {
     }
 
     useEffect(() => {
-        fetchData(`http://localhost:8006/books/${bookSlug}`, setBook)    
+        fetchData(Endpoints.BOOK_BY_SLUG(bookSlug), setBook)    
     }, [])
 
     return(

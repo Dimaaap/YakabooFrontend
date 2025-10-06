@@ -61,6 +61,9 @@ export const Header = () => {
                 </div>
             </div>
             <div className="header__icons-row">
+                { isAuthenticated && (
+                    <Image src="/icons/bell.svg" alt="" className="header__link-icon" width="20" height="20" />
+                ) }
                 <Link className="header__link" href="#" onClick={() => setIsCartModalOpen(true) }>
                     <Image src="/icons/cart.svg" alt="" className="header__link-icon" width="20" height="20" />
                 </Link>

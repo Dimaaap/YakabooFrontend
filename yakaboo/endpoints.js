@@ -75,9 +75,11 @@ const Authors = {
 }
 
 const Publishings = {
-  SEARCH_PUBLISHING: (activeLetter) => `${DOMAIN}publishing/first-letter/${activeLetter || 'А'}`
+  SEARCH_PUBLISHING: (activeLetter) => `${DOMAIN}publishing/first-letter/${activeLetter || 'А'}`,
+  ALL_PUBLISHING_BOOKS:(publishingId) => `${DOMAIN}publishing/${publishingId}/books`,
+  PUBLISHING_BY_SLUG: (publishingSlug) => `${DOMAIN}publishing/${publishingSlug}`
 }
-
+ 
 const Translators = {
   SEARCH_TRANSLATOR: (query) => `${DOMAIN}translators/search/?query=${query}`,
   TRANSLATOR: (translatorSlug) => `${DOMAIN}translators/${translatorSlug}`,
@@ -112,7 +114,13 @@ const LiteraturePeriods = {
 
 const BookSeries = {
   BOOK_SERIA: (seriaSlug) => `${DOMAIN}book_series/${seriaSlug}`,
-  ALL_SERIA_BOOKS: (seriaSlug) => `${DOMAIN}book_series/books/${seriaSlug}`
+  ALL_SERIA_BOOKS: (seriaSlug) => `${DOMAIN}book_series/books/${seriaSlug}`,
+  ALL_SERIES: `${DOMAIN}book_series/all`,
+  SEARCH_SERIA: (query) => `${DOMAIN}book_series/search/?query=${query}`
+}
+
+const Books = {
+  BOOK_BY_SLUG: (bookSlug) => `${DOMAIN}books/${bookSlug}`
 }
 
 
@@ -132,6 +140,7 @@ const Endpoints = {
   ...Wishlists,
   ...LiteraturePeriods,
   ...BookSeries,
+  ...Books,
   ACTIVE_TITLE: `${DOMAIN}page-title/active`
 };
 

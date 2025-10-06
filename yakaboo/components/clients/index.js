@@ -7,3 +7,4 @@ export { BookTypesClient } from "./BookTypesClient";
 export { OrdersClient } from "./OrdersClient";
 export { BoardGamesClient } from "./BoardGamesClient";
 export { BookSeriaClient } from "./BookSeriaClient";
+export { AllSeriesClient } from "./AllSeriesClient";

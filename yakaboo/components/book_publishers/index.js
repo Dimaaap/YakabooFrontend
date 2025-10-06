@@ -5,3 +5,4 @@ export { PublishingHeader } from './PublishingHeader';
 export { BookPublishersContainer } from './BookPublishersContainer';
 export { BookPublisherClient } from './BookPublisherClient';
 export { AllBookPublishersClient } from './AllBookPublishersClient';
+export { PublishingBooks } from "./PublishingBooks"
