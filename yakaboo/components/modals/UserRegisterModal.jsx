@@ -77,7 +77,9 @@ const UserRegisterModal = () => {
                         "phone_number": result.phone_number,
                         "first_name": result.first_name,
                         "last_name": result.last_name,
-                        "email": result.email
+                        "email": result.email,
+                        "bonuses": result.bonuses,
+                        "level": result.level
                     }
                 Object.entries(userData).forEach(([key, value]) => {
                     CookiesWorker.setWithTimer(key, value, ONE_MONTH)

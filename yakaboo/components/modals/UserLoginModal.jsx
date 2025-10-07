@@ -71,7 +71,6 @@ const UserLoginModal = ({ afterClose = null }) => {
     setServerError(null);
 
     const email = getValues('email');
-    console.log(email);
 
     if (!email) {
       setEmailError("Це поле обов'язкове");
@@ -102,7 +101,6 @@ const UserLoginModal = ({ afterClose = null }) => {
           setTimeout(() => setIsButtonDisabled(false), TWO_MINUTES);
         } else {
           const error = await response.json();
-          console.error(error);
           setServerError('Користувач з таким email не зареєстрований');
         }
       } catch (error) {
@@ -167,6 +165,16 @@ const UserLoginModal = ({ afterClose = null }) => {
             title: 'first_name',
             value: result.user.first_name,
             time: ONE_MONTH,
+          },
+          {
+            title: "bonuses",
+            value: result.user.bonuses,
+            time: ONE_MONTH
+          },
+          {
+            title: "level",
+            value: result.user.level,
+            time: ONE_MONTH
           },
           {
             title: 'last_name',

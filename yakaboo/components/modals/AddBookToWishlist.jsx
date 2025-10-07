@@ -6,13 +6,15 @@ import { setIsAddToWishlistModalOpen } from "../../states/AddToWishlistModalStor
 import Image from "next/image";
 import { useBlockBodyScroll } from "../../hooks";
 import Endpoints from "../../endpoints";
-import { FlashMessage } from "../shared";
+import { setFlashMessage, setServerError, setShowFlashMessage } from "../../states/ShowFlashMessageStore";
+import { setWishlists, useWishlistsStore } from "../../states/WishlistsState";
 
 export const AddBookToWishlistModal = ({ book }) => {
     const [userWishlists, setUserWishlists] = useState([])
     const [selectedWishlist, setSelectedWishlist] = useState(null);
-    const [serverError, setServerError] = useState(null);
-    const [showFlashMessage, setShowFlashMessage] = useState(false)
+    const [newWishlist, setNewWishlist] = useState(null);
+
+    const { wishlists } = useWishlistsStore();
 
     const userEmail = CookiesWorker.get("email");
 
@@ -22,20 +24,29 @@ export const AddBookToWishlistModal = ({ book }) => {
     
     useBlockBodyScroll(true)
 
-    const onCheckboxChange = (wishlist) => {
+    const onCheckboxChange = async (wishlist) => {
         if(wishlist){
-            setSelectedWishlist(wishlist.id);
+            await saveBookInWishlist(wishlist);
+            setIsAddToWishlistModalOpen(false)
         }
     }
 
-    const saveBookInWishlist = async () => {
+    const saveBookInWishlist = async (wishlist) => {
         try {
-            const response = await fetch(Endpoints.ADD_BOOK_TO_WISHLIST(selectedWishlist, book.id), {
+            const response = await fetch(Endpoints.ADD_BOOK_TO_WISHLIST(wishlist.id, book.id), {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 }
             })
+            
+
+            if(response?.status === 409){
+                setServerError(`Книга ${book.title} вже в цьому списку бажань`)
+                setIsAddToWishlistModalOpen(false)
+                setShowFlashMessage(true)
+                return
+            }
 
             if(!response.ok){
                 const err = await response.json();
@@ -46,25 +57,49 @@ export const AddBookToWishlistModal = ({ book }) => {
             const data = await response.json();
             setIsAddToWishlistModalOpen(false);
             setShowFlashMessage(true)
+            setFlashMessage(`Книгу ${book.title} додано у список бажань ${wishlist.title}`)
         } catch(err) {
             setServerError("Помилка додавання книги: ", err)
             return
         }
     }
 
-    const handleCloseFlash = () => {
-        setServerError(null);
-        setShowFlashMessage(false);
-    }
+    const handleAddNewWishlist = async() => {
+        const userEmail = CookiesWorker.get("email");
+        let data = {}
+        if(userEmail){
+            data = {
+                email: userEmail,
+                is_active: true,
+                title: newWishlist
+            }
+        }
 
-    useEffect(() => {
-        console.log(selectedWishlist)
-    }, [selectedWishlist])
+        try {
+            const response = await fetch(Endpoints.CREATE_WISHLIST, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+
+            if(response.ok){
+                const result = await response.json()
+                setWishlists(newWishlist)
+                setIsAddToWishlistModalOpen(false)
+                setShowFlashMessage(true)
+                setFlashMessage(`Список бажань ${newWishlist} успішно створений`)
+            } else {
+                setServerError("Помилка створення списку бажань")
+            }
+        } catch(err){
+            setServerError(err)
+        }
+    }
 
     return(
         <div className="menu add-to-wishlist" onClick={(e) => handleBackdropClick(e, setIsAddToWishlistModalOpen)}>
-            { serverError || showFlashMessage && <FlashMessage message={serverError || `Книгу ${book.title} було додано у список побажань`} 
-            onClose={ handleCloseFlash } /> }
             <div className="add-to-wishlist__content">
                 <button className="menu__close add-to-wishlist__close" 
                 type="button">
@@ -101,10 +136,12 @@ export const AddBookToWishlistModal = ({ book }) => {
                     </div>
                     <div className="add-to-wishlist__add-input">
                         <input type="text" className="add-to-wishlist__add" name="create wishlist" 
-                        placeholder="Новий список бажань" maxLength={120} minLength={2} />
+                        placeholder="Новий список бажань" maxLength={120} minLength={2} value={ newWishlist || "" }
+                        onChange={(e) => setNewWishlist(e.target.value)} />
                     </div>
                     <div className="add-to-wishlist__buttons-container">
-                        <button className="add-to-wishlist__btn save-btn" onClick={() => saveBookInWishlist()}>
+                        <button className="add-to-wishlist__btn save-btn"
+                        onClick={() => handleAddNewWishlist() }>
                             Зберегти
                         </button>
                         <button className="add-to-wishlist__btn cancel-btn" onClick={() => setIsAddToWishlistModalOpen(false)}>

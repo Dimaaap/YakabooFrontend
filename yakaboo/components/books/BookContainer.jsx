@@ -3,7 +3,7 @@
 import React, { useMemo } from "react";
 
 import Image from "next/image"
-import { Breadcrumbs, Rate } from "../shared"
+import { Breadcrumbs, FlashMessage, Rate } from "../shared"
 import Link from "next/link"
 import { AddToWishlistBtn, ProductImagesModal } from "../dynamic";
 import { useProductImagesStore } from "../../states";
@@ -12,11 +12,13 @@ import { HobbyDescriptionContainer } from "../shared/hobbies/HobbyDescriptionCon
 import { BookAuthorBlock, BookImagesCarousel, BookInfoBlock, BookPriceBlock, BookReviewsBlock, OtherSeriaBooks } from ".";
 import { useAddToWishlistModalStore } from "../../states/AddToWishlistModalStore";
 import { AddBookToWishlistModal } from "../modals/AddBookToWishlist";
+import { setServerError, setShowFlashMessage, useShowFlassMessageStore } from "../../states/ShowFlashMessageStore";
 
 
 export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
     const { isProductImagesOpen, isReadPart, setIsReadPart, setIsProductImagesOpen } = useProductImagesStore();
     const { isAddToWishlistModalOpen } = useAddToWishlistModalStore();
+    const { serverError, showFlashMessage, flashMessage } = useShowFlassMessageStore();
     
     const info = isGift ? book.gift_info : book.book_info;
 
@@ -27,6 +29,11 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
     const viewReadPartClick = () => {
         setIsReadPart(true)
         setIsProductImagesOpen(true)
+    }
+
+    const onCloseShowMessage = () => {
+        setServerError(null)
+        setShowFlashMessage(false)
     }
 
     return(
@@ -86,7 +93,8 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
 
                 <BookReviewsBlock />
             </div>
-
+            { (serverError || showFlashMessage) && (<FlashMessage message={ serverError || flashMessage }
+             onClose={onCloseShowMessage} />) }
             <BookPriceBlock book={ book } info={ info } isGift={ isGift }/>
         </div>    
     )

@@ -9,6 +9,7 @@ import { getUserFullName } from '../../utils';
 import { CookiesWorker, handleBackdropClick } from '../../services';
 import { useBlockBodyScroll } from '../../hooks';
 import { linksContainer } from '../../links_container';
+import { StatusBadge } from '../shared';
 
 const ProfileSettingsModal = () => {
 
@@ -44,6 +45,26 @@ const ProfileSettingsModal = () => {
                                 +{ CookiesWorker.get("phone_number") }
                             </span>
                         </div>
+                    </div>
+                    <div className="settings-header__tiles-block">
+                        <Link className="settings-header__tile bonuses-tile" href="my-account/bonuses">
+                            <div className="settings-header__tile-header">
+                                <Image src="/icons/bonus.svg" alt="Bonuses" width="18" height="18" 
+                                className="settings-header__image" />
+                                <h5 className="settings-header__tile-title">{ CookiesWorker.get("bonuses") || 0 }</h5>
+                            </div>
+                            <p className="settings-header__tile-info">
+                                Баланс бонусів
+                            </p>
+                        </Link>
+                        <Link className="settings-header__tile bonuses-tile" href="my-account/bonuses">
+                            <div className="settings-header__tile-header">
+                                <StatusBadge status={ CookiesWorker.get("level") } />
+                            </div>
+                            <p className="settings-header__tile-info">
+                                Ваш рівень
+                            </p>
+                        </Link>
                     </div>
                 </div>
 
@@ -99,11 +120,6 @@ const ProfileSettingsModal = () => {
                                 </span>
                             </Link>
                         </li>
-                    </ul>
-                </div>
-                
-                <div className="menu__body settings-body">
-                    <ul className="settings-menu">
                         <li className="settings-point">
                             <Link href={ linksContainer.account.settings } className="settings-link" onClick={ () => handleLinkClick() }>
                                 <span className="settings__icon-wrapper">
@@ -114,11 +130,6 @@ const ProfileSettingsModal = () => {
                                 </span>
                             </Link>
                         </li>
-                    </ul>
-                </div>
-
-                <div className="menu__body settings-body">
-                    <ul className="settings-menu">
                         <li className="settings-point">
                             <Link href={ linksContainer.account.logout } className="settings-link" onClick={ () => handleLinkClick() }>
                                 <span className="settings__icon-wrapper">
