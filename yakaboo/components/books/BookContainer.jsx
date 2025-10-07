@@ -10,10 +10,13 @@ import { useProductImagesStore } from "../../states";
 import { BookCharacteristics } from "../shared/BookCharacteristics";
 import { HobbyDescriptionContainer } from "../shared/hobbies/HobbyDescriptionContainer";
 import { BookAuthorBlock, BookImagesCarousel, BookInfoBlock, BookPriceBlock, BookReviewsBlock, OtherSeriaBooks } from ".";
+import { useAddToWishlistModalStore } from "../../states/AddToWishlistModalStore";
+import { AddBookToWishlistModal } from "../modals/AddBookToWishlist";
 
 
 export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
     const { isProductImagesOpen, isReadPart, setIsReadPart, setIsProductImagesOpen } = useProductImagesStore();
+    const { isAddToWishlistModalOpen } = useAddToWishlistModalStore();
     
     const info = isGift ? book.gift_info : book.book_info;
 
@@ -30,6 +33,7 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
         <div className="book-container">
             { (isProductImagesOpen && !isReadPart) && <ProductImagesModal productTitle={book.title} images={ images } />}
             { isReadPart && <ProductImagesModal productTitle={book.title} images={ images } /> }
+            { isAddToWishlistModalOpen && <AddBookToWishlistModal book={ book } /> }
 
             <div className="book-container__section left-section">
                 <div className="book-container__btns-section">

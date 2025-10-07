@@ -9,6 +9,7 @@ import { fetchData, CookiesWorker } from "../../services";
 import { UserLoginModal, ProfileSettingsModal, CreateWishListModal } from "../dynamic";
 import { FlashMessage, WishlistSidebar, WishlistsMainContainer } from "../shared";
 import Endpoints from "../../endpoints";
+import { setWishlists, useWishlistsStore } from "../../states/WishlistsState";
 
 
 export const WishlistClient = () => {
@@ -18,7 +19,7 @@ export const WishlistClient = () => {
   const { isProfileSettingsModalOpen } = useProfileSettingsModalStore();
 
   const [serverError, setServerError] = useState(null);
-  const [wishlists, setWishlists] = useState([])
+  const { wishlists } = useWishlistsStore();
 
 
   const addWishlist = newWishlist => {
@@ -53,8 +54,7 @@ export const WishlistClient = () => {
     if(userEmail){
         fetchData(
             Endpoints.USER_WISHLISTS(userEmail),
-            setWishlists,
-            `${userEmail}_wishlists`
+            setWishlists
         )
     }
   }, [])

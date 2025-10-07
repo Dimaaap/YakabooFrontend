@@ -1,0 +1,116 @@
+@use "../helpers" as *;
+
+.add-to-wishlist {
+    position: absolute;
+
+    &__content {
+        @include abs-center;
+
+        background-color: var(--color-light);
+        width: 33%;
+        padding: 2%;
+        border-radius: rem(5);
+        display: flex;  
+        flex-direction: column;
+        position: relative;
+    }
+
+    &__close {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        gap: rem(15);
+    }
+
+    &__title {
+        @include fluid-text(16, 14);
+        font-weight: 600;
+    }
+
+    &__checkboxes-form {
+        display: flex;
+        flex-direction: column;
+        gap: rem(5);
+    }
+
+    &__form-label {
+        gap: 2% !important;
+    }
+
+    &__add-input {
+        width: 100%;
+    }
+
+    &__add {
+        width: 100%;
+        background-color: var(--color-gray-40);
+        border: rem(1) solid var(--color-gray-50);
+        font-size: rem(14);
+        font-weight: 500;
+        padding: 2%;
+        outline: var(--color-pink-10);
+        border-radius: rem(5);
+        height: rem(45);
+    }
+
+    &__buttons-container {
+        display: flex;
+        align-items: center;
+        gap: 5%;
+        width: 100%;
+    }
+
+    &__btn {
+        font-size: rem(14);
+        height: rem(40);
+        width: 50%;
+        border-radius: rem(5);
+        font-weight: 500;
+        color: var(--color-light);
+        border: none;
+        transition: all 0.3s ease;
+
+        &:hover {
+            opacity: 0.8;
+        }
+
+        &.save-btn {
+            background-color: var(--color-blue-10);
+        }
+
+        &.cancel-btn {
+            background-color: var(--color-red-10);
+        }
+    }
+
+    &__skeletons {
+        display: flex;
+        flex-direction: column;
+        gap: rem(10);
+        margin-top: rem(10);
+    }
+
+
+    &__skeleton {
+        height: rem(24);
+        width: rem(180);
+        border-radius: rem(6);
+        background: linear-gradient(90deg, #e0e0e0 25%, #f2f2f2 37%, #e0e0e0 63%);
+        background-size: 400% 100%;
+        animation: skeleton-loading 1.4s ease infinite;
+    }
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 100% 0;
+    }
+    100% {
+        background-position: -100% 0;
+    }
+}

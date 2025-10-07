@@ -1,19 +1,24 @@
 import { useAuth } from "../../hooks";
 import { useUserLoginModalStore } from "../../states";
+import { setIsAddToWishlistModalOpen } from "../../states/AddToWishlistModalStore";
 
 const AddToWishlistBtn = () => {
 
-    const { isAuthenticated } = useAuth()
+    const isAuthenticated = useAuth()
     const { setIsLoginModalOpen } = useUserLoginModalStore();
 
+
     const handleAddToFavBtn = () => {
+        console.log(isAuthenticated)
         if(!isAuthenticated){
             setIsLoginModalOpen(true)
+        } else {
+            setIsAddToWishlistModalOpen(true)
         }
     }
     
     return(
-        <button className="book-container__header-btn add-to-fav" onClick={() => handleAddToFavBtn}>
+        <button className="book-container__header-btn add-to-fav" onClick={() => handleAddToFavBtn()}>
             <svg
                 width="20"
                 height="16"

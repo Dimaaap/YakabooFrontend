@@ -105,6 +105,7 @@ const Wishlists = {
   CREATE_WISHLIST: `${DOMAIN}wishlist/create`,
   DELETE_WISHLIST: (id) => `${DOMAIN}wishlist/${id}`,
   USER_WISHLISTS: (userEmail) => `${DOMAIN}wishlist/${userEmail}`,
+  ADD_BOOK_TO_WISHLIST: (wishlistId, bookId) => `${DOMAIN}wishlist/${wishlistId}/books/${bookId}`
 }
 
 const LiteraturePeriods = {
