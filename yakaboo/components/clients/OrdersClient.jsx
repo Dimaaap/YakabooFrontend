@@ -3,9 +3,10 @@
 import Image from "next/image";
 
 import { OrdersSidebar } from "../shared";
-import { UserLoginModal, ProfileSettingsModal, BookCategoriesWithSubcategoriesModal, MenuModal } from "../dynamic";
+import { UserLoginModal, ProfileSettingsModal, BookCategoriesWithSubcategoriesModal, MenuModal, OrderContainer } from "../dynamic";
 import { useProtectedPage } from "../../hooks";
 import { useProfileSettingsModalStore, useBookCategoriesModalStore, useMenuModalStore } from "../../states";
+import BonusesLeftSection from "../bonuses/BonusesLeftSection";
 
 export const OrdersClient = () => {
 
@@ -30,15 +31,10 @@ export const OrdersClient = () => {
       { isProfileSettingsModalOpen && <ProfileSettingsModal /> }
       { isCategoriesModalOpen && <BookCategoriesWithSubcategoriesModal /> }
       { isMenuModalOpen && <MenuModal /> }
-      <h4 className="orders__page-title page__page-title">
-        Замовлення
-      </h4>
       <div className="orders__container page__container">
-        <div className="orders__section left-section">
-            <OrdersSidebar listItems={ orderStatuses } />
-        </div>
+        <BonusesLeftSection />
         <div className="orders__section right-section">
-            Замовлень ще немає
+            <OrderContainer />
         </div>
       </div>
     </div>

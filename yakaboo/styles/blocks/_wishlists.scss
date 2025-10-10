@@ -26,6 +26,33 @@
         &.right-section {
             text-align: center;
             width: 70%;
+            background-color: var(--color-light);
+            border-radius: rem(10);
+            display: flex;  
+            flex-direction: column;
+            gap: rem(5);
+            padding: 1%;
+        }
+    }
+
+    &__top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2%;
+    }
+
+    &__create-btn {
+        background-color: var(--color-blue-10);
+        color: var(--color-light);
+        font-weight: 500;
+        font-size: rem(14);
+        padding: 1%;
+        border-radius: rem(10);
+        transition: all 0.3s ease;
+
+        &:hover {
+            opacity: 0.8;
         }
     }
 
@@ -45,13 +72,13 @@
         display: flex;
         flex-direction: column;
         border-radius: rem(10);
+        border: rem(1) solid var(--color-gray-50);
 
         &__header {
             padding: 1% 2%;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: rem(1) solid var(--color-gray-50);
         }
 
         &__title {
@@ -90,6 +117,7 @@
 
         &__body {
             padding: 1.5% 2%;
+            border-top: rem(1) solid var(--color-gray-50);
         }
     }
 
@@ -116,6 +144,7 @@
         padding: 4%;
         border-radius: rem(7);
         color: var(--color-gray-20);
+        border: rem(1) solid var(--color-gray-50);
     }
 
     &__create-wishlist-ul {
@@ -137,6 +166,10 @@
     &__title {
         @include fluid-text(18, 16);
         font-weight: 500;
+    }
+
+    &__title-section {
+        text-align: left;
     }
 
     &__text-container {

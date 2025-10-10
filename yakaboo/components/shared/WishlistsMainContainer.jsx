@@ -3,8 +3,11 @@
 import React, { useState } from 'react'
 import { useUpdateWishlistModalStore, useWishListModalStore } from "../../states";
 import Image from 'next/image';
-import { FlashMessageWithAgreement } from '.';
+import { FlashMessageWithAgreement, ProductCard, Stars, TopBadge } from '.';
 import { UpdateWishlistModal } from '../modals';
+import Endpoints from '../../endpoints';
+import { fetchData } from '../../services';
+import { badgeColors } from '../../site.config';
 
 export const WishlistsMainContainer = ({ wishlists, deleteWishlist, updateWishlist }) => {
 
@@ -13,6 +16,7 @@ export const WishlistsMainContainer = ({ wishlists, deleteWishlist, updateWishli
     const [showFlashMessage, setShowFlashMessage] = useState(false)
     const [wishlistToDelete, setWishlistToDelete] = useState(null)
     const [showBooks, setShowBooks] = useState([])
+    const [wishlistBooks, setWishlistBooks] = useState([])
 
     const { isUpdateWishlistModalOpen, setIsUpdateWishlistModalOpen } = useUpdateWishlistModalStore();
 
@@ -36,8 +40,10 @@ export const WishlistsMainContainer = ({ wishlists, deleteWishlist, updateWishli
     }
 
 
-    const setBooksOpen = wishlistId => {
+    const setBooksOpen = async wishlistId => {
+        fetchData(Endpoints.ALL_WISHLIST_BOOKS(wishlistId), setWishlistBooks, `wishlist_${wishlistId}_books`)
         setShowBooks((prevShowBooks) => [...prevShowBooks, wishlistId])
+        return wishlistBooks
     }
 
     const setBooksClose = wishlistId => {
@@ -47,6 +53,13 @@ export const WishlistsMainContainer = ({ wishlists, deleteWishlist, updateWishli
  
   return (
     <div className="wishlists__section right-section">
+        <div className="wishlists__top-row">
+            <h4 className="wishlists__title-section">Бажане</h4>
+            <button className="wishlists__create-btn" onClick={() => setIsWishlistModalOpen(true)}>
+                Створити список
+            </button>   
+        </div>
+        
         { wishlists.length === 0 ? (
             <div className="wishlists__text-container">
                 <p className="wishlists__title">
@@ -88,11 +101,25 @@ export const WishlistsMainContainer = ({ wishlists, deleteWishlist, updateWishli
                                     </button> }
                             </div>
                         </div>
-                        { showBooks.includes(wishlist.id) && (
+                        { showBooks.includes(wishlist.id) && wishlistBooks.length > 0 && (
                             <div className="wishlist__body">
-                                <span className="wishlist__no-text">
-                                    У цьому списку немає товарів
-                                </span>
+                                { wishlistBooks.map((book, index) => (
+                                    <ProductCard key={ index } productLink={`/book/${book.slug}`}
+                                    extraClass="wishlist__body-book"
+                                    title={ book.title } brand={book.publishing.title}
+                                    imageSrc={ book.images[0].image_url }
+                                    badges={
+                                        [
+                                            book.stars > 0 ? <Stars count={ book.stars } isSmaller={ true } /> : null,
+                                            book.is_top && <TopBadge />,
+                                            //book.is_in_chart && <Badge text="Добірка" backgroundColor={ badgeColors.green } />
+                                        ]
+                                    }
+                                    productCode={ book.book_info.code }
+                                    oldPrice={ book.price }
+                                    inStock={ book.book_info.in_stock }
+                                    bonusesCount={ book.book_info.bonuses } />
+                                )) }
                             </div>
                         ) }
                     </div>

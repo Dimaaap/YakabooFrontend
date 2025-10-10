@@ -56,3 +56,10 @@ export const Advertisment = dynamic(
 );
 
 export const AddToWishlistBtn = dynamic(() => import('../shared/AddToWishlistBtn'))
+
+export const BonusesHeader = dynamic(() => import('../bonuses/BonusesHeader'));
+export const BonusLeftSection = dynamic(() => import('../bonuses/BonusesLeftSection'));
+export const BousesUserStatus = dynamic(() => import('../bonuses/BonusesUserStatus'));
+export const BonusesStatusFeatures = dynamic(() => import('../bonuses/BonusesStatusFeatures'));
+
+export const OrderContainer = dynamic(() => import('../orders/OrderContainer'));

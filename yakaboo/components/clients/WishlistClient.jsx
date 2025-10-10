@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useProtectedPage } from "../../hooks";
 import { useProfileSettingsModalStore, useWishListModalStore } from "../../states";
 import { fetchData, CookiesWorker } from "../../services";
-import { UserLoginModal, ProfileSettingsModal, CreateWishListModal } from "../dynamic";
+import { UserLoginModal, ProfileSettingsModal, CreateWishListModal, BonusLeftSection } from "../dynamic";
 import { FlashMessage, WishlistSidebar, WishlistsMainContainer } from "../shared";
 import Endpoints from "../../endpoints";
 import { setWishlists, useWishlistsStore } from "../../states/WishlistsState";
@@ -77,11 +77,7 @@ export const WishlistClient = () => {
         <h1 className="wishlists__title">Бажане</h1>
 
         <div className="wishlists__container">
-            { wishlists.length > 0 && (
-                <div className="wishlists__section left-section">
-                    <WishlistSidebar wishlists={ wishlists } />
-                </div>
-            ) }
+            <BonusLeftSection />
 
             <WishlistsMainContainer 
             wishlists={ wishlists }

@@ -1,0 +1,48 @@
+@use "../helpers" as *;
+
+.bonus-history-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--color-light);
+    padding: 1%;
+    border: rem(1) solid var(--color-gray-50);
+    border-radius: rem(5);
+    font-size: rem(12);
+    font-weight: 500;
+    align-items: center;
+    padding-inline: 3%;
+
+    &__cell {
+        display: flex;
+        flex-direction: column;
+        gap: rem(10);
+
+        &-title {
+            color: var(--color-gray-30);
+            font-weight: 500;
+        }
+
+        &-value {
+            color: var(--color-gray-30);
+        }
+
+        &:nth-child(2){
+            .bonus-history-row__cell-value {
+                color: var(--color-dark);
+            }
+        }
+
+        &:nth-child(3){
+            .bonus-history-row__cell-value {
+                color: var(--color-green-10);
+            }
+        }
+
+        &:nth-child(4){
+            .bonus-history-row__cell-value {
+                color: var(--color-red-10);
+            }
+        }
+    }
+}

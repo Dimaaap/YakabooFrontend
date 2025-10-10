@@ -9,7 +9,7 @@ import { getUserFullName } from '../../utils';
 import { CookiesWorker, handleBackdropClick } from '../../services';
 import { useBlockBodyScroll } from '../../hooks';
 import { linksContainer } from '../../links_container';
-import { StatusBadge } from '../shared';
+import { StatusBadge } from '../shared/StatusBadge';
 
 const ProfileSettingsModal = () => {
 

@@ -160,8 +160,13 @@
         display: flex;
         align-items: center;
         padding-inline: 5%;
-        padding-block: 2%;
+        padding-block: 4%;
+        border-radius: rem(5);
         transition: all 0.2s ease-in-out;
+
+        &.active-point {
+            background-color: var(--color-gray-40);
+        }
 
         &:hover {
             background-color: var(--color-gray-40);
@@ -199,6 +204,49 @@
         padding-block: 6%;
         font-size: rem(14);
         width: 100%;
+
+        &-second {
+            font-size: rem(14);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        &__text {
+            display: flex;
+            flex-direction: column;
+            gap: rem(2);
+        }
+
+        &__title {
+            font-size: rem(14);
+            font-weight: 500;
+            color: var(--color-gray-30)
+        }
+
+        &__link {
+            font-size: rem(20);
+            font-weight: 500;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
+        &__btn-container {
+            background-color: var(--color-blue-10);
+            color: var(--color-light);
+            padding: 4%;
+            font-weight: 500;
+            font-size: rem(16);
+            border-radius: rem(10);
+            padding-inline: 7%;
+            transform: all 0.3s ease;
+
+            &:hover {
+                opacity: 0.8;;
+            }
+        }
     }
 
     &__additional-info {
