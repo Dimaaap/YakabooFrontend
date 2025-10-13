@@ -63,3 +63,6 @@ export const BousesUserStatus = dynamic(() => import('../bonuses/BonusesUserStat
 export const BonusesStatusFeatures = dynamic(() => import('../bonuses/BonusesStatusFeatures'));
 
 export const OrderContainer = dynamic(() => import('../orders/OrderContainer'));
+
+export const MobileApp = dynamic(() => import("../shared/MobileApp"));
+export const DownloadFile = dynamic(() => import("../shared/DownloadFile"))

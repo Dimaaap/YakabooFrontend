@@ -200,7 +200,7 @@ export const extraFields = [
     {
         key: "cover_type",
         title: "Тип обкладинки",
-        show: (book, isGift) => !!(isGift ? book.gift_info?.cover_type : book.book_info?.cover_type),
+        show: (book, isGift) => !!(isGift ? book.gift_info?.cover_type : book.book_info?.cover_type) && book?.book_info?.format === "Паперова",
         render: (book, isGift) => <p>{isGift ? book.gift_info.cover_type : book.book_info.cover_type}</p>,
     },
     {

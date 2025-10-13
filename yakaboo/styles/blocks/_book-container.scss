@@ -155,6 +155,10 @@
         font-weight: 500;
         transition: all 0.3s ease;
 
+        &.author-link {
+            font-size: rem(14);
+        }
+
         &.extended-link {
             color: var(--color-gray-30);
         }
@@ -243,6 +247,10 @@
     &__text {
         font-size: rem(14);
         font-weight: 500;
+
+        &.green-text {
+            color: var(--color-green-10);
+        }
     }
 
     &__table-info {

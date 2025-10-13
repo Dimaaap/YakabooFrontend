@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { Delivery, DeliveryInfoModal } from "../dynamic"
+import { Delivery, DeliveryInfoModal, DownloadFile, MobileApp } from "../dynamic"
 import { DeliveryTerms } from "../shared"
 import { useDeliveryCityStore, useDeliveryModalStore } from "../../states";
 
@@ -25,11 +25,15 @@ export const BookPriceBlock = ({ book, info, isGift }) => {
                 </div>
 
                 <div className="book-container__in-stock-row">
-                    <span className={`book-container__book-status ${info?.in_stock ? "green-text": "gray-text"}`}>
-                        {info?.in_stock ? "В наявності" : "Немає в наявності"}
-                    </span>
-                    {!isGift && <div className="book-container__dot-separator" />}
-                    {!isGift && <span className="book-container__text">{ info?.format } книга</span>}
+                    { info.format === "Паперова" ? (
+                        <span className={`book-container__book-status ${info?.in_stock ? "green-text": "gray-text"}`}>
+                            {info?.in_stock ? "В наявності" : "Немає в наявності"}
+                        </span>
+                    ) : <></> }
+                    
+                    {!isGift && info.format === "Паперова" && <div className="book-container__dot-separator" />}
+                    { info.format === "Електронна" && <Image src="/icons/mobile.svg" alt="" width="15" height="15" /> }
+                    {!isGift && <span className={`book-container__text`}>{ info?.format } книга</span>}
                 </div>
             </div>
 
@@ -47,7 +51,8 @@ export const BookPriceBlock = ({ book, info, isGift }) => {
                 {info.in_stock ? "Купити" : "Сповістити про наявність"}
             </button>
 
-            <Delivery />
+            { info?.format !== "Електронна" ? (<Delivery />) : <MobileApp /> }
+            { info?.format === "Електронна" && <DownloadFile />}
             
             { isDeliveryModalOpen && <DeliveryInfoModal /> }
 

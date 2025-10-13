@@ -8,6 +8,7 @@ import { useBlockBodyScroll } from "../../hooks";
 import Endpoints from "../../endpoints";
 import { setFlashMessage, setServerError, setShowFlashMessage } from "../../states/ShowFlashMessageStore";
 import { setWishlists, useWishlists } from "../../states/WishlistsStore";
+import { setActiveBtn } from "../../states/ActiveBtnStore";
 
 
 export const AddBookToWishlistModal = ({ book }) => {
@@ -57,6 +58,7 @@ export const AddBookToWishlistModal = ({ book }) => {
             setIsAddToWishlistModalOpen(false);
             setShowFlashMessage(true)
             setFlashMessage(`Книгу ${book.title} додано у список бажань ${wishlist.title}`)
+            setActiveBtn(true)
         } catch(err) {
             setServerError("Помилка додавання книги: ", err)
             return

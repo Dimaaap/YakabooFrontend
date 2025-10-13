@@ -1,0 +1,116 @@
+@use "../helpers" as *;
+
+.other-options {
+    display: flex;
+    flex-direction: column;
+    gap: rem(10);
+
+    &__options-container {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: rem(5);
+    }
+
+    &__option {
+        width: 100%;
+        border: rem(1) solid var(--color-gray-50);
+        border-radius: rem(10);
+        padding-block: 2%;
+        display: flex;
+        flex-direction: column;
+        gap: rem(2);
+        font-size: rem(14);
+        font-weight: 500;
+    }
+
+    &__view-all {
+        font-size: rem(14);
+        display: flex;
+        align-items: center;
+        gap: rem(5);
+        font-weight: 500;
+        transition: all 0.3s ease;
+        cursor: pointer;
+
+        &:hover {
+            color: var(--color-blue-10);
+        }
+
+        & img {
+            transform: rotate(270deg);
+        }
+    }
+}
+
+.option {
+    &__header {
+        border-bottom: rem(1) solid var(--color-gray-50);
+        padding-inline: 2%;
+        display: flex;
+        gap: rem(7);
+        align-items: center;
+        padding-bottom: 2%;
+    }
+
+    &__image-container {
+        width: 12%;
+
+        & img {
+            width: 100%;
+            height: rem(60);
+            object-fit: contain;
+            border-radius: rem(10);
+        }
+    }
+
+    &__description-container {
+        display: flex;
+        flex-direction: column;
+        gap: rem(2);
+    }
+
+    &__book-title {
+        font-weight: 600;
+    }
+
+    &__book-price {
+        font-size: rem(16);
+        font-weight: 600;
+        color: var(--color-blue-10);
+    }
+
+    &__book-status {
+        display: flex;
+        align-items: center;
+        gap: rem(5);
+        color: var(--color-green-10);
+    }
+
+    &__characteristics {
+        padding-inline: 2%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1%;
+        padding-block: 1%;
+        row-gap: rem(5);
+    }
+
+    &__cell {
+        display: flex;
+        flex-direction: column;
+        gap: rem(1);
+
+        &-title {
+            font-weight: 600;
+            color: var(--color-gray-30);
+        }
+
+        &-value {
+            &.link {
+                color: var(--color-blue-20);
+
+            }
+        }
+    }
+}

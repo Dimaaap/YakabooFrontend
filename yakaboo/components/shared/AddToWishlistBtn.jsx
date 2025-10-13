@@ -1,22 +1,30 @@
+"use client";
+
 import { useAuth } from "../../hooks";
-import { useUserLoginModalStore } from "../../states";
+import { useActiveBtnStore, useUserLoginModalStore } from "../../states";
 import { setIsAddToWishlistModalOpen } from "../../states/AddToWishlistModalStore";
 import { setFlashMessage, setShowFlashMessage } from "../../states/ShowFlashMessageStore";
+import { setActiveBtn } from "../../states/ActiveBtnStore";
+import { useEffect } from "react";
 
 const AddToWishlistBtn = ({ book, setIsSimple }) => {
 
-    const isAuthenticated = useAuth()
+    const isAuthenticated = useAuth();
+    const { activeBtn } = useActiveBtnStore();
     const { setIsLoginModalOpen } = useUserLoginModalStore();
 
 
     const handleAddToFavBtn = () => {
-        console.log(isAuthenticated)
         if(!isAuthenticated){
             setIsLoginModalOpen(true)
         } else {
             setIsAddToWishlistModalOpen(true)
         }
     }
+
+    useEffect(() => {
+        setActiveBtn(book?.wishlists?.length > 0)
+    }, [])
 
     const bookIsInWishlist = () => {
         setShowFlashMessage(true)
@@ -25,9 +33,9 @@ const AddToWishlistBtn = ({ book, setIsSimple }) => {
     }
     
     return(
-            <button className={`book-container__header-btn add-to-fav ${book?.wishlists?.length > 0 ? "added-btn" : ""}`} 
-            onClick={!book?.wishlists?.length > 0 ? () => handleAddToFavBtn() : () => bookIsInWishlist()}>
-                { book?.wishlists?.length === 0 ? (
+            <button className={`book-container__header-btn add-to-fav ${activeBtn ? "added-btn" : ""}`} 
+            onClick={!activeBtn ? () => handleAddToFavBtn() : () => bookIsInWishlist()}>
+                { !activeBtn ? (
                     <svg
                         width="20"
                         height="16"

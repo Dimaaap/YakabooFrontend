@@ -1,0 +1,59 @@
+@use "../helpers" as *;
+
+.library {
+    &__container {
+        width: 100%;
+        display: flex;
+        gap: 2%;
+    }
+
+    &__section {
+        background-color: var(--color-light);
+        border-radius: rem(10);
+        align-self: self-start;
+        padding: 1%;
+        display: flex;
+    }
+
+    &__content-block {
+        display: flex;
+        flex-direction: column;
+        gap: rem(7);
+    }
+
+    &__title {
+        font-weight: 500;
+        font-size: rem(24);
+        color: var(--color-black);
+    }
+
+    &__types {
+        display: flex;
+        align-items: center;
+        gap: rem(10);
+        font-weight: 500;
+        font-size: rem(14);
+    }
+
+    &__point {
+        border-bottom: rem(2) solid transparent;
+        cursor: pointer;
+        padding-bottom: 2%;
+        transition: all 0.3s ease;
+
+        &:hover {
+            border-color: var(--color-pink-10);
+            color: var(--color-black);
+        }
+
+        &.active {
+            border-color: var(--color-pink-10);
+            color: var(--color-black);
+        }
+    }
+
+    &__block {
+        padding-top: 3%;
+        font-weight: 500;
+    }
+}

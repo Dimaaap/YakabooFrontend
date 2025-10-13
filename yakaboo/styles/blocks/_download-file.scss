@@ -1,0 +1,7 @@
+@use "../helpers" as *;
+
+.download-file {
+    display: flex;
+    flex-direction: column;
+    gap: rem(10);
+}

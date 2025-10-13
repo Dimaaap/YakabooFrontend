@@ -3,16 +3,19 @@
 import React, { useMemo, useState } from "react";
 
 import Image from "next/image"
-import { Breadcrumbs, FlashMessage, Rate } from "../shared"
+import { Breadcrumbs, FlashMessage, FlashMessageWithAgreement, Rate } from "../shared"
 import Link from "next/link"
 import { AddToWishlistBtn, ProductImagesModal } from "../dynamic";
 import { useProductImagesStore } from "../../states";
 import { BookCharacteristics } from "../shared/BookCharacteristics";
 import { HobbyDescriptionContainer } from "../shared/hobbies/HobbyDescriptionContainer";
-import { BookAuthorBlock, BookImagesCarousel, BookInfoBlock, BookPriceBlock, BookReviewsBlock, OtherSeriaBooks } from ".";
+import { BookAuthorBlock, BookImagesCarousel, BookInfoBlock, BookPriceBlock, BookReviewsBlock, OtherBookOptions, OtherSeriaBooks } from ".";
 import { useAddToWishlistModalStore } from "../../states/AddToWishlistModalStore";
 import { AddBookToWishlistModal } from "../modals/AddBookToWishlist";
-import { setServerError, setShowFlashMessage, useShowFlashMessageStore } from "../../states/ShowFlashMessageStore";
+import { setFlashMessage, setServerError, setShowFlashMessage, useShowFlashMessageStore } from "../../states/ShowFlashMessageStore";
+import Endpoints from "../../endpoints";
+import { useWishlistBooksStore } from "../../states/WishlistBooksStore";
+import { setActiveBtn } from "../../states/ActiveBtnStore";
 
 
 export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
@@ -20,7 +23,8 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
     const { isAddToWishlistModalOpen } = useAddToWishlistModalStore();
     const { serverError, showFlashMessage, flashMessage } = useShowFlashMessageStore();
     const [isSimpleFlashMessage, setIsSimpleFlashMessage] = useState(false);
-     
+    const { removeBookFromWishlist } = useWishlistBooksStore() 
+
     const info = isGift ? book.gift_info : book.book_info;
 
     const images = useMemo(() => book.images || [], [book.images]);
@@ -35,6 +39,34 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
     const onCloseShowMessage = () => {
         setServerError(null)
         setShowFlashMessage(false)
+        setIsSimpleFlashMessage(true)
+    }
+
+    const confirmDeleteBookFromWishlist = async (bookId) => {
+        const wishlistId = book.wishlists[0].id
+        try {
+            const response = await fetch(Endpoints.DELETE_BOOK_FROM_WISHLIST(wishlistId, bookId), {
+                method: "DELETE"
+            })
+
+            if(response.ok){
+                removeBookFromWishlist(wishlistId, bookId)
+                setFlashMessage(`Книгу ${book.title} видалено із списку бажань`)
+                setIsSimpleFlashMessage(true)
+                setActiveBtn(false)
+            } else {
+                setServerError("Не вдалось видалити книгу з списку бажань")
+                setIsSimpleFlashMessage(true)
+            }
+        } catch(err){
+            setServerError("Помилка сервера")
+            setIsSimpleFlashMessage(true)
+        }
+    }
+    
+    const confirmCancelMessage = () => {
+        setShowFlashMessage(false);
+        setServerError(null);
         setIsSimpleFlashMessage(true)
     }
 
@@ -62,9 +94,9 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
                 <Breadcrumbs linksList={ breadcrumbLinks } />
 
                 <div className="book-container__author-block">
-                    <h2 className="book-container__book-title">
-                        { book.title }
-                    </h2>
+                    <h3 className="book-container__book-title">
+                        { book?.book_info?.format === "Електронна" ? `Електронна книга ${book.title}` : `${book.title}` }
+                    </h3>
                     { !isGift && book?.authors.length > 0 && (
                         <Link className="book-container__link author-link" href={`/author/view/${book.authors[0].slug}`}>
                             {book.authors[0].first_name} {book.authors[0].last_name}
@@ -84,7 +116,9 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
 
                 <BookInfoBlock book={ book } info={ info } isGift={ isGift } />
 
-                <HobbyDescriptionContainer hobby={ !isGift ? book.book_info : book.gift_info } />    
+                <HobbyDescriptionContainer hobby={ !isGift ? book.book_info : book.gift_info } /> 
+
+                <OtherBookOptions book={ book } />
                 
                 <BookCharacteristics book={book} isGift={ isGift } />
                 { book?.seria && (
@@ -95,9 +129,12 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
 
                 <BookReviewsBlock />
             </div>
-            { (serverError || showFlashMessage && isSimpleFlashMessage) && (<FlashMessage message={ serverError || flashMessage }
+            { (serverError || showFlashMessage) && isSimpleFlashMessage && (<FlashMessage message={ serverError || flashMessage }
              onClose={onCloseShowMessage} />) }
-             {  }
+             { (serverError || showFlashMessage) && !isSimpleFlashMessage && 
+             (<FlashMessageWithAgreement message={ serverError || flashMessage } 
+             onConfirm={() => confirmDeleteBookFromWishlist(book.id)} 
+             onClose={() => confirmCancelMessage()}/>) }
             <BookPriceBlock book={ book } info={ info } isGift={ isGift }/>
         </div>    
     )

@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 import { OrdersSidebar } from "../shared"
-import { ProfileSettingsModal, UserLoginModal, BookCategoriesWithSubcategoriesModal, MenuModal } from "../dynamic"
+import { ProfileSettingsModal, UserLoginModal, BookCategoriesWithSubcategoriesModal, MenuModal, BonusLeftSection } from "../dynamic"
 import { useProtectedPage } from "../../hooks"
 import { useProfileSettingsModalStore, useMenuModalStore, useBookCategoriesModalStore } from "../../states"
 
@@ -29,15 +29,26 @@ export function BookTypesClient() {
             { isProfileSettingsModalOpen && <ProfileSettingsModal /> }
             { isCategoriesModalOpen && <BookCategoriesWithSubcategoriesModal /> }
             { isMenuModal && <MenuModal /> }
-            <h4 className="library__page-title page__page-title">
-                Бібліотека
-            </h4>
-            <div className="library__container page__container">
-                <div className="library__section page__section left-section">
-                    <OrdersSidebar listItems={ bookTypes } />
-                </div>
-                <div className="libary__section right-section">
-                    <div className="page__books-container"></div>
+            <div className="library__container">
+                <BonusLeftSection />
+                <div className="library__section right-section">
+                    <div className="library__content-block">
+                        <h4 className="library__title">
+                            Бібліотека
+                        </h4>
+                        <ul className="library__types">
+                            { bookTypes.map((type, index) => (
+                                <li className={`library__point ${index === 0 ? "active" : ""}`} key={ index }>
+                                    { type }
+                                </li>
+                            )) }
+                        </ul>
+                        <div className="library__block">
+                            <span className="library__no-data">
+                                Книги відсутні
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

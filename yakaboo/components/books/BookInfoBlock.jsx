@@ -8,16 +8,16 @@ export const BookInfoBlock = ({ book, info, isGift }) => {
             <div className="book-container__block format">
                 <p className="book-container__block-title">Формат</p>
                 <div className="book-container__tiles-block">
-                <div className={`book-container__tile tile ${book?.book_info?.format === "Паперова" ? "active" : ""}`}>
+                <div className={`book-container__tile tile active`}>
                     <div className="book-container__tile-header tile__header">
                     <Image
-                        src="/icons/book.svg"
+                        src={`${ book?.book_info?.format === "Паперова" ? "/icons/book.svg" : "/icons/mobile-phone-pink.svg"}`}
                         alt=""
                         width="18"
                         height="18"
-                        className={`${book?.book_info?.format === "Паперова" ? "active-img" : ""}`}
+                        className={`active-img`}
                     />
-                    <p className="tile__title">Паперова</p>
+                    <p className="tile__title">{ book?.book_info?.format }</p>
                     </div>
                     <h4 className="tile__price">{book?.price} грн</h4>
                 </div>
@@ -52,7 +52,7 @@ export const BookInfoBlock = ({ book, info, isGift }) => {
                 <div className="book-container__block publishing-block">
                     <p className="book-container__block-title">Рік видання</p>
                     <div className="book-container__tiles-block">
-                        <div className="book-container__tile tile small-tile">
+                        <div className="book-container__tile tile small-tile current">
                             <p className="tile__desc">{info?.publishing_year}</p>
                         </div>
                     </div>
