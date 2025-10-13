@@ -29,3 +29,4 @@ export { SliderCategories } from "./SliderCategories";
 export { Rate } from "./Rate";
 export { PageModals } from "./PageModals";
 export { Skeleton } from "./Skeleton";
+export { WishlistContainer } from "./WishlistContainer"

@@ -115,9 +115,33 @@
 
         }
 
+        &__book-container {
+            position: relative;
+        }
+
         &__body {
             padding: 1.5% 2%;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
             border-top: rem(1) solid var(--color-gray-50);
+
+            &-remove-book-btn {
+                position: absolute;
+                top: -7%;
+                right: 12%;
+                z-index: 10;
+                border: none;
+                padding: rem(5);
+                padding-inline: rem(10);
+                border-radius: rem(5);
+            }
+
+            &-book {
+                 & img {
+                    object-fit: contain;
+                    z-index: 9;
+                 }
+            }
         }
     }
 

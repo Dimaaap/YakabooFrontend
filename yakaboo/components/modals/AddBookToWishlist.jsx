@@ -7,19 +7,18 @@ import Image from "next/image";
 import { useBlockBodyScroll } from "../../hooks";
 import Endpoints from "../../endpoints";
 import { setFlashMessage, setServerError, setShowFlashMessage } from "../../states/ShowFlashMessageStore";
-import { setWishlists, useWishlistsStore } from "../../states/WishlistsState";
+import { setWishlists, useWishlists } from "../../states/WishlistsStore";
+
 
 export const AddBookToWishlistModal = ({ book }) => {
-    const [userWishlists, setUserWishlists] = useState([])
-    const [selectedWishlist, setSelectedWishlist] = useState(null);
+    const { wishlists } = useWishlists();
+    const [selectedWishlist] = useState(null);
     const [newWishlist, setNewWishlist] = useState(null);
-
-    const { wishlists } = useWishlistsStore();
 
     const userEmail = CookiesWorker.get("email");
 
     useEffect(() => {
-        fetchData(Endpoints.USER_WISHLISTS(userEmail), setUserWishlists)
+        fetchData(Endpoints.USER_WISHLISTS(userEmail), setWishlists)
     }, [])
     
     useBlockBodyScroll(true)
@@ -115,8 +114,8 @@ export const AddBookToWishlistModal = ({ book }) => {
                         Додавання товару до списку бажань
                     </h5>
                     <div className="add-to-wishlist__checkboxes-form">
-                        { userWishlists.length > 0 ? (
-                            userWishlists.map((wishlist, index) => (
+                        { wishlists.length > 0 ? (
+                            wishlists.map((wishlist, index) => (
                                 <div className="add-to-wishlist__checkbox-row" key={ index }>
                                     <label className="add-to-wishlist__form-label filters__form-label custom-checkbox">
                                         <input className="add-to-wishlist__checkbox-field filters__form-checkbox" 

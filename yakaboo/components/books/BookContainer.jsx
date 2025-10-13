@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 
 import Image from "next/image"
 import { Breadcrumbs, FlashMessage, Rate } from "../shared"
@@ -12,14 +12,15 @@ import { HobbyDescriptionContainer } from "../shared/hobbies/HobbyDescriptionCon
 import { BookAuthorBlock, BookImagesCarousel, BookInfoBlock, BookPriceBlock, BookReviewsBlock, OtherSeriaBooks } from ".";
 import { useAddToWishlistModalStore } from "../../states/AddToWishlistModalStore";
 import { AddBookToWishlistModal } from "../modals/AddBookToWishlist";
-import { setServerError, setShowFlashMessage, useShowFlassMessageStore } from "../../states/ShowFlashMessageStore";
+import { setServerError, setShowFlashMessage, useShowFlashMessageStore } from "../../states/ShowFlashMessageStore";
 
 
 export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
     const { isProductImagesOpen, isReadPart, setIsReadPart, setIsProductImagesOpen } = useProductImagesStore();
     const { isAddToWishlistModalOpen } = useAddToWishlistModalStore();
-    const { serverError, showFlashMessage, flashMessage } = useShowFlassMessageStore();
-    
+    const { serverError, showFlashMessage, flashMessage } = useShowFlashMessageStore();
+    const [isSimpleFlashMessage, setIsSimpleFlashMessage] = useState(false);
+     
     const info = isGift ? book.gift_info : book.book_info;
 
     const images = useMemo(() => book.images || [], [book.images]);
@@ -34,6 +35,7 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
     const onCloseShowMessage = () => {
         setServerError(null)
         setShowFlashMessage(false)
+        setIsSimpleFlashMessage(true)
     }
 
     return(
@@ -44,7 +46,7 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
 
             <div className="book-container__section left-section">
                 <div className="book-container__btns-section">
-                    <AddToWishlistBtn />
+                    <AddToWishlistBtn book={ book } setIsSimple={setIsSimpleFlashMessage} />
                     {pageImages.length > 0 && (
                         <button className="book-container__header-btn read-part" onClick={() => viewReadPartClick()}>
                             <Image src="/icons/book.svg" alt="" width="25" height="25" />
@@ -93,8 +95,9 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
 
                 <BookReviewsBlock />
             </div>
-            { (serverError || showFlashMessage) && (<FlashMessage message={ serverError || flashMessage }
+            { (serverError || showFlashMessage && isSimpleFlashMessage) && (<FlashMessage message={ serverError || flashMessage }
              onClose={onCloseShowMessage} />) }
+             {  }
             <BookPriceBlock book={ book } info={ info } isGift={ isGift }/>
         </div>    
     )

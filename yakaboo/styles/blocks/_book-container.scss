@@ -59,6 +59,17 @@
             margin-top: rem(5);
         }
 
+        &.add-to-fav {
+            &.added-btn {
+                background-color: var(--color-blue-10);
+                border-color: var(--color-blue-10);
+                
+                & svg {
+                    filter: invert(1);
+                }
+            }
+        }
+
         &:hover {
             opacity: 0.8;
         }

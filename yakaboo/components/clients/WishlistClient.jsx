@@ -7,9 +7,9 @@ import { useProtectedPage } from "../../hooks";
 import { useProfileSettingsModalStore, useWishListModalStore } from "../../states";
 import { fetchData, CookiesWorker } from "../../services";
 import { UserLoginModal, ProfileSettingsModal, CreateWishListModal, BonusLeftSection } from "../dynamic";
-import { FlashMessage, WishlistSidebar, WishlistsMainContainer } from "../shared";
+import { FlashMessage, WishlistsMainContainer } from "../shared";
 import Endpoints from "../../endpoints";
-import { setWishlists, useWishlistsStore } from "../../states/WishlistsState";
+import { useWishlists, setWishlists } from "../../states/WishlistsStore";
 
 
 export const WishlistClient = () => {
@@ -19,7 +19,7 @@ export const WishlistClient = () => {
   const { isProfileSettingsModalOpen } = useProfileSettingsModalStore();
 
   const [serverError, setServerError] = useState(null);
-  const { wishlists } = useWishlistsStore();
+  const { wishlists } = useWishlists();
 
 
   const addWishlist = newWishlist => {
