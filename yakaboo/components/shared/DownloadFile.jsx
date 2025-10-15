@@ -3,7 +3,7 @@ const DownloadFile = () => {
         <div className="download-file">
             <div className="download-file__header">
                 <div className="download-file__separator" />
-                <div className="download-file__sep-text">або</div>
+                <div className="download-file__sep-text">або завантажте</div>
                 <div className="download-file__separator" />
             </div>
             <div className="download-file__file-option">

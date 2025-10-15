@@ -4,4 +4,46 @@
     display: flex;
     flex-direction: column;
     gap: rem(10);
+
+    &__header {
+        display: flex;
+        align-items: center;
+        gap: rem(5);
+        font-size: rem(14);
+        font-weight: 500;
+        color: var(--color-gray-30);
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    &__separator {
+        height: rem(2);
+        width: 32%;
+        background-color: var(--color-gray-50);
+    }
+
+    &__file-option {
+        display: flex;
+        flex-direction: column;
+        gap: rem(2);
+    }
+
+    &__format {
+        border-bottom: rem(1) solid var(--color-gray-50);
+        padding-block: 2%;
+        font-size: rem(14);
+        display: flex; 
+        flex-direction: column;
+        gap: rem(2);
+
+        &-title {
+            font-weight: 600;
+            font-size: rem(16);
+        }
+
+        &-info {
+            font-weight: 500;
+            color: var(--color-gray-30);
+        }
+    }
 }
