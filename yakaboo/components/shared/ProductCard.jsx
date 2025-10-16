@@ -16,6 +16,7 @@ export const ProductCard = ({
   inStock = true,
   extraClass="",
   withAddToWishlist=true,
+  isEbook=false
 }) => {
   return (
     <Link className={`product-card ${extraClass}`} href={productLink}>
@@ -43,7 +44,7 @@ export const ProductCard = ({
             alt=""
             width="150"
             height="100"
-            className="product-card__image"
+            className={`product-card__image ${isEbook ? "ebook-image": ""}`}
           />
         </div>
         <div className="product-card__badges-container">
@@ -79,14 +80,22 @@ export const ProductCard = ({
             </span>
           </div>
         )}
-        <div
-          className={`product-card__in-stock-container ${inStock ? 'in-stock' : 'waiting'} `}
-        >
-          <Image src="/icons/truck.svg" alt="" width="15" height="15" />
-          <span className="product-card__in-stock-text">
-            {inStock ? 'В наявності' : 'Немає в наявності'}
-          </span>
-        </div>
+        {!isEbook ? (
+          <div className={`product-card__in-stock-container ${inStock ? 'in-stock' : 'waiting'} `}>
+            <Image src="/icons/truck.svg" alt="" width="15" height="15" />
+            <span className="product-card__in-stock-text">
+              {inStock ? 'В наявності' : 'Немає в наявності'}
+            </span>
+          </div>  
+        ) : (
+          <div className="product-card__in-stock-container ebook">
+            <Image src="/icons/mobile-phone.svg" alt="" width="15" height="15" />
+            <span className="product-card__ebook-text">
+              Електронна книга
+            </span>
+          </div>
+        )}
+       
         { inStock ? (
           <button className="product-card__buy-btn">
             <Image src="/icons/cart.svg" alt="" width="16" height="16" />

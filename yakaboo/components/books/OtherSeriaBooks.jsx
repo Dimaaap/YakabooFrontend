@@ -59,7 +59,8 @@ export const OtherSeriaBooks = ({ book }) => {
                             productCode={ book.book_info.code }
                             oldPrice={ book.price }
                             inStock={ book.book_info.in_stock }
-                            bonusesCount={ book.book_info.bonuses }/>
+                            bonusesCount={ book.book_info.bonuses }
+                            isEbook={ book.book_info.format === "Електронна" }/>
                         )) }
                         
                     </div>    

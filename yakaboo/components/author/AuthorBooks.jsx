@@ -39,6 +39,7 @@ export const AuthorBooks = ({authorId, periodId=null}) => {
                 oldPrice={book.price}  
                 inStock={book.book_info.in_stock}
                 bonusesCount={book.book_info.bonuses}
+                isEbook={ book.book_info.format === "Електронна" }
                 />
             )
         )) }

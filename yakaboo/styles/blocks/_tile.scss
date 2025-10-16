@@ -9,6 +9,11 @@
     gap: rem(5);   
     cursor: pointer;
 
+    &.format-tile {
+        height: rem(60);
+        justify-content: center;
+    }
+
     &.small-tile {
         padding: rem(8);
         font-weight: 500;
@@ -24,6 +29,10 @@
     &.active {
         border: rem(2) solid var(--color-pink-10);
         background-color: var(--color-pink-light);
+
+        & img {
+            filter: invert(23%) sepia(76%) saturate(5000%) hue-rotate(-20deg);
+        }
 
         color: var(--color-pink-10);
     }

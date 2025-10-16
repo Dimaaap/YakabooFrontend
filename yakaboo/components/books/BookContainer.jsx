@@ -105,7 +105,7 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
                      
                 </div>
                 
-                {info?.rate && (
+                {info?.rate > 0 && (
                     <Rate rate={ info.rate } />
                 )}
                 

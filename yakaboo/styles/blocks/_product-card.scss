@@ -67,6 +67,12 @@
     max-height: 100%;
     width: 100%;
     object-fit: cover;
+
+    &.ebook-image {
+      border-radius: rem(20);
+      -webkit-box-shadow: 4px 8px 7px 4px rgba(0,0,0,0.67); 
+      box-shadow: 4px 8px 7px 4px rgba(0,0,0,0.67);
+    }
   }
 
   &__badges-container {
@@ -161,6 +167,13 @@
     gap: rem(5);
     font-size: rem(12);
     font-weight: 500;
+
+    &.ebook {
+      & img {
+        width: rem(15);
+        height: rem(15);
+      }
+    }
 
     &.in-stock {
       color: var(--color-green-10);
