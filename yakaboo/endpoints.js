@@ -126,6 +126,13 @@ const Books = {
   BOOK_BY_SLUG: (bookSlug) => `${DOMAIN}books/${bookSlug}`
 }
 
+const Illustrators = {
+  ILLUSTRATOR: (illustratorSlug) => `${DOMAIN}illustrators/${illustratorSlug}`,
+  ILLUSTRATOR_BOOK: (illustratorId) => `${DOMAIN}illustrators/illustrator/${illustratorId}/books`,
+  SEARCH_ILLUSTRATOR: (query) => `${DOMAIN}illustrators/search/?query=${query}`,
+  ALL_ILLUSTRATORS: `${DOMAIN}illustrators/all`
+}
+
 
 const Endpoints = {
   ...BoardGames,
@@ -144,6 +151,7 @@ const Endpoints = {
   ...LiteraturePeriods,
   ...BookSeries,
   ...Books,
+  ...Illustrators,
   ACTIVE_TITLE: `${DOMAIN}page-title/active`
 };
 

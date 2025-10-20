@@ -186,6 +186,23 @@ export const extraFields = [
         ),
     },
     {
+        key: "illustrators",
+        title: "Ілюстратор",
+        show: (book, isGift) => !isGift && book.illustrators?.length > 0,
+        render: (book) => (
+            <>
+                { book.illustrators.map((illustrator, index) => (
+                    <React.Fragment key={ index }>
+                        <Link href={`/book-illustrators/view/${illustrator.slug}`}
+                        className="book-container__link publishing-ling">
+                            {`${illustrator.first_name} ${illustrator.last_name}`}
+                        </Link>
+                    </React.Fragment>
+                )) }
+            </>
+        )
+    },
+    {
         key: "format",
         title: "Паперова / аудіо / електронна",
         show: (book, isGift) => !isGift && book.book_info?.format,
