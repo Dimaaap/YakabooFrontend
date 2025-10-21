@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { Badge, Stars, ProductCard } from '../shared';
 import { fetchData } from '../../services';
 import Endpoints from '../../endpoints';
+import { wordDeclension } from '../../services/word-declension.service';
 
 export const AuthorBooks = ({authorId, periodId=null}) => {
 
@@ -17,7 +18,7 @@ export const AuthorBooks = ({authorId, periodId=null}) => {
   return (
     <div className="author-books">
       <div className="author-books__header">
-        <h5 className="author-books__count">331 товар</h5>
+        <h5 className="author-books__count">{`${ authorsBooks.length } ${wordDeclension(authorsBooks.length)}`}</h5>
         <span className="author-books__select">
             За популярністю 
             <Image src="/icons/arrow-left.svg" alt="" width="15" height="15" />

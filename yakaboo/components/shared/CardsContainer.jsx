@@ -23,7 +23,7 @@ export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false,
             brands: getArray("brands"),
             publishers: getArray("publishers"),
             languages: getArray("languages"),
-            bookTypes: getArray("book_types"),
+            bookTypes: getArray("bookTypes"),
             authors: getArray("authors"),
             themes: getArray("themes"),
             filters: getArray("filters"),
@@ -38,11 +38,12 @@ export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false,
 
     const filterBooks = useMemo(() => {
         console.log(booksList)
+        console.log(filters)
         return booksList?.filter(book => {
             if(filters.categories.length && !filters.categories.includes(book.category_slug)) return false 
             if(filters.brands.length && !filters.brands.includes(book?.brand?.title)) return false 
             if(filters.publishers.length && !filters.publishers.includes(book?.publishing?.title)) return false 
-            if(filters.languages.length && !filters.languages.includes(book?.book_info?.languages)) return false 
+            if(filters.languages.length && !filters.languages.includes(book?.book_info?.language)) return false 
             if(filters.bookTypes.length && !filters.bookTypes.includes(book?.book_info?.format)) return false 
             if(filters.themes.length && !filters.themes.includes(book?.theme)) return false
             if(filters.accessoriesBrands.length && !filters.accessoriesBrands.includes(book?.brand?.title)) return false

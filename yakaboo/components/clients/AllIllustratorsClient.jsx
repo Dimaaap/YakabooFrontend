@@ -36,12 +36,14 @@ export const AllIllustratorsClient = () => {
             <SearchBar />
             <div className="data">
                 <div className="data__container">
+                    { console.log(illustrators) }
                     { illustrators.length > 0 && (
                         illustrators.map((illustrator) => (
                             illustrator.is_active ? (
                                 <Link href={`/book-illustrators/view/${illustrator.slug}`}
                                 key={ illustrator.id } className="data__container-link">
-                                    { illustrator.first_name } { illustrator.last_name }
+                                    { console.log(illustrator.last_name == '""') }
+                                    { illustrator.first_name } { illustrator.last_name == '""' ? null : illustrator.last_name }
                                 </Link>
                             ) : (<></>)
                         ))
