@@ -5,6 +5,7 @@
     display: flex; 
     flex-direction: column;
     gap: rem(20);
+    position: relative;
 
     &__header {
         display: flex;
@@ -28,11 +29,13 @@
         grid-auto-flow: column;
         grid-auto-columns: calc((100% - (6 * 10px)) / 7);
         gap: rem(10);
+        scroll-behavior: smooth;
 
-        overflow-x: auto;
+        overflow-x: hidden;
         overflow-y: hidden;
         scroll-snap-type: x mandatory;
         scrollbar-width: thin;
+        position: relative;
     }
 
     &__subcategory {
@@ -41,6 +44,134 @@
         flex-shrink: 0;
         scroll-snap-align: start;
         text-align: center;
-        align-items: center;;
+        align-items: center;
+    }
+
+    &__container {
+        display: flex;
+        align-items: start;
+        gap: 2%;
+    }
+
+    &__book-section {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: rem(30);
+    }
+
+    &__banners-section {
+        width: 100%;
+        overflow: hidden;
+        align-items: center;
+        gap: 2%;
+        background-color: var(--color-light);
+        padding: 2%;
+        border-radius: rem(10);
+        justify-content: center;
+        position: relative;
+    }
+
+    &__banners-indicators {
+        position: absolute;
+        top: 80%;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        gap: rem(10);
+        left: 26%;
+        justify-content: center;
+    }
+
+    &__banners-indicator {
+        width: rem(50);
+        height: rem(5);
+        background-color: var(--color-gray-40);
+        opacity: 0.5;
+        border-radius: rem(10);
+        cursor: pointer;
+
+        &.active {
+            background-color: var(--color-black);
+        }
+    }
+
+    &__banners-wrapper {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: calc((100% - (2 * 15px)) / 3);
+        gap: rem(15);
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+
+        & img {
+            width: rem(400);
+            height: rem(400);
+            border-radius: rem(5);
+            object-fit: cover;
+        }
+    }
+
+    &__banners-item {
+        flex: 0 0 auto;
+        border-radius: rem(12);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+}
+
+.subcategory {
+    &__images-container {
+        display: flex;
+        align-items: center;
+        gap: 2%;
+        background-color: var(--color-light);
+        justify-content: space-between;
+        padding: 5%;
+        border-radius: rem(5);
+        width: 100%;
+    }
+
+    &__image {
+        &:first-child, &:last-child {
+            width: rem(60);
+            height: rem(70);
+            object-fit: contain;    
+        }
+
+        &:nth-child(2){
+            width: rem(65);
+            height: rem(90);
+            border-radius: rem(5);
+        }
+    }
+
+    &__title {
+        font-size: rem(14);
+        font-weight: 600;
+        color: var(--color-gray-30);
+        text-align: left;
+    }
+}
+
+.books-container__btn {
+    &.category-btn {
+        top: 11%;
+        left: 2%;
+
+        &.next-btn {
+            left: 94%;
+        }
+    }
+
+    &.banners-btn {
+        top: 50%;
+        left: 0.5%;
+
+        &.next-btn {
+            left: 94%;
+        }
     }
 }
