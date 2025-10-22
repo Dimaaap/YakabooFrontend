@@ -133,6 +133,10 @@ const Illustrators = {
   ALL_ILLUSTRATORS: `${DOMAIN}illustrators/all`
 }
 
+const BookCategories = {
+  CATEGORY_BY_SLUG: (categorySlug) => `${DOMAIN}categories/by-slug/${categorySlug}`
+}
+
 
 const Endpoints = {
   ...BoardGames,
@@ -152,6 +156,7 @@ const Endpoints = {
   ...BookSeries,
   ...Books,
   ...Illustrators,
+  ...BookCategories,
   ACTIVE_TITLE: `${DOMAIN}page-title/active`
 };
 

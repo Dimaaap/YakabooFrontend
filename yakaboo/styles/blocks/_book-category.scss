@@ -1,0 +1,46 @@
+@use "../helpers" as *;
+
+.book-category {
+    padding: 2%;
+    display: flex; 
+    flex-direction: column;
+    gap: rem(20);
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        gap: rem(1);
+        font-size: rem(14);
+    }
+
+    &__books-link {
+        color: var(--color-gray-30);
+        font-weight: 500;
+    }
+
+    &__title {
+        font-size: rem(22);
+        font-weight: 600;
+    }
+
+    &__subcategories-scroll {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: calc((100% - (6 * 10px)) / 7);
+        gap: rem(10);
+
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: thin;
+    }
+
+    &__subcategory {
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        scroll-snap-align: start;
+        text-align: center;
+        align-items: center;;
+    }
+}
