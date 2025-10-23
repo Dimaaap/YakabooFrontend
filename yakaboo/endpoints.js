@@ -134,7 +134,8 @@ const Illustrators = {
 }
 
 const BookCategories = {
-  CATEGORY_BY_SLUG: (categorySlug) => `${DOMAIN}categories/by-slug/${categorySlug}`
+  CATEGORY_BY_SLUG: (categorySlug) => `${DOMAIN}categories/by-slug/${categorySlug}`,
+  CATEGORY_BOOKS: (categoryId) => `${DOMAIN}categories/books/${categoryId}`
 }
 
 

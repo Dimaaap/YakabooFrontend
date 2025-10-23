@@ -10,7 +10,8 @@ import { CardsContainer, Filters } from "../shared"
 import { CategoryBanner } from "../shared/CategoryBanner"
 
 export const BookCategoryClient = () => {
-    const [category, setCategory] = useState(null)
+    const [category, setCategory] = useState(null);
+    const [categoryBooks, setCategoryBooks] = useState([]);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
     const [canScrollRight, setCanScrollRight] = useState(false);
 
@@ -23,6 +24,12 @@ export const BookCategoryClient = () => {
     useEffect(() => {
         fetchData(Endpoints.CATEGORY_BY_SLUG(categorySlug), setCategory)
     }, [])
+
+
+    useEffect(() => {
+        if(!category) return;
+        fetchData(Endpoints.CATEGORY_BOOKS(category.id), setCategoryBooks)
+    }, [category])
 
     const subcategories = category?.subcategories || []
     const total = subcategories?.length;
@@ -128,7 +135,7 @@ export const BookCategoryClient = () => {
                     ) }
 
                     <div className="book-category__books">
-                    <CardsContainer booksList={ category?.books || [] } />
+                    <CardsContainer booksList={ categoryBooks || [] } />
                 </div>
                 </div>
             </div>
