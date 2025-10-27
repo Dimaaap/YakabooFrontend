@@ -6,6 +6,14 @@
     gap: rem(25);
 }
 
+.book {
+    &__title {
+        font-weight: 600;
+        font-size: rem(24);
+        margin-bottom: 2%;
+    }
+}
+
 .books-container {
     display: flex;
     flex-direction: column;

@@ -5,20 +5,27 @@ export const baseFields = [
     {
         key: "author",
         title: "Автор",
-        show: (book, isGift) => !isGift && (book.authors[0]?.first_name || book.authors[0]?.last_name),
+        show: (book, isGift) => !isGift && book.authors?.length > 0,
         render: (book) => (
-            <Link className="book-container__link author-link"
-            href={`/author/view/${book.authors[0]?.slug}`}>
-                { book.authors[0]?.first_name } { book.authors[0]?.last_name }
-            </Link>
+            <>
+                {book.authors.map((author, index) => (
+                    <React.Fragment key={ index }>
+                        <Link className="book-container__link author-link"
+                        href={`/author/view/${author.slug}`}>
+                            { author.first_name } { author.last_name }
+                        </Link>    
+                        { index < book.authors.length - 1 && ", " }
+                    </React.Fragment>
+                ))}
+            </>
         )
     },
     {
         key: "publishing",
         title: "Видавництво",
-        show: (book, isGift) => !isGift && book.publising,
+        show: (book, isGift) => !isGift && book.publishing?.title,
         render: (book) => (
-            <Link href={`/book-publisher/view/${book.publising.slug}`} className="book-container__link author-link">
+            <Link href={`/book-publisher/view/${book.publishing.slug}`} className="book-container__link author-link">
                 { book.publishing.title }
             </Link>
         )
@@ -88,6 +95,22 @@ export const extraFields = [
                 className="book-container__link publishing-link">
                 { book.seria.title }
             </Link>
+        )
+    },
+    {
+        key: "literature_type",
+        title: "Література",
+        show: (book) => !!book?.book_info?.literature_type,
+        render: (book) => (
+            <p>{ book?.book_info?.literature_type }</p>
+        )
+    },
+    {
+        key: "literature_program_class",
+        title: "Клас",
+        show: (book) => !!book?.book_info?.literature_program_class,
+        render: (book) => (
+            <p>{ book.book_info.literature_program_class }</p>
         )
     },
     {

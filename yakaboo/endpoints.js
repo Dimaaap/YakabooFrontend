@@ -138,6 +138,11 @@ const BookCategories = {
   CATEGORY_BOOKS: (categoryId) => `${DOMAIN}categories/books/${categoryId}`
 }
 
+const BookSubcategories = {
+  SUBCATEGORY_BY_SLUG: (subcategorySlug) => `${DOMAIN}subcategories/${subcategorySlug}`,
+  SUBCATEGORY_BOOKS: (subcategorySlug) => `${DOMAIN}subcategories/subcategory/by-slug/${subcategorySlug}/books`
+}
+
 
 const Endpoints = {
   ...BoardGames,
@@ -158,6 +163,7 @@ const Endpoints = {
   ...Books,
   ...Illustrators,
   ...BookCategories,
+  ...BookSubcategories,
   ACTIVE_TITLE: `${DOMAIN}page-title/active`
 };
 

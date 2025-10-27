@@ -9,3 +9,4 @@ export { BoardGamesClient } from "./BoardGamesClient";
 export { BookSeriaClient } from "./BookSeriaClient";
 export { AllSeriesClient } from "./AllSeriesClient";
 export { BookCategoryClient } from "./BookCategoryClient";
+export { BookSubcategoryClient } from "./BookSubcategoryClient";

@@ -118,14 +118,16 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
 
                 <HobbyDescriptionContainer hobby={ !isGift ? book.book_info : book.gift_info } /> 
 
-                <OtherBookOptions book={ book } />
+                { book?.related_books?.length > 0 && (
+                    <OtherBookOptions book={ book } />    
+                ) }
                 
                 <BookCharacteristics book={book} isGift={ isGift } />
                 { book?.seria && (
                     <OtherSeriaBooks book={ book } />
                 ) }
 
-                { !isGift && !book?.is_notebook && <BookAuthorBlock book={ book } author={ book.authors[0] } /> }
+                { !isGift && !book?.is_notebook && book?.authors[0]?.short_description && <BookAuthorBlock book={ book } author={ book.authors[0] } /> }
 
                 <BookReviewsBlock />
             </div>

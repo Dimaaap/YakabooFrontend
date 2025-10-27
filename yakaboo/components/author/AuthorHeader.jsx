@@ -97,16 +97,18 @@ export const AuthorHeader = ({ author }) => {
         </h3>
         {authorImages.length > 0 && (
           <div className="author-header__info-table">
-            <div className="author-header__table-row">
-              <div className="author-header__table-cell left-cell">
-                <p>Повне ім'я</p>
-              </div>
-              <div className="author-header__table-cell right-cell">
-                <p>
-                  {author.first_name} {author.last_name}
-                </p>
-              </div>
-            </div>
+            { author.first_name && author.last_name && author.date_of_birth && (
+              <div className="author-header__table-row">
+                <div className="author-header__table-cell left-cell">
+                  <p>Повне ім'я</p>
+                </div>
+                <div className="author-header__table-cell right-cell">
+                  <p>
+                    {author.first_name} {author.last_name}
+                  </p>
+                </div>
+              </div>  
+            ) }
             {author.date_of_birth && (
               <div className="author-header__table-row">
                 <div className="author-header__table-cell left-cell">

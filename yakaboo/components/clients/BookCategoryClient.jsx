@@ -103,7 +103,7 @@ export const BookCategoryClient = () => {
                     <div className="book-category__subcategories-scroll" ref={ scrollRef }>
                         {subcategories.map((subcategory, index) => (
                             <Link className="book-category__subcategory subcategory" key={ index } 
-                            href={`/book-category/${categorySlug}/${subcategory.slug}`}>
+                            href={`/book-categories/${categorySlug}/${subcategory.slug}`}>
                                 { subcategory?.images_src?.length > 0 && (
                                     <div className="subcategory__images-container">
                                         { subcategory.images_src.map((image, index) => (
