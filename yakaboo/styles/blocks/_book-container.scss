@@ -25,6 +25,12 @@
         cursor: pointer;
     }
 
+    &__authors-block {
+        display: flex;
+        align-items: center;
+        gap: rem(5);
+    }
+
     &__section {
         display: flex;
         flex-direction: column;

@@ -256,6 +256,12 @@ export const extraFields = [
         render: (book) => <p>{book.book_info.original_name}</p>,
     },
     {
+        key: "present_edition_end_sets",
+        title: "Подарункові видання та комплекти",
+        show: (book, isGift) => !isGift && book.book_info?.present_edition_and_sets,
+        render: (book) => <p>{ book.book_info.present_edition_and_sets }</p>
+    },
+    {
         key: "ISBN",
         title: "ISBN",
         show: (book, isGift) => !!(isGift ? book.gift_info?.ISBN : book.book_info?.ISBN),
@@ -266,5 +272,5 @@ export const extraFields = [
         title: "Код",
         show: (book, isGift) => !!(isGift ? book.gift_info?.code : book.book_info?.code),
         render: (book, isGift) => <p>{isGift ? book.gift_info.code : book.book_info.code}</p>,
-    },
+    }
 ]

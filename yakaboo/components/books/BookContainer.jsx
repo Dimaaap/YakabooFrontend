@@ -1,11 +1,11 @@
 "use client"
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Image from "next/image"
 import { Breadcrumbs, FlashMessage, FlashMessageWithAgreement, Rate } from "../shared"
 import Link from "next/link"
-import { AddToWishlistBtn, ProductImagesModal } from "../dynamic";
+import { AddToWishlistBtn, ProductImagesModal, ProductInfoModal } from "../dynamic";
 import { useProductImagesStore } from "../../states";
 import { BookCharacteristics } from "../shared/BookCharacteristics";
 import { HobbyDescriptionContainer } from "../shared/hobbies/HobbyDescriptionContainer";
@@ -16,6 +16,7 @@ import { setFlashMessage, setServerError, setShowFlashMessage, useShowFlashMessa
 import Endpoints from "../../endpoints";
 import { useWishlistBooksStore } from "../../states/WishlistBooksStore";
 import { setActiveBtn } from "../../states/ActiveBtnStore";
+import { handleScrollForProductInfoModal, useProductInfoState } from "../../states/hobbies/ProductInfoState";
 
 
 export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
@@ -25,11 +26,22 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
     const [isSimpleFlashMessage, setIsSimpleFlashMessage] = useState(false);
     const { removeBookFromWishlist } = useWishlistBooksStore() 
 
+    const showProductInfoModal = useProductInfoState((state) => state.showProductInfoModal)
+
     const info = isGift ? book.gift_info : book.book_info;
 
-    const images = useMemo(() => book.images || [], [book.images]);
+    const images = book.images || [];
 
     const pageImages = images.filter((img) => img.type === "page");
+
+    useEffect(() => {
+        const handleScroll = () => handleScrollForProductInfoModal(90);
+        window.addEventListener("scroll", handleScroll)
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll)
+        }
+    }, [])
 
     const viewReadPartClick = () => {
         setIsReadPart(true)
@@ -72,6 +84,13 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
 
     return(
         <div className="book-container">
+            { showProductInfoModal && (
+                <ProductInfoModal productImage={ book.images[0].image_url }
+                productTitle={ book.title }
+                productPrice={ book.price }
+                isInStock={ book.book_info.in_stock } 
+                />
+            ) }
             { (isProductImagesOpen && !isReadPart) && <ProductImagesModal productTitle={book.title} images={ images } />}
             { isReadPart && <ProductImagesModal productTitle={book.title} images={ images } /> }
             { isAddToWishlistModalOpen && <AddBookToWishlistModal book={ book } /> }
@@ -98,9 +117,16 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
                         { book?.book_info?.format === "Електронна" ? `Електронна книга ${book.title}` : `${book.title}` }
                     </h3>
                     { !isGift && book?.authors.length > 0 && (
-                        <Link className="book-container__link author-link" href={`/author/view/${book.authors[0].slug}`}>
-                            {book.authors[0].first_name} {book.authors[0].last_name}
-                        </Link>       
+                        <div className="book-container__authors-block">
+                            {book.authors.map((author, index) => (
+                                <span key={ index }>
+                                    <Link className="book-container__link author-link" href={`/author/view/${author.slug}`}>
+                                        {author.first_name} {author.last_name}
+                                    </Link>       
+                                    { index < book.authors.length - 1 && ", " }    
+                                </span>
+                            ))} 
+                        </div>
                     ) }
                      
                 </div>
