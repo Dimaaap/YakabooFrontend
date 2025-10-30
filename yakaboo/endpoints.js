@@ -140,7 +140,8 @@ const BookCategories = {
 
 const BookSubcategories = {
   SUBCATEGORY_BY_SLUG: (subcategorySlug) => `${DOMAIN}subcategories/${subcategorySlug}`,
-  SUBCATEGORY_BOOKS: (subcategorySlug) => `${DOMAIN}subcategories/subcategory/by-slug/${subcategorySlug}/books`
+  SUBCATEGORY_BOOKS: (subcategorySlug) => `${DOMAIN}subcategories/subcategory/by-slug/${subcategorySlug}/books`,
+  DOUBLE_SUBCATEGORIES: (subcategoryId) => `${DOMAIN}subcategories/subcategory/double_subcategories/${subcategoryId}`
 }
 
 
