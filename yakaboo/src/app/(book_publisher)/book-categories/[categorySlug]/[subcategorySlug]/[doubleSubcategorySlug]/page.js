@@ -1,5 +1,7 @@
+import { DoubleSubactegoryClient } from "../../../../../../../components/clients/DoubleSubcategoryClient";
+
 export default function DoubleSubcategoryPage() {
     return(
-        <h1>asdadsa</h1>
+        <DoubleSubactegoryClient />
     )
 }

@@ -144,6 +144,11 @@ const BookSubcategories = {
   DOUBLE_SUBCATEGORIES: (subcategoryId) => `${DOMAIN}subcategories/subcategory/double_subcategories/${subcategoryId}`
 }
 
+const BookDoubleSubcategories = {
+  DOUBLE_SUBCATEGORY_BOOK: (doubleSubcategorySlug) => `${DOMAIN}double_subcategories/double_subcategory/by-slug/${doubleSubcategorySlug}/books`,
+  DOUBLE_SUBCATEGORY_BY_SLUG: (doubleSubcategorySlug) => `${DOMAIN}double_subcategories/${doubleSubcategorySlug}`
+}
+
 
 const Endpoints = {
   ...BoardGames,
@@ -165,6 +170,7 @@ const Endpoints = {
   ...Illustrators,
   ...BookCategories,
   ...BookSubcategories,
+  ...BookDoubleSubcategories,
   ACTIVE_TITLE: `${DOMAIN}page-title/active`
 };
 
