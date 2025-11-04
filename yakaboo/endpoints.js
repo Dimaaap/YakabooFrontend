@@ -149,6 +149,10 @@ const BookDoubleSubcategories = {
   DOUBLE_SUBCATEGORY_BY_SLUG: (doubleSubcategorySlug) => `${DOMAIN}double_subcategories/${doubleSubcategorySlug}`
 }
 
+const Cart = {
+  CART_ITEMS: (userEmail) => `${DOMAIN}cart/cart-items/all?user_email=${userEmail}`
+}
+
 
 const Endpoints = {
   ...BoardGames,
@@ -171,6 +175,7 @@ const Endpoints = {
   ...BookCategories,
   ...BookSubcategories,
   ...BookDoubleSubcategories,
+  ...Cart,
   ACTIVE_TITLE: `${DOMAIN}page-title/active`
 };
 
