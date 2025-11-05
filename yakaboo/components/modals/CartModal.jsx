@@ -5,7 +5,6 @@ import { useCartModalStore } from '../../states'
 import { CookiesWorker, fetchData, handleBackdropClick } from '../../services'
 import { ModalCloseBtn } from '../shared'
 import Endpoints from '../../endpoints'
-import { wordDeclension } from '../../services/word-declension.service'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -15,6 +14,90 @@ const CartModal = () => {
   const [cartItems, setCartItems] = useState([])
 
   const userEmail = CookiesWorker.get("email")
+
+  const deleteAllItemsFromCartHandler = async () => {
+    const res = await fetch(Endpoints.CLEAR_CART(userEmail), {
+      method: "POST"
+    })
+    
+    if(res.ok){
+      console.log("deleted")
+      setCartItems([])
+      console.log(cartItems)
+    } else {
+      console.log(res.json())
+    }
+  }
+
+  const deleteItemFromCartHandler = async(bookId) => {
+    const res = await fetch(Endpoints.DELETE_ITEM_FROM_CART(userEmail, bookId), {
+      method: "DELETE"
+    })
+
+    if(res.ok){
+      console.log(`deleted book ${bookId}`)
+      setCartItems((prev) => {
+        if(!prev?.items) return prev;
+
+        const updatedItems = prev.items.filter(
+          (item) => item.book_id !== bookId
+        );
+
+        const updatedTotal = updatedItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+        return {
+          ...prev, 
+          items: updatedItems,
+          total_price: updatedTotal
+        }
+      });
+    } else {
+      console.log("error", await res.text())
+      return null
+    }
+  }
+
+  const changeQuantity = async(bookId, addOrMinus) => {
+    const currentItem = cartItems.items.find(item => item.book_id === bookId);
+
+    if(!currentItem) {
+      return
+    }
+
+    let newQuantity = null;
+
+    if(addOrMinus === "add") {
+      newQuantity = currentItem.quantity + 1;
+    } else {
+      newQuantity = currentItem.quantity - 1;
+    }
+
+
+    const res = await fetch(Endpoints.UPDATE_BOOK_QUANTITY(userEmail, bookId, newQuantity), {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+
+    if(res.ok){
+      setCartItems((prev) => {
+        const updatedItems = prev.items.map((item) => (
+          item.book_id === bookId ? {...item, quantity: newQuantity, total: item.price * newQuantity} : item
+        ));
+
+        const updatedTotal = updatedItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
+
+        return {
+          ...prev, 
+          items: updatedItems,
+          total_price: updatedTotal
+        }
+      })
+    } else {
+      console.error("Error: ", res.text())
+    }
+  }
 
   useEffect(() => {
     fetchData(Endpoints.CART_ITEMS(userEmail), setCartItems)
@@ -30,14 +113,14 @@ const CartModal = () => {
             <ModalCloseBtn clickHandler={() => setIsCartModalOpen(false)} />
         </div>
         <div className="menu__body cart-body">
-            { cartItems?.items?.length < 1 ? (
+            { !cartItems?.items || cartItems.items.length === 0 ? (
               <div className="cart-body__text-container">
                 <p className="cart-body__text-title">
                       Ваш кошик порожній
                   </p> 
                   <p className="cart-body__text-desc">
-                      Не вагайтесь і перегляньте наш каталогю, 
-                      щою знайти щосб гарне для Вас!
+                      Не вагайтесь і перегляньте наш каталог, 
+                      щоб знайти щось гарне для Вас!
                   </p>
               </div>  
             ) : (
@@ -46,7 +129,8 @@ const CartModal = () => {
                      <span className="cart-body__count">
                       { cartItems?.items?.length } шт.
                      </span>
-                     <button className="cart-body__btn delete-all-btn" type="button">
+                     <button className="cart-body__btn delete-all-btn" type="button"
+                     onClick={ deleteAllItemsFromCartHandler }>
                       Видалити все
                      </button>
                   </div>
@@ -71,7 +155,7 @@ const CartModal = () => {
                             )) }
 
                             <div className="cart-body__price-row">
-                              <p className="cart-body__price red-text">
+                              <p className="cart-body__price blue-text">
                                 { item.price } грн 
                               </p>
                               <div className="dot-separator" />
@@ -82,73 +166,80 @@ const CartModal = () => {
 
                             <div className="cart-body__in-stock-row">
                               <p className="cart-body__status">
-                                <Image src="/icons/truck.svg" height="18" width="18" alt="" />
-                                { item.is_in_stock ? "В наявності" : "Немає в наявності" }
+                                <Image src={`${item.is_in_stock ? "/icons/green-truck.svg" : "/icons/truck.svg"}`} height="18" width="18" alt="" />
+                                <span className={`cart-body__status-text ${item.is_in_stock ? "green-text": "red-text"}`}>
+                                  { item.is_in_stock ? "В наявності" : "Немає в наявності" }  
+                                </span>
                               </p>
                               <div className="dot-separator" />
                               <span className="cart-body__text">
-                                Код {item.code}
+                                Код <span className="cart-body__code">{item.code}</span>
                               </span>
                             </div>
                           </div>
                         </div>
                         <div className="cart-body__item-features">
-                          <button className="cart-body__btn delete-item-btn" type="button">
+                          <button className="cart-body__btn delete-item-btn" type="button" 
+                          onClick={ () => deleteItemFromCartHandler(item.book_id) }>
                             Видалити
                           </button>
 
                           <div className="cart-body__quantity">
-                            <button className="cart-body__quantity-feature plus">
-                              -
-                            </button>
+                            <div className="cart-body__quantity-feature minus" onClick={() => changeQuantity(item.book_id, "minus")}>
+                              <div className="cart-body__minus"></div>
+                            </div>
 
                             <input type="text" className="cart-body__quantity-input" value={ item.quantity } />
 
-                            <button className="cart-body__quantity-feature minus">
-                              +
-                            </button>
+                            <div className="cart-body__quantity-feature plus" onClick={() => changeQuantity(item.book_id, "add")}>
+                              <div className="cart-body__plus"></div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     )) }
                   </div>
                   
-                  <div className="cart-body__bonuses">
-                    <div className="cart-body__bonuses-container">
-                      <Image src="/icons/bonuses.svg" height="25" width="25" alt="" />
-                      <p className="cart-body__bonuses-text">
-                        За цю покупку буде нараховано 
-                        <b className="cart-body__bonuses-text-highlighted">
-                          + {Math.ceil(cartItems.total_price / 2)} бонусів.
-                        </b>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="cart-body__footer">
-                    <div className="cart-body__footer-row">
-                      <p className="cart-body__footer-text">
-                        Всього
-                      </p>
-                      <p className="cart-body__footer-text">
-                        { cartItems.total_price } грн
-                      </p>
-                    </div>
-
-                    <div className="cart-body__footer-row">
-                      <p className="cart-body__footer-text-smaller">
-                        Бонуси за замовлення
-                        <Image src="/icons/info.svg" alt="" width="16" height="16" />
-                      </p>
-                      <div className="cart-body__footer-text-bonuses">
-                        + {Math.ceil(cartItems.total_price / 2)} бонусів
+                  <div className="cart-body__bottom-section">
+                    <div className="cart-body__bonuses">
+                      <div className="cart-body__bonuses-container">
+                        <Image src="/icons/bonus.svg" height="25" width="25" alt="" />
+                        <p className="cart-body__bonuses-text">
+                          За цю покупку буде нараховано {" "}
+                          <span className="cart-body__bonuses-highlighted">
+                            +{Math.ceil(cartItems.total_price / 2)} бонусів.  
+                          </span>
+                        </p>
                       </div>
                     </div>
 
-                    <button className="cart-body__submit-btn">
-                      Перейти до оформлення замовлення
-                    </button>
+                    <div className="cart-body__footer">
+                      <div className="cart-body__footer-row">
+                        <p className="cart-body__footer-text bold-text">
+                          Всього
+                        </p>
+                        <p className="cart-body__footer-text bold-text">
+                          { cartItems.total_price } грн
+                        </p>
+                      </div>
+
+                      <div className="cart-body__footer-row">
+                        <p className="cart-body__footer-text-smaller">
+                          Бонуси за замовлення
+                          <Image src="/icons/info.svg" className="cart-body__footer-text-image" 
+                          alt="" width="16" height="16" />
+                        </p>
+                        <p className="cart-body__footer-text-bonuses">
+                          + {Math.ceil(cartItems.total_price / 2)} бонусів
+                        </p>
+                      </div>
+
+                      <button className="cart-body__submit-btn">
+                        Перейти до оформлення замовлення
+                      </button>
+                    </div>
                   </div>
+                  
                 </div>
             ) }
             
