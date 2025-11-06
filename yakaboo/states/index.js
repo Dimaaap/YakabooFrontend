@@ -18,3 +18,4 @@ export { useSearchPublisherStore } from './SearchPublisherStore';
 export { useLetterStore } from './UseLetterStore';
 export { useShowFlashMessageStore } from "./ShowFlashMessageStore";
 export { useActiveBtnStore } from "./ActiveBtnStore";
+export { useCartStore } from "./CartItemsStore";

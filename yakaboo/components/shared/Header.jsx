@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ContactsModal } from '../modals';
 import { useBookCategoriesModalStore, useCartModalStore, 
+    useCartStore, 
     useMenuModalStore, 
     useProfileSettingsModalStore, 
     useUserLoginModalStore} from '../../states';
@@ -19,6 +20,7 @@ export const Header = () => {
     const { setIsCategoriesModalOpen } = useBookCategoriesModalStore();
     const { setIsLoginModalOpen } = useUserLoginModalStore();
     const { setIsProfileSettingsModalOpen } = useProfileSettingsModalStore();
+    const { cartItems } = useCartStore();
 
     const isAuthenticated = useAuth();
 
@@ -64,9 +66,13 @@ export const Header = () => {
                 { isAuthenticated && (
                     <Image src="/icons/bell.svg" alt="" className="header__link-icon" width="20" height="20" />
                 ) }
-                <Link className="header__link" href="#" onClick={() => setIsCartModalOpen(true) }>
-                    <Image src="/icons/cart.svg" alt="" className="header__link-icon" width="20" height="20" />
-                </Link>
+                { isAuthenticated && (
+                    <Link className="header__link cart-link" href="#" onClick={() => setIsCartModalOpen(true) }>
+                        <Image src="/icons/cart.svg" alt="" className="header__link-icon" width="20" height="20" />
+                        { cartItems.items?.length > 0 && (<span className="header__cart-items-count">{ cartItems.items.length }</span>) }
+                    </Link>    
+                ) }
+                
                 { !isAuthenticated ? (
                     <div className="header__link" onClick={() => setIsLoginModalOpen(true)}>
                         <Image src="/icons/user.svg" alt="" className="header__link-icon" width="20" height="20" />

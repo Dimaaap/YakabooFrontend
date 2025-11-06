@@ -1,17 +1,20 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
-import { useCartModalStore } from '../../states'
+import { useCartModalStore, useCartStore } from '../../states'
 import { CookiesWorker, fetchData, handleBackdropClick } from '../../services'
 import { ModalCloseBtn } from '../shared'
 import Endpoints from '../../endpoints'
 import Image from 'next/image'
 import Link from 'next/link'
+import { BonusesInfoModal } from '.'
 
 const CartModal = () => {
 
   const { isCartModalOpen, setIsCartModalOpen } = useCartModalStore()
-  const [cartItems, setCartItems] = useState([])
+  const { cartItems, setCartItems, clearCart, updateCartItemQuantity } = useCartStore();
+  const [prevQuantities, setPrevQuantities] = useState({})
+  const [isBonusesInfoModalOpen, setIsBonusesInfoModalOpen] = useState(false);
 
   const userEmail = CookiesWorker.get("email")
 
@@ -22,7 +25,7 @@ const CartModal = () => {
     
     if(res.ok){
       console.log("deleted")
-      setCartItems([])
+      clearCart()
       console.log(cartItems)
     } else {
       console.log(res.json())
@@ -35,7 +38,6 @@ const CartModal = () => {
     })
 
     if(res.ok){
-      console.log(`deleted book ${bookId}`)
       setCartItems((prev) => {
         if(!prev?.items) return prev;
 
@@ -52,7 +54,6 @@ const CartModal = () => {
         }
       });
     } else {
-      console.log("error", await res.text())
       return null
     }
   }
@@ -72,6 +73,68 @@ const CartModal = () => {
       newQuantity = currentItem.quantity - 1;
     }
 
+    const res = await fetch(Endpoints.UPDATE_BOOK_QUANTITY(userEmail, bookId, newQuantity), {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+
+    if(res.ok){
+      updateCartItemQuantity(bookId, newQuantity)
+    } else {
+      console.error("Error: ", res.text())
+    }
+  }
+
+  const handleFocus = (bookId) => {
+    setPrevQuantities((prev) => {
+      const currentQuantity = cartItems.items.find((item) => item.book_id === bookId)?.quantity;
+      return {...prev, [bookId]: currentQuantity}
+    })
+  } 
+
+  const handleQuantityChangeLocal = (bookId, newValue) => {
+    if(newValue === ""){
+      setCartItems((prev) => {
+        const updatedItems = prev.items.map((item) => item.book_id === bookId ? {...item, quantity: ""} : item)
+
+        return {...prev, items: updatedItems}
+      })
+
+      return
+    }
+
+
+    const newQuantity = parseInt(newValue);
+    if(isNaN(newQuantity) || newQuantity < 1){
+      return
+    }
+
+    setCartItems((prev) => {
+      const updatedItems = prev.items.map((item) => (
+        item.book_id === bookId ? {...item, quantity: newQuantity} : item
+      ));
+      return {...prev, items: updatedItems}
+    })
+  }
+
+  const handleQuantityBlur = async(bookId, newValue) => {
+
+    if(newValue === "" || isNaN(parseInt(newValue))){
+      const oldQuantity = prevQuantities[bookId];
+      setCartItems((prev) => {
+        const updatedItems = prev.items.map((item) => (
+          item.book_id === bookId ? {...item, quantity: oldQuantity} : item
+        ))
+
+        return {...prev, items: updatedItems}
+      })
+
+      return
+    }
+
+    const newQuantity = parseInt(newValue);
 
     const res = await fetch(Endpoints.UPDATE_BOOK_QUANTITY(userEmail, bookId, newQuantity), {
       method: "PATCH",
@@ -81,27 +144,18 @@ const CartModal = () => {
     })
 
     if(res.ok){
-      setCartItems((prev) => {
-        const updatedItems = prev.items.map((item) => (
-          item.book_id === bookId ? {...item, quantity: newQuantity, total: item.price * newQuantity} : item
-        ));
-
-        const updatedTotal = updatedItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
-
-        return {
-          ...prev, 
-          items: updatedItems,
-          total_price: updatedTotal
-        }
-      })
+      updateCartItemQuantity(bookId, newQuantity)
     } else {
-      console.error("Error: ", res.text())
+      console.error("Error updating quantity")
     }
   }
 
   useEffect(() => {
-    fetchData(Endpoints.CART_ITEMS(userEmail), setCartItems)
-  }, [])
+    if(!cartItems){
+      fetchData(Endpoints.CART_ITEMS(userEmail), setCartItems)  
+    }
+    
+  }, [cartItems, userEmail, setCartItems])
 
   return (
     <div className="menu" onClick={e => handleBackdropClick(e, setIsCartModalOpen)}>
@@ -189,7 +243,10 @@ const CartModal = () => {
                               <div className="cart-body__minus"></div>
                             </div>
 
-                            <input type="text" className="cart-body__quantity-input" value={ item.quantity } />
+                            <input type="text" className="cart-body__quantity-input" value={ item.quantity === 0 ? "" : item.quantity } min="1" max="999"
+                            onFocus={() => handleFocus(item.book_id)}
+                            onChange={(e) => handleQuantityChangeLocal(item.book_id, e.target.value)}
+                            onBlur={(e) => handleQuantityBlur(item.book_id, e.target.value)}/>
 
                             <div className="cart-body__quantity-feature plus" onClick={() => changeQuantity(item.book_id, "add")}>
                               <div className="cart-body__plus"></div>
@@ -224,15 +281,18 @@ const CartModal = () => {
                       </div>
 
                       <div className="cart-body__footer-row">
-                        <p className="cart-body__footer-text-smaller">
+                        { console.log(isBonusesInfoModalOpen) }
+                        <p className="cart-body__footer-text-smaller" >
                           Бонуси за замовлення
                           <Image src="/icons/info.svg" className="cart-body__footer-text-image" 
-                          alt="" width="16" height="16" />
+                          alt="" width="16" height="16" onClick={() => setIsBonusesInfoModalOpen(!isBonusesInfoModalOpen)}/>
                         </p>
                         <p className="cart-body__footer-text-bonuses">
                           + {Math.ceil(cartItems.total_price / 2)} бонусів
                         </p>
                       </div>
+
+                      { isBonusesInfoModalOpen && <BonusesInfoModal /> }
 
                       <button className="cart-body__submit-btn">
                         Перейти до оформлення замовлення
