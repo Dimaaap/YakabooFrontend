@@ -69,7 +69,7 @@ export const Header = () => {
                 { isAuthenticated && (
                     <Link className="header__link cart-link" href="#" onClick={() => setIsCartModalOpen(true) }>
                         <Image src="/icons/cart.svg" alt="" className="header__link-icon" width="20" height="20" />
-                        { cartItems.items?.length > 0 && (<span className="header__cart-items-count">{ cartItems.items.length }</span>) }
+                        { cartItems?.items?.length > 0 && (<span className="header__cart-items-count">{ cartItems.items.length }</span>) }
                     </Link>    
                 ) }
                 

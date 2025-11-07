@@ -45,7 +45,10 @@ export const FlashMessageWithAgreement = ({ message, onConfirm, onClose }) => {
                 onClick={ onConfirm }>
                     Видалити
                 </button>
-                <button className="flash-message__ok-button btn" type="button" onClick={ handleClose }>
+                <button className="flash-message__ok-button btn" type="button" onClick={ () => {
+                    onConfirm()
+                    handleClose()
+                    } }>
                     OK
                 </button>
             </div>

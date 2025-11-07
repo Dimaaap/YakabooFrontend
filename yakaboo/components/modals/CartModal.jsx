@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { useCartModalStore, useCartStore } from '../../states'
 import { CookiesWorker, fetchData, handleBackdropClick } from '../../services'
-import { ModalCloseBtn } from '../shared'
+import { FlashMessageWithAgreement, ModalCloseBtn } from '../shared'
 import Endpoints from '../../endpoints'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -15,16 +15,20 @@ const CartModal = () => {
   const { cartItems, setCartItems, clearCart, updateCartItemQuantity } = useCartStore();
   const [prevQuantities, setPrevQuantities] = useState({})
   const [isBonusesInfoModalOpen, setIsBonusesInfoModalOpen] = useState(false);
+  const [showFlashMessage, setShowFlashMessage] = useState(false);
 
   const userEmail = CookiesWorker.get("email")
 
-  const deleteAllItemsFromCartHandler = async () => {
+  const deleteAllItemsFromCartHandler = () => {
+    setShowFlashMessage(true)
+  }
+
+  const handleDeleteAll = async() => {
     const res = await fetch(Endpoints.CLEAR_CART(userEmail), {
       method: "POST"
     })
-    
+
     if(res.ok){
-      console.log("deleted")
       clearCart()
       console.log(cartItems)
     } else {
@@ -151,14 +155,14 @@ const CartModal = () => {
   }
 
   useEffect(() => {
-    if(!cartItems){
-      fetchData(Endpoints.CART_ITEMS(userEmail), setCartItems)  
-    }
+    fetchData(Endpoints.CART_ITEMS(userEmail), setCartItems)
     
-  }, [cartItems, userEmail, setCartItems])
+  }, [userEmail])
 
   return (
     <div className="menu" onClick={e => handleBackdropClick(e, setIsCartModalOpen)}>
+      { showFlashMessage && <FlashMessageWithAgreement message="Ви впевнені, що хочете видалити всі товари з кошика?"
+      onConfirm={handleDeleteAll} onClose={() => setShowFlashMessage(false)}/> }
       <div className={`menu__content cart-content ${isCartModalOpen ? 'active': ''}`}>
         <div className="menu__header cart-header">
             <p className="cart-header__title">

@@ -66,3 +66,5 @@ export const OrderContainer = dynamic(() => import('../orders/OrderContainer'));
 
 export const MobileApp = dynamic(() => import("../shared/MobileApp"));
 export const DownloadFile = dynamic(() => import("../shared/DownloadFile"))
+
+export const CartInfo = dynamic(() => import("../shared/CartInfo"))

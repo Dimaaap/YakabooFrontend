@@ -1,0 +1,72 @@
+@use "../helpers" as *;
+
+.cart-info {
+    background-color: var(--color-light);
+    border-radius: rem(10);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1%;
+
+    &__left-component {
+        display: flex;
+        align-items: start;
+        gap: rem(10);
+        width: 50%;
+    }
+
+    &__image-wrapper {
+        background-color: var(--color-pink-10);
+        padding: 1%;
+        border-radius: rem(50);
+    }
+
+    &__text-content {
+        display: flex;
+        flex-direction: column;
+        gap: rem(2);
+    }
+
+    &__cart-header {
+        font-weight: 500;
+        font-size: rem(18);
+    }
+
+    &__cart-price {
+        font-weight: 500;
+        font-size: rem(14);
+    }
+
+    &__right-component {
+        display: flex;
+        align-items: start;
+        gap: rem(5);
+        font-size: rem(14);
+        width: 20%;
+        text-align: right;
+        justify-content: right;
+    }
+
+    &__order-btn {
+        background-color: var(--color-pink-10);
+        color: var(--color-light);
+        font-weight: 500;
+        border-radius: rem(10);
+        width: rem(220);
+        padding-block: 4%;
+        text-align: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+
+    &__close-btn {
+        background: transparent;
+        border: none;
+        margin-top: -2%;
+        padding: 0;
+    }
+}
