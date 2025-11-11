@@ -285,7 +285,6 @@ const CartModal = () => {
                       </div>
 
                       <div className="cart-body__footer-row">
-                        { console.log(isBonusesInfoModalOpen) }
                         <p className="cart-body__footer-text-smaller" >
                           Бонуси за замовлення
                           <Image src="/icons/info.svg" className="cart-body__footer-text-image" 
