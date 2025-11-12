@@ -21,7 +21,7 @@
         width: 23%;
         display: flex;
         flex-direction: column;
-        gap: rem(5);
+        gap: rem(10);
     }
 
     &__cart-content {
@@ -116,6 +116,179 @@
                     filter: invert(39%) sepia(83%) saturate(447%) hue-rotate(78deg) brightness(92%) contrast(90%);
                 }
             }
+        }
+    }
+
+    &__payment-info {
+        background-color: var(--color-light);
+        border-radius: rem(10);
+        font-size: rem(14);
+        display: flex;
+        flex-direction: column;
+        gap: rem(10);
+    }
+
+    &__payment {
+        &-header {
+            padding: 4%;
+            display: flex;
+            gap: rem(12);
+            flex-direction: column;
+            border-bottom: rem(2) solid var(--color-gray-40);
+        }
+
+        &-text {
+            width: 75%;
+            font-weight: 500;
+        }
+
+        &-btn {
+            border-radius: rem(5);
+            font-weight: 500;
+            padding-block: 3%;
+            transition: all 0.2s ease;
+
+            &.order-btn {
+                padding-block: 5%;
+                border: none;
+                color: var(--color-light);
+                font-weight: 600;
+                background-color: var(--color-red-10);
+                font-size: rem(12);
+
+                &:hover {
+                    opacity: 0.8;
+                }
+            }
+
+            &.gray-btn {
+                background-color: var(--color-gray-40);
+                padding-inline: 5%;
+                border: none;
+                font-size: rem(12);
+                color: var(--color-gray-30);
+                font-weight: 600;
+            }
+        }
+
+        &-text-row {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        &-additional-text {
+            font-weight: 500; 
+        }
+
+        &-link {
+            color: var(--color-blue-10);
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
+        &-body {
+            padding: 4%;
+            padding-top: 2%;
+            display: flex;
+            flex-direction: column;
+            gap: rem(10);
+        }
+
+        &-bill-row {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            &:nth-child(3) {
+                margin-bottom: 2%;
+            }
+        }
+
+        &-total {
+            font-size: rem(20);
+            &-sum {
+                &.bold {
+                    font-size: rem(20);
+                }
+
+                &.smaller {
+                    color: var(--color-gray-30);
+                    font-weight: 500;
+                }
+
+                &.blue {
+                    font-weight: 600;
+                    font-size: rem(14);
+                    color: var(--color-blue-10);
+                }
+            }
+        }
+
+        &-notes {
+            border-bottom: rem(2) solid var(--color-gray-40);
+            padding-block: 4%;
+            padding-top: 2%;
+
+            &-text {
+                color: var(--color-gray-30);
+                font-weight: 500;
+            }
+        }
+
+        &-type {
+            color: var(--color-gray-30);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: rem(4);
+
+            & img {
+                cursor: pointer;
+            }
+        }
+
+        &-bonuses {
+            border-bottom: rem(2) solid var(--color-gray-40);
+            border-top: rem(2) solid var(--color-gray-40);
+            padding-block: 4%;
+        }
+
+        &-footer {
+            padding: 4%;
+            padding-block: 4%;
+            padding-top: 0;
+            display: flex;
+            flex-direction: column;
+            gap: rem(10);
+        }
+    }
+
+     &__continue-shopping {
+            color: var(--color-blue-10);
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.2s ease;
+
+            &:hover {
+                text-decoration: underline
+            }
+    }
+
+    &__advert {
+        border-bottom: rem(2) solid var(--color-gray-40);
+        padding-bottom: 4%;
+        padding-top: 2%;
+
+        &-text {
+            color: var(--color-green-10);
+            font-weight: 500;
+            font-size: rem(12);
         }
     }
 

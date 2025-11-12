@@ -22,6 +22,7 @@ export const CheckoutClient = () => {
     const [ selectedDeliveryCountry, setSelectedDeliveryCountry ] = useState(null)
     const [ countries, setCountries ] = useState([])
     const [ selectedCity, setSelectedCity ] = useState(null)
+    const [ selectedDeliveryOption, setSelectedDeliveryOption ] = useState(0)
     const { cartItems, setCartItems } = useCartStore();
 
     const selectFieldsCommonStyles = {
@@ -62,6 +63,68 @@ export const CheckoutClient = () => {
             fontFamily: "Montserrat"
         })
     }
+
+    const deliveryOptions = {
+
+            yakaboo_shop_price: {
+                htmlFieldName: "YakabooShop",
+                label: "Самовивіз з магазину Yakaboo, Хрещатик 22, у Головпоштамті",
+                icon: "icons/social/yakaboo-small.svg",
+                deliveryTime: "1-3 дні",
+            },
+
+            new_post_department_price: {
+                htmlFieldName: "newPostToMailbox",
+                label: "Поштомат Нова Пошта",
+                icon: "/icons/social/new-post.svg",
+                deliveryTime: "1-3 дні",
+                hasFree: "від 600 грн безкоштовно",
+                formId: 1
+            },
+
+            new_post_office_price: {
+                htmlFieldName: "newPostToOffice",
+                label: "Відділення Нова Пошта",
+                icon: "/icons/social/new-post.svg",
+                deliveryTime: "1-3 дні",
+                hasFree: "від 799 безкоштовно",
+                formId: 2
+            },
+
+            meest_post_price: {
+                htmlFieldName: "meestPost",
+                label: "Meest ПОШТА",
+                icon: "/icons/social/meest-post.svg",
+                deliveryTime: "1-3 дні",
+                formId: 3
+            },
+
+            new_post_courier_price: {
+                htmlFieldName: "newPostCourier",
+                label: "Кур'єр Нова Пошта",
+                icon: "/icons/social/new-post.svg",
+                deliveryTime: "1-3 дні",
+                formId: 4
+            },
+
+            ukrpost_department_price: {
+                htmlFieldName: "ukrpostOffice",
+                label: "Відділення Укрпошта",
+                icon: "/icons/social/ukrpost.svg",
+                deliveryTime: "1-3 дні",
+                formId: 5
+            },
+
+            ukrpost_courier_price: {
+                htmlFieldName: "urkpostCourier",
+                label: "Кур'єр Укрпошта",
+                icon: "/icons/social/ukrpost.svg",
+                deliveryTime: "1-4 дні",
+                formId: 6
+            }
+            
+        }
+
 
     useEffect(() => {
         fetchData(Endpoints.ALL_COUNTRIES, setCountries, "countries")
@@ -121,6 +184,7 @@ export const CheckoutClient = () => {
 
     return (
         <div className="checkout">
+            { console.log(selectedCity) }
             <h2 className="checkout__title">
                 Оформлення замовлення
             </h2>
@@ -253,7 +317,58 @@ export const CheckoutClient = () => {
 
                             <div className="checkout__form-delivery-methods">
 
-                                <div className="checkout__form-delivery-method">
+                                { selectedCity?.delivery_terms && 
+                                    Object.entries(selectedCity.delivery_terms).map(([key, value], index)  => {
+                                        if(
+                                            ["id", "city_id", "country_id"].includes(key) || value === null
+                                        ) return null
+
+                                        const option = deliveryOptions[key]
+
+                                        if(!option) return null
+
+                                        return (
+                                            <div className="checkout__form-delivery-method" key={ index }>
+                                                <label htmlFor={ option.htmlFieldName } className="checkout__form-label delivery-label">
+                                                    <div className="checkout__form-label-main-container">
+                                                        <div className="checkout__form-default-radio">
+                                                            <input type="radio" name="deliveryMethoOption" id={ option.htmlFieldName }
+                                                            value={ option.htmlFieldName } className="checkout__form-default-radio-input" />
+                                                        </div>
+
+                                                        <div className="checkout__form-delivery-info">
+                                                            <div className="checkout__form-delivery-info-logo">
+                                                                <span className="checkout__form-delivery-info-logo-icon">
+                                                                    <Image src={ option.icon } alt="" width="18" height="18" />
+                                                                </span>
+                                                                <span className="checkout__form-delivery-info-logo-title">
+                                                                    { option.label }
+                                                                </span>
+                                                            </div>
+                                                            <div className="checkout__form-delivery-description">
+                                                                <span className="checkout__form-delivery-description-part">
+                                                                    { `${value} грн` || "Безкоштовно" } 
+                                                                </span>
+                                                                <div className="separator-dot"></div>
+                                                                <span className="checkout__form-delivery-description-part">
+                                                                    {`термін доставки ${option.deliveryTime}`}
+                                                                </span>
+                                                                { option?.hasFree && (<div className="separator-dot"></div>) }
+                                                                { option?.hasFree && (
+                                                                    <span className="checkout__form-delivery-description-part">
+                                                                        { option.hasFree }
+                                                                    </span>
+                                                                ) }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        )
+                                    })
+                                }
+
+                                {/* <div className="checkout__form-delivery-method">
                                     <label htmlFor="newPostToMailbox" className="checkout__form-label delivery-label">
                                         <div className="checkout__form-label-main-container">
                                             <div className="checkout__form-default-radio">
@@ -650,7 +765,7 @@ export const CheckoutClient = () => {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </form>
@@ -817,7 +932,8 @@ export const CheckoutClient = () => {
                                 </button>
                             </div>
                             <p className="checkout__payment-additional-text">
-                                За наявності бонусів їх використання можливе після авторизації
+                                За наявності бонусів їх використання можливе після {" "}
+                                <span className="checkout__payment-link">авторизації</span>
                             </p>
                         </div>
 
@@ -826,12 +942,12 @@ export const CheckoutClient = () => {
                                 <h5 className="checkout__payment-total">
                                     До сплати
                                 </h5>
-                                <h5 className="checkout__payment-total-sum">
-                                    610 грн
+                                <h5 className="checkout__payment-total-sum bold">
+                                    { cartItems?.total_price + 60 } грн
                                 </h5>
                             </div>
                             <div className="checkout__payment-bill-row">
-                                <p className="checkout__payment-type">
+                                <p className="checkout__payment-type smaller">
                                     { cartItems?.items?.length } {" "} { wordDeclension(cartItems?.items?.length) }
                                 </p>
                                 <p className="checkout__payment-total-sum smaller">
@@ -839,7 +955,7 @@ export const CheckoutClient = () => {
                                 </p>
                             </div>
                             <div className="checkout__payment-bill-row">
-                                <p className="checkout__payment-type">
+                                <p className="checkout__payment-type smaller">
                                     Доставка
                                 </p>
                                 <p className="checkout__payment-total-sum smaller">
@@ -860,7 +976,7 @@ export const CheckoutClient = () => {
                             </div>
 
                             <div className="checkout__payment-notes">
-                                <span className="checkout__payment-additional-text">
+                                <span className="checkout__payment-notes-text">
                                     Відправляючи замовлення, я підтверджую, що прочитав 
                                     і згоден(а) з <Link href="/conditions-of-use" className="checkout__payment-link">
                                         Умовами використання
@@ -877,7 +993,7 @@ export const CheckoutClient = () => {
                         </div>
 
                         <div className="checkout__payment-footer">
-                            <button className="checkout__btn order-btn red-btn" type="submit">
+                            <button className="checkout__payment-btn order-btn red-btn" type="submit">
                                 Підтвердити замовлення
                             </button>
                             <p className="checkout__continue-shopping">
