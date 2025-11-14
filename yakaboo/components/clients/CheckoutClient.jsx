@@ -1,23 +1,17 @@
 "use client"
 
 import PhoneInput from "react-phone-input-2"
-import { CookiesWorker, fetchData } from "../../services"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { fetchData } from "../../services"
+import { useEffect, useMemo, useState } from "react"
 import Select from "react-select";
 import Endpoints from "../../endpoints"
 import Image from "next/image";
 import { useCartStore } from "../../states";
 import { wordDeclension } from "../../services/word-declension.service";
 import Link from "next/link";
-import { deliveryOptions, paymentOptions } from "../../services/checkoutOptions.service";
+import { deliveryOptions, paymentOptions, userData } from "../../services/checkoutOptions.service";
 
 export const CheckoutClient = () => {
-    const userData = {
-        firstName: CookiesWorker.get("first_name"),
-        lastName: CookiesWorker.get("last_name"),
-        phone: CookiesWorker.get("phone_number"),
-        email: CookiesWorker.get("email")
-    }
 
     const [ selectedCountry, setSelectedCountry ] = useState("UA");
     const [ selectedDeliveryCountry, setSelectedDeliveryCountry ] = useState(null)
@@ -281,9 +275,11 @@ export const CheckoutClient = () => {
                                         if(!option) return null
 
                                         return (
-                                            <div className={`checkout__form-delivery-method ${selectedDeliveryOption === index ? "active" : ""}`} 
+                                            <div className={`checkout__form-delivery-method`} 
                                             key={ index } onClick={ () => handleSelectNewLabel(index, value) }>
-                                                <label htmlFor={ option.htmlFieldName } className="checkout__form-label delivery-label">
+                                                <label htmlFor={ option.htmlFieldName } 
+                                                className={`checkout__form-label delivery-label 
+                                                ${selectedDeliveryOption === index ? "active" : ""}`}>
                                                     <div className="checkout__form-label-main-container">
                                                         <div className="checkout__form-default-radio">
                                                             <input type="radio" name="deliveryMethoOption" id={ option.htmlFieldName }
@@ -318,6 +314,10 @@ export const CheckoutClient = () => {
                                                         </div>
                                                     </div>
                                                 </label>
+
+                                                { selectedDeliveryOption === index ? (
+                                                   option?.formContent
+                                                ) : null }
                                             </div>
                                         )
                                     })

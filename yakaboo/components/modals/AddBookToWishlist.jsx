@@ -87,7 +87,7 @@ export const AddBookToWishlistModal = ({ book }) => {
 
             if(response.ok){
                 const result = await response.json()
-                setWishlists(newWishlist)
+                setWishlists((prev) => [...prev, newWishlist])
                 setIsAddToWishlistModalOpen(false)
                 setShowFlashMessage(true)
                 setFlashMessage(`Список бажань ${newWishlist} успішно створений`)
@@ -116,13 +116,13 @@ export const AddBookToWishlistModal = ({ book }) => {
                         Додавання товару до списку бажань
                     </h5>
                     <div className="add-to-wishlist__checkboxes-form">
-                        { wishlists.length > 0 ? (
+                        { wishlists !== null ? (
                             wishlists.map((wishlist, index) => (
                                 <div className="add-to-wishlist__checkbox-row" key={ index }>
                                     <label className="add-to-wishlist__form-label filters__form-label custom-checkbox">
                                         <input className="add-to-wishlist__checkbox-field filters__form-checkbox" 
                                         type="checkbox" id={ wishlist.title } name={ wishlist.title } value={wishlist.title}
-                                        checked={ selectedWishlist == wishlist.id } onChange={() => onCheckboxChange(wishlist)} />  
+                                        checked={ selectedWishlist == wishlist?.id } onChange={() => onCheckboxChange(wishlist)} />  
                                         <span className="filters__form-custom-box add-to-wishlist__custom-box filters__form-custom-box"></span>
                                         { wishlist.title }      
                                     </label>
