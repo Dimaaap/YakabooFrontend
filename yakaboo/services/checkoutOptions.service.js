@@ -64,7 +64,7 @@ export const deliveryOptions = {
         icon: "/icons/social/new-post.svg",
         deliveryTime: "1-3 дні",
         hasFree: "від 600 грн безкоштовно",
-        formContent: (
+        formContent: (register, watch, errors) => (
             <div className="checkout__form-delivery-method-data-form">
                 <div className="checkout__form-delivery-method-input-row">
                     <div className="checkout__form-delivery-method-input-container">
@@ -72,7 +72,15 @@ export const deliveryOptions = {
                             Адреса відділення *
                         </label>
                         <input type="text" className="checkout__form-delivery-method-input"
-                        placeholder="Адреса відділення" minLength={2} name="newPostDeliveryAddress" />
+                        { ...register("newPostDeliveryAddress", 
+                            { 
+                                required: watch("deliveryMethod") === "newPostToMailbox" ? "Поле обов'язкове" : false,
+                                minLength: {
+                                value: 2,
+                                message: "Адреса повинна містити хоча б 2 символи"
+                            }}) }
+                        placeholder="Адреса відділення" name="newPostDeliveryAddress" />
+                        { errors.newPostDeliveryAddress && <p className="checkout__form-error-message">{ errors.newPostDeliveryAddress.message }</p> }
                     </div>
                 </div>
             </div>  
@@ -86,7 +94,7 @@ export const deliveryOptions = {
         icon: "/icons/social/new-post.svg",
         deliveryTime: "1-3 дні",
         hasFree: "від 799 безкоштовно",
-        formContent: (
+        formContent: (register, watch, errors) => (
             <div className="checkout__form-delivery-method-data-form">
                 <div className="checkout__form-delivery-method-input-row">
                     <div className="checkout__form-delivery-method-input-container">
@@ -94,7 +102,17 @@ export const deliveryOptions = {
                             Адреса поштомату *
                         </label>
                         <input type="text" className="checkout__form-delivery-method-input"
-                        placeholder="Адреса поштомату" minLength={2} name="newPostPostomatAddress" />
+                        { ...register("newPostPostomatAddress", {
+                            required: watch("deliveryMethod") === "newPostToOffice" ? "Поле обов'язкове": false,
+                            minLength: {
+                                value: 2,
+                                message: "Адреса поштомату повинна містити хоча б 2 символи"
+                            }
+                        }) }
+                        placeholder="Адреса поштомату" name="newPostPostomatAddress" />
+                        { errors.newPostPostomatAddress && <p className="checkout__form-error-message">
+                            { errors.newPostPostomatAddress.message }
+                        </p> }
                     </div>
                 </div>
             </div>  
@@ -107,7 +125,7 @@ export const deliveryOptions = {
         label: "Meest ПОШТА",
         icon: "/icons/social/meest-post.svg",
         deliveryTime: "1-3 дні",
-        formContent: (
+        formContent: (register, watch, errors) => (
             <div className="checkout__form-delivery-method-data-form">
                 <div className="checkout__form-delivery-method-warning">
                     <Image src="/icons/red-info.svg" alt="" width="20" height="20" />
@@ -122,7 +140,14 @@ export const deliveryOptions = {
                             Адреса відділення *
                         </label>
                         <input type="text" className="checkout__form-delivery-method-input"
-                        placeholder="Введіть адресу" minLength={2} name="meestOfficeAddress" />
+                        placeholder="Введіть адресу" { ...register("meestOfficeAddress", {
+                            required: watch("deliveryMethod") === "meestPost" ? "Поле обов'язкове" : false,
+                            minLength: {
+                                value: 2,
+                                message: "Адреса відділення Meest ПОШТА повинна містити хоча б 2 символи"
+                            }
+                        }) } name="meestOfficeAddress" />
+                        { errors.meestToOfficeAddress && <p className="checkout__form-error-message">{ errors.meestToOfficeAddress.message }</p> }
                     </div>
                 </div>
             </div>
@@ -135,32 +160,55 @@ export const deliveryOptions = {
         label: "Кур'єр Нова Пошта",
         icon: "/icons/social/new-post.svg",
         deliveryTime: "1-3 дні",
-        formContent: (
+        formContent: (register, watch, errors) => (
             <div className="checkout__form-delivery-method-data-form">
                 <div className="checkout__form-delivery-method-input-row gridded gridded-3">
                     <div className="checkout__form-delivery-method-input-container">
-                        <label htmlFor="deliveryAddress" className="checkout__form-delivery-method-label">
+                        <label htmlFor="newPostCourierDeliveryAddress" className="checkout__form-delivery-method-label">
                             Назва вулиці *
                         </label>
                         <input type="text" className="checkout__form-delivery-method-input"
-                        placeholder="Назва вулиці" minLength={2} name="deliveryAddress" />
+                        placeholder="Назва вулиці" {...register("newPostCourierDeliveryAddress", {
+                            
+                            minLength: {
+                                required: watch("deliveryMethod") === "newPostCourier" ? "Поле обов'язкове" : false,
+                                value: 2,
+                                message: "Назва вулиці повинна містити хоча б 2 символи"
+                            }
+                        }
+                        )} name="newPostCourierDeliveryAddress" />
+                        { errors.newPostCourierDeliveryAddress && <p className="checkout__form-error-message">
+                            { errors.newPostCourierDeliveryAddress.message}
+                        </p> }
                     </div>
 
                     <div className="checkout__form-delivery-method-input-container">
-                        <label htmlFor="deliveryHouse" className="checkout__form-delivery-method-label">
+                        <label htmlFor="newPostCourierHouseNumber" className="checkout__form-delivery-method-label">
                             Будинок *
                         </label>
                         <input type="text" className="checkout__form-delivery-method-input"
-                        placeholder="Будинок" name="deliveryHouse" />
+                        { ...register("newPostCourierHouseNumber", {
+                            required: watch("deliveryMethod") === "newPostCourier" ? "Поле обов'язкове" : false,
+                        }) }
+                        placeholder="Будинок" name="newPostCourierHouseNumber" />
+                        { errors.newPostCourierHouseNumber && <p className="checkout__form-error-message">
+                            { errors.newPostCourierHouseNumber.message}
+                        </p> }
                     </div>
                     
                     <div className="checkout__form-delivery-method-input-container">
-                        <label htmlFor="deliveryApartment" className="checkout__form-delivery-method-label">
+                        <label htmlFor="newPostCourierDeliveryApartment" className="checkout__form-delivery-method-label">
                             Кв./Офіс
                         </label>
                         
                         <input type="number"className="checkout__form-delivery-method-input"
-                        placeholder="Кв./Офіс" name="deliveryApartment" />
+                        { ...register("newPostCourierDeliveryApartment", {
+                            required: watch("deliveryMethod") === "newPostCourier" ? "Поле обов'язкове" : false,
+                        }) }
+                        placeholder="Кв./Офіс" name="newPostCourierDeliveryApartment" />
+                        { errors.newPostCourierDeliveryApartment && <p className="checkout__form-error-message">
+                            { errors.newPostCourierDeliveryApartment.message}
+                        </p> }
                     </div>
                 </div>
             </div> 
@@ -173,40 +221,82 @@ export const deliveryOptions = {
         label: "Відділення Укрпошта",
         icon: "/icons/social/ukrpost.svg",
         deliveryTime: "1-3 дні",
-        formContent: (
+        formContent: (register, watch, errors) => (
             <div className="checkout__form-delivery-method-data-form">
                 <div className="checkout__form-delivery-method-input-row">
                     <div className="checkout__form-delivery-method-input-container">
-                        <label htmlFor="deliveryFirstName" className="checkout__form-delivery-method-label">
+                        <label htmlFor="ukrpostOfficeUserName" className="checkout__form-delivery-method-label">
                             Ім'я *
                         </label>
-                        <input type="text" defaultValue={ userData.firstName } className="checkout__form-delivery-method-input"
-                        placeholder="Введіть ім'я отримувача" minLength={2} name="deliveryFirstName" />
+                        <input type="text" 
+                        { ...register("ukrpostOfficeUserName", {
+                            required: watch("deliveryMethod") === "ukrpostOffice" ? "Поле обов'язкове" : false,
+                            minLength: {
+                                value: 2,
+                                message: "Введіть хоча б 2 символи"
+                            }
+                        }) }
+                        className="checkout__form-delivery-method-input"
+                        placeholder="Введіть ім'я отримувача" name="ukrpostOfficeUserName" />
+                        { errors.ukrpostOfficeUserName && <p className="checkout__form-error-message">
+                            { errors.ukrpostOfficeUserName.message }
+                        </p> }
                     </div>
                     
                     <div className="checkout__form-delivery-method-input-container">
-                        <label htmlFor="deliveryLastName" className="checkout__form-delivery-method-label">
+                        <label htmlFor="ukrpostOfficerUserLastName" className="checkout__form-delivery-method-label">
                             Прізвище *
                         </label>
-                        <input type="text" defaultValue={ userData.lastName } className="checkout__form-delivery-method-input"
-                        placeholder="Введіть прізвище отримувача" minLength={2} name="deliveryLastName" />
+                        <input type="text" 
+                        { ...register("ukrpostOfficerUserLastName", {
+                            required: watch("deliveryMethod") === "ukrpostOffice" ? "Поле обов'язкове" : false,
+                            minLength: {
+                                value: 2,
+                                message: "Введіть хоча б 2 символи"
+                            }
+                        }) }
+                        className="checkout__form-delivery-method-input"
+                        placeholder="Введіть прізвище отримувача" name="ukrpostOfficerUserLastName" />
+                        { errors.ukrpostOfficerUserLastName && <p className="checkout__form-error-message">
+                            { errors.ukrpostOfficerUserLastName.message }
+                        </p> }
                     </div>
                     <div className="checkout__form-delivery-method-input-container">
-                        <label htmlFor="deliveryMiddleName" className="checkout__form-delivery-method-label">
+                        <label htmlFor="ukrpostOfficeUserMiddleName" className="checkout__form-delivery-method-label">
                             По батькові *
                         </label>
                         <input type="text"className="checkout__form-delivery-method-input"
-                        placeholder="Введіть по батькові отримувача" minLength={2} name="deliveryMiddleName" />
+                        { ...register("ukrpostOfficeUserMiddleName", {
+                            required: watch("deliveryMethod") === "ukrpostOffice" ? "Поле обов'язкове" : false,
+                            minLength: {
+                                value: 2,
+                                message: "Введіть хоча б 2 символи"
+                            }
+                        }) }
+                        placeholder="Введіть по батькові отримувача" name="ukrpostOfficeUserMiddleName" />
+                        { errors.ukrpostOfficeUserMiddleName && <p className="checkout__form-error-message">
+                            { errors.ukrpostOfficeUserMiddleName.message }
+                        </p> }
                     </div>
                 </div>
                 <div className="checkout__form-delivery-method-input-row">
                     <div className="checkout__form-delivery-method-input-container bigger-container">
-                        <label htmlFor="officeStreet" className="checkout__form-delivery-method-label">
+                        <label htmlFor="ukrpostOfficeAddres" className="checkout__form-delivery-method-label">
                             Адреса відділення*
                         </label>
 
-                        <input type="text" className="checkout__form-delivery-method-input bigger-input" name="officeStreet"
+                        <input type="text" className="checkout__form-delivery-method-input bigger-input" name="ukrpostOfficeAddres"
+                        { ...register("ukrpostOfficeAddress", {
+                            required: watch("deliveryMethod") === "ukrpostOffice" ? "Поле обов'язкове" : false,
+                            minLength: {
+                                value: 2,
+                                message: "Введіть хоча б 2 символи"
+                            }
+                        }) }
                         placeholder="Введіть назву вулиці" />
+                        { errors.ukrpostOfficeAddress && <p className="checkout__form-error-message">
+                            { errors.ukrpostOfficeAddress.message }
+                        </p> }
                     </div>
                 </div>
             </div>    
@@ -215,62 +305,122 @@ export const deliveryOptions = {
 
     ukrpost_courier_price: 
     {
-        htmlFieldName: "urkpostCourier",
+        htmlFieldName: "ukrpostCourier",
         label: "Кур'єр Укрпошта",
         icon: "/icons/social/ukrpost.svg",
         deliveryTime: "1-4 дні",
-        formContent: (
+        formContent: (register, watch, errors) => (
             <div className="checkout__form-delivery-method-data-form">
                 <div className="checkout__form-delivery-method-input-row">
                     <div className="checkout__form-delivery-method-input-container">
-                        <label htmlFor="deliveryFirstName" className="checkout__form-delivery-method-label">
+                        <label htmlFor="ukrpostCourierUserName" className="checkout__form-delivery-method-label">
                             Ім'я *
                         </label>
-                        <input type="text" defaultValue={ userData.firstName } className="checkout__form-delivery-method-input"
-                        placeholder="Введіть ім'я отримувача" minLength={2} name="deliveryFirstName" />
+                        <input type="text" className="checkout__form-delivery-method-input"
+                        { ...register("ukrpostCourierUserName", {
+                            required: watch("deliveryMethod") === "ukrpostCourier" ? "Поле обов'язкове" : false,
+                            minLength: {
+                                value: 2,
+                                message: "Введіть хоча б 2 символи"
+                            }
+                        }) }
+                        placeholder="Введіть ім'я отримувача" name="ukrpostCourierUserName" />
+                        { errors.ukrpostCourierUserName && <p className="checkout__form-error-message">
+                            { errors.ukrpostCourierUserName.message }
+                        </p> }
                     </div>
                      
                     <div className="checkout__form-delivery-method-input-container">
-                        <label htmlFor="deliveryLastName" className="checkout__form-delivery-method-label">
+                        <label htmlFor="ukrpostCourierUserLastName" className="checkout__form-delivery-method-label">
                             Прізвище *
                         </label>
-                        <input type="text" defaultValue={ userData.lastName } className="checkout__form-delivery-method-input"
-                        placeholder="Введіть прізвище отримувача" minLength={2} name="deliveryLastName" />
+                        <input type="text" className="checkout__form-delivery-method-input"
+                        { ...register("ukrpostCourierUserLastName", {
+                            required: watch("deliveryMethod") === "ukrpostCourier" ? "Поле обов'язкове" : false,
+                            minLength: {
+                                value: 2,
+                                message: "Введіть хоча б 2 символи"
+                            }
+                        }) }
+                        placeholder="Введіть прізвище отримувача" name="ukrpostCourierUserLastName" />
+                        { errors.ukrpostCourierUserLastName && <p className="checkout__form-error-message">
+                            { errors.ukrpostCourierUserLastName.message }
+                        </p> }
                     </div>
                     
                     <div className="checkout__form-delivery-method-input-container">
-                        <label htmlFor="deliveryMiddleName" className="checkout__form-delivery-method-label">
+                        <label htmlFor="ukrpostCourierUserMiddleName" className="checkout__form-delivery-method-label">
                              По батькові *
                         </label>
                         <input type="text"className="checkout__form-delivery-method-input"
-                        placeholder="Введіть по батькові отримувача" minLength={2} name="deliveryMiddleName" />
+                        {...register("ukrpostCourierUserMiddleName", {
+                            required: watch("deliveryMethod") === "ukrpostCourier" ? "Поле обов'язкове" : false,
+                            minLength: {
+                                value: 2,
+                                message: "Введіть хоча б 2 символи"
+                            }
+                        })}
+                        placeholder="Введіть по батькові отримувача" name="ukrpostCourierUserMiddleName" />
+                        { errors.ukrpostCourierUserMiddleName && <p className="checkout__form-error-message">
+                            { errors.ukrpostCourierUserMiddleName.message }
+                        </p> }
                     </div>
                 </div>
                 
                 <div className="checkout__form-delivery-method-input-row gridded"> 
                     <div className="checkout__form-delivery-method-input-container bigger-container">
-                        <label htmlFor="deliveryStreet" className="checkout__form-delivery-method-label">
+                        <label htmlFor="ukrpostCourierAddress" className="checkout__form-delivery-method-label">
                             Назва вулиці*
                         </label>
-                        <input type="text" className="checkout__form-delivery-method-input" name="deliveryStreet"
+                        <input type="text" className="checkout__form-delivery-method-input" name="ukrpostCourierAddress"
+                        { ...register("ukrpostCourierAddress", {
+                            required: watch("deliveryMethod") === "ukrpostCourier" ? "Поле обов'язкове" : false,
+                            minLength: {
+                                value: 2,
+                                message: "Введіть хоча б 2 символи"
+                            }
+                        }) }
                         placeholder="Введіть назву вулиці" />
+                        { errors.ukrpostCourierAddress && <p className="checkout__form-error-message">
+                            { errors.ukrpostCourierAddress.message }
+                        </p> }
                     </div>
                     
                     <div className="checkout__form-delivery-method-input-container smaller-container">
-                        <label htmlFor="postIndex" className="checkout__form-delivery-method-label">
+                        <label htmlFor="ukrpostPostIndex" className="checkout__form-delivery-method-label">
                             Поштовий індекс *
                         </label>
-                        <input type="text" className="checkout__form-delivery-method-input smaller-input"
-                        placeholder="Поштовий індекс" name="postIndex" />
+                        <input type="number" className="checkout__form-delivery-method-input smaller-input"
+                        { ...register("ukrpostPostIndex", 
+                            {
+                                required: watch("deliveryMethod") === "ukrpostCourier" ? "Поле обов'язкове" : false,
+                                valueAsNumber: true,
+                                pattern: {
+                                    value: /^\d{5}$/,
+                                    message: "Неправильний формат індексу"
+                                }
+                            }
+                        ) }
+                        placeholder="Поштовий індекс" name="ukrpostPostIndex" />
+                        { errors.ukrpostPostIndex && <p className="checkout__form-error-message">
+                            { errors.ukrpostPostIndex.message }
+                        </p> }
                     </div>
                     
                     <div className="checkout__form-delivery-method-input-container smaller-container">
-                        <label htmlFor="houseNumber" className="checkout__form-delivery-method-label">
+                        <label htmlFor="ukrpostCourierHouseNumber" className="checkout__form-delivery-method-label">
                             Будинок *
                         </label>
                         
-                        <input type="text" className="checkout__form-delivery-method-input smaller-input"
-                        name="houseNumber" placeholder="Будинок" /> 
+                        <input type="number" className="checkout__form-delivery-method-input smaller-input"
+                        { ...register("ukrpostCourierHouseNumber", {
+                            required: watch("deliveryMethod") === "ukrpostCourier" ? "Поле обов'язкове" : false,
+                            valueAsNumber: true
+                        }) }
+                        name="ukrpostCourierHouseNumber" placeholder="Будинок" /> 
+                        { errors.ukrpostCourierHouseNumber && <p className="checkout__form-error-message">
+                            { errors.ukrpostCourierHouseNumber.message }
+                        </p> }
                     </div>
                     
                     <div className="checkout__form-delivery-method-input-container smaller-container">
@@ -278,7 +428,14 @@ export const deliveryOptions = {
                             Кв./Офіс
                         </label>
                         <input type="number" name="apartmentNumber" className="checkout__form-delivery-method-input smaller-input"
+                        { ...register("ukrpostCourierApartmentNumber", {
+                            required: watch("deliveryMethod") === "ukrpostCourier" ? "Поле обов'язкове" : false,
+                            valueAsNumber: true
+                        }) }
                         placeholder="Кв./Офіс" />
+                        { errors.ukrpostCourierApartmentNumber && <p className="checkout__form-error-message">
+                            { errors.ukrpostCourierApartmentNumber.message }
+                        </p> }
                     </div>
                 </div>
             </div>

@@ -328,6 +328,14 @@
             gap: rem(5);
         }
 
+        &-error {
+            &-message {
+                font-size: rem(14);
+                color: var(--color-red-10);
+                font-weight: 500;
+            }
+        }
+
         &-payment-method {
             display: flex;
             border: rem(1) solid var(--color-gray-50);
@@ -361,6 +369,11 @@
             background-color: var(--color-gray-40);
             font-weight: 500;
             outline: none;
+
+            &.error-input {
+                border-color: var(--color-red-10);
+                color: var(--color-red-10);
+            }
 
             &.checkbox-input {
                 width: rem(20);

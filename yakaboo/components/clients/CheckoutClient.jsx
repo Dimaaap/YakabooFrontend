@@ -1,15 +1,18 @@
 "use client"
 
-import PhoneInput from "react-phone-input-2"
-import { fetchData } from "../../services"
 import { useEffect, useMemo, useState } from "react"
-import Select from "react-select";
-import Endpoints from "../../endpoints"
-import Image from "next/image";
-import { useCartStore } from "../../states";
-import { wordDeclension } from "../../services/word-declension.service";
 import Link from "next/link";
+import Image from "next/image";
+import Select from "react-select";
+import PhoneInput from "react-phone-input-2"
+import { useForm, FormSubmit } from "react-hook-form";
+
+import Endpoints from "../../endpoints"
+import { useCartStore } from "../../states";
+import { fetchData } from "../../services"
+import { wordDeclension } from "../../services/word-declension.service";
 import { deliveryOptions, paymentOptions, userData } from "../../services/checkoutOptions.service";
+import { selectFieldsCommonStyles } from "../../services/characteristicsMap.service";
 
 export const CheckoutClient = () => {
 
@@ -17,57 +20,33 @@ export const CheckoutClient = () => {
     const [ selectedDeliveryCountry, setSelectedDeliveryCountry ] = useState(null)
     const [ countries, setCountries ] = useState([])
     const [ selectedCity, setSelectedCity ] = useState(null)
-    const [ selectedDeliveryOption, setSelectedDeliveryOption ] = useState(6)
-    const [ selectedPaymentOption, setSelectedPaymentOption ] = useState(0)
+    const [ selectedDeliveryOption, setSelectedDeliveryOption ] = useState("ukrpostCourier")
+    const [ selectedPaymentOption, setSelectedPaymentOption ] = useState("scholarPack")
     const [ deliveryPrice, setDeliveryPrice ] = useState(0);
     const [ editCartMode, setEditCartMode ] = useState(false);
     const { cartItems, setCartItems } = useCartStore();
+
+    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
+        defaultValues: {
+            firstName: userData.firstName || "",
+            lastName: userData.lastName || "",
+            phone: userData.phone || "",
+            email: userData.email || "",
+            charity: false,
+            otherPerson: false,
+            country: "",
+            city: "",
+            deliveryMethod: "ukrpostCourier",
+            paymentMethod: "scholarPack",
+            comment: ""
+        }
+    });
 
     const FREE_DELIVERY_FROM = 600;
 
     const getRestToFreeDelivery = (cartItemsPrice) => {
         return FREE_DELIVERY_FROM - cartItemsPrice;
     }
-
-    const selectFieldsCommonStyles = {
-        placeholder: (provided) => ({
-            ...provided,
-            color: "black"
-        }),
-
-        option: (provided, countries) => ({
-            ...provided,
-            backgroundColor: countries.isFocused ? "#E6E8EE" : "#F2F3F6",
-            border: "none",
-            paddingTop: 0,
-            marginTop: "0px",
-            fontWeight: 500,
-            color: countries.isSelected ? "#ff00c5" : "black",
-            borderBottom: "1px solid #E6E8EE",
-            paddingTop: "10px",
-            cursor: "pointer",
-            fontSize: "14px"
-        }),
-        control: (base) => ({
-            ...base,
-            width: "100%",
-            backgroundColor: "#F2F3F6",
-            color: "red",
-            fontWeight: 500,
-            height: "45px",
-            border: "none",
-            borderRadius: "10px",
-            paddingLeft: "5px",
-            fontSize: "14px"
-        }),
-        groupHeading: (base) => ({
-            ...base,
-            color: "black",
-            fontWeight: 500,
-            fontFamily: "Montserrat"
-        })
-    }
-
 
     useEffect(() => {
         fetchData(Endpoints.ALL_COUNTRIES, setCountries, "countries")
@@ -130,15 +109,19 @@ export const CheckoutClient = () => {
         }))
     }, [countries])
 
+    const onSubmit = async(data) => {
+        console.log(data);
+    }
+
     return (
-        <div className="checkout">
+        <form className="checkout" onSubmit={handleSubmit(onSubmit)}>
             <h2 className="checkout__title">
                 Оформлення замовлення
             </h2>
 
             <div className="checkout__content">
                 <div className="checkout__form-container">
-                    <form className="checkout__form">
+                    <div className="checkout__form">
                         <h5 className="checkout__form-title">
                             Контактні дані
                         </h5>
@@ -147,15 +130,41 @@ export const CheckoutClient = () => {
                                 <label htmlFor="firstName" className="checkout__form-label">
                                     Ім'я *
                                 </label>
-                                <input type="text" id="firstName" name="firstName" className="checkout__form-input" placeholder="Введіть ваше ім'я"
-                                defaultValue={userData.firstName} onChange={() => {}} />
+                                <input type="text" id="firstName" name="firstName" 
+                                {...register("firstName", {
+                                    required: "Ім'я обов'язкове",
+                                    minLength: {
+                                        value: 1,
+                                        message: "Мінімум 1 символ"
+                                    },
+                                    pattern: {
+                                        value: /^[A-Za-zА-Яа-яІіЇїЄєҐґ'-]{2,}$/,
+                                        message: "Ім'я може містити тільки букви"
+                                    }
+                                })}
+                                className={`checkout__form-input ${errors.firstName ? "error-input" : ""}`} placeholder="Введіть ваше ім'я" />
+
+                                { errors.firstName && <p className="checkout__form-error-message">{ errors.firstName.message }</p> }
                             </div>
                             <div className="checkout__form-input-container">
                                 <label htmlFor="lastName" className="checkout__form-label">
                                     Прізвище *
                                 </label>
-                                <input type="text" id="lastName" name="lastName" className="checkout__form-input" placeholder="Введіть ваше прізвище"
-                                defaultValue={userData.lastName} onChange={() => {}} />
+                                <input type="text" id="lastName" name="lastName" 
+                                className={`checkout__form-input ${ errors.lastName ? "error-input" : "" }`} placeholder="Введіть ваше прізвище"
+                                {...register("lastName", {
+                                    required: "Прізвище обов'язкове",
+                                    minLength: {
+                                        value: 1,
+                                        message: "Мінімум 1 символ",
+                                    },
+                                    pattern: {
+                                        value: /^[A-Za-zА-Яа-яІіЇїЄєҐґ'-]{2,}$/,
+                                        message: "Прізвище містить некоректні символи"
+                                    }
+                                })} />
+
+                                { errors.lastName && <p className="checkout__form-error-message">{ errors.lastName.message }</p> }
                             </div>
                         </div>
 
@@ -174,9 +183,9 @@ export const CheckoutClient = () => {
                                         "paddingInline": "2%", "outline": "none", "color": "black", "fontWeight": "500"
                                     }}
                                     preferredCountries={["ua"]}
-                                    onChange={ () => {} } 
+                                    onChange={ (value) => setValue("phone", value, { showValidate: true }) } 
                                     excludeCountries={["ru"]}
-                                    value={userData.phone}
+                                    value={watch("phone")}
                                     minLength={8}/>
                                     <input type="hidden" name="phone" id="phone" className="checkout__form-input" />
                                 </div>
@@ -188,14 +197,25 @@ export const CheckoutClient = () => {
                                 </label>
                                 
                                 <input type="email" name="email" id="email" placeholder="Введіть ваш email"
-                                className="checkout__form-input" defaultValue={userData.email} onChange={() => {}} />
+                                className={`checkout__form-input ${errors.email ? "error-input": ""}`} 
+                                { ...register("email", {
+                                    required: "Введіть email",
+                                    pattern: {
+                                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                        message: "Некоректний формат email"
+                                    }
+                                }) }/>
+
+                                { errors.email && <p className="checkout__form-error-message">{ errors.email.message }</p> }
                             </div>
                         </div>
 
                         <div className="checkout__form-input-row checks-row">
                             <div className="checkout__form-input-container horizontalized">
                                 <label htmlFor="charity" className="checkout__form-custom-checkbox">
-                                    <input type="checkbox" id="charity" name="charity" className="checkout__form-custom-checkbox-input" />
+                                    <input type="checkbox" id="charity" name="charity" 
+                                    { ...register("charity") }
+                                    className="checkout__form-custom-checkbox-input" />
                                     <span className="checkout__form-custom-checkbox-checkmark"></span>
                                     На благодійність
                                 </label>
@@ -203,15 +223,17 @@ export const CheckoutClient = () => {
 
                             <div className="checkout__form-input-container horizontalized">
                                  <label htmlFor="other-person" className="checkout__form-custom-checkbox">
-                                    <input type="checkbox" id="other-person" name="other-person" className="checkout__form-custom-checkbox-input" />
+                                    <input type="checkbox" id="other-person" name="other-person" 
+                                    { ...register("otherPerson") }
+                                    className="checkout__form-custom-checkbox-input" />
                                     <span className="checkout__form-custom-checkbox-checkmark"></span>
                                     Отримувач інша людина
                                 </label>
                             </div>
                         </div>
-                    </form>
+                    </div>
 
-                    <form className="checkout__form">
+                    <div className="checkout__form">
                         <h5 className="checkout__form-title">
                             Доставка
                         </h5>
@@ -227,7 +249,10 @@ export const CheckoutClient = () => {
                                         name="country"
                                         options={ countriesOptions }
                                         value={ selectedCountryOption }
-                                        onChange={ handleChangeSelectedCountry }
+                                        onChange={ (option) => {
+                                            setValue("country", option.value);
+                                            handleChangeSelectedCountry(option);
+                                        }  }
                                         placeholder={ selectedDeliveryCountry?.title }
                                         className="delivery-modal__input"
                                         styles={ selectFieldsCommonStyles }
@@ -249,8 +274,11 @@ export const CheckoutClient = () => {
                                         ? {value: selectedCity.title, label: selectedCity.title}
                                         : ''
                                     }
+                                    onChange={(option) => {
+                                        setValue("city", option.value);
+                                        handleChangeSelectedCity(option);
+                                    }}
                                     styles={ selectFieldsCommonStyles }
-                                    onChange={ handleChangeSelectedCity }
                                     placeholder={ selectedCity?.title }
                                     className="delivery-modal__input"
                                 />
@@ -276,15 +304,21 @@ export const CheckoutClient = () => {
 
                                         return (
                                             <div className={`checkout__form-delivery-method`} 
-                                            key={ index } onClick={ () => handleSelectNewLabel(index, value) }>
+                                            key={ index } onClick={() => {
+                                                setValue("deliveryMethod", option.htmlFieldName);
+                                                handleSelectNewLabel(index, value);
+                                            }}>
                                                 <label htmlFor={ option.htmlFieldName } 
                                                 className={`checkout__form-label delivery-label 
-                                                ${selectedDeliveryOption === index ? "active" : ""}`}>
+                                                ${watch("deliveryMethod") === option.htmlFieldName ? "active" : ""}`}>
                                                     <div className="checkout__form-label-main-container">
                                                         <div className="checkout__form-default-radio">
-                                                            <input type="radio" name="deliveryMethoOption" id={ option.htmlFieldName }
-                                                            value={ option.htmlFieldName } className="checkout__form-default-radio-input"
-                                                            checked={ selectedDeliveryOption === index } />
+                                                            <input type="radio" name="deliveryMethoOption" 
+                                                            { ...register("deliveryMethod") }
+                                                            id={ option.htmlFieldName }
+                                                            value={ option.htmlFieldName } 
+                                                            className="checkout__form-default-radio-input"
+                                                            />
                                                         </div>
 
                                                         <div className="checkout__form-delivery-info">
@@ -315,9 +349,7 @@ export const CheckoutClient = () => {
                                                     </div>
                                                 </label>
 
-                                                { selectedDeliveryOption === index ? (
-                                                   option?.formContent
-                                                ) : null }
+                                                {watch("deliveryMethod") === option.htmlFieldName && option.formContent(register, watch, errors)}
                                             </div>
                                         )
                                     })
@@ -325,9 +357,9 @@ export const CheckoutClient = () => {
 
                             </div>
                         </div>
-                    </form>
+                    </div>
 
-                    <form className="checkout__form">
+                    <div className="checkout__form">
                         <h5 className="checkout__form-title">Спосіб оплати</h5>
 
                         <div className="checkout__form-payment-methods">
@@ -343,13 +375,18 @@ export const CheckoutClient = () => {
                                     if(!option) return null;
                                     
                                     return (
-                                        <div className={`checkout__form-payment-method ${selectedPaymentOption === index ? "active": ''} `} 
-                                        key={ index } onClick={ () => setSelectedPaymentOption(index) }>
+                                        <div className={`checkout__form-payment-method 
+                                        ${watch("paymentMethod") === option.htmlFieldName ? "active": ''} `} 
+                                        key={ index } onClick={ () => {
+                                            setValue("paymentMethod", option.htmlFieldName);
+                                            setSelectedPaymentOption(index, value);
+                                        } }>
                                             <label htmlFor={ option.htmlFieldName } className="checkout__form-label payment-label">
                                                 <div className="checkout__form-default-radio">
                                                     <input type="radio" name="paymentMethodOption"
-                                                    id={ option.htmlFieldName } value={ option.htmlFieldName }
-                                                    checked={ selectedPaymentOption === index }
+                                                    { ...register("paymentMethod") }
+                                                    id={ option.htmlFieldName } 
+                                                    value={ option.htmlFieldName }
                                                     className="checkout__form-default-radio-input" />
                                                 </div>
                                                 <div className="checkout__payment-container">
@@ -364,15 +401,23 @@ export const CheckoutClient = () => {
                                 })
                             }
                         </div>
-                    </form>
+                    </div>
 
-                    <form className="checkout__form">
+                    <div className="checkout__form">
                         <h5 className="checkout__form-title">
                             Коментар до замовлення
                         </h5>
 
-                        <textarea className="checkout__form-textarea" rows={3} ></textarea>
-                    </form>
+                        <textarea className={`checkout__form-textarea ${errors.comment ? "error-input" : ""}`} rows={3} 
+                        { ...register("comment", {
+                            maxLength: {
+                                value: 500,
+                                message: "Максимум 500 символів"
+                            }
+                        })}
+                        ></textarea>
+                        { errors.comment && <p className="checkout__form-error-message">{ errors.comment.message }</p> }
+                    </div>
                 </div>    
 
                 <div className="checkout__add-info">
@@ -518,6 +563,6 @@ export const CheckoutClient = () => {
                 </div>
             </div>
             
-        </div>
+        </form>
     )
 }

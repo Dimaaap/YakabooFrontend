@@ -1,14 +1,14 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { CookiesWorker, fetchData, handleBackdropClick } from "../../services";
-import { setIsAddToWishlistModalOpen } from "../../states/AddToWishlistModalStore"
 import Image from "next/image";
-import { useBlockBodyScroll } from "../../hooks";
-import Endpoints from "../../endpoints";
+import { setIsAddToWishlistModalOpen } from "../../states/AddToWishlistModalStore"
 import { setFlashMessage, setServerError, setShowFlashMessage } from "../../states/ShowFlashMessageStore";
 import { setWishlists, useWishlists } from "../../states/WishlistsStore";
 import { setActiveBtn } from "../../states/ActiveBtnStore";
+import { CookiesWorker, fetchData, handleBackdropClick } from "../../services";
+import { useBlockBodyScroll } from "../../hooks";
+import Endpoints from "../../endpoints";
 
 
 export const AddBookToWishlistModal = ({ book }) => {

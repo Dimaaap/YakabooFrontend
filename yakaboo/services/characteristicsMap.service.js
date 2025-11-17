@@ -274,3 +274,42 @@ export const extraFields = [
         render: (book, isGift) => <p>{isGift ? book.gift_info.code : book.book_info.code}</p>,
     }
 ]
+
+export const selectFieldsCommonStyles = {
+    placeholder: (provided) => ({
+        ...provided,
+        color: "black"
+    }),
+
+    option: (provided, countries) => ({
+        ...provided,
+        backgroundColor: countries.isFocused ? "#E6E8EE" : "#F2F3F6",
+        border: "none",
+        paddingTop: 0,
+        marginTop: "0px",
+        fontWeight: 500,
+        color: countries.isSelected ? "#ff00c5" : "black",
+        borderBottom: "1px solid #E6E8EE",
+        paddingTop: "10px",
+        cursor: "pointer",
+        fontSize: "14px"
+    }),
+    control: (base) => ({
+        ...base,
+        width: "100%",
+        backgroundColor: "#F2F3F6",
+        color: "red",
+        fontWeight: 500,
+        height: "45px",
+        border: "none",
+        borderRadius: "10px",
+        paddingLeft: "5px",
+        fontSize: "14px"
+    }),
+    groupHeading: (base) => ({
+        ...base,
+        color: "black",
+        fontWeight: 500,
+        fontFamily: "Montserrat"
+    })
+}
