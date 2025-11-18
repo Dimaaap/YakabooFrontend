@@ -11,8 +11,9 @@ import Endpoints from "../../endpoints"
 import { useCartStore } from "../../states";
 import { fetchData } from "../../services"
 import { wordDeclension } from "../../services/word-declension.service";
-import { deliveryOptions, paymentOptions, userData } from "../../services/checkoutOptions.service";
+import { deliveryFormsDefaultValues, deliveryOptions, paymentOptions, userData } from "../../services/checkoutOptions.service";
 import { selectFieldsCommonStyles } from "../../services/characteristicsMap.service";
+import { BonusInfoModal } from "../dynamic";
 
 export const CheckoutClient = () => {
 
@@ -22,8 +23,11 @@ export const CheckoutClient = () => {
     const [ selectedCity, setSelectedCity ] = useState(null)
     const [ selectedDeliveryOption, setSelectedDeliveryOption ] = useState("ukrpostCourier")
     const [ selectedPaymentOption, setSelectedPaymentOption ] = useState("scholarPack")
+    const [ addPromo, setAddPromo ] = useState(false);
     const [ deliveryPrice, setDeliveryPrice ] = useState(0);
     const [ editCartMode, setEditCartMode ] = useState(false);
+    const [ showBonusInfo, setShowBonusInfo ] = useState(false);
+    const [ promoCode, setPromoCode ] = useState("")
     const { cartItems, setCartItems } = useCartStore();
 
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
@@ -34,15 +38,17 @@ export const CheckoutClient = () => {
             email: userData.email || "",
             charity: false,
             otherPerson: false,
-            country: "",
-            city: "",
+            country: selectedDeliveryCountry || null,
+            city: selectedCity || null,
             deliveryMethod: "ukrpostCourier",
             paymentMethod: "scholarPack",
-            comment: ""
+            comment: "",
+            ...deliveryFormsDefaultValues
         }
     });
 
     const FREE_DELIVERY_FROM = 600;
+    const deliveryMethod = watch("deliveryMethod");
 
     const getRestToFreeDelivery = (cartItemsPrice) => {
         return FREE_DELIVERY_FROM - cartItemsPrice;
@@ -62,6 +68,40 @@ export const CheckoutClient = () => {
             }
         }
     }, [countries])
+
+    useEffect(() => {
+        if(selectedDeliveryCountry){
+            setValue("country", selectedDeliveryCountry.title);
+        } 
+
+        if(selectedCity){
+            setValue("city", selectedCity.title)
+        }
+    }, [selectedDeliveryCountry, selectedCity, setValue])
+
+    useEffect(() => {
+        if(!selectedCity || !deliveryMethod){
+            setDeliveryPrice(0);
+            return;
+        }
+
+        const matchedKey = Object.keys(deliveryOptions).find(
+            (k) => deliveryOptions[k].htmlFieldName === deliveryMethod
+        )
+
+        const price = matchedKey && selectedCity?.delivery_terms ? selectedCity.delivery_terms[matchedKey] ?? 0 : 0
+
+        setDeliveryPrice(price);
+
+        if (selectedCity?.delivery_terms) {
+            const visibleKeys = Object.keys(selectedCity.delivery_terms).filter(
+                (k) => !["id", "city_id", "country_id"].includes(k) && selectedCity.delivery_terms[k] !== null
+            );
+        
+            const idx = visibleKeys.indexOf(matchedKey);
+            if (idx !== -1) setSelectedDeliveryOption(idx);
+        }
+    }, [deliveryMethod, selectedCity])
 
     const handleSelectNewLabel = (index, price) => {
         setSelectedDeliveryOption(index);
@@ -111,6 +151,30 @@ export const CheckoutClient = () => {
 
     const onSubmit = async(data) => {
         console.log(data);
+    }
+
+    const toggleEditMode = () => {
+        if(editCartMode){
+            setEditCartMode(false)
+        } else {
+            setEditCartMode(true)
+        }
+    }
+
+    const toggleAddPromo = () => {
+        if(addPromo){
+            setAddPromo(false);
+        } else {
+            setAddPromo(true);
+        }
+    }
+
+    const toggleShowBonusInfo = () => {
+        if(showBonusInfo){
+            setShowBonusInfo(false)
+        } else {
+            setShowBonusInfo(true)
+        }
     }
 
     return (
@@ -424,18 +488,20 @@ export const CheckoutClient = () => {
                     <div className="checkout__cart-content">
                         <div className="checkout__cart-header">
                             { cartItems?.items?.length }{" "}{wordDeclension(cartItems?.items?.length)} у кошику
-                            <button className={`checkout__cart-edit-btn ${ editCartMode ? "edit-cart" : "" }`}>
-                                <Image src="/icons/edit.svg" alt="" width="18" height="18" 
-                                className={`checkout__cart-edit-img ${editCartMode ? "edit-cart-image": ""}`} />
+                            <button className={`checkout__cart-edit-btn ${ editCartMode ? "edit-cart" : "" }`}
+                            onClick={() => toggleEditMode()} type="button">
+                                <Image src={`/icons/edit${editCartMode ? "-white" : ""}.svg`} alt="" width="18" height="18" 
+                                className={`checkout__cart-edit-img`} />
                             </button>
                         </div>
 
                         <div className="checkout__cart-body">
                             { cartItems?.items?.map((item, index) => (
-                                <Link className="checkout__cart-item" key={ index } href={`/book/${item.slug}`}>
-                                    <div className="checkout__cart-item__image-container">
+                                <div className="checkout__cart-item" key={ index }>
+                                    <Link className="checkout__cart-item__image-container"
+                                    href={`/book/${item.slug}`}>
                                         <Image src={ item.images[0].image_url } alt={ item.title } width="50" height="50" />
-                                    </div>
+                                    </Link>
                                     <div className="checkout__cart-item-info">
                                         <p className="checkout__cart-item-title">
                                             { item.title }
@@ -456,16 +522,44 @@ export const CheckoutClient = () => {
                                                     { item.is_in_stock ? "В наявності" : "Немає в наявності" }
                                                 </span>
                                             </div>
-                                            <div className="separator-dot"></div>
-                                            <span className="checkout__cart-item-format-code">
-                                                Код {item.code}
-                                            </span>
+                                            {!editCartMode && (
+                                                <div className="separator-dot"></div>    
+                                            )}
+                                            
+                                            {!editCartMode && (
+                                                <span className="checkout__cart-item-format-code">
+                                                    Код {item.code}
+                                                </span>    
+                                            )}
+                                            
                                         </div>
                                     </div>
-                                    <div className="checkout__cart-quantity">
-                                        { item.quantity } шт.
-                                    </div>
-                                </Link>
+                                    {!editCartMode ? (
+                                        <div className="checkout__cart-quantity">
+                                            { item.quantity } шт.
+                                        </div>    
+                                    ) : (
+                                        <div className="checkout__cart-edit-container">
+                                            <button className="checkout__cart-delete-item-btn" type="button">
+                                                Видалити
+                                            </button>    
+                                            <div className="checkout__cart-change-quantity cart-body__quantity">
+                                                <div className="checkout__cart-change-quantity-feature cart-body__quantity-feature minus" onClick={() => changeQuantity(item.book_id, "minus")}>
+                                                    <div className="checkout__cart-change-quantity-minus cart-body__minus"></div>
+                                                </div>
+
+                                                <input type="text" className="cart-body__quantity-input checkout__cart-change-quantity-input" 
+                                                value={ item.quantity === 0 ? "" : item.quantity } min="1" max="999"
+                                                onChange={() => {}}/>
+
+                                                <div className="checkout__cart-change-quantity-feature cart-body__quantity-feature plus" onClick={() => changeQuantity(item.book_id, "add")}>
+                                                    <div className="checkout__cart-change-quantity-plus"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    )}
+                                </div>
                             )) }
                         </div>
 
@@ -482,10 +576,20 @@ export const CheckoutClient = () => {
                                 <p className="checkout__payment-text">
                                     Подарунковий сертифікат чи промокод
                                 </p>
-                                <button className="checkout__payment-btn add-btn gray-btn" type="button">
+                                <button className="checkout__payment-btn add-btn gray-btn" type="button"
+                                onClick={() => toggleAddPromo()}>
                                     Додати
                                 </button>
                             </div>
+                            { addPromo && (
+                                <div className="checkout__add-promo-block">
+                                    <input type="text" className="checkout__add-promo-input"
+                                    placeholder="Промокод чи сертифікат" value={ promoCode } onChange={(e) => setPromoCode(e.target.value)} />
+                                    <button className="checkout__add-promo-button" type="button">
+                                        Застосувати
+                                    </button>
+                                </div>
+                            ) }
                             <p className="checkout__payment-additional-text">
                                 За наявності бонусів їх використання можливе після {" "}
                                 <span className="checkout__payment-link">авторизації</span>
@@ -521,10 +625,12 @@ export const CheckoutClient = () => {
                             ) }
 
                             <div className="checkout__payment-bonuses">
+                                { showBonusInfo && (<BonusInfoModal />) }
                                 <div className="checkout__payment-bill-row">
                                     <p className="checkout__payment-type">
                                         Бонуси за замовлення
-                                        <Image src="/icons/info.svg" alt="" width="18" height="18" />
+                                        <Image src="/icons/info.svg" alt="" width="18" height="18"
+                                        onClick={ () => toggleShowBonusInfo() } />
                                     </p>
                                     <p className="checkout__payment-total-sum blue">
                                         +{ Math.ceil(cartItems?.total_price / 2) } бонусів

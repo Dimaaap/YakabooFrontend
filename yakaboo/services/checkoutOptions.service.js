@@ -9,6 +9,27 @@ export const userData = {
     }
 
 
+export const deliveryFormsDefaultValues = {
+    newPostDeliveryAddress: "",
+    newPostPostomatAddress: "",
+    meestOfficeAddress: "",
+    newPostCourierDeliveryAddress: "",
+    newPostCourierHouseNumber: "",
+    newPostCourierDeliveryApartment: "",
+    ukrpostOfficeUserName: "",
+    ukrpostOfficeUserLastName: "",
+    ukrpostOfficeUserMiddleName: "",
+    ukrpostOfficeAddress: "",
+    ukrpostCourierUserName: "",
+    ukrpostCourierUserLastName: "",
+    ukrpostCourierUserMiddleName: "",
+    ukrpostCourierAddress: "",
+    ukrpostPostIndex: null,
+    ukrpostCourierHouseNumber: null,
+    ukrpostCourierApartmentNumber: null
+}
+
+
 export const paymentOptions = {
     cart_or_scholar_pack:
     {
