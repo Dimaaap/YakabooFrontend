@@ -179,7 +179,9 @@ const Endpoints = {
   ...BookSubcategories,
   ...BookDoubleSubcategories,
   ...Cart,
-  ACTIVE_TITLE: `${DOMAIN}page-title/active`
+  ACTIVE_TITLE: `${DOMAIN}page-title/active`,
+  USE_PROMO_CODE: (userEmail, promoCode) => `${DOMAIN}promo-codes-usage/use?user_email=${userEmail}&code=${promoCode}`,
+  GET_PROMO_CODE_BY_ID: (promoId) => `${DOMAIN}promo-codes/by-id/${promoId}`
 };
 
 export default Endpoints;

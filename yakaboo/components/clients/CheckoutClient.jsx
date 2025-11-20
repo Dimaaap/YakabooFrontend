@@ -9,7 +9,7 @@ import { useForm, FormSubmit } from "react-hook-form";
 
 import Endpoints from "../../endpoints"
 import { useCartStore } from "../../states";
-import { fetchData } from "../../services"
+import { CookiesWorker, fetchData} from "../../services"
 import { wordDeclension } from "../../services/word-declension.service";
 import { deliveryFormsDefaultValues, deliveryOptions, paymentOptions, userData } from "../../services/checkoutOptions.service";
 import { selectFieldsCommonStyles } from "../../services/characteristicsMap.service";
@@ -27,7 +27,10 @@ export const CheckoutClient = () => {
     const [ deliveryPrice, setDeliveryPrice ] = useState(0);
     const [ editCartMode, setEditCartMode ] = useState(false);
     const [ showBonusInfo, setShowBonusInfo ] = useState(false);
-    const [ promoCode, setPromoCode ] = useState("")
+    const [ promoCodeError, setPromoCodeError ] = useState("");
+    const [ usedPromoCode, setUsedPromoCode ] = useState({});
+    const [ promoCode, setPromoCode ] = useState("");
+    const [ priceWithPromoCode, setPriceWithPromoCode ] = useState(0);
     const { cartItems, setCartItems } = useCartStore();
 
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
@@ -176,6 +179,69 @@ export const CheckoutClient = () => {
             setShowBonusInfo(true)
         }
     }
+
+    const addPromoCode = async () => {
+        const userEmail = CookiesWorker.get("email")
+        setPromoCodeError("")
+
+        if(!userEmail){
+            setPromoCodeError("Для використання промокоду потрібно зареєструватись або увійти в акаунт");
+            return;
+        }
+
+        const promo = document.querySelector(".checkout__add-promo-input").value;
+
+        try {
+            const res = await fetch(Endpoints.USE_PROMO_CODE(userEmail, promo), {
+                method: "POST"
+            })
+
+            const response = await res.json();
+
+            if(res.ok){
+                const promoId = response.promo_id;
+                try {
+                    await fetchData(Endpoints.GET_PROMO_CODE_BY_ID(promoId), (promoData) => {
+                        setUsedPromoCode(promoData);
+                        CookiesWorker.set("promo_code", JSON.stringify(promoData));
+                    })
+                    setPromoCode("");
+                    setPromoCodeError("");
+                    setAddPromo(false);
+                } catch(err){
+                    console.error(err);
+                }
+                
+            } else {
+                setPromoCodeError(response.detail)
+            }
+        } catch(err){
+            console.log(err);
+        }
+
+        document.querySelector(".checkout__add-promo-input").value = "";
+        setPromoCode("");
+    }
+
+    useEffect(() => {
+        const promoCodeInCookies = CookiesWorker.get("promo_code")
+        if(promoCodeInCookies){
+            setUsedPromoCode(JSON.parse(promoCodeInCookies));
+            console.log("Here");
+            return;
+        }
+    }, [])
+
+    useEffect(() => {
+        const totalPrice = cartItems?.total_price + deliveryPrice;
+        const discountPercent = usedPromoCode.discount;
+
+        if(usedPromoCode.discount_type === "percent"){
+            setPriceWithPromoCode(totalPrice - (totalPrice * (discountPercent / 100)));
+        } else {
+            setPriceWithPromoCode(totalPrice - discountPercent);
+        }
+    }, [usedPromoCode])
 
     return (
         <form className="checkout" onSubmit={handleSubmit(onSubmit)}>
@@ -584,10 +650,29 @@ export const CheckoutClient = () => {
                             { addPromo && (
                                 <div className="checkout__add-promo-block">
                                     <input type="text" className="checkout__add-promo-input"
+                                    name="promo"
                                     placeholder="Промокод чи сертифікат" value={ promoCode } onChange={(e) => setPromoCode(e.target.value)} />
-                                    <button className="checkout__add-promo-button" type="button">
+                                    <button className="checkout__add-promo-button" type="button"
+                                    disabled={ !promoCode.length === 0 }
+                                    onClick={ () => addPromoCode() }>
                                         Застосувати
                                     </button>
+                                </div>
+                            ) }
+                            {promoCodeError && (
+                                <p className="checkout__form-error-message">{ promoCodeError }</p>
+                            )}
+                            { usedPromoCode.code && (
+                                <div className="checkout__payment-bill-row">
+                                    <p className="checkout__payment-type">
+                                        Використаний купон:
+                                    </p>
+                                    <span className="checkout__payment-total-sum used-promo-tile">
+                                        { usedPromoCode.code }
+                                        <button className="checkout__payment-total-sum-delete-promo" type="button">
+                                            <Image src="/icons/close.svg" alt="" width="15" height="15" />
+                                        </button>
+                                    </span>
                                 </div>
                             ) }
                             <p className="checkout__payment-additional-text">
@@ -602,7 +687,7 @@ export const CheckoutClient = () => {
                                     До сплати
                                 </h5>
                                 <h5 className="checkout__payment-total-sum bold">
-                                    { cartItems?.total_price + deliveryPrice } грн
+                                    { !priceWithPromoCode ? cartItems?.total_price + deliveryPrice : priceWithPromoCode } грн
                                 </h5>
                             </div>
                             <div className="checkout__payment-bill-row">
@@ -622,6 +707,17 @@ export const CheckoutClient = () => {
                                         { deliveryPrice } грн
                                     </p>
                                 </div>    
+                            ) }
+
+                            { priceWithPromoCode > 0 && (
+                                <div className="checkout__payment-bill-row positive">
+                                    <p className="checkout__payment-type smaller positive">
+                                        Знижка з купону
+                                    </p>
+                                    <p className="checkout__payment-total-sum smaller positive">
+                                        { cartItems?.total_price + deliveryPrice - priceWithPromoCode } грн
+                                    </p>
+                                </div>
                             ) }
 
                             <div className="checkout__payment-bonuses">
