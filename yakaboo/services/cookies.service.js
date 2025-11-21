@@ -22,10 +22,16 @@ export class CookiesWorker {
         document.cookie = `${name}=${value || ""}${expires}; path=/`;
     }
 
+    static setForYear(name, value){
+        const ONE_YEAR_MINUTES = 60 * 24 * 365;
+        CookiesWorker.setWithTimer(name, value, ONE_YEAR_MINUTES)
+    }
+
     static get(name){
        const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
        return match ? match[2] : null;
     }
+
 
     static saveCookies(data){
         let THREE_DAYS = 60 * 24 * 3;

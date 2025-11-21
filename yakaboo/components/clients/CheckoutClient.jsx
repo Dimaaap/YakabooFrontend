@@ -14,6 +14,7 @@ import { wordDeclension } from "../../services/word-declension.service";
 import { deliveryFormsDefaultValues, deliveryOptions, paymentOptions, userData } from "../../services/checkoutOptions.service";
 import { selectFieldsCommonStyles } from "../../services/characteristicsMap.service";
 import { BonusInfoModal } from "../dynamic";
+import { useRouter } from "next/navigation";
 
 export const CheckoutClient = () => {
 
@@ -30,8 +31,9 @@ export const CheckoutClient = () => {
     const [ promoCodeError, setPromoCodeError ] = useState("");
     const [ usedPromoCode, setUsedPromoCode ] = useState({});
     const [ promoCode, setPromoCode ] = useState("");
+    const [ prevQuantities, setPrevQuantities ] = useState({})
     const [ priceWithPromoCode, setPriceWithPromoCode ] = useState(0);
-    const { cartItems, setCartItems } = useCartStore();
+    const { cartItems, setCartItems, updateCartItemQuantity } = useCartStore();
 
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
         defaultValues: {
@@ -52,6 +54,8 @@ export const CheckoutClient = () => {
 
     const FREE_DELIVERY_FROM = 600;
     const deliveryMethod = watch("deliveryMethod");
+    const userEmail = CookiesWorker.get("email");
+    const router = useRouter();
 
     const getRestToFreeDelivery = (cartItemsPrice) => {
         return FREE_DELIVERY_FROM - cartItemsPrice;
@@ -81,6 +85,14 @@ export const CheckoutClient = () => {
             setValue("city", selectedCity.title)
         }
     }, [selectedDeliveryCountry, selectedCity, setValue])
+
+
+    useEffect(() => {
+        if(!cartItems.total_price || cartItems.items.length === 0){
+            router.replace("/");
+        }
+    }, [cartItems])
+
 
     useEffect(() => {
         if(!selectedCity || !deliveryMethod){
@@ -180,6 +192,126 @@ export const CheckoutClient = () => {
         }
     }
 
+    const deleteItemFromCartHandler = async(bookId) => {
+
+        const res = await fetch(Endpoints.DELETE_ITEM_FROM_CART(userEmail, bookId), {
+            method: "DELETE"
+        })
+
+        if(res.ok){
+            setCartItems((prev) => {
+                if(!prev?.items) return prev;
+
+                const updatedItems = prev.items.filter(
+                    (item) => item.book_id !== bookId
+                );
+
+                const updatedTotal = updatedItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+                return {
+                    ...prev, 
+                    items: updatedItems,
+                    total_price: updatedTotal
+                }
+            })
+        } else {
+            return null;
+        }
+    }
+
+    const changeQuantity = async(bookId, addOrMinus) => {
+        const currentItem = cartItems.items.find(item => item.book_id === bookId)
+
+        if(!currentItem){
+            return;
+        }
+
+        let newQuantity = null;
+
+        if(addOrMinus === "add") {
+            newQuantity = currentItem.quantity + 1;
+        } else {
+            newQuantity = currentItem.quantity - 1;
+        }
+
+        const res = await fetch(Endpoints.UPDATE_BOOK_QUANTITY(userEmail, bookId, newQuantity), {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+
+        if(res.ok){
+            updateCartItemQuantity(bookId, newQuantity)
+        } else {
+            console.error("Error: ", res.text());
+        }
+    }
+
+    const handleFocus = (bookId) => {
+        setPrevQuantities((prev) => {
+        const currentQuantity = cartItems.items.find((item) => item.book_id === bookId)?.quantity;
+        return {...prev, [bookId]: currentQuantity}
+        })
+    }  
+
+    const handleQuantityChangeLocal = (bookId, newValue) => {
+        if(newValue === ""){
+            setCartItems((prev) => {
+                const updatedItems = prev.items.map((item) => item.book_id === bookId ? {...item, quantity: ""} : item)
+
+                return { ...prev, items: updatedItems }
+            })
+
+            return
+        }
+
+        const newQuantity = parseInt(newValue);
+        if(isNaN(newQuantity) || newQuantity < 1){
+            return;
+        }
+
+        setCartItems((prev) => {
+            const updatedItems = prev.items.map((item) => (
+                item.book_id === bookId ? { ...item, quantity: newQuantity } : item
+            ));
+
+            return { ...prev, items: updatedItems }
+        })
+    }
+
+    const handleQuantityBlur = async(bookId, newValue) => {
+
+        if(newValue === "" || isNaN(parseInt(newValue))){
+            const oldQuantity = prevQuantities[bookId];
+            setCartItems((prev) => {
+                const updatedItems = prev.items.map((item) => (
+                    item.book_id === bookId ? { ...item, quantity: oldQuantity } : item
+                ))
+
+                return {...prev, items: updatedItems}
+            })
+
+            return;
+        }
+
+        const newQuantity = parseInt(newValue);
+
+        const res = await fetch(Endpoints.UPDATE_BOOK_QUANTITY(userEmail, bookId, newQuantity), {
+            method: "PATCH",
+            headers: {
+                "Contetn-Type": "application/json"
+            }
+        })
+
+        if(res.ok){
+            updateCartItemQuantity(bookId, newQuantity)
+        } else {
+            console.error("Error updating quantity")
+        }
+    }
+
+
     const addPromoCode = async () => {
         const userEmail = CookiesWorker.get("email")
         setPromoCodeError("")
@@ -203,7 +335,7 @@ export const CheckoutClient = () => {
                 try {
                     await fetchData(Endpoints.GET_PROMO_CODE_BY_ID(promoId), (promoData) => {
                         setUsedPromoCode(promoData);
-                        CookiesWorker.set("promo_code", JSON.stringify(promoData));
+                        CookiesWorker.setForYear("promo_code", JSON.stringify(promoData));
                     })
                     setPromoCode("");
                     setPromoCodeError("");
@@ -227,7 +359,6 @@ export const CheckoutClient = () => {
         const promoCodeInCookies = CookiesWorker.get("promo_code")
         if(promoCodeInCookies){
             setUsedPromoCode(JSON.parse(promoCodeInCookies));
-            console.log("Here");
             return;
         }
     }, [])
@@ -235,16 +366,24 @@ export const CheckoutClient = () => {
     useEffect(() => {
         const totalPrice = cartItems?.total_price + deliveryPrice;
         const discountPercent = usedPromoCode.discount;
+        console.log(discountPercent)
+        console.log(totalPrice)
 
         if(usedPromoCode.discount_type === "percent"){
             setPriceWithPromoCode(totalPrice - (totalPrice * (discountPercent / 100)));
+            console.log(priceWithPromoCode);
         } else {
             setPriceWithPromoCode(totalPrice - discountPercent);
         }
-    }, [usedPromoCode])
+    }, [usedPromoCode, deliveryPrice, cartItems])
+
+    if(!cartItems.total_price || cartItems.items.length === 0){
+        return null;
+    }
 
     return (
         <form className="checkout" onSubmit={handleSubmit(onSubmit)}>
+            { console.log(cartItems) }
             <h2 className="checkout__title">
                 Оформлення замовлення
             </h2>
@@ -564,67 +703,68 @@ export const CheckoutClient = () => {
                         <div className="checkout__cart-body">
                             { cartItems?.items?.map((item, index) => (
                                 <div className="checkout__cart-item" key={ index }>
-                                    <Link className="checkout__cart-item__image-container"
-                                    href={`/book/${item.slug}`}>
-                                        <Image src={ item.images[0].image_url } alt={ item.title } width="50" height="50" />
-                                    </Link>
-                                    <div className="checkout__cart-item-info">
-                                        <p className="checkout__cart-item-title">
-                                            { item.title }
-                                        </p>
-                                        <div className="checkout__cart-item-format">
-                                            <span className="checkout__cart-item-price blue-text">
-                                                { item.price } грн
-                                            </span>
-                                            <div className="separator-dot"></div>
-                                            <p className="checkout___cart-item-format-status">
-                                                { item.format }
+                                    <div className="checkout__cart-item__left-part">
+                                        <Link className="checkout__cart-item__image-container"
+                                        href={`/book/${item.slug}`}>
+                                            <Image src={ item.images[0].image_url } alt={ item.title } width="50" height="50" />
+                                        </Link>
+                                        <div className="checkout__cart-item-info">
+                                            <p className="checkout__cart-item-title">
+                                                { item.title }
                                             </p>
-                                        </div>
-                                        <div className="checkout__cart-item-format second-row">
-                                            <div className="checkout__cart-item-in-stock">
-                                                { item.is_in_stock ? <Image src="/icons/truck.svg" alt="" width="18" height="18" /> : "" }
-                                                <span className={`checkout__cart-item-in-stock-text ${item.is_in_stock ? "green-truck" : ""}`}>
-                                                    { item.is_in_stock ? "В наявності" : "Немає в наявності" }
+                                            <div className="checkout__cart-item-format">
+                                                <span className="checkout__cart-item-price blue-text">
+                                                    { item.price } грн
                                                 </span>
+                                                <div className="separator-dot"></div>
+                                                <p className="checkout___cart-item-format-status">
+                                                    { item.format }
+                                                </p>
                                             </div>
-                                            {!editCartMode && (
-                                                <div className="separator-dot"></div>    
-                                            )}
-                                            
-                                            {!editCartMode && (
-                                                <span className="checkout__cart-item-format-code">
-                                                    Код {item.code}
-                                                </span>    
-                                            )}
-                                            
-                                        </div>
-                                    </div>
-                                    {!editCartMode ? (
-                                        <div className="checkout__cart-quantity">
-                                            { item.quantity } шт.
+                                            <div className="checkout__cart-item-format second-row">
+                                                <div className="checkout__cart-item-in-stock">
+                                                    { item.is_in_stock ? <Image src="/icons/truck.svg" alt="" width="18" height="18" /> : "" }
+                                                    <span className={`checkout__cart-item-in-stock-text ${item.is_in_stock ? "green-truck" : ""}`}>
+                                                        { item.is_in_stock ? "В наявності" : "Немає в наявності" }
+                                                    </span>
+                                                </div>
+                                                
+                                            </div>
                                         </div>    
-                                    ) : (
-                                        <div className="checkout__cart-edit-container">
-                                            <button className="checkout__cart-delete-item-btn" type="button">
-                                                Видалити
-                                            </button>    
-                                            <div className="checkout__cart-change-quantity cart-body__quantity">
-                                                <div className="checkout__cart-change-quantity-feature cart-body__quantity-feature minus" onClick={() => changeQuantity(item.book_id, "minus")}>
-                                                    <div className="checkout__cart-change-quantity-minus cart-body__minus"></div>
-                                                </div>
+                                    </div>
+                                    
+                                    <div className="checkout__cart-item__right-part">
+                                        {!editCartMode ? (
+                                            <div className="checkout__cart-quantity">
+                                                { item.quantity } шт.
+                                            </div>    
+                                        ) : (
+                                            <div className="checkout__cart-edit-container">
+                                                <button className="checkout__cart-delete-item-btn" type="button"
+                                                onClick={() => deleteItemFromCartHandler(item.book_id)}>
+                                                    Видалити
+                                                </button>    
+                                                <div className="checkout__cart-change-quantity cart-body__quantity">
+                                                    <div className="checkout__cart-change-quantity-feature cart-body__quantity-feature minus" onClick={() => changeQuantity(item.book_id, "minus")}>
+                                                        <div className="checkout__cart-change-quantity-minus cart-body__minus"></div>
+                                                    </div>
 
-                                                <input type="text" className="cart-body__quantity-input checkout__cart-change-quantity-input" 
-                                                value={ item.quantity === 0 ? "" : item.quantity } min="1" max="999"
-                                                onChange={() => {}}/>
+                                                    <input type="text" 
+                                                    className="cart-body__quantity-input checkout__cart-change-quantity-input" 
+                                                    value={ item.quantity === 0 ? "" : item.quantity } min="1" max="999"
+                                                    onFocus={() => handleFocus(item.book_id)}
+                                                    onChange={(e) => handleQuantityChangeLocal(item.book_id, e.target.value)}
+                                                    onBlur={(e) => handleQuantityBlur(item.book_id, e.target.value)}/>
 
-                                                <div className="checkout__cart-change-quantity-feature cart-body__quantity-feature plus" onClick={() => changeQuantity(item.book_id, "add")}>
-                                                    <div className="checkout__cart-change-quantity-plus"></div>
+                                                    <div className="checkout__cart-change-quantity-feature cart-body__quantity-feature plus" onClick={() => changeQuantity(item.book_id, "add")}>
+                                                        <div className="checkout__cart-change-quantity-plus"></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        
-                                    )}
+                                            
+                                        )}    
+                                    </div>
+                                    
                                 </div>
                             )) }
                         </div>
@@ -638,22 +778,24 @@ export const CheckoutClient = () => {
 
                     <div className="checkout__payment-info">
                         <div className="checkout__payment-header">
-                            <div className="checkout__payment-text-row">
-                                <p className="checkout__payment-text">
-                                    Подарунковий сертифікат чи промокод
-                                </p>
-                                <button className="checkout__payment-btn add-btn gray-btn" type="button"
-                                onClick={() => toggleAddPromo()}>
-                                    Додати
-                                </button>
-                            </div>
+                            { !CookiesWorker.get("promo_code") && (
+                                <div className="checkout__payment-text-row">
+                                    <p className="checkout__payment-text">
+                                        Подарунковий сертифікат чи промокод
+                                    </p>
+                                    <button className="checkout__payment-btn add-btn gray-btn" type="button"
+                                    onClick={() => toggleAddPromo()}>
+                                        Додати
+                                    </button>
+                                </div>    
+                            ) }
                             { addPromo && (
                                 <div className="checkout__add-promo-block">
                                     <input type="text" className="checkout__add-promo-input"
                                     name="promo"
                                     placeholder="Промокод чи сертифікат" value={ promoCode } onChange={(e) => setPromoCode(e.target.value)} />
                                     <button className="checkout__add-promo-button" type="button"
-                                    disabled={ !promoCode.length === 0 }
+                                    disabled={ !promoCode.length === 0 || CookiesWorker.get("promo_code") }
                                     onClick={ () => addPromoCode() }>
                                         Застосувати
                                     </button>
@@ -669,9 +811,6 @@ export const CheckoutClient = () => {
                                     </p>
                                     <span className="checkout__payment-total-sum used-promo-tile">
                                         { usedPromoCode.code }
-                                        <button className="checkout__payment-total-sum-delete-promo" type="button">
-                                            <Image src="/icons/close.svg" alt="" width="15" height="15" />
-                                        </button>
                                     </span>
                                 </div>
                             ) }
