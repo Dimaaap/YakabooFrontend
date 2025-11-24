@@ -71,6 +71,10 @@ export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false,
         }
     }
 
+    const getBookAuthor = (book) => {
+        return `${book?.authors[0].first_name} ${book?.authors[0]?.last_name}`;
+    }
+
     return (
         <div className="author-books">
             <div className="author-books__header">
@@ -81,13 +85,14 @@ export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false,
                 </span>
             </div>
             <div className="author-books__books-container">
+                { console.log(filterBooks) }
                 {filterBooks && filterBooks.map((book, index) => (
                     <ProductCard 
                     key={ index } 
                     productLink={ returnLink(book.slug) }
                     extraClass="author-books__book" 
                     title={ book?.title } 
-                    brand={ book?.publishing?.title || book?.brand?.title || giftsBrand}
+                    brand={ getBookAuthor(book) || book?.publishing?.title || book?.brand?.title || giftsBrand}
                     imageSrc={ book.images[0]?.image_url ?? ImagesLinks.DEFAULT_IMAGE }
                     badges={
                         [
