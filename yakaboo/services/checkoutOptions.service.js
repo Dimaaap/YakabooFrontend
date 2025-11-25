@@ -1,4 +1,6 @@
 import { CookiesWorker } from "./cookies.service"
+import Select from "react-select";
+import { Controller } from "react-hook-form";
 import Image from "next/image"
 
 export const userData = {
@@ -85,7 +87,7 @@ export const deliveryOptions = {
         icon: "/icons/social/new-post.svg",
         deliveryTime: "1-3 дні",
         hasFree: "від 600 грн безкоштовно",
-        formContent: (register, watch, errors) => (
+        formContent: (register, watch, control, errors, filteredOffice) => (
             <div className="checkout__form-delivery-method-data-form">
                 <div className="checkout__form-delivery-method-input-row">
                     <div className="checkout__form-delivery-method-input-container">
@@ -115,7 +117,7 @@ export const deliveryOptions = {
         icon: "/icons/social/new-post.svg",
         deliveryTime: "1-3 дні",
         hasFree: "від 799 безкоштовно",
-        formContent: (register, watch, errors) => (
+        formContent: (register, watch, control, errors, filteredOffice) => (
             <div className="checkout__form-delivery-method-data-form">
                 <div className="checkout__form-delivery-method-input-row">
                     <div className="checkout__form-delivery-method-input-container">
@@ -146,7 +148,7 @@ export const deliveryOptions = {
         label: "Meest ПОШТА",
         icon: "/icons/social/meest-post.svg",
         deliveryTime: "1-3 дні",
-        formContent: (register, watch, errors) => (
+        formContent: (register, watch, control, errors, filteredOffice) => (
             <div className="checkout__form-delivery-method-data-form">
                 <div className="checkout__form-delivery-method-warning">
                     <Image src="/icons/red-info.svg" alt="" width="20" height="20" />
@@ -181,7 +183,7 @@ export const deliveryOptions = {
         label: "Кур'єр Нова Пошта",
         icon: "/icons/social/new-post.svg",
         deliveryTime: "1-3 дні",
-        formContent: (register, watch, errors) => (
+        formContent: (register, watch, control, errors, filteredOffice) => (
             <div className="checkout__form-delivery-method-data-form">
                 <div className="checkout__form-delivery-method-input-row gridded gridded-3">
                     <div className="checkout__form-delivery-method-input-container">
@@ -242,7 +244,7 @@ export const deliveryOptions = {
         label: "Відділення Укрпошта",
         icon: "/icons/social/ukrpost.svg",
         deliveryTime: "1-3 дні",
-        formContent: (register, watch, errors) => (
+        formContent: (register, watch, control, errors, filteredOffice) => (
             <div className="checkout__form-delivery-method-data-form">
                 <div className="checkout__form-delivery-method-input-row">
                     <div className="checkout__form-delivery-method-input-container">
@@ -306,15 +308,36 @@ export const deliveryOptions = {
                             Адреса відділення*
                         </label>
 
-                        <input type="text" className="checkout__form-delivery-method-input bigger-input" name="ukrpostOfficeAddres"
-                        { ...register("ukrpostOfficeAddress", {
-                            required: watch("deliveryMethod") === "ukrpostOffice" ? "Поле обов'язкове" : false,
-                            minLength: {
-                                value: 2,
-                                message: "Введіть хоча б 2 символи"
-                            }
-                        }) }
-                        placeholder="Введіть назву вулиці" />
+                        <Controller 
+                            name="ukrpostOfficeAddress"
+                            control={ control }
+                            rules={{
+                                required: watch("deliveryMethod") === "ukrpostOffice" ? "Поле обов'язкове" : false,
+                            }}
+                            render={({ field }) => {
+                                const selectedOption = filteredOffice.map(o => ({ 
+                                    value: o.office_number, 
+                                    label: `№${o.office_number}, вулиця ${o.address} (№${o.number_in_city})` 
+                                })).find(o => o.value === field.value) || null;
+
+                                const options = filteredOffice.map(o => ({
+                                    value: o.office_number,
+                                    label: `№${o.office_number}, вулиця ${o.address} (№${o.number_in_city})`
+                                }));
+
+
+                                return (
+                                    <Select
+                                        options={ options }
+                                        classNamePrefix="checkout__form-delivery-method-select"
+                                        placeholder="Виберіть відділення"
+                                        value={ selectedOption }
+                                        onChange={(selected) => field.onChange(selected.value)}
+                                        isDisabled={filteredOffice.length === 0} 
+                                    />
+                                )
+                            }}
+                        />
                         { errors.ukrpostOfficeAddress && <p className="checkout__form-error-message">
                             { errors.ukrpostOfficeAddress.message }
                         </p> }
@@ -330,7 +353,7 @@ export const deliveryOptions = {
         label: "Кур'єр Укрпошта",
         icon: "/icons/social/ukrpost.svg",
         deliveryTime: "1-4 дні",
-        formContent: (register, watch, errors) => (
+        formContent: (register, watch, control, errors) => (
             <div className="checkout__form-delivery-method-data-form">
                 <div className="checkout__form-delivery-method-input-row">
                     <div className="checkout__form-delivery-method-input-container">

@@ -156,6 +156,11 @@ const Cart = {
   UPDATE_BOOK_QUANTITY: (userEmail, bookId, newQuantity) => `${DOMAIN}cart-item/update?book_id=${bookId}&user_email=${userEmail}&quantity=${newQuantity}`
 }
 
+const UkrpostOffices = {
+  ALL_OFFICES: `${DOMAIN}ukrpost_offices/all`,
+  OFFICES_BY_CITY_ID: (cityId) => `${DOMAIN}ukrpost_offices/by-city/${cityId}`
+}
+
 
 const Endpoints = {
   ...BoardGames,
@@ -179,6 +184,7 @@ const Endpoints = {
   ...BookSubcategories,
   ...BookDoubleSubcategories,
   ...Cart,
+  ...UkrpostOffices,
   ACTIVE_TITLE: `${DOMAIN}page-title/active`,
   USE_PROMO_CODE: (userEmail, promoCode) => `${DOMAIN}promo-codes-usage/use?user_email=${userEmail}&code=${promoCode}`,
   GET_PROMO_CODE_BY_ID: (promoId) => `${DOMAIN}promo-codes/by-id/${promoId}`

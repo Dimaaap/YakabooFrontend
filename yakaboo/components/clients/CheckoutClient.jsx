@@ -31,11 +31,13 @@ export const CheckoutClient = () => {
     const [ promoCodeError, setPromoCodeError ] = useState("");
     const [ usedPromoCode, setUsedPromoCode ] = useState({});
     const [ promoCode, setPromoCode ] = useState("");
+    const [ ukrpostOffices, setUkrpostOffices ] = useState([]);
+    const [ filteredOffice, setFitleredOffice ] = useState([]);
     const [ prevQuantities, setPrevQuantities ] = useState({})
     const [ priceWithPromoCode, setPriceWithPromoCode ] = useState(0);
     const { cartItems, setCartItems, updateCartItemQuantity } = useCartStore();
 
-    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
+    const { register, handleSubmit, setValue, control, watch, formState: { errors } } = useForm({
         defaultValues: {
             firstName: userData.firstName || "",
             lastName: userData.lastName || "",
@@ -117,6 +119,17 @@ export const CheckoutClient = () => {
             if (idx !== -1) setSelectedDeliveryOption(idx);
         }
     }, [deliveryMethod, selectedCity])
+
+
+    useEffect(() => {
+        fetchData(Endpoints.ALL_OFFICES, setUkrpostOffices, "ukrpost_offices")
+    }, [])
+
+    useEffect(() => {
+        if(selectedCity && ukrpostOffices.length > 1){
+            setFitleredOffice(ukrpostOffices.filter((office) => office.city_id === selectedCity.id))
+        }
+    }, [selectedCity, ukrpostOffices])
 
     const handleSelectNewLabel = (index, price) => {
         setSelectedDeliveryOption(index);
@@ -383,7 +396,6 @@ export const CheckoutClient = () => {
 
     return (
         <form className="checkout" onSubmit={handleSubmit(onSubmit)}>
-            { console.log(cartItems) }
             <h2 className="checkout__title">
                 Оформлення замовлення
             </h2>
@@ -618,7 +630,7 @@ export const CheckoutClient = () => {
                                                     </div>
                                                 </label>
 
-                                                {watch("deliveryMethod") === option.htmlFieldName && option.formContent(register, watch, errors)}
+                                                {watch("deliveryMethod") === option.htmlFieldName && option.formContent(register, watch, control, errors, filteredOffice)}
                                             </div>
                                         )
                                     })
