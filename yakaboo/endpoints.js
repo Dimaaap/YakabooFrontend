@@ -161,6 +161,11 @@ const UkrpostOffices = {
   OFFICES_BY_CITY_ID: (cityId) => `${DOMAIN}ukrpost_offices/by-city/${cityId}`
 }
 
+const MeestPostOffices = {
+  MEEST_ALL_OFFICES: `${DOMAIN}meest_post_offices/all`,
+  MEEST_OFFICES_BY_CITY_ID: (cityId) => `${DOMAIN}meest_post_offices/by-city/${cityId}`
+}
+
 
 const Endpoints = {
   ...BoardGames,
@@ -185,6 +190,7 @@ const Endpoints = {
   ...BookDoubleSubcategories,
   ...Cart,
   ...UkrpostOffices,
+  ...MeestPostOffices,
   ACTIVE_TITLE: `${DOMAIN}page-title/active`,
   USE_PROMO_CODE: (userEmail, promoCode) => `${DOMAIN}promo-codes-usage/use?user_email=${userEmail}&code=${promoCode}`,
   GET_PROMO_CODE_BY_ID: (promoId) => `${DOMAIN}promo-codes/by-id/${promoId}`

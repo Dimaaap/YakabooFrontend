@@ -32,7 +32,9 @@ export const CheckoutClient = () => {
     const [ usedPromoCode, setUsedPromoCode ] = useState({});
     const [ promoCode, setPromoCode ] = useState("");
     const [ ukrpostOffices, setUkrpostOffices ] = useState([]);
+    const [ meestPostOffices, setMeestPostOffices ] = useState([]);
     const [ filteredOffice, setFitleredOffice ] = useState([]);
+    const [ meestFilteredOffice, setMeestFilteredOffice ] = useState([]);
     const [ prevQuantities, setPrevQuantities ] = useState({})
     const [ priceWithPromoCode, setPriceWithPromoCode ] = useState(0);
     const { cartItems, setCartItems, updateCartItemQuantity } = useCartStore();
@@ -124,6 +126,16 @@ export const CheckoutClient = () => {
     useEffect(() => {
         fetchData(Endpoints.ALL_OFFICES, setUkrpostOffices, "ukrpost_offices")
     }, [])
+
+    useEffect(() => {
+        fetchData(Endpoints.MEEST_ALL_OFFICES, setMeestPostOffices, "meest_offices")
+    }, []);
+
+    useEffect(() => {
+        if(selectedCity && meestPostOffices.length > 1){
+            setMeestFilteredOffice(meestPostOffices.filter((office) => office.city_id === selectedCity.id))
+        }
+    }, [selectedCity, meestPostOffices])
 
     useEffect(() => {
         if(selectedCity && ukrpostOffices.length > 1){
@@ -399,7 +411,7 @@ export const CheckoutClient = () => {
             <h2 className="checkout__title">
                 Оформлення замовлення
             </h2>
-
+            { console.log(meestFilteredOffice) }
             <div className="checkout__content">
                 <div className="checkout__form-container">
                     <div className="checkout__form">
@@ -630,7 +642,7 @@ export const CheckoutClient = () => {
                                                     </div>
                                                 </label>
 
-                                                {watch("deliveryMethod") === option.htmlFieldName && option.formContent(register, watch, control, errors, filteredOffice)}
+                                                {watch("deliveryMethod") === option.htmlFieldName && option.formContent(register, watch, control, errors, filteredOffice || meestFilteredOffice)}
                                             </div>
                                         )
                                     })

@@ -162,14 +162,44 @@ export const deliveryOptions = {
                         <label htmlFor="meestOfficeAddress" className="checkout__form-delivery-method-label">
                             Адреса відділення *
                         </label>
-                        <input type="text" className="checkout__form-delivery-method-input"
+                        {/* <input type="text" className="checkout__form-delivery-method-input"
                         placeholder="Введіть адресу" { ...register("meestOfficeAddress", {
                             required: watch("deliveryMethod") === "meestPost" ? "Поле обов'язкове" : false,
                             minLength: {
                                 value: 2,
                                 message: "Адреса відділення Meest ПОШТА повинна містити хоча б 2 символи"
                             }
-                        }) } name="meestOfficeAddress" />
+                        }) } name="meestOfficeAddress" /> */}
+                        <Controller 
+                            name="meestOfficeAddress"
+                            control={ control }
+                            rules={{
+                                required: watch("deliveryMethod") === "meestPost" ? "Поле обов'язкове" : false,
+                            }}
+                            render={({ field }) => {
+                                const selectedOption = filteredOffice.map(o => ({ 
+                                    value: o.office_number, 
+                                    label: `№${o.office_number}, вулиця ${o.address}` 
+                                })).find(o => o.value === field.value) || null;
+
+                                const options = filteredOffice.map(o => ({
+                                    value: o.office_number,
+                                    label: `№${o.office_number}, вулиця ${o.address}`
+                                }));
+
+
+                                return (
+                                    <Select
+                                        options={ options }
+                                        classNamePrefix="checkout__form-delivery-method-select"
+                                        placeholder="Виберіть відділення"
+                                        value={ selectedOption }
+                                        onChange={(selected) => field.onChange(selected.value)}
+                                        isDisabled={filteredOffice.length === 0} 
+                                    />
+                                )
+                            }}
+                        />
                         { errors.meestToOfficeAddress && <p className="checkout__form-error-message">{ errors.meestToOfficeAddress.message }</p> }
                     </div>
                 </div>
