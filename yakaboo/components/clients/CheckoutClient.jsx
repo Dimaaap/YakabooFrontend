@@ -32,9 +32,11 @@ export const CheckoutClient = () => {
     const [ usedPromoCode, setUsedPromoCode ] = useState({});
     const [ promoCode, setPromoCode ] = useState("");
     const [ ukrpostOffices, setUkrpostOffices ] = useState([]);
+    const [ newPostPostomats, setNewPostomats ] = useState([]);
     const [ meestPostOffices, setMeestPostOffices ] = useState([]);
     const [ filteredOffice, setFitleredOffice ] = useState([]);
     const [ meestFilteredOffice, setMeestFilteredOffice ] = useState([]);
+    const [ newPostFilteredPostomats, setNewPostFilteredPostomats ] = useState([]);
     const [ prevQuantities, setPrevQuantities ] = useState({})
     const [ priceWithPromoCode, setPriceWithPromoCode ] = useState(0);
     const { cartItems, setCartItems, updateCartItemQuantity } = useCartStore();
@@ -132,20 +134,49 @@ export const CheckoutClient = () => {
     }, []);
 
     useEffect(() => {
+        fetchData(Endpoints.NEW_POST_ALL_POSTOMATS, setNewPostomats, "new_post_postomats")
+    }, [])
+
+    useEffect(() => {
         if(selectedCity && meestPostOffices.length > 1){
             setMeestFilteredOffice(meestPostOffices.filter((office) => office.city_id === selectedCity.id))
+            setFitleredOffice([])
         }
     }, [selectedCity, meestPostOffices])
+
 
     useEffect(() => {
         if(selectedCity && ukrpostOffices.length > 1){
             setFitleredOffice(ukrpostOffices.filter((office) => office.city_id === selectedCity.id))
+            setMeestFilteredOffice([]);
         }
     }, [selectedCity, ukrpostOffices])
 
     const handleSelectNewLabel = (index, price) => {
         setSelectedDeliveryOption(index);
         setDeliveryPrice(price);
+    }
+
+    const handleFilteredOfficesList = (fieldName) => {
+        if(!selectedCity) {
+            return;
+        }
+
+        if(fieldName === "meestPost"){
+            setFitleredOffice([])
+            setNewPostFilteredPostomats([])
+            setMeestFilteredOffice(meestPostOffices.filter((office) => office.city_id === selectedCity.id))
+        } else if(fieldName === "ukrpostOffice"){
+            setMeestFilteredOffice([])
+            setNewPostFilteredPostomats([])
+            setFitleredOffice(ukrpostOffices.filter((office) => office.city_id === selectedCity.id))
+        } else if(fieldName="newPostToMailbox") {
+            setFitleredOffice([])
+            setMeestFilteredOffice([])
+            console.log("here")
+            setNewPostFilteredPostomats(newPostPostomats.filter((postomat) => postomat.city_id == selectedCity.id))
+            console.log(newPostFilteredPostomats)
+        }
     }
 
     const handleChangeSelectedCountry = (selectedCountry) => {
@@ -305,6 +336,16 @@ export const CheckoutClient = () => {
         })
     }
 
+    const getCurrentSelectedList = () => {
+        if(newPostFilteredPostomats.length > 0){
+            return newPostFilteredPostomats
+        } else if(meestFilteredOffice.length > 0){
+            return meestFilteredOffice
+        } else if(filteredOffice.length > 0){
+            return filteredOffice
+        }
+    }
+
     const handleQuantityBlur = async(bookId, newValue) => {
 
         if(newValue === "" || isNaN(parseInt(newValue))){
@@ -391,8 +432,6 @@ export const CheckoutClient = () => {
     useEffect(() => {
         const totalPrice = cartItems?.total_price + deliveryPrice;
         const discountPercent = usedPromoCode.discount;
-        console.log(discountPercent)
-        console.log(totalPrice)
 
         if(usedPromoCode.discount_type === "percent"){
             setPriceWithPromoCode(totalPrice - (totalPrice * (discountPercent / 100)));
@@ -408,6 +447,7 @@ export const CheckoutClient = () => {
 
     return (
         <form className="checkout" onSubmit={handleSubmit(onSubmit)}>
+            { console.log(newPostFilteredPostomats) }
             <h2 className="checkout__title">
                 Оформлення замовлення
             </h2>
@@ -600,6 +640,7 @@ export const CheckoutClient = () => {
                                             key={ index } onClick={() => {
                                                 setValue("deliveryMethod", option.htmlFieldName);
                                                 handleSelectNewLabel(index, value);
+                                                handleFilteredOfficesList(option.htmlFieldName)
                                             }}>
                                                 <label htmlFor={ option.htmlFieldName } 
                                                 className={`checkout__form-label delivery-label 
@@ -642,7 +683,8 @@ export const CheckoutClient = () => {
                                                     </div>
                                                 </label>
 
-                                                {watch("deliveryMethod") === option.htmlFieldName && option.formContent(register, watch, control, errors, filteredOffice || meestFilteredOffice)}
+                                                {watch("deliveryMethod") === option.htmlFieldName && option.formContent(register, watch, control, errors,
+                                                    getCurrentSelectedList())}
                                             </div>
                                         )
                                     })

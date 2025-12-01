@@ -92,17 +92,38 @@ export const deliveryOptions = {
                 <div className="checkout__form-delivery-method-input-row">
                     <div className="checkout__form-delivery-method-input-container">
                         <label htmlFor="newPostDeliveryAddress" className="checkout__form-delivery-method-label">
-                            Адреса відділення *
+                            Адреса поштомату *
                         </label>
-                        <input type="text" className="checkout__form-delivery-method-input"
-                        { ...register("newPostDeliveryAddress", 
-                            { 
-                                required: watch("deliveryMethod") === "newPostToMailbox" ? "Поле обов'язкове" : false,
-                                minLength: {
-                                value: 2,
-                                message: "Адреса повинна містити хоча б 2 символи"
-                            }}) }
-                        placeholder="Адреса відділення" name="newPostDeliveryAddress" />
+                        <Controller 
+                            name="newPostPostomatAddress"
+                            control={ control }
+                            rules={{
+                                required: watch("deliveryMethod") === "newPostToMailbox" ? "Поле обов'язкове": false
+                            }}
+                            render={({field}) => {
+                                const selectedOption = filteredOffice.map(o => ({
+                                    value: o.number,
+                                    label: `Поштомат "Нова Пошта" №${o.number}; ${o.address}`
+                                })).find(o => o.value === field.value) || null;
+
+                                const options = filteredOffice.map(o => ({
+                                    value: o.number,
+                                    label: `Поштомат "Нова Пошта" №${o.number}; ${o.address}`
+                                }))
+
+                                return (
+                                    <Select
+                                        options={ options }
+                                        classNamePrefix="checkout__form-delivery-method-select"
+                                        placeholder="Виберіть відділення"
+                                        value={ selectedOption }
+                                        onChange={ (selected) => field.onChange(selected.value) }
+                                        isDisabled={ filteredOffice.length === 0 }
+                                    />
+                                )
+
+                            }}
+                        />
                         { errors.newPostDeliveryAddress && <p className="checkout__form-error-message">{ errors.newPostDeliveryAddress.message }</p> }
                     </div>
                 </div>
@@ -162,14 +183,6 @@ export const deliveryOptions = {
                         <label htmlFor="meestOfficeAddress" className="checkout__form-delivery-method-label">
                             Адреса відділення *
                         </label>
-                        {/* <input type="text" className="checkout__form-delivery-method-input"
-                        placeholder="Введіть адресу" { ...register("meestOfficeAddress", {
-                            required: watch("deliveryMethod") === "meestPost" ? "Поле обов'язкове" : false,
-                            minLength: {
-                                value: 2,
-                                message: "Адреса відділення Meest ПОШТА повинна містити хоча б 2 символи"
-                            }
-                        }) } name="meestOfficeAddress" /> */}
                         <Controller 
                             name="meestOfficeAddress"
                             control={ control }
