@@ -143,17 +143,38 @@ export const deliveryOptions = {
                 <div className="checkout__form-delivery-method-input-row">
                     <div className="checkout__form-delivery-method-input-container">
                         <label htmlFor="newPostPostomatAddress" className="checkout__form-delivery-method-label">
-                            Адреса поштомату *
+                            Адреса відділення *
                         </label>
-                        <input type="text" className="checkout__form-delivery-method-input"
-                        { ...register("newPostPostomatAddress", {
-                            required: watch("deliveryMethod") === "newPostToOffice" ? "Поле обов'язкове": false,
-                            minLength: {
-                                value: 2,
-                                message: "Адреса поштомату повинна містити хоча б 2 символи"
-                            }
-                        }) }
-                        placeholder="Адреса поштомату" name="newPostPostomatAddress" />
+                        <Controller 
+                            name="newPostOfficeAddress"
+                            control={ control }
+                            rules={{
+                                required: watch("deliveryMethod") === "newPostToOffice" ? "Поле обов'язкове": false
+                            }}
+                            render={({field}) => {
+                                const selectedOption = filteredOffice.map(o => ({
+                                    value: o.number,
+                                    label: `Відділення №${o.number}; ${o.address}`
+                                })).find(o => o.value === field.value) || null;
+
+                                const options = filteredOffice.map(o => ({
+                                    value: o.number,
+                                    label: `Відділення №${o.number}; ${o.address}`
+                                }))
+
+                                return (
+                                    <Select
+                                        options={ options }
+                                        classNamePrefix="checkout__form-delivery-method-select"
+                                        placeholder="Виберіть відділення"
+                                        value={ selectedOption }
+                                        onChange={ (selected) => field.onChange(selected.value) }
+                                        isDisabled={ filteredOffice.length === 0 }
+                                    />
+                                )
+
+                            }}
+                        />
                         { errors.newPostPostomatAddress && <p className="checkout__form-error-message">
                             { errors.newPostPostomatAddress.message }
                         </p> }

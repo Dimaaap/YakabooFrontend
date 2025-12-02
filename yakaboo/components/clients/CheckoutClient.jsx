@@ -34,9 +34,11 @@ export const CheckoutClient = () => {
     const [ ukrpostOffices, setUkrpostOffices ] = useState([]);
     const [ newPostPostomats, setNewPostomats ] = useState([]);
     const [ meestPostOffices, setMeestPostOffices ] = useState([]);
+    const [ newPostOffices, setNewPostOffices ] = useState([]);
     const [ filteredOffice, setFitleredOffice ] = useState([]);
     const [ meestFilteredOffice, setMeestFilteredOffice ] = useState([]);
     const [ newPostFilteredPostomats, setNewPostFilteredPostomats ] = useState([]);
+    const [ newPostFilteredOffices, setNewPostFilteredOffices ] = useState([]);
     const [ prevQuantities, setPrevQuantities ] = useState({})
     const [ priceWithPromoCode, setPriceWithPromoCode ] = useState(0);
     const { cartItems, setCartItems, updateCartItemQuantity } = useCartStore();
@@ -138,11 +140,24 @@ export const CheckoutClient = () => {
     }, [])
 
     useEffect(() => {
+        fetchData(Endpoints.NEW_POST_ALL_OFFICES, setNewPostOffices, "new_post_offices");
+    }, [])
+
+    useEffect(() => {
         if(selectedCity && meestPostOffices.length > 1){
             setMeestFilteredOffice(meestPostOffices.filter((office) => office.city_id === selectedCity.id))
             setFitleredOffice([])
         }
     }, [selectedCity, meestPostOffices])
+
+    useEffect(() => {
+        if(selectedCity && newPostOffices.length > 1){
+            setNewPostFilteredOffices(newPostOffices.filter((office) => office.city_id === selectedCity.id))
+            setFitleredOffice([])
+            setNewPostFilteredPostomats([])
+            setMeestFilteredOffice([]);
+        }
+    }, [selectedCity, newPostOffices])
 
 
     useEffect(() => {
@@ -165,17 +180,23 @@ export const CheckoutClient = () => {
         if(fieldName === "meestPost"){
             setFitleredOffice([])
             setNewPostFilteredPostomats([])
+            setNewPostFilteredOffices([]);
             setMeestFilteredOffice(meestPostOffices.filter((office) => office.city_id === selectedCity.id))
         } else if(fieldName === "ukrpostOffice"){
             setMeestFilteredOffice([])
             setNewPostFilteredPostomats([])
+            setNewPostFilteredOffices([]);
             setFitleredOffice(ukrpostOffices.filter((office) => office.city_id === selectedCity.id))
-        } else if(fieldName="newPostToMailbox") {
+        } else if(fieldName ==="newPostToMailbox") {
             setFitleredOffice([])
             setMeestFilteredOffice([])
-            console.log("here")
+            setNewPostFilteredOffices([]);
             setNewPostFilteredPostomats(newPostPostomats.filter((postomat) => postomat.city_id == selectedCity.id))
-            console.log(newPostFilteredPostomats)
+        } else if(fieldName === "newPostToOffice") {
+            setFitleredOffice([])
+            setMeestFilteredOffice([])
+            setNewPostFilteredPostomats()
+            setNewPostFilteredOffices(newPostOffices.filter((office) => office.city_id === selectedCity.id));
         }
     }
 
@@ -337,12 +358,14 @@ export const CheckoutClient = () => {
     }
 
     const getCurrentSelectedList = () => {
-        if(newPostFilteredPostomats.length > 0){
+        if(newPostFilteredPostomats?.length > 0){
             return newPostFilteredPostomats
-        } else if(meestFilteredOffice.length > 0){
+        } else if(meestFilteredOffice?.length > 0){
             return meestFilteredOffice
-        } else if(filteredOffice.length > 0){
+        } else if(filteredOffice?.length > 0){
             return filteredOffice
+        } else if(newPostFilteredOffices?.length > 0){
+            return newPostFilteredOffices
         }
     }
 
@@ -447,7 +470,7 @@ export const CheckoutClient = () => {
 
     return (
         <form className="checkout" onSubmit={handleSubmit(onSubmit)}>
-            { console.log(newPostFilteredPostomats) }
+            { console.log(newPostFilteredOffices) }
             <h2 className="checkout__title">
                 Оформлення замовлення
             </h2>
