@@ -19,3 +19,5 @@ export { useLetterStore } from './UseLetterStore';
 export { useShowFlashMessageStore } from "./ShowFlashMessageStore";
 export { useActiveBtnStore } from "./ActiveBtnStore";
 export { useCartStore } from "./CartItemsStore";
+export { useDeliveryCountryStore } from "./DeliveryCountryStore";
+export { useDeliveryOptionsStore } from "./DeliveryOptionsStore";

@@ -1,47 +1,35 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link";
 import Image from "next/image";
-import Select from "react-select";
-import PhoneInput from "react-phone-input-2"
 import { useForm, FormSubmit } from "react-hook-form";
 
 import Endpoints from "../../endpoints"
-import { useCartStore } from "../../states";
+import { useCartStore, useDeliveryCountryStore, useDeliveryOptionsStore } from "../../states";
 import { CookiesWorker, fetchData} from "../../services"
 import { wordDeclension } from "../../services/word-declension.service";
-import { deliveryFormsDefaultValues, deliveryOptions, paymentOptions, userData } from "../../services/checkoutOptions.service";
-import { selectFieldsCommonStyles } from "../../services/characteristicsMap.service";
+import { deliveryFormsDefaultValues, deliveryOptions, userData } from "../../services/checkoutOptions.service";
 import { BonusInfoModal } from "../dynamic";
 import { useRouter } from "next/navigation";
+import { CommentForm, ContactDataForm, DeliveryDataForm, PaymentMethodForm } from "../shared";
 
 export const CheckoutClient = () => {
 
-    const [ selectedCountry, setSelectedCountry ] = useState("UA");
-    const [ selectedDeliveryCountry, setSelectedDeliveryCountry ] = useState(null)
-    const [ countries, setCountries ] = useState([])
-    const [ selectedCity, setSelectedCity ] = useState(null)
-    const [ selectedDeliveryOption, setSelectedDeliveryOption ] = useState("ukrpostCourier")
-    const [ selectedPaymentOption, setSelectedPaymentOption ] = useState("scholarPack")
     const [ addPromo, setAddPromo ] = useState(false);
-    const [ deliveryPrice, setDeliveryPrice ] = useState(0);
     const [ editCartMode, setEditCartMode ] = useState(false);
     const [ showBonusInfo, setShowBonusInfo ] = useState(false);
     const [ promoCodeError, setPromoCodeError ] = useState("");
     const [ usedPromoCode, setUsedPromoCode ] = useState({});
     const [ promoCode, setPromoCode ] = useState("");
-    const [ ukrpostOffices, setUkrpostOffices ] = useState([]);
-    const [ newPostPostomats, setNewPostomats ] = useState([]);
-    const [ meestPostOffices, setMeestPostOffices ] = useState([]);
-    const [ newPostOffices, setNewPostOffices ] = useState([]);
-    const [ filteredOffice, setFitleredOffice ] = useState([]);
-    const [ meestFilteredOffice, setMeestFilteredOffice ] = useState([]);
-    const [ newPostFilteredPostomats, setNewPostFilteredPostomats ] = useState([]);
-    const [ newPostFilteredOffices, setNewPostFilteredOffices ] = useState([]);
     const [ prevQuantities, setPrevQuantities ] = useState({})
     const [ priceWithPromoCode, setPriceWithPromoCode ] = useState(0);
     const { cartItems, setCartItems, updateCartItemQuantity } = useCartStore();
+
+    const { selectedCity, selectedCountry, selectedDeliveryCountry } = useDeliveryCountryStore();
+
+    const { deliveryPrice, setSelectedDeliveryOption, setDeliveryPrice,
+     } = useDeliveryOptionsStore();
 
     const { register, handleSubmit, setValue, control, watch, formState: { errors } } = useForm({
         defaultValues: {
@@ -68,32 +56,6 @@ export const CheckoutClient = () => {
     const getRestToFreeDelivery = (cartItemsPrice) => {
         return FREE_DELIVERY_FROM - cartItemsPrice;
     }
-
-    useEffect(() => {
-        fetchData(Endpoints.ALL_COUNTRIES, setCountries, "countries")
-    }, [])
-
-    useEffect(() => {
-        if(countries.length > 0 && !selectedDeliveryCountry){
-            const defaultCountry = countries[0];
-            setSelectedDeliveryCountry(defaultCountry);
-
-            if(defaultCountry?.cities?.length){
-                setSelectedCity(defaultCountry.cities[0]);
-            }
-        }
-    }, [countries])
-
-    useEffect(() => {
-        if(selectedDeliveryCountry){
-            setValue("country", selectedDeliveryCountry.title);
-        } 
-
-        if(selectedCity){
-            setValue("city", selectedCity.title)
-        }
-    }, [selectedDeliveryCountry, selectedCity, setValue])
-
 
     useEffect(() => {
         if(!cartItems.total_price || cartItems.items.length === 0){
@@ -125,121 +87,6 @@ export const CheckoutClient = () => {
             if (idx !== -1) setSelectedDeliveryOption(idx);
         }
     }, [deliveryMethod, selectedCity])
-
-
-    useEffect(() => {
-        fetchData(Endpoints.ALL_OFFICES, setUkrpostOffices, "ukrpost_offices")
-    }, [])
-
-    useEffect(() => {
-        fetchData(Endpoints.MEEST_ALL_OFFICES, setMeestPostOffices, "meest_offices")
-    }, []);
-
-    useEffect(() => {
-        fetchData(Endpoints.NEW_POST_ALL_POSTOMATS, setNewPostomats, "new_post_postomats")
-    }, [])
-
-    useEffect(() => {
-        fetchData(Endpoints.NEW_POST_ALL_OFFICES, setNewPostOffices, "new_post_offices");
-    }, [])
-
-    useEffect(() => {
-        if(selectedCity && meestPostOffices.length > 1){
-            setMeestFilteredOffice(meestPostOffices.filter((office) => office.city_id === selectedCity.id))
-            setFitleredOffice([])
-        }
-    }, [selectedCity, meestPostOffices])
-
-    useEffect(() => {
-        if(selectedCity && newPostOffices.length > 1){
-            setNewPostFilteredOffices(newPostOffices.filter((office) => office.city_id === selectedCity.id))
-            setFitleredOffice([])
-            setNewPostFilteredPostomats([])
-            setMeestFilteredOffice([]);
-        }
-    }, [selectedCity, newPostOffices])
-
-
-    useEffect(() => {
-        if(selectedCity && ukrpostOffices.length > 1){
-            setFitleredOffice(ukrpostOffices.filter((office) => office.city_id === selectedCity.id))
-            setMeestFilteredOffice([]);
-        }
-    }, [selectedCity, ukrpostOffices])
-
-    const handleSelectNewLabel = (index, price) => {
-        setSelectedDeliveryOption(index);
-        setDeliveryPrice(price);
-    }
-
-    const handleFilteredOfficesList = (fieldName) => {
-        if(!selectedCity) {
-            return;
-        }
-
-        if(fieldName === "meestPost"){
-            setFitleredOffice([])
-            setNewPostFilteredPostomats([])
-            setNewPostFilteredOffices([]);
-            setMeestFilteredOffice(meestPostOffices.filter((office) => office.city_id === selectedCity.id))
-        } else if(fieldName === "ukrpostOffice"){
-            setMeestFilteredOffice([])
-            setNewPostFilteredPostomats([])
-            setNewPostFilteredOffices([]);
-            setFitleredOffice(ukrpostOffices.filter((office) => office.city_id === selectedCity.id))
-        } else if(fieldName ==="newPostToMailbox") {
-            setFitleredOffice([])
-            setMeestFilteredOffice([])
-            setNewPostFilteredOffices([]);
-            setNewPostFilteredPostomats(newPostPostomats.filter((postomat) => postomat.city_id == selectedCity.id))
-        } else if(fieldName === "newPostToOffice") {
-            setFitleredOffice([])
-            setMeestFilteredOffice([])
-            setNewPostFilteredPostomats()
-            setNewPostFilteredOffices(newPostOffices.filter((office) => office.city_id === selectedCity.id));
-        }
-    }
-
-    const handleChangeSelectedCountry = (selectedCountry) => {
-        const matchedCountry = countries.find((country) => country.title === selectedCountry.value);
-
-        setSelectedDeliveryCountry(matchedCountry)
-
-        if(matchedCountry?.cities?.length){
-            setSelectedCity(matchedCountry.cities[0]);
-        } else {
-            setSelectedCity(null)
-        }
-    }
-
-    const handleChangeSelectedCity = (selectedCity) => {
-        const matchedCity = selectedDeliveryCountry?.cities?.find((city) => city.title === selectedCity.value);
-        setSelectedCity(matchedCity)
-    }
-
-    const getCountryCities = () => {
-        return (
-            selectedDeliveryCountry?.cities?.map((city) => ({
-                value: city.title,
-                label: city.title
-            })) || []
-        )
-    }
-
-    const selectedCountryOption = useMemo(() => {
-        return selectedDeliveryCountry ? {
-            value: selectedDeliveryCountry.title,
-            label: selectedDeliveryCountry.title,
-        }
-        :null
-    }, [selectedDeliveryCountry]);
-
-    let countriesOptions = useMemo(() => {
-        return countries.map((country) => ({
-            value: country.title,
-            label: country.title
-        }))
-    }, [countries])
 
     const onSubmit = async(data) => {
         console.log(data);
@@ -357,18 +204,6 @@ export const CheckoutClient = () => {
         })
     }
 
-    const getCurrentSelectedList = () => {
-        if(newPostFilteredPostomats?.length > 0){
-            return newPostFilteredPostomats
-        } else if(meestFilteredOffice?.length > 0){
-            return meestFilteredOffice
-        } else if(filteredOffice?.length > 0){
-            return filteredOffice
-        } else if(newPostFilteredOffices?.length > 0){
-            return newPostFilteredOffices
-        }
-    }
-
     const handleQuantityBlur = async(bookId, newValue) => {
 
         if(newValue === "" || isNaN(parseInt(newValue))){
@@ -470,312 +305,19 @@ export const CheckoutClient = () => {
 
     return (
         <form className="checkout" onSubmit={handleSubmit(onSubmit)}>
-            { console.log(newPostFilteredOffices) }
             <h2 className="checkout__title">
                 Оформлення замовлення
             </h2>
-            { console.log(meestFilteredOffice) }
             <div className="checkout__content">
                 <div className="checkout__form-container">
-                    <div className="checkout__form">
-                        <h5 className="checkout__form-title">
-                            Контактні дані
-                        </h5>
-                        <div className="checkout__form-input-row">
-                            <div className="checkout__form-input-container">
-                                <label htmlFor="firstName" className="checkout__form-label">
-                                    Ім'я *
-                                </label>
-                                <input type="text" id="firstName" name="firstName" 
-                                {...register("firstName", {
-                                    required: "Ім'я обов'язкове",
-                                    minLength: {
-                                        value: 1,
-                                        message: "Мінімум 1 символ"
-                                    },
-                                    pattern: {
-                                        value: /^[A-Za-zА-Яа-яІіЇїЄєҐґ'-]{2,}$/,
-                                        message: "Ім'я може містити тільки букви"
-                                    }
-                                })}
-                                className={`checkout__form-input ${errors.firstName ? "error-input" : ""}`} placeholder="Введіть ваше ім'я" />
+                    <ContactDataForm register={ register } errors={ errors }
+                    setValue={ setValue } watch={ watch } selectedCountry={ selectedCountry } />
 
-                                { errors.firstName && <p className="checkout__form-error-message">{ errors.firstName.message }</p> }
-                            </div>
-                            <div className="checkout__form-input-container">
-                                <label htmlFor="lastName" className="checkout__form-label">
-                                    Прізвище *
-                                </label>
-                                <input type="text" id="lastName" name="lastName" 
-                                className={`checkout__form-input ${ errors.lastName ? "error-input" : "" }`} placeholder="Введіть ваше прізвище"
-                                {...register("lastName", {
-                                    required: "Прізвище обов'язкове",
-                                    minLength: {
-                                        value: 1,
-                                        message: "Мінімум 1 символ",
-                                    },
-                                    pattern: {
-                                        value: /^[A-Za-zА-Яа-яІіЇїЄєҐґ'-]{2,}$/,
-                                        message: "Прізвище містить некоректні символи"
-                                    }
-                                })} />
+                    <DeliveryDataForm setValue={setValue} register={register} watch={watch} control={control} errors={errors} />
 
-                                { errors.lastName && <p className="checkout__form-error-message">{ errors.lastName.message }</p> }
-                            </div>
-                        </div>
+                    <PaymentMethodForm watch={ watch } register={ register } setValue={ setValue } />
 
-                        <div className="checkout__form-input-row">
-                            <div className="checkout__form-input-container">
-                                <label htmlFor="phone" className="checkout__form-label">
-                                    Номер телефону *
-                                </label>
-                                <div className="form__paired-inputs">
-                                    <PhoneInput className="form__country-select"
-                                    country={ selectedCountry.toLowerCase() }
-                                    disableDropdown={ false }
-                                    inputStyle={{
-                                        "height": "45px", "width": "100%", "backgroundColor": "#F4F6F8",
-                                        "border": "1px solid #ddd", "borderRadius": "10px", "fontSize": "14px",
-                                        "paddingInline": "2%", "outline": "none", "color": "black", "fontWeight": "500"
-                                    }}
-                                    preferredCountries={["ua"]}
-                                    onChange={ (value) => setValue("phone", value, { showValidate: true }) } 
-                                    excludeCountries={["ru"]}
-                                    value={watch("phone")}
-                                    minLength={8}/>
-                                    <input type="hidden" name="phone" id="phone" className="checkout__form-input" />
-                                </div>
-                            </div>
-
-                            <div className="checkout__form-input-container">
-                                <label htmlFor="email" className="checkout__form-label">
-                                    Електронна пошта *
-                                </label>
-                                
-                                <input type="email" name="email" id="email" placeholder="Введіть ваш email"
-                                className={`checkout__form-input ${errors.email ? "error-input": ""}`} 
-                                { ...register("email", {
-                                    required: "Введіть email",
-                                    pattern: {
-                                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                        message: "Некоректний формат email"
-                                    }
-                                }) }/>
-
-                                { errors.email && <p className="checkout__form-error-message">{ errors.email.message }</p> }
-                            </div>
-                        </div>
-
-                        <div className="checkout__form-input-row checks-row">
-                            <div className="checkout__form-input-container horizontalized">
-                                <label htmlFor="charity" className="checkout__form-custom-checkbox">
-                                    <input type="checkbox" id="charity" name="charity" 
-                                    { ...register("charity") }
-                                    className="checkout__form-custom-checkbox-input" />
-                                    <span className="checkout__form-custom-checkbox-checkmark"></span>
-                                    На благодійність
-                                </label>
-                            </div>
-
-                            <div className="checkout__form-input-container horizontalized">
-                                 <label htmlFor="other-person" className="checkout__form-custom-checkbox">
-                                    <input type="checkbox" id="other-person" name="other-person" 
-                                    { ...register("otherPerson") }
-                                    className="checkout__form-custom-checkbox-input" />
-                                    <span className="checkout__form-custom-checkbox-checkmark"></span>
-                                    Отримувач інша людина
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="checkout__form">
-                        <h5 className="checkout__form-title">
-                            Доставка
-                        </h5>
-
-                        <div className="checkout__form-input-row">
-                            <div className="checkout__form-input-container">
-                                <label htmlFor="country" className="checkout__form-label">
-                                    Країна *
-                                </label>
-                                { countries.length && (
-                                    <Select 
-                                        id="country"
-                                        name="country"
-                                        options={ countriesOptions }
-                                        value={ selectedCountryOption }
-                                        onChange={ (option) => {
-                                            setValue("country", option.value);
-                                            handleChangeSelectedCountry(option);
-                                        }  }
-                                        placeholder={ selectedDeliveryCountry?.title }
-                                        className="delivery-modal__input"
-                                        styles={ selectFieldsCommonStyles }
-                                    />    
-                                ) }
-                                
-                            </div>
-
-                            <div className="checkout__form-input-container">
-                                <label htmlFor="city" className="checkout__form-label">
-                                    Місто *
-                                </label>
-                                <Select 
-                                    id="city"
-                                    name="city"
-                                    options={ getCountryCities() }
-                                    value = {
-                                        selectedCity 
-                                        ? {value: selectedCity.title, label: selectedCity.title}
-                                        : ''
-                                    }
-                                    onChange={(option) => {
-                                        setValue("city", option.value);
-                                        handleChangeSelectedCity(option);
-                                    }}
-                                    styles={ selectFieldsCommonStyles }
-                                    placeholder={ selectedCity?.title }
-                                    className="delivery-modal__input"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="checkout__form-options-container">
-                            <label htmlFor="delivery-method" className="checkout__form-label">
-                                Спосіб доставки *
-                            </label>
-
-                            <div className="checkout__form-delivery-methods">
-
-                                { selectedCity?.delivery_terms && 
-                                    Object.entries(selectedCity.delivery_terms).map(([key, value], index)  => {
-                                        if(
-                                            ["id", "city_id", "country_id"].includes(key) || value === null
-                                        ) return null
-
-                                        const option = deliveryOptions[key]
-
-                                        if(!option) return null
-
-                                        return (
-                                            <div className={`checkout__form-delivery-method`} 
-                                            key={ index } onClick={() => {
-                                                setValue("deliveryMethod", option.htmlFieldName);
-                                                handleSelectNewLabel(index, value);
-                                                handleFilteredOfficesList(option.htmlFieldName)
-                                            }}>
-                                                <label htmlFor={ option.htmlFieldName } 
-                                                className={`checkout__form-label delivery-label 
-                                                ${watch("deliveryMethod") === option.htmlFieldName ? "active" : ""}`}>
-                                                    <div className="checkout__form-label-main-container">
-                                                        <div className="checkout__form-default-radio">
-                                                            <input type="radio" name="deliveryMethoOption" 
-                                                            { ...register("deliveryMethod") }
-                                                            id={ option.htmlFieldName }
-                                                            value={ option.htmlFieldName } 
-                                                            className="checkout__form-default-radio-input"
-                                                            />
-                                                        </div>
-
-                                                        <div className="checkout__form-delivery-info">
-                                                            <div className="checkout__form-delivery-info-logo">
-                                                                <span className="checkout__form-delivery-info-logo-icon">
-                                                                    <Image src={ option.icon } alt="" width="18" height="18" />
-                                                                </span>
-                                                                <span className="checkout__form-delivery-info-logo-title">
-                                                                    { option.label }
-                                                                </span>
-                                                            </div>
-                                                            <div className="checkout__form-delivery-description">
-                                                                <span className="checkout__form-delivery-description-part">
-                                                                    { value === 0 ? "безкоштовно" : `${ value } грн` }
-                                                                </span>
-                                                                <div className="separator-dot"></div>
-                                                                <span className="checkout__form-delivery-description-part">
-                                                                    {`термін доставки ${option.deliveryTime}`}
-                                                                </span>
-                                                                { option?.hasFree && (<div className="separator-dot"></div>) }
-                                                                { option?.hasFree && (
-                                                                    <span className="checkout__form-delivery-description-part">
-                                                                        { option.hasFree }
-                                                                    </span>
-                                                                ) }
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </label>
-
-                                                {watch("deliveryMethod") === option.htmlFieldName && option.formContent(register, watch, control, errors,
-                                                    getCurrentSelectedList())}
-                                            </div>
-                                        )
-                                    })
-                                }
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="checkout__form">
-                        <h5 className="checkout__form-title">Спосіб оплати</h5>
-
-                        <div className="checkout__form-payment-methods">
-
-                            { selectedCity?.payment_methods && 
-                                Object.entries(selectedCity.payment_methods).map(([key, value], index) => {
-                                    if(
-                                        ["id", "city_id", "country_id"].includes(key) || value === null
-                                    ) return null;
-
-                                    const option = paymentOptions[key];
-
-                                    if(!option) return null;
-                                    
-                                    return (
-                                        <div className={`checkout__form-payment-method 
-                                        ${watch("paymentMethod") === option.htmlFieldName ? "active": ''} `} 
-                                        key={ index } onClick={ () => {
-                                            setValue("paymentMethod", option.htmlFieldName);
-                                            setSelectedPaymentOption(index, value);
-                                        } }>
-                                            <label htmlFor={ option.htmlFieldName } className="checkout__form-label payment-label">
-                                                <div className="checkout__form-default-radio">
-                                                    <input type="radio" name="paymentMethodOption"
-                                                    { ...register("paymentMethod") }
-                                                    id={ option.htmlFieldName } 
-                                                    value={ option.htmlFieldName }
-                                                    className="checkout__form-default-radio-input" />
-                                                </div>
-                                                <div className="checkout__payment-container">
-                                                    <Image src={ option.icon } alt="" width="18" height="18" />
-                                                    <span className="checkout__payment-text">
-                                                        { option.label }
-                                                    </span>
-                                                </div>
-                                            </label>
-                                        </div>
-                                    )
-                                })
-                            }
-                        </div>
-                    </div>
-
-                    <div className="checkout__form">
-                        <h5 className="checkout__form-title">
-                            Коментар до замовлення
-                        </h5>
-
-                        <textarea className={`checkout__form-textarea ${errors.comment ? "error-input" : ""}`} rows={3} 
-                        { ...register("comment", {
-                            maxLength: {
-                                value: 500,
-                                message: "Максимум 500 символів"
-                            }
-                        })}
-                        ></textarea>
-                        { errors.comment && <p className="checkout__form-error-message">{ errors.comment.message }</p> }
-                    </div>
+                    <CommentForm register={ register } errors={ errors } />
                 </div>    
 
                 <div className="checkout__add-info">

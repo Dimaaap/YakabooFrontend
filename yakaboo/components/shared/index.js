@@ -31,3 +31,11 @@ export { PageModals } from "./PageModals";
 export { Skeleton } from "./Skeleton";
 export { WishlistContainer } from "./WishlistContainer";
 export { ScrollContainer } from "./ScrollContainer";
+export { Checkbox } from "./Checkbox";
+export { ContactDataForm } from "./ContactDataForm";
+export { FormInput } from "./FormInput"
+export { PhoneInput } from "./PhoneInput"
+export { DeliveryDataForm } from "./DeliveryDataForm";
+export { SelectField } from "./SelectField";
+export { PaymentMethodForm } from "./PaymentMethodForm";
+export { CommentForm } from "./CommentForm";
