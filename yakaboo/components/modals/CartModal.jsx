@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { useCartModalStore, useCartStore } from '../../states'
 import { CookiesWorker, fetchData, handleBackdropClick } from '../../services'
-import { FlashMessageWithAgreement, ModalCloseBtn } from '../shared'
+import { CartProductCountInput, FlashMessageWithAgreement, ModalCloseBtn } from '../shared'
 import Endpoints from '../../endpoints'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -12,8 +12,7 @@ import { BonusesInfoModal } from '.'
 const CartModal = () => {
 
   const { isCartModalOpen, setIsCartModalOpen } = useCartModalStore()
-  const { cartItems, setCartItems, clearCart, updateCartItemQuantity } = useCartStore();
-  const [prevQuantities, setPrevQuantities] = useState({})
+  const { cartItems, setCartItems, clearCart, deleteItemFromCart, changeQuantity } = useCartStore();
   const [isBonusesInfoModalOpen, setIsBonusesInfoModalOpen] = useState(false);
   const [showFlashMessage, setShowFlashMessage] = useState(false);
 
@@ -35,125 +34,7 @@ const CartModal = () => {
       console.log(res.json())
     }
   }
-
-  const deleteItemFromCartHandler = async(bookId) => {
-    const res = await fetch(Endpoints.DELETE_ITEM_FROM_CART(userEmail, bookId), {
-      method: "DELETE"
-    })
-
-    if(res.ok){
-      setCartItems((prev) => {
-        if(!prev?.items) return prev;
-
-        const updatedItems = prev.items.filter(
-          (item) => item.book_id !== bookId
-        );
-
-        const updatedTotal = updatedItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-        return {
-          ...prev, 
-          items: updatedItems,
-          total_price: updatedTotal
-        }
-      });
-    } else {
-      return null
-    }
-  }
-
-  const changeQuantity = async(bookId, addOrMinus) => {
-    const currentItem = cartItems.items.find(item => item.book_id === bookId);
-
-    if(!currentItem) {
-      return
-    }
-
-    let newQuantity = null;
-
-    if(addOrMinus === "add") {
-      newQuantity = currentItem.quantity + 1;
-    } else {
-      newQuantity = currentItem.quantity - 1;
-    }
-
-    const res = await fetch(Endpoints.UPDATE_BOOK_QUANTITY(userEmail, bookId, newQuantity), {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-
-    if(res.ok){
-      updateCartItemQuantity(bookId, newQuantity)
-    } else {
-      console.error("Error: ", res.text())
-    }
-  }
-
-  const handleFocus = (bookId) => {
-    setPrevQuantities((prev) => {
-      const currentQuantity = cartItems.items.find((item) => item.book_id === bookId)?.quantity;
-      return {...prev, [bookId]: currentQuantity}
-    })
-  } 
-
-  const handleQuantityChangeLocal = (bookId, newValue) => {
-    if(newValue === ""){
-      setCartItems((prev) => {
-        const updatedItems = prev.items.map((item) => item.book_id === bookId ? {...item, quantity: ""} : item)
-
-        return {...prev, items: updatedItems}
-      })
-
-      return
-    }
-
-
-    const newQuantity = parseInt(newValue);
-    if(isNaN(newQuantity) || newQuantity < 1){
-      return
-    }
-
-    setCartItems((prev) => {
-      const updatedItems = prev.items.map((item) => (
-        item.book_id === bookId ? {...item, quantity: newQuantity} : item
-      ));
-      return {...prev, items: updatedItems}
-    })
-  }
-
-  const handleQuantityBlur = async(bookId, newValue) => {
-
-    if(newValue === "" || isNaN(parseInt(newValue))){
-      const oldQuantity = prevQuantities[bookId];
-      setCartItems((prev) => {
-        const updatedItems = prev.items.map((item) => (
-          item.book_id === bookId ? {...item, quantity: oldQuantity} : item
-        ))
-
-        return {...prev, items: updatedItems}
-      })
-
-      return
-    }
-
-    const newQuantity = parseInt(newValue);
-
-    const res = await fetch(Endpoints.UPDATE_BOOK_QUANTITY(userEmail, bookId, newQuantity), {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-
-    if(res.ok){
-      updateCartItemQuantity(bookId, newQuantity)
-    } else {
-      console.error("Error updating quantity")
-    }
-  }
-
+  
   useEffect(() => {
     fetchData(Endpoints.CART_ITEMS(userEmail), setCartItems)
     
@@ -162,7 +43,7 @@ const CartModal = () => {
   return (
     <div className="menu" onClick={e => handleBackdropClick(e, setIsCartModalOpen)}>
       { showFlashMessage && <FlashMessageWithAgreement message="Ви впевнені, що хочете видалити всі товари з кошика?"
-      onConfirm={handleDeleteAll} onClose={() => setShowFlashMessage(false)}/> }
+      onConfirm={ handleDeleteAll } onClose={() => setShowFlashMessage(false)}/> }
       <div className={`menu__content cart-content ${isCartModalOpen ? 'active': ''}`}>
         <div className="menu__header cart-header">
             <p className="cart-header__title">
@@ -238,21 +119,18 @@ const CartModal = () => {
                         </div>
                         <div className="cart-body__item-features">
                           <button className="cart-body__btn delete-item-btn" type="button" 
-                          onClick={ () => deleteItemFromCartHandler(item.book_id) }>
+                          onClick={ () => deleteItemFromCart(item.book_id, userEmail) }>
                             Видалити
                           </button>
 
                           <div className="cart-body__quantity">
-                            <div className="cart-body__quantity-feature minus" onClick={() => changeQuantity(item.book_id, "minus")}>
+                            <div className="cart-body__quantity-feature minus" onClick={() => changeQuantity(item.book_id, "minus", userEmail)}>
                               <div className="cart-body__minus"></div>
                             </div>
 
-                            <input type="text" className="cart-body__quantity-input" value={ item.quantity === 0 ? "" : item.quantity } min="1" max="999"
-                            onFocus={() => handleFocus(item.book_id)}
-                            onChange={(e) => handleQuantityChangeLocal(item.book_id, e.target.value)}
-                            onBlur={(e) => handleQuantityBlur(item.book_id, e.target.value)}/>
+                            <CartProductCountInput item={ item } />
 
-                            <div className="cart-body__quantity-feature plus" onClick={() => changeQuantity(item.book_id, "add")}>
+                            <div className="cart-body__quantity-feature plus" onClick={() => changeQuantity(item.book_id, "add", userEmail)}>
                               <div className="cart-body__plus"></div>
                             </div>
                           </div>

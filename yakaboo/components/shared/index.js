@@ -39,3 +39,7 @@ export { DeliveryDataForm } from "./DeliveryDataForm";
 export { SelectField } from "./SelectField";
 export { PaymentMethodForm } from "./PaymentMethodForm";
 export { CommentForm } from "./CommentForm";
+export { CartComponent } from "./CartComponent";
+export { CartProductCountInput } from "./CartProductCountInput";
+export { CartItemQuantityBlock } from "./CartItemQuantityBlock";
+export { CheckoutPaymentInfo } from "./CheckoutPaymentInfo";
