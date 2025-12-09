@@ -2,6 +2,7 @@ import { CookiesWorker } from "./cookies.service"
 import Select from "react-select";
 import { Controller } from "react-hook-form";
 import Image from "next/image"
+import { selectFieldsCommonStyles } from "./characteristicsMap.service";
 
 export const userData = {
         firstName: CookiesWorker.get("first_name"),
@@ -78,7 +79,10 @@ export const deliveryOptions = {
         label: "Самовивіз з магазину Yakaboo, Хрещатик 22, у Головпоштамті",
         icon: "icons/social/yakaboo-small.svg",
         deliveryTime: "1-3 дні",
-    },
+        formContent: (register, watch, control, errors, filteredOffice) => (
+            <></>
+        )
+    },  
 
     new_post_department_price: 
     {
@@ -116,6 +120,7 @@ export const deliveryOptions = {
                                         options={ options }
                                         classNamePrefix="checkout__form-delivery-method-select"
                                         placeholder="Виберіть відділення"
+                                        styles={ selectFieldsCommonStyles }
                                         value={ selectedOption }
                                         onChange={ (selected) => field.onChange(selected.value) }
                                         isDisabled={ filteredOffice.length === 0 }
@@ -166,6 +171,7 @@ export const deliveryOptions = {
                                     <Select
                                         options={ options }
                                         classNamePrefix="checkout__form-delivery-method-select"
+                                        styles={ selectFieldsCommonStyles }
                                         placeholder="Виберіть відділення"
                                         value={ selectedOption }
                                         onChange={ (selected) => field.onChange(selected.value) }
@@ -228,6 +234,7 @@ export const deliveryOptions = {
                                         classNamePrefix="checkout__form-delivery-method-select"
                                         placeholder="Виберіть відділення"
                                         value={ selectedOption }
+                                        styles={ selectFieldsCommonStyles }
                                         onChange={(selected) => field.onChange(selected.value)}
                                         isDisabled={filteredOffice.length === 0} 
                                     />
@@ -396,6 +403,7 @@ export const deliveryOptions = {
                                         classNamePrefix="checkout__form-delivery-method-select"
                                         placeholder="Виберіть відділення"
                                         value={ selectedOption }
+                                        styles={ selectFieldsCommonStyles } 
                                         onChange={(selected) => field.onChange(selected.value)}
                                         isDisabled={filteredOffice.length === 0} 
                                     />

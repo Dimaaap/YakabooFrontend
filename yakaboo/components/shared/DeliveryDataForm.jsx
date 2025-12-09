@@ -2,11 +2,9 @@
 
 import { useEffect, useMemo } from "react";
 import Image from "next/image";
-import Select from "react-select";
 import { fetchData } from "../../services";
 import Endpoints from "../../endpoints";
 import { useDeliveryCountryStore, useDeliveryOptionsStore } from "../../states";
-import { selectFieldsCommonStyles } from "../../services/characteristicsMap.service";
 import { deliveryOptions } from "../../services/checkoutOptions.service";
 import { SelectField } from ".";
 
