@@ -13,7 +13,6 @@ export const PaymentMethodForm = ({ watch, register, setValue }) => {
   return (
     <div className="checkout__form">
       <h5 className="checkout__form-title">Спосіб оплати</h5>
-
       <div className="checkout__form-payment-methods">
         {selectedCity?.payment_methods &&
           Object.entries(selectedCity.payment_methods).map(
@@ -31,7 +30,7 @@ export const PaymentMethodForm = ({ watch, register, setValue }) => {
               return (
                 <div
                   className={`checkout__form-payment-method 
-                                                ${watch('paymentMethod') === option.htmlFieldName ? 'active' : ''} `}
+                              ${watch('paymentMethod') === option.htmlFieldName ? 'active' : ''} `}
                   key={index}
                   onClick={() => {
                     setValue('paymentMethod', option.htmlFieldName);

@@ -7,7 +7,13 @@ export const useDeliveryCountryStore = create((set) => ({
     selectedCountry: "UA",
 
     setCountries: countries => set({ countries }),
-    setSelectedCity: city => set({ selectedCity: city }),
+    setSelectedCity: city => set(() => ({
+        selectedCity: {
+            ...city,
+            delivery_terms: { ...city.delivery_terms },
+            payment_methods: JSON.parse(JSON.stringify(city.payment_methods))
+        }
+    })),
     setSelectedDeliveryCountry: country => set({ selectedDeliveryCountry: country }),
     setSelectedCountry: countryCode => set({selectedCountry: countryCode})
 }))

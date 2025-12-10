@@ -605,6 +605,12 @@
                     border-top: rem(1) solid var(--color-gray-50);
                     padding-top: 2%;
                 }
+
+                &.with-one-checkout {
+                    & .horizontalized {
+                        margin-top: 2.5%;
+                    }
+                }
             }
 
             &-container {

@@ -2,7 +2,7 @@
 
 import PhoneInput from "react-phone-input-2"
 
-export const PhoneInputField = ({ watch, setValue, selectedCountry }) => {
+export const PhoneInputField = ({ watch, setValue, selectedCountry, id }) => {
     return(
        <div className="checkout__form-input-container">
         <label htmlFor="phone" className="checkout__form-label">
@@ -19,12 +19,12 @@ export const PhoneInputField = ({ watch, setValue, selectedCountry }) => {
                     "paddingInline": "2%", "outline": "none", "color": "black", "fontWeight": "500"
                 }}
                 preferredCountries={["ua"]}
-                onChange={( value ) => setValue("phone", value, { showValidate: true })}
+                onChange={( value ) => setValue(id, value, { showValidate: true })}
                 excludeCountries={["ru"]}
-                value={ watch("phone") }
+                value={ watch(id) }
                 minLength={ 8 }
             />
-            <input type="hidden" name="phone" id="phone" className="checkout__form-input" />
+            <input type="hidden" name={ id } id={ id } className="checkout__form-input" />
         </div>
        </div>
     )

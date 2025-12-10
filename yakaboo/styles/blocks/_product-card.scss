@@ -11,10 +11,6 @@
   transition: border 0s ease;
   overflow: visible;
 
-  & .hidden {
-    opacity: 0;
-  }
-
   &__header {
     opacity: 0;
     pointer-events: none;
@@ -55,7 +51,7 @@
   }
 
   &__image-container {
-    height: rem(170);
+    height: rem(200);
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -64,9 +60,9 @@
   }
 
   &__image {
-    max-height: 100%;
-    width: 100%;
-    object-fit: cover;
+    width: rem(200);
+    height: rem(300);
+    object-fit: contain;
 
     &.ebook-image {
       border-radius: rem(20);
@@ -97,27 +93,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     transition: all 0.2s ease;
-  }
-
-  &:hover {
-    border: rem(1) solid var(--color-gray-50);
-    z-index: 100;
-
-    .product-card__title,
-    .product-card__brand {
-      line-clamp: unset;
-      -webkit-line-clamp: unset;
-      white-space: normal;
-    }
-
-    .product-card__header {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .product-card__buy-btn {
-      opacity: 1;
-    }
   }
 
   &__brand {

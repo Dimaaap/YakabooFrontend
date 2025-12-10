@@ -17,7 +17,7 @@ export const ContactDataForm = ({ register, errors, setValue, watch, selectedCou
 
       <div className="checkout__form-input-row">
         <PhoneInputField watch={ watch } setValue={ setValue } 
-        selectedCountry={ selectedCountry } />        
+        selectedCountry={ selectedCountry } id="phone" />        
         <FormInput id="email" type="email" label="Електронна пошта *" placeholder="Введіть ваш email" register={ register }
         validation={ validationRules.email } errors={ errors }/>
       </div>

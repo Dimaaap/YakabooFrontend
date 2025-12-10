@@ -1,152 +1,33 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { Badge, BookInfoBadge, Stars } from '../shared'
+import { Badge, BookInfoBadge, ProductCard, Stars } from '../shared'
 
 const BooksContainer = () => {
   return (
     <div className="categories">
         <div className="books-container">
-        <Link className="books-container__badge category-badge" href="#">
-            Новинки книг
-            <Image src="/icons/badge-icons.svg" alt="" width="20" height="25" 
-            className="books-container__icon"/>
-        </Link>
+        <div className="books-container__header">
+            <h3 className="books-container__title">
+                Новинки книг
+            </h3>
+            <Link className="books-container__title-link" href="#">
+                <span>
+                    Показати все 
+                    <Image src="icons/chevron-down.svg" width="15" height="15" alt="" />
+                </span>
+            </Link>    
+        </div>
         <div className="books-container__slider">
             <button className="books-container__btn prev-btn visually-hidden" type="btn">
                 <Image src="/icons/arrow-left.svg" width="30" height="30" alt="" />
             </button>
             <div className="books-container__slider book-slider">
-                <Link href="#" className="book-slider__book">
-                    <div className="book-slider__book-info visually-hidden">
-                        <BookInfoBadge text="1500156" />
-                        <BookInfoBadge text="/icons/heart.svg" isIcon={ true } />
-                    </div>
-                    <Image src="/images/books/1.jpg" width="200" height="250" alt="" 
-                    className="book-slider__book-image"/>
-                    <div className="book-slider__wrapper">
-                        <Badge text="Добірка" backgroundColor="rgb(0, 148, 95)" />
-                    </div>
-                    <h6 className="book-slider__title">
-                        Крижаний дракон
-                    </h6>
-                    <p className="book-slider__author">
-                        Джордж Р.Р. Мартін
-                    </p>
-                    <h6 className="book-slider__price">
-                        350 грн
-                    </h6>
-                    <p className="book-slider__delivery-time">
-                        <Image src="/icons/truck.svg" width="25" height="25" alt="" />
-                        Очікується з 30.04.25
-                    </p>
-                    <button className="book-slider__order-btn visually-hidden" type="btn">
-                        Передзамовити
-                    </button>
-                </Link>
-                <Link href="#" className="book-slider__book">
-
-                    <div className="book-slider__book-info visually-hidden">
-                        <BookInfoBadge text="1500344" />
-                        <BookInfoBadge text="/icons/heart.svg" isIcon={ true } />
-                    </div>
-                    <Image src="/images/books/2.jpg" width="200" height="250" alt="" 
-                    className="book-slider__book-image"/>
-                    <div className="book-slider__wrapper"></div>
-                    <h6 className="book-slider__title">
-                        Гаррі Поттер. Магія ...
-                    </h6>
-                    <p className="book-slider__author">
-                        Таніс Грей
-                    </p>
-                    <h6 className="book-slider__price">
-                        850 грн
-                    </h6>
-                    <p className="book-slider__delivery-time">
-                        <Image src="/icons/truck.svg" width="25" height="25" alt="" />
-                        Очікується з 31.05.25
-                    </p>
-                    <button className="book-slider__order-btn visually-hidden" type="btn">
-                        Передзамовити
-                    </button>
-                </Link>
-                <Link href="#" className="book-slider__book">
-                    <div className="book-slider__book-info visually-hidden">
-                        <BookInfoBadge text="1500322" />
-                        <BookInfoBadge text="/icons/heart.svg" isIcon={ true } />
-                    </div>
-                    <Image src="/images/books/3.jpg" width="200" height="250" alt=""
-                    className="book-slider__book-image" />
-                    <div className="book-slider__wrapper"></div>
-                    <h6 className="book-slider__title">
-                        Війна
-                    </h6>
-                    <p className="book-slider__author">
-                        Боб Вудворд
-                    </p>
-                    <h6 className="book-slider__price">
-                        559 грн
-                    </h6>
-                    <p className="book-slider__delivery-time">
-                        <Image src="/icons/truck.svg" width="25" height="25" alt="" />
-                        Очікується з 31.07.25
-                    </p>
-                    <button className="book-slider__order-btn visually-hidden" type="btn">
-                        Передзамовити
-                    </button>
-                </Link>
-                <Link href="#" className="book-slider__book">
-                    <div className="book-slider__book-info visually-hidden">
-                        <BookInfoBadge text="1500527" />
-                        <BookInfoBadge text="/icons/heart.svg" isIcon={ true } />
-                    </div>
-                    <Image src="/images/books/1.jpg" width="200" height="250" alt=""
-                    className="book-slider__book-image" />
-                    <div className="book-slider__wrapper">
-                        <Badge text="Хіт" backgroundColor="rgb(175, 57, 231)" />    
-                    </div>
-                    <h6 className="book-slider__title">
-                        Крижаний дракон
-                    </h6>
-                    <p className="book-slider__author">
-                        Джордж Р.Р. Мартін
-                    </p>
-                    <h6 className="book-slider__price">
-                        350 грн
-                    </h6>
-                    <p className="book-slider__delivery-time">
-                        <Image src="/icons/truck.svg" width="25" height="25" alt="" />
-                        Очікується з 30.04.25
-                    </p>
-                    <button className="book-slider__order-btn visually-hidden" type="btn">
-                        Передзамовити
-                    </button>
-                </Link>
-                <Link href="#" className="book-slider__book">
-                    <div className="book-slider__book-info visually-hidden">
-                        <BookInfoBadge text="1500387" />
-                        <BookInfoBadge text="/icons/heart.svg" isIcon={ true } />
-                    </div>
-                    <Image src="/images/books/1.jpg" width="200" height="250" alt=""
-                    className="book-slider__book-image" />
-                    <div className="book-slider__wrapper"></div>
-                    <h6 className="book-slider__title">
-                        Крижаний дракон
-                    </h6>
-                    <p className="book-slider__author">
-                        Джордж Р.Р. Мартін
-                    </p>
-                    <h6 className="book-slider__price">
-                        350 грн
-                    </h6>
-                    <p className="book-slider__delivery-time">
-                        <Image src="/icons/truck.svg" width="25" height="25" alt="" />
-                        Очікується з 30.04.25
-                    </p>
-                    <button className="book-slider__order-btn visually-hidden" type="btn">
-                        Передзамовити
-                    </button>
-                </Link>
+                <ProductCard title="test" brand="test test" 
+                imageSrc='https://static.yakaboo.ua/media/cloudflare/product/webp/352x340/9/7/978-617-8383-94-7_cr.jpg'
+                badges={[<Stars count={0} isSmaller={true} />,  <Badge text="Новинка" backgroundColor="#fff" />]}
+                productCode='1231' productLink='#' oldPrice={500} bonusesCount={250}
+                inStock={ true } withAddToWishlist={ true } />
             </div>  
             <button className="books-container__btn next-btn" type="btn">
                 <Image src="/icons/arrow-left.svg" width="30" height="30" alt="" />

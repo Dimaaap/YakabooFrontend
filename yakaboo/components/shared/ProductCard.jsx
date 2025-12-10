@@ -42,8 +42,8 @@ export const ProductCard = ({
           <Image
             src={imageSrc}
             alt=""
-            width="150"
-            height="100"
+            width="300"
+            height="300"
             className={`product-card__image ${isEbook ? "ebook-image": ""}`}
           />
         </div>

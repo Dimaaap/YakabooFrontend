@@ -55,6 +55,20 @@ export const paymentOptions = {
         icon: "/icons/elbook.svg"
     },
 
+    privat_bank_parts: 
+    {
+        htmlFieldName: "privatBankParts",
+        label: "Оплата частинами від ПриватБанк",
+        icon: "/icons/privat_bank.svg"
+    },
+
+    monobank_parts: 
+    {
+        htmlFieldName: "monobankParts",
+        label: "Оплата частинами від Monobank",
+        icon: "icons/monobank.svg"
+    },
+
     upon_receipt: 
     {
         htmlFieldName: "cashOrCart",

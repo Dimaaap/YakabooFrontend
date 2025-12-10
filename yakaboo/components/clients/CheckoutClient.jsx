@@ -7,7 +7,7 @@ import { useForm, FormSubmit } from "react-hook-form";
 import { useCartStore, useDeliveryCountryStore, useDeliveryOptionsStore, usePromoCodeStore } from "../../states";
 import { deliveryFormsDefaultValues, deliveryOptions, userData } from "../../services/checkoutOptions.service";
 import { useRouter } from "next/navigation";
-import { CartComponent, CheckoutPaymentInfo, CommentForm, ContactDataForm, DeliveryDataForm, PaymentMethodForm } from "../shared";
+import { CartComponent, CheckoutPaymentInfo, CommentForm, ContactDataForm, DeliveryDataForm, OtherPersonDataForm, PaymentMethodForm } from "../shared";
 
 export const CheckoutClient = () => {
     const { cartItems } = useCartStore();
@@ -30,6 +30,10 @@ export const CheckoutClient = () => {
             deliveryMethod: "ukrpostCourier",
             paymentMethod: "scholarPack",
             comment: "",
+            otherPersonFirstName: "",
+            otherPersonLastName: "",
+            otherPersonPhone: "",
+            dontCall: false,
             ...deliveryFormsDefaultValues
         }
     });
@@ -95,6 +99,11 @@ export const CheckoutClient = () => {
                 <div className="checkout__form-container">
                     <ContactDataForm register={ register } errors={ errors }
                     setValue={ setValue } watch={ watch } selectedCountry={ selectedCountry } />
+
+                    { watch("otherPerson") && (
+                        <OtherPersonDataForm register={ register } errors={ errors } setValue={ setValue } watch={ watch }
+                        selectedCountry={ selectedCountry } />
+                    ) }
 
                     <DeliveryDataForm setValue={setValue} register={register} watch={watch} control={control} errors={errors} />
 
