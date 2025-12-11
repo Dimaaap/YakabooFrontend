@@ -25,7 +25,19 @@ const BooksContainer = () => {
             <div className="books-container__slider book-slider">
                 <ProductCard title="test" brand="test test" 
                 imageSrc='https://static.yakaboo.ua/media/cloudflare/product/webp/352x340/9/7/978-617-8383-94-7_cr.jpg'
-                badges={[<Stars count={0} isSmaller={true} />,  <Badge text="Новинка" backgroundColor="#fff" />]}
+                badges={[<Stars count={0} isSmaller={true} />,  <Badge text="Новинка" backgroundColor="#00945F" />]}
+                productCode='1231' productLink='#' oldPrice={500} bonusesCount={250}
+                inStock={ true } withAddToWishlist={ true } />
+
+                <ProductCard title="Джерело Вознесіння" brand="Брендон Сандерсон" 
+                imageSrc='https://static.yakaboo.ua/media/cloudflare/product/webp/352x340/a/a/aa4239e8744c44faa913b754d8e3fc41.webp'
+                badges={[<Stars count={0} isSmaller={true} />,  <Badge text="Новинка" backgroundColor="#00945F" />]}
+                productCode='1231' productLink='#' oldPrice={930} bonusesCount={250}
+                inStock={ true } withAddToWishlist={ true } />
+
+                <ProductCard title="Нічний трунок" brand="Алекс Астер" 
+                imageSrc='https://static.yakaboo.ua/media/cloudflare/product/webp/352x340/6/3/635ef7c2_nichnyi-trunok.webp'
+                badges={[<Stars count={0} isSmaller={true} />,  <Badge text="Новинка" backgroundColor="#00945F" />]}
                 productCode='1231' productLink='#' oldPrice={500} bonusesCount={250}
                 inStock={ true } withAddToWishlist={ true } />
             </div>  
@@ -33,10 +45,6 @@ const BooksContainer = () => {
                 <Image src="/icons/arrow-left.svg" width="30" height="30" alt="" />
             </button>
         </div>
-        <Link href="#" className="books-container__more-books">
-            Перейти до категорії
-            <Image src="/icons/arrow-left.svg" width="20" height="20" alt="" />
-        </Link>
         </div>
 
         <div className="books-container">

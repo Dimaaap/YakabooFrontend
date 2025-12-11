@@ -5,11 +5,15 @@
   flex-direction: column;
   position: relative;
   padding: rem(5);
-  padding-left: rem(20);
+  padding-inline: 1%;
   z-index: 1;
-  border-radius: rem(5);
-  transition: border 0s ease;
-  overflow: visible;
+  padding-top: 3%;
+  border-right: rem(1) solid var(--color-gray-50);
+  border-bottom: rem(1) solid var(--color-gray-50);
+  margin-bottom: 2%;
+  overflow: hidden;
+  height: rem(580);
+
 
   &__header {
     opacity: 0;
@@ -47,11 +51,11 @@
   &__body {
     display: flex;
     flex-direction: column;
-    gap: rem(2);
+    gap: rem(5);
   }
 
   &__image-container {
-    height: rem(200);
+    height: rem(300);
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -60,7 +64,7 @@
   }
 
   &__image {
-    width: rem(200);
+    width: rem(250);
     height: rem(300);
     object-fit: contain;
 
@@ -80,7 +84,7 @@
   }
 
   &__title {
-    font-size: rem(14);
+    font-size: rem(16);
     font-weight: 600;
   }
 
@@ -103,6 +107,26 @@
 
   &__price-container {
     font-size: rem(15);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__default-price {
+    font-size: rem(26);
+    font-weight: 600;
+  }
+
+  &__in-cart {
+    background-color: var(--color-pink-10);
+    border: none;
+    padding: rem(10);
+    padding-inline: rem(15);
+    border-radius: rem(15);
+
+    & img {
+      filter: invert(1);
+    }
   }
 
   &__prices {
@@ -136,62 +160,17 @@
     font-weight: 600;
   }
 
-  &__in-stock-container {
+  &__delivery-badge {
+    font-size: rem(14);
+    font-weight: 500;
     display: flex;
     align-items: center;
     gap: rem(5);
-    font-size: rem(12);
-    font-weight: 500;
-
-    &.ebook {
-      & img {
-        width: rem(15);
-        height: rem(15);
-      }
-    }
-
-    &.in-stock {
-      color: var(--color-green-10);
-    }
-  }
-
-  &__buy-btn {
-    position: absolute;
-    top: 89%;
-    left: 10%;
-    z-index: 20;
-    opacity: 0;
-    width: 80%;
-    background-color: var(--color-red-10);
-    display: flex;
-    align-items: center;
-    gap: rem(5);
-    color: var(--color-light);
-    font-weight: 500;
-    border: none;
-    font-size: rem(12);
-    padding-block: 5%;
-    justify-content: center;
-    border-radius: rem(10);
-    transition: opacity var(--transition-duration) ease;
-
-    &.inactive-btn {
-      background-color: var(--color-gray-40);
-      color: var(--color-black);
-      margin-top: -10%;
-      border: rem(1) solid var(--color-gray-40);
-
-      &:hover {
-        border-color: var(--color-gray-20);
-      }
-    }
-
-    &:hover {
-      opacity: 0.8;
-    }
-
-    & img {
-      filter: invert(1);
-    }
+    padding-inline: rem(7);
+    border-radius: rem(5);
+    color: var(--color-gray-20);
+    border: rem(2) solid var(--color-gray-20);
+    width: max-content;
+    margin-top: 2%;
   }
 }

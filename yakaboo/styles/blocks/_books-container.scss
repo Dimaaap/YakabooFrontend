@@ -19,9 +19,38 @@
     flex-direction: column;
     gap: rem(15);
     background-color: var(--color-light);
-    padding-block: 2%;
-    border-radius: rem(20);
+    border-radius: rem(5);
     position: relative;
+
+    &__header {
+        border-bottom: rem(1) solid var(--color-gray-50);
+        padding: 1% 2%;
+        display: flex;
+        align-items: center;
+        gap: 2%;
+        margin-bottom: -1%;
+    }
+
+    &__title {
+        &-link {
+            font-size: rem(14);
+            font-weight: 500;
+            background-color: var(--color-gray-40);
+            padding: rem(3);
+            padding-inline: rem(7);
+            border-radius: rem(10);
+
+            & span {
+                display: flex;
+                align-items: center;
+                gap: rem(2);
+            }
+
+            & img {
+                rotate: 270deg;
+            }
+        }
+    }
 
     &__slider {
         position: relative;
@@ -111,6 +140,7 @@
         transition: transform 0.4s ease-in-out;
         padding-inline: 2%;
         gap: 1%;
+        padding-top: 0;
         align-items: flex-start;
         position: relative;
         margin: auto;

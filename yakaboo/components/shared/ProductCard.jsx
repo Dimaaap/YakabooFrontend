@@ -54,8 +54,10 @@ export const ProductCard = ({
             </div>
           ))}
         </div>
-        <p className="product-card__title">{title}</p>
-        <span className="product-card__brand">{brand}</span>
+        <div className="product-cart__author-container">
+          <p className="product-card__title">{title}</p>
+          <span className="product-card__brand">{brand}</span>  
+        </div>
         <div className="product-card__price-container">
           {newPrice ? (
             <div className="product-card__prices">
@@ -67,10 +69,14 @@ export const ProductCard = ({
               </span>
             </div>
           ) : (
-            <span className="product-card__default-price blue-price">
+            <span className="product-card__default-price">
               {oldPrice} грн
             </span>
           )}
+
+          <button className="product-card__in-cart">
+            <Image src="/icons/cart.svg" alt="" width="25" height="25" />
+          </button>
         </div>
         {bonusesCount > 0 && (
           <div className="product-card__bonuses">
@@ -80,33 +86,10 @@ export const ProductCard = ({
             </span>
           </div>
         )}
-        {!isEbook ? (
-          <div className={`product-card__in-stock-container ${inStock ? 'in-stock' : 'waiting'} `}>
-            <Image src="/icons/truck.svg" alt="" width="15" height="15" />
-            <span className="product-card__in-stock-text">
-              {inStock ? 'В наявності' : 'Немає в наявності'}
-            </span>
-          </div>  
-        ) : (
-          <div className="product-card__in-stock-container ebook">
-            <Image src="/icons/mobile-phone.svg" alt="" width="15" height="15" />
-            <span className="product-card__ebook-text">
-              Електронна книга
-            </span>
-          </div>
-        )}
-       
-        { inStock ? (
-          <button className="product-card__buy-btn">
-            <Image src="/icons/cart.svg" alt="" width="16" height="16" />
-            Купити
-          </button>  
-        ) : (
-          <button className="product-card__buy-btn inactive-btn">
-            Сповістити про наявність
-          </button>
-        ) }
-        
+        <span className="product-card__delivery-badge">
+          <Image src="/icons/truck.svg" alt="" width="18" height="18" />
+          Безкоштовна доставка
+        </span>
       </div>
     </Link>
   );
