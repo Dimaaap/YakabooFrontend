@@ -6,12 +6,10 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     width: fit-content;
     padding-inline: rem(5) !important;
     padding-inline: 10%; 
     font-weight: 500 !important;
-    border-radius: rem(5) rem(5) 0 0 !important;
+    border-radius: rem(5);
     text-align: center;
-    color: var(--color-light) !important;
 }

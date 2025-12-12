@@ -44,3 +44,4 @@ export { CartProductCountInput } from "./CartProductCountInput";
 export { CartItemQuantityBlock } from "./CartItemQuantityBlock";
 export { CheckoutPaymentInfo } from "./CheckoutPaymentInfo";
 export { OtherPersonDataForm } from "./OtherPersonDataForm";
+export { CommentsCount } from "./CommentsCount";

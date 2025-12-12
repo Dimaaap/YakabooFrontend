@@ -1,7 +1,6 @@
 @use '../helpers' as *;
 
 .product-card {
-  height: rem(440);
   flex-direction: column;
   position: relative;
   padding: rem(5);
@@ -9,10 +8,18 @@
   z-index: 1;
   padding-top: 3%;
   border-right: rem(1) solid var(--color-gray-50);
-  border-bottom: rem(1) solid var(--color-gray-50);
-  margin-bottom: 2%;
   overflow: hidden;
   height: rem(580);
+  width: 23%;
+
+  &__support {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: rem(5);
+    top: 4%;
+  }
 
 
   &__header {
@@ -123,6 +130,11 @@
     padding: rem(10);
     padding-inline: rem(15);
     border-radius: rem(15);
+    transition: all 0.3s ease;
+
+    &:hover {
+      opacity: 0.8;
+    }
 
     & img {
       filter: invert(1);
