@@ -16,8 +16,10 @@ export const ProductCard = ({
   extraClass="",
   withAddToWishlist=true,
   isEbook=false,
+  isAudio=false,
   hasCashback=false,
   hasWinterSupport=false,
+  waitSince=null
 }) => {
   return (
     <Link className={`product-card ${extraClass}`} href={productLink}>
@@ -59,7 +61,7 @@ export const ProductCard = ({
             alt=""
             width="300"
             height="300"
-            className={`product-card__image ${isEbook ? "ebook-image": ""}`}
+            className={`product-card__image ${isEbook ? "ebook-image": ""} ${isAudio ? "audio-image": ""}`}
           />
         </div>
         <div className="product-card__badges-container">
@@ -76,11 +78,16 @@ export const ProductCard = ({
         <div className="product-card__price-container">
           {newPrice ? (
             <div className="product-card__prices">
+              <div className="product-card__discount">
+                <span className="product-card__old-price cancelled-price">
+                  {oldPrice} грн
+                </span>  
+                <span className="product-card__discount-percents">
+                  -{Math.round(((oldPrice - newPrice) / oldPrice) * 100)}%
+                </span>
+              </div>
               <span className="product-card__promo-price red-price">
                 {newPrice} грн
-              </span>
-              <span className="product-card__old-price cancelled-price">
-                {oldPrice} грн
               </span>
             </div>
           ) : (
@@ -89,7 +96,7 @@ export const ProductCard = ({
             </span>
           )}
 
-          <button className="product-card__in-cart">
+          <button className={`product-card__in-cart ${waitSince ? "blue-disabled" : ""}`} disabled={!!waitSince}>
             <Image src="/icons/cart.svg" alt="" width="25" height="25" />
           </button>
         </div>
@@ -101,10 +108,31 @@ export const ProductCard = ({
             </span>
           </div>
         )}
-        <span className="product-card__delivery-badge">
-          <Image src="/icons/truck.svg" alt="" width="18" height="18" />
-          Безкоштовна доставка
-        </span>
+        { !(isEbook || isAudio || waitSince) && (
+          <span className="product-card__delivery-badge">
+            <Image src="/icons/truck.svg" alt="" width="18" height="18" />
+              Безкоштовна доставка
+          </span>
+        ) }
+        { isAudio && (
+          <span className="product-card__info-span">
+            <Image src="/icons/audio.svg" alt="" width="16" height="16" />
+            Аудіокнига
+          </span>
+        ) }
+
+        { isEbook && (
+          <span className="product-card__info-span">
+            <Image src="/icons/el_book.svg" alt="" width="16" height="16" />
+            Електронна книга
+          </span>
+        ) }
+
+        { waitSince && (
+          <span className="product-card__info-span pink-text">
+            Очікується з { waitSince }
+          </span>
+        ) }
       </div>
     </Link>
   );

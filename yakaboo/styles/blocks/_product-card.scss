@@ -6,11 +6,12 @@
   padding: rem(5);
   padding-inline: 1%;
   z-index: 1;
-  padding-top: 3%;
+  padding-top: 5%;
   border-right: rem(1) solid var(--color-gray-50);
   overflow: hidden;
   height: rem(580);
-  width: 23%;
+  width: 100%;
+  border-bottom: rem(1) solid var(--color-gray-50);
 
   &__support {
     position: absolute;
@@ -21,6 +22,19 @@
     top: 4%;
   }
 
+  &__info-span {
+    display: flex;
+    align-items: center;
+    gap: rem(2);
+    font-size: rem(14);
+    font-weight: 500;
+    color: var(--color-gray-30);
+    margin-top: 5%;
+
+    &.pink-text {
+      color: var(--color-pink-10);
+    }
+  }
 
   &__header {
     opacity: 0;
@@ -59,6 +73,7 @@
     display: flex;
     flex-direction: column;
     gap: rem(5);
+    padding-inline: 3%;
   }
 
   &__image-container {
@@ -71,14 +86,21 @@
   }
 
   &__image {
-    width: rem(250);
+    width: 100%;
     height: rem(300);
     object-fit: contain;
 
     &.ebook-image {
       border-radius: rem(20);
-      -webkit-box-shadow: 4px 8px 7px 4px rgba(0,0,0,0.67); 
-      box-shadow: 4px 8px 7px 4px rgba(0,0,0,0.67);
+      max-width: rem(190);
+      max-height: rem(295);  
+      object-fit: cover;
+      border: rem(4) solid var(--color-black);
+    }
+
+    &.audio-image {
+      max-width: rem(190);
+      max-height: rem(295);
     }
   }
 
@@ -124,6 +146,24 @@
     font-weight: 600;
   }
 
+  &__discount {
+    display: flex;
+    align-items: center;
+    gap: rem(5);
+
+    &-percents {
+      background-color: var(--color-pink-10);
+      color: var(--color-light);
+      font-weight: 500;
+      padding: 2%;
+      border-radius: rem(20);
+      font-size: rem(14);
+      width: rem(40);
+      justify-content: center;
+      text-align: center;
+    }
+  }
+
   &__in-cart {
     background-color: var(--color-pink-10);
     border: none;
@@ -131,6 +171,15 @@
     padding-inline: rem(15);
     border-radius: rem(15);
     transition: all 0.3s ease;
+
+    &:disabled{
+      background-color: var(--color-blue-10);
+      cursor: none;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
 
     &:hover {
       opacity: 0.8;
@@ -143,18 +192,21 @@
 
   &__prices {
     display: flex;
-    align-items: center;
-    gap: 5%;
+    flex-direction: column;
     font-weight: 600;
   }
 
   & .red-price {
-    color: var(--color-red-10);
+    color: var(--color-pink-10);
+    font-size: rem(26);
+    margin-top: -5%;
   }
 
   & .cancelled-price {
     color: var(--color-gray-30);
-    font-weight: 500;
+    font-weight: 600;
+    font-size: rem(16);
+    margin-bottom: -2%;
     text-decoration: line-through;
   }
 
@@ -183,6 +235,6 @@
     color: var(--color-gray-20);
     border: rem(2) solid var(--color-gray-20);
     width: max-content;
-    margin-top: 2%;
+    margin-top: 3%;
   }
 }

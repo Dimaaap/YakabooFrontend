@@ -8,7 +8,8 @@ import { ProductCard, Stars, Badge, TopBadge } from '.'
 import { wordDeclension } from '../../services/word-declension.service'
 import { badgeColors, ImagesLinks } from '../../site.config';
 
-export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false, isNotebooks=false, isGifts=false, giftsBrand=null}) => {
+export const CardsContainer = ({booksList, categoryTitle, 
+    isHobbies=false, isAccessories=false, isNotebooks=false, isGifts=false, giftsBrand=null}) => {
 
     const searchParams = useSearchParams();
 
@@ -78,14 +79,22 @@ export const CardsContainer = ({booksList, isHobbies=false, isAccessories=false,
     return (
         <div className="author-books">
             <div className="author-books__header">
-                <h5 className="author-books__count">{`${ filterBooks?.length } ${wordDeclension(filterBooks?.length)}`}</h5>
+                
+                <div className="author-books__header-text">
+                    <h5 className="author-books__category">
+                        { categoryTitle }
+                    </h5>
+                    <span className="author-books__book-count">
+                        {`${ filterBooks?.length } ${wordDeclension(filterBooks?.length)}`}
+                    </span>
+                </div>
+                
                 <span className="author-books__select">
+                    <Image src="/icons/sort.svg" alt="" width="16" height="16" />
                     За популярністю 
-                    <Image src="/icons/arrow-left.svg" alt="" width="15" height="15" />
                 </span>
             </div>
             <div className="author-books__books-container">
-                { console.log(filterBooks) }
                 {filterBooks && filterBooks.map((book, index) => (
                     <ProductCard 
                     key={ index } 

@@ -81,62 +81,13 @@ export const BookCategoryClient = () => {
 
     return(
         <div className="book-category">
-            <div className="book-category__header">
-                <Link href="/books" className="book-category__books-link">
-                    Книги
-                </Link>
-                { category && (
-                    <h3 className="book-category__title">
-                        { category.title }
-                    </h3>    
-                ) }
-            </div>
-            { total > 0 && (
-                <>
-                    { canScrollLeft && (
-                        <button className="books-container__btn container-slider-btn prev-btn category-btn"
-                        onClick={ handlePrev }>
-                            <Image src="/icons/arrow-left.svg" alt="" width="30" height="30" />
-                        </button>     
-                    ) }
-                       
-                    <div className="book-category__subcategories-scroll" ref={ scrollRef }>
-                        {subcategories.map((subcategory, index) => (
-                            <Link className="book-category__subcategory subcategory" key={ index } 
-                            href={`/book-categories/${categorySlug}/${subcategory.slug}`}>
-                                { subcategory?.images_src?.length > 0 && (
-                                    <div className="subcategory__images-container">
-                                        { subcategory.images_src.map((image, index) => (
-                                            <Image src={ image.image_src } key={ index } className="subcategory__image" width="50" height="50" alt="" />
-                                        )) }
-                                    </div>    
-                                ) }
-                                
-                                <p className="subcategory__title">{subcategory.title}</p>
-                            </Link>
-                        ))}
-                    </div>
-                    { canScrollRight && (
-                        <button className="books-container__btn container-slider-btn next-btn category-btn"
-                        onClick={ handleNext }>
-                            <Image src="/icons/arrow-left.svg" alt="" width="30" height="30" />
-                        </button>      
-                    ) }
-                      
-                </>
-                
-            ) }
 
             <div className="book-category__container">
-                <Filters />
+                <Filters needBookCategories={ true } bookCategories={ subcategories || [] } categorySlug={ categorySlug } />
                 <div className="book-category__book-section">
-                    { banners.length > 0 && (
-                        <CategoryBanner banners={ banners } />
-                    ) }
-
                     <div className="book-category__books">
-                    <CardsContainer booksList={ categoryBooks || [] } />
-                </div>
+                        <CardsContainer booksList={ categoryBooks || [] } categoryTitle={ category.title } />
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Link from "next/link";
+import Image from "next/image";
 import { useRouter, useSearchParams } from 'next/navigation';
 import { FilterForm } from '.';
 import { fetchData } from '../../services';
@@ -22,7 +24,10 @@ export const Filters = ({
   needDifficultLevel= false,
   needAge = false,
   needAccessoriesBrands = false,
-  needGiftBrands = false
+  needGiftBrands = false,
+  needBookCategories = false, 
+  bookCategories = null,
+  categorySlug=null,
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -34,7 +39,8 @@ export const Filters = ({
   const [authors, setAuthors] = useState([])
   const [publishings, setPublishings] = useState([]);
   const [age, setAge] = useState([])
-  const [accessoriesBrands, setAccessoriesBrands] = useState([])
+  const [accessoriesBrands, setAccessoriesBrands] = useState([]);
+  const [showSubcategories, setShowSubcategories] = useState(true);  
 
   const fetchConfig = [
     { need: needCategories, endpoint: Endpoints.ALL_BOOK_CATEGORIES, setter: setCategories, key: "categories" },
@@ -81,6 +87,26 @@ export const Filters = ({
 
   return (
     <div className="filters games-filters">
+      { needBookCategories && bookCategories.length > 0 && (
+        <div className="filters__book-subcategories">
+          <div className="filters__book-subcategories-header">
+            <h6 className="filters__book-subcategories-title">Категорії книг</h6>  
+            <Image src="/icons/arrow-left.svg" alt="" width="15" height="15"  
+            onClick={ (prev) => setShowSubcategories(!prev) }/>
+          </div>
+          
+          { showSubcategories ? (
+            bookCategories.map((category, index) => (
+              <Link className="filters__book-subcategory" key={ index }
+              href={`/book-categories/${categorySlug}/${category.slug}`}>
+                <p className="filters__book-subcategory-title">{ category.title }</p>
+              </Link>
+            ))
+          ): <></> }
+          
+        </div>
+      )}
+
       { needFilters && (
         <FilterForm fields={filtersFields} formTitle="Фільтри"
         selected={filters.filters}
@@ -217,11 +243,12 @@ export const Filters = ({
             <PriceInput label="Від" value={ filters.priceFrom } onChange={ (e) => setValueFilter('priceFrom', e.target.value) } />
             <PriceInput label="До" value={ filters.priceTo } onChange={ (e) => setValueFilter('priceTo', e.target.value) } />
           </div>
+
+          <button className="filters__form-button" type="submit" onClick={applyFilters}>
+            Застосувати
+          </button>
         </form>  
       ) }
-      <button className="filters__form-button" type="submit" onClick={applyFilters}>
-        Застосувати
-      </button>
     </div>
   );
 };
