@@ -11,24 +11,61 @@
     gap: rem(10);
     align-self: stretch;
 
+    &__book-subcategory {
+        padding-inline: 1.5%;
+
+        &-container {
+            display: flex;
+            flex-direction: column;
+            gap: rem(5);
+
+            &-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+
+        & img {
+            cursor: pointer;
+
+            &.rotated {
+                rotate: 180deg;
+            }
+        }
+
+        &-double-subcategories-list {
+        padding-inline: rem(20);
+        display: flex;
+        flex-direction: column;
+        gap: rem(5);
+        color: var(--color-gray-30);
+        font-weight: 400;
+    }
+    }
+
     &__book-subcategories {
         height: fit-content;
         max-height: rem(350);
         overflow-y: scroll;
         display: flex;
         flex-direction: column;
-        gap: rem(5);
+        gap: rem(10);
         font-weight: 600;
         padding-inline: 1.5%;
-        border-bottom: rem(1) solid var(--color-gray-50);
 
         &-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding-inline: 1.5%;
 
             & img {
                 cursor: pointer;
+
+                &.rotated {
+                    rotate: 180deg;
+                }
             }
         }
 
@@ -43,9 +80,14 @@
         display: flex;
         flex-direction: column;
         gap: rem(5);
+        padding-block: rem(5);
 
         &-title {
+            @include fluid-text(18, 14);
             font-weight: 600;
+            border-top: rem(1) solid var(--color-gray-50);
+            padding-inline: rem(10);
+            padding-block: rem(10);
         }
 
         &-scroll {
@@ -76,6 +118,7 @@
         &-field {
             font-weight: 500;
             color: #626B77;
+            padding-inline: 2.5%;
         }
 
         &-checkbox {
@@ -118,6 +161,7 @@
 
     &__search-container {
         position: relative;
+        padding-inline: rem(10);
 
         & img {
             position: absolute;
@@ -148,6 +192,7 @@
         color: #626B77;
         align-items: center;
         font-weight: 600;
+        padding-inline: rem(10);
 
         & img {
             width: rem(12);

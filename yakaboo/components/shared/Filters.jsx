@@ -41,6 +41,7 @@ export const Filters = ({
   const [age, setAge] = useState([])
   const [accessoriesBrands, setAccessoriesBrands] = useState([]);
   const [showSubcategories, setShowSubcategories] = useState(true);  
+  const [doubleSubcategoriesList, setDoubleSubcategoriesList] = useState(null);
 
   const fetchConfig = [
     { need: needCategories, endpoint: Endpoints.ALL_BOOK_CATEGORIES, setter: setCategories, key: "categories" },
@@ -85,22 +86,63 @@ export const Filters = ({
     router.push(`?${queryString}`, { shallow: true})
   }
 
+  const toggleShowSubcategories = () => {
+    if(showSubcategories){
+      setShowSubcategories(false)
+    } else {
+      setShowSubcategories(true)
+    }
+  }
+
+  const showDoubleSubcategoriesList = category => {
+    if(doubleSubcategoriesList !== category){
+      setDoubleSubcategoriesList(category);  
+    } else {
+      setDoubleSubcategoriesList(null);
+    }
+    
+  }
+
   return (
     <div className="filters games-filters">
-      { needBookCategories && bookCategories.length > 0 && (
+      { needBookCategories && bookCategories?.length > 0 && (
         <div className="filters__book-subcategories">
           <div className="filters__book-subcategories-header">
             <h6 className="filters__book-subcategories-title">Категорії книг</h6>  
-            <Image src="/icons/arrow-left.svg" alt="" width="15" height="15"  
-            onClick={ (prev) => setShowSubcategories(!prev) }/>
+            <Image src="/icons/arrow-left.svg" alt="" width="15" height="15" 
+            className={`${showSubcategories ? "rotated" : ""}`} 
+            onClick={ () => toggleShowSubcategories() }/>
           </div>
           
-          { showSubcategories ? (
-            bookCategories.map((category, index) => (
-              <Link className="filters__book-subcategory" key={ index }
-              href={`/book-categories/${categorySlug}/${category.slug}`}>
-                <p className="filters__book-subcategory-title">{ category.title }</p>
-              </Link>
+          { showSubcategories && bookCategories?.length > 0? (
+            bookCategories?.map((category, index) => (
+              <div className="filters__book-subcategory" key={ index }>
+                <div className={`filters__book-subcategory-container`}>
+                  <div className="filters__book-subcategory-container-header">
+                    <Link className="filters__book-subcategory-title" href={`/book-categories/${categorySlug}/${category.slug}`}>
+                      { category.title }
+                    </Link>  
+                    { category?.double_subcategories?.length > 0 ? 
+                      (<Image src="/icons/arrow-left.svg" alt="" width="15" height="15" 
+                        onClick={() => showDoubleSubcategoriesList(category.title)}
+                        className={`${doubleSubcategoriesList === category.title ? "rotated" : ""}`} />) 
+                      : 
+                      <></> 
+                    }
+                  </div>
+                  { doubleSubcategoriesList === category.title ? (
+                    <div className="filters__book-subcategory-double-subcategories-list">
+                      { category.double_subcategories.map((subcategory, index) => (
+                        <Link href={`/book-categories/${categorySlug}/${category.slug}/${subcategory.slug}`} 
+                        className="filters__book-subcategory-double-subcategories-title" 
+                        key={ index }>
+                          { subcategory.title }
+                        </Link>
+                      )) }
+                    </div>
+                  ) : <></> }
+                </div>   
+              </div>
             ))
           ): <></> }
           

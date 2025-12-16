@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { fetchData } from "../../services";
 import Endpoints from "../../endpoints";
-import { Breadcrumbs, CardsContainer, Filters, ScrollContainer } from "../shared";;
+import { Breadcrumbs, CardsContainer, Filters} from "../shared";;
 
 export const BookSubcategoryClient = () => {
     const [category, setCategory] = useState(null);
@@ -61,13 +61,16 @@ export const BookSubcategoryClient = () => {
                 </h3>    
             ) }
             
-            <ScrollContainer category={ category } content={ doubleSubcategories } categorySlug={ categorySlug } subcategorySlug={ subcategory?.slug } />
-
             <div className="subcategory__container">
-                <Filters needDifficultLevel={ false } needTheme={ false } needCategories={ false }/>
-
+                { doubleSubcategories?.length > 0 ? (
+                    <Filters needDifficultLevel={ false } needTheme={ false } needCategories={ false }
+                    needBookCategories={ true } bookCategories={ doubleSubcategories } categorySlug={ categorySlug }  />
+                ) : (
+                    <Filters needDifficultLevel={ false } needTheme={ false } needCategories={ false }/>
+                ) }
+                
                 { subcategoryBooks.length > 0 && (
-                    <CardsContainer booksList={ subcategoryBooks } />    
+                    <CardsContainer booksList={ subcategoryBooks } categoryTitle={ subcategory.title } />    
                 ) }
             </div>
            
