@@ -21,6 +21,29 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    gap: rem(15);
+
+    &__header {
+        display: flex;
+        align-items: center;
+        gap: rem(5);
+
+        &-view-all {
+            display: flex;
+            align-items: center;
+            gap: rem(5);
+            font-size: rem(14);
+            font-weight: 500;
+            background-color: var(--color-gray-40);
+            padding-inline: 2%;
+            border-radius: rem(5);
+            padding-block: 0.5%;
+            
+            & img {
+                rotate: 270deg;
+            }
+        }
+    }
 
     &__section {
         display: flex;
@@ -29,7 +52,6 @@
     }
 
     &__header {
-        border-bottom: rem(1) solid var(--color-gray-50);
         padding: 1% 2%;
         display: flex;
         align-items: center;
@@ -149,115 +171,28 @@
         width: 100%;
         transition: transform 0.4s ease-in-out;
         padding-inline: 2%;
-        gap: 1%;
         padding-top: 0;
         align-items: flex-start;
         position: relative;
         margin: auto;
-        border-bottom: rem(1) solid var(--color-gray-50);
         scroll-behavior: smooth;
         scrollbar-width: none;
+        height: rem(300);
 
         &::-webkit-scrollbar {
             display: none;
         }
-
-        &__book-info {
-            width: 16%;
-            display: flex;
-            justify-content: space-between;
-            position: absolute;
-            top: 0;
-        }
-
-        &__wrapper {
-            height: rem(30);
-        }
-
-        &__book {
-            display: flex;
-            flex-direction: column;
-            width: 19.5%;
-            flex-shrink: 0;
-            gap: rem(5);
-            height: 100%;
-            justify-content: flex-end;
-
-            &-image {
-                object-fit: cover;
-                height: rem(300);
-            }
-        }
-
-        &__title {
-            @include fluid-text(18, 14);
-        }
-
-        &__author {
-            @include fluid-text(16, 14);
-            color: var(--color-gray-20);
-            font-weight: 500;
-        }
-
-        &__price {
-            @include fluid-text(18, 14);
-            color: var(--color-blue-20);
-        }
-
-        &__delivery-time {
-            @include fluid-text(16, 14);
-            display: flex;
-            align-items: center;
-            font-weight: 500;
-            gap: 2%;
-            color: var(--color-pink-10);
-
-            &.orange-time {
-                color: var(--color-orange-10);
-
-                & img {
-                    filter: invert(34%) sepia(81%) saturate(697%) hue-rotate(340deg) brightness(97%) contrast(94%);
-                }
-            }
-
-            &.green-time {
-                color: var(--color-green-10);
-
-                & img {
-                    filter: invert(35%) sepia(97%) saturate(546%) hue-rotate(124deg) brightness(90%) contrast(87%);
-                }
-            }
-
-            & img {
-                filter: invert(70%) sepia(86%) saturate(7357%) hue-rotate(291deg) brightness(110%) contrast(90%);
-            }
-        }
-
-        &__order-btn {
-            @include fluid-text(16, 14);
-            background-color: var(--color-blue-20);
-            border: none;
-            color: var(--color-light);
-            border-radius: rem(10);
-            padding-block: 4%;
-            width: 90%;
-            font-weight: 500;
-
-            &.orange-btn {
-                background-color: var(--color-orange-10);
-            }
-        }
     }
 
     & .container-slider {
-        gap: 4%;
         align-items: start;
-        height: rem(480);
+        height: rem(650);
+        display: flex;
         overflow: hidden;
 
         &__book {
-            border: rem(1) solid var(--color-gray-40);
-            flex: 0 0 22%;
+            border-top: rem(1) solid var(--color-gray-50);
+            flex: 0 0 30%;
             box-sizing: border-box;
             transition: transform 0.3s ease-in-out;
             

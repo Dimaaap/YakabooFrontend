@@ -40,7 +40,6 @@ export const DoubleSubactegoryClient = () => {
 
     return (
         <div className="subcategory">
-            { console.log(doubleSubcategorySlug) }
             <Breadcrumbs linksList={ breadcrumbsLink } />
             { doubleSubcategory && (
                 <h3 className="subcategory__header-title">

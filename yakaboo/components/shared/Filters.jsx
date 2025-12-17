@@ -105,9 +105,9 @@ export const Filters = ({
 
   return (
     <div className="filters games-filters">
-      { needBookCategories && bookCategories?.length > 0 && (
-        <div className="filters__book-subcategories">
-          <div className="filters__book-subcategories-header">
+      
+        <div className={`filters__book-subcategories ${!(needBookCategories && bookCategories?.length > 0) ? "hidden" : "" }`}>
+          <div className={`filters__book-subcategories-header`}>
             <h6 className="filters__book-subcategories-title">Категорії книг</h6>  
             <Image src="/icons/arrow-left.svg" alt="" width="15" height="15" 
             className={`${showSubcategories ? "rotated" : ""}`} 
@@ -147,7 +147,6 @@ export const Filters = ({
           ): <></> }
           
         </div>
-      )}
 
       { needFilters && (
         <FilterForm fields={filtersFields} formTitle="Фільтри"

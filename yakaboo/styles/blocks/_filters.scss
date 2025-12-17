@@ -54,6 +54,10 @@
         font-weight: 600;
         padding-inline: 1.5%;
 
+        &.hidden {
+            @include visually-hidden;
+        }
+
         &-header {
             display: flex;
             justify-content: space-between;
