@@ -70,3 +70,5 @@ export const DownloadFile = dynamic(() => import("../shared/DownloadFile"))
 export const CartInfo = dynamic(() => import("../shared/CartInfo"));
 
 export const BonusInfoModal = dynamic(() => import("../modals/BonusInfoModal"));
+
+export const AddReviewModal = dynamic(() => import("../modals/AddReviewModal"));

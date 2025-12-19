@@ -22,3 +22,4 @@ export { useCartStore } from "./CartItemsStore";
 export { useDeliveryCountryStore } from "./DeliveryCountryStore";
 export { useDeliveryOptionsStore } from "./DeliveryOptionsStore";
 export { usePromoCodeStore } from "./PromoCodeStore";
+export { useAddReviewModalStore } from "./AddReviewModalStore";

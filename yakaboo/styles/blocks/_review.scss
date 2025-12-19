@@ -1,23 +1,100 @@
 @use '../helpers' as *;
 
 .review {
-  display: flex;
-  align-items: center;
-  gap: rem(5);
+  @include fluid-text(16, 14);
 
-  &__stars {
+  display: flex;
+  flex-direction: column;
+  gap: rem(12);
+  background-color: var(--color-gray-40);
+  border-radius: rem(5);
+  padding: 2%;
+
+  &__header {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+  }
+
+  &__read-more-btn {
+    background-color: transparent;
+    border: none;
+    font-size: rem(14);
+    font-weight: 500;
+
+  }
+
+  &__rate {
     display: flex;
     align-items: center;
+    gap: rem(3);
+  }
 
-    & img {
-      width: rem(12);
-      height: rem(12);
+  &__info-date {
+    display: flex;
+    flex-direction: column;
+    gap: rem(1);
+  }
+
+  &__author {
+    font-weight: 500;
+  }
+
+  &__date {
+    font-weight: 400;
+    color: var(--color-gray-30);
+    font-size: rem(14);
+  }
+
+  &__text-container {
+    display: flex;
+    flex-direction: column;
+    gap: rem(1);
+  }
+
+  &__title {
+    font-weight: 500;
+  }
+
+  &__text {
+    font-size: rem(14);
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+  }
+
+  &__like-buttons {
+    display: flex;
+    align-items: center;
+    gap: rem(5);
+    margin-left: auto;
+  }
+
+  &__like {
+    background: var(--color-gray-50);
+    border-radius: rem(15);
+    width: rem(40);
+    height: rem(25);
+    justify-content: center;
+    text-align: center;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: rem(2);
+    font-size: rem(12);
+    font-weight: 500;
+    color: var(--color-dark-10);
+
+    &:hover {
+      opacity: 0.8;
     }
   }
 
-  &__count {
-    font-size: rem(13);
-    font-weight: 500;
-    color: var(--color-pink-10);
+  &__dislikes {
+    & img {
+      transform: translateY(20%);
+    }
   }
 }

@@ -9,7 +9,7 @@ import { AddToWishlistBtn, ProductImagesModal, ProductInfoModal } from "../dynam
 import { useProductImagesStore } from "../../states";
 import { BookCharacteristics } from "../shared/BookCharacteristics";
 import { HobbyDescriptionContainer } from "../shared/hobbies/HobbyDescriptionContainer";
-import { BookAuthorBlock, BookImagesCarousel, BookInfoBlock, BookPriceBlock, BookReviewsBlock, OtherBookOptions, OtherSeriaBooks } from ".";
+import { BookAuthorBlock, BookImagesCarousel, BookInfoBlock, BookPriceBlock, BookReviewsBlock, OtherBookOptions, OtherSeriaBooks, ReviewsList } from ".";
 import { useAddToWishlistModalStore } from "../../states/AddToWishlistModalStore";
 import { AddBookToWishlistModal } from "../modals/AddBookToWishlist";
 import { setFlashMessage, setServerError, setShowFlashMessage, useShowFlashMessageStore } from "../../states/ShowFlashMessageStore";
@@ -149,6 +149,7 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
                 ) }
                 
                 <BookCharacteristics book={book} isGift={ isGift } />
+                { console.log(book) }
                 { book?.seria && (
                     <OtherSeriaBooks book={ book } />
                 ) }
@@ -156,6 +157,10 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
                 { !isGift && !book?.is_notebook && book?.authors[0]?.short_description && <BookAuthorBlock book={ book } author={ book.authors[0] } /> }
 
                 <BookReviewsBlock />
+
+                { book?.reviews?.length > 0 && (
+                    <ReviewsList reviews={ book.reviews } />
+                ) }
             </div>
             { (serverError || showFlashMessage) && isSimpleFlashMessage && (<FlashMessage message={ serverError || flashMessage }
              onClose={onCloseShowMessage} />) }

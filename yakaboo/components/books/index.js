@@ -7,3 +7,5 @@ export { BookReviewsBlock } from "./BookReviewsBlock";
 export { BookPriceBlock } from "./BookPriceBlock";
 export { OtherSeriaBooks } from "./OtherSeriaBooks";
 export { OtherBookOptions } from "./OtherBookOptions"
+export { Review } from "./Review";
+export { ReviewsList } from "./ReviewsList";

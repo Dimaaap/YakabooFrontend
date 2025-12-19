@@ -103,7 +103,6 @@
         z-index: 999;
 
         &.container-slider-btn {
-            top: 4.5% !important;
             transform: translateY(-50%);
             padding: rem(5);
             box-shadow: 0 2px 6px rgba(0,0,0,0.2);
@@ -177,7 +176,6 @@
         margin: auto;
         scroll-behavior: smooth;
         scrollbar-width: none;
-        height: rem(300);
 
         &::-webkit-scrollbar {
             display: none;
