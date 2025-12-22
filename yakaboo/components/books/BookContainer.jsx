@@ -5,8 +5,8 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image"
 import { Breadcrumbs, FlashMessage, FlashMessageWithAgreement, Rate } from "../shared"
 import Link from "next/link"
-import { AddToWishlistBtn, ProductImagesModal, ProductInfoModal } from "../dynamic";
-import { useProductImagesStore } from "../../states";
+import { AddReviewModal, AddToWishlistBtn, ProductImagesModal, ProductInfoModal } from "../dynamic";
+import { useAddReviewModalStore, useProductImagesStore } from "../../states";
 import { BookCharacteristics } from "../shared/BookCharacteristics";
 import { HobbyDescriptionContainer } from "../shared/hobbies/HobbyDescriptionContainer";
 import { BookAuthorBlock, BookImagesCarousel, BookInfoBlock, BookPriceBlock, BookReviewsBlock, OtherBookOptions, OtherSeriaBooks, ReviewsList } from ".";
@@ -17,6 +17,7 @@ import Endpoints from "../../endpoints";
 import { useWishlistBooksStore } from "../../states/WishlistBooksStore";
 import { setActiveBtn } from "../../states/ActiveBtnStore";
 import { handleScrollForProductInfoModal, useProductInfoState } from "../../states/hobbies/ProductInfoState";
+import { CookiesWorker } from "../../services";
 
 
 export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
@@ -24,7 +25,8 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
     const { isAddToWishlistModalOpen } = useAddToWishlistModalStore();
     const { serverError, showFlashMessage, flashMessage } = useShowFlashMessageStore();
     const [isSimpleFlashMessage, setIsSimpleFlashMessage] = useState(false);
-    const { removeBookFromWishlist } = useWishlistBooksStore() 
+    const { removeBookFromWishlist } = useWishlistBooksStore();
+    const { isAddReviewModalOpen, setIsAddReviewModalOpen } = useAddReviewModalStore();
 
     const showProductInfoModal = useProductInfoState((state) => state.showProductInfoModal)
 
@@ -33,6 +35,13 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
     const images = book.images || [];
 
     const pageImages = images.filter((img) => img.type === "page");
+
+    const bookInfo = {
+        image_src: images[0]?.image_url,
+        title: book?.title,
+        format: book?.book_info?.format,
+        author: book?.authors?.[0]?.first_name + " " + book?.authors[0]?.last_name
+    };
 
     useEffect(() => {
         const handleScroll = () => handleScrollForProductInfoModal(90);
@@ -84,6 +93,7 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
 
     return(
         <div className="book-container">
+            { isAddReviewModalOpen && (<AddReviewModal bookInfo={ bookInfo } bookId={ book.id } userEmail={ CookiesWorker.get("email") || null } />) }
             { showProductInfoModal && (
                 <ProductInfoModal productImage={ book.images[0].image_url }
                 productTitle={ book.title }
@@ -149,7 +159,6 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
                 ) }
                 
                 <BookCharacteristics book={book} isGift={ isGift } />
-                { console.log(book) }
                 { book?.seria && (
                     <OtherSeriaBooks book={ book } />
                 ) }

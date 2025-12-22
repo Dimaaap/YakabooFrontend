@@ -24,7 +24,7 @@ export const Review = ({ review }) => {
             <div className="review__header">
                 <div className="review__info-date">
                     <p className="review__author">
-                        dsadsa
+                        { review.user_name }
                     </p>
                     <span className="review__date">
                         { formattedDate }

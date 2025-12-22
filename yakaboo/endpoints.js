@@ -44,6 +44,7 @@ const Auth = {
   USER_CHANGE_PASSWORD: `${DOMAIN}auth/user/change-password`,
   CHANGE_PASSWORD_WITH_EMAIL: `${DOMAIN}auth/user/change-password-with-email`,
   USER_LOGOUT: `${DOMAIN}auth/jwt/logout`,
+  GET_USER_BY_EMAIL: (userEmail) => `${DOMAIN}auth/by-email/${userEmail}`
 }
 
 const Promotions = {
@@ -205,7 +206,8 @@ const Endpoints = {
   ...NewPostOffices,
   ACTIVE_TITLE: `${DOMAIN}page-title/active`,
   USE_PROMO_CODE: (userEmail, promoCode) => `${DOMAIN}promo-codes-usage/use?user_email=${userEmail}&code=${promoCode}`,
-  GET_PROMO_CODE_BY_ID: (promoId) => `${DOMAIN}promo-codes/by-id/${promoId}`
+  GET_PROMO_CODE_BY_ID: (promoId) => `${DOMAIN}promo-codes/by-id/${promoId}`,
+  ADD_REVIEW: `${DOMAIN}reviews/create`
 };
 
 export default Endpoints;

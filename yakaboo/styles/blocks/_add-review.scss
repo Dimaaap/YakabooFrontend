@@ -1,0 +1,142 @@
+@use "../helpers" as *;
+
+
+.add-review {
+    &__content {
+        width: rem(600);
+        height: rem(600);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 5%;
+    }
+
+    &__close {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    &__header {
+        @include fluid-text(18, 14);
+        text-align: center;
+    }
+
+    &__book-info {
+        font-size: rem(14);
+        width: 100%;
+        display: flex;
+        gap: 2%;
+        align-items: start;
+        background-color: var(--color-gray-40);
+        padding: 2%;
+        border-radius: rem(5);
+    }
+
+    &__book-image-container {
+        & img {
+            border-radius: rem(5);
+        }
+    }
+
+    &__book-info-text {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__book-title {
+        font-size: rem(16);
+        font-weight: 500;
+    }
+
+    &__author,
+    &__format {
+        color: var(--color-gray-30);
+    }
+
+    &__rate {
+        display: flex;
+        flex-direction: column;
+        gap: rem(8);
+
+        &-stars {
+            display: flex;
+            align-items: center;
+            gap: 4%;
+            justify-content: center;
+            text-align: center;
+
+            & img {
+                cursor: pointer;
+            }
+        }
+
+        &-text {
+            color: var(--color-gray-30);
+            font-size: rem(14);
+            text-align: center;
+            font-weight: 500;
+        }
+    }
+
+    &__data {
+        display: flex;
+        flex-direction: column;
+        gap: rem(10);
+        width: 100%;
+        border-bottom: rem(1) solid var(--color-gray-40);
+
+        &-form-container {
+            width: 100%;
+        }
+
+        &-error {
+            color: var(--color-red-10);
+            font-size: rem(14);
+            font-weight: 500;   
+        }
+
+        &-form-input {
+            width: 100%;
+            height: rem(45);
+            padding-inline: 2%;
+            font-size: rem(14);
+            background-color: var(--color-gray-40);
+            border: rem(1) solid var(--color-gray-50);
+            border-radius: rem(5);
+            outline: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+
+            &:hover {
+                background-color: var(--color-light);
+                border-color: var(--color-pink-10);
+            }
+
+            &.invalid {
+                border-color: var(--color-red-10);
+                color: var(--color-red-10);
+            }
+        }
+
+        & .textarea {
+            height: rem(70);
+            padding-block: 1%;
+        }
+
+        &-form-submit {
+            background-color: var(--color-blue-10);
+            color: var(--color-light);
+            font-size: rem(14);
+            height: rem(50);
+            font-weight: 600;
+            border-radius: rem(5);
+            transition: all 0.3s ease;
+            border: none;
+
+            &:hover {
+                opacity: 0.8;
+            }
+        }
+    }
+}
