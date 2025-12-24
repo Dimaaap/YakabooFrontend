@@ -1,0 +1,33 @@
+@use "../helpers" as *;
+
+.sorting-modal {
+    position: absolute;
+    width: rem(170);
+    height: auto;
+    z-index: 5;
+    font-size: rem(14);
+    background-color: var(--color-light);
+    border: rem(1) solid var(--color-gray-40);
+    right: 3.5%;
+    top: 2.25%;
+    border-radius: rem(10);
+    padding: 0.5%;
+    font-weight: 500;
+
+    &__options {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__option {
+        transition: all 0.3s ease;
+        cursor: pointer;
+        padding-block: rem(5);
+        padding-inline: rem(3);
+        border-radius: rem(5);
+
+        &:hover {
+            background-color: var(--color-gray-40);
+        }
+    }
+}

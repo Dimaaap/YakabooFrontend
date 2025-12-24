@@ -4,6 +4,7 @@ import Image from "next/image"
 import { Delivery, DeliveryInfoModal, DownloadFile, MobileApp } from "../dynamic"
 import { DeliveryTerms } from "../shared"
 import { useDeliveryCityStore, useDeliveryModalStore } from "../../states";
+import { wordDeclension } from "../../services/word-declension.service";
 
 export const BookPriceBlock = ({ book, info, isGift }) => {
     const { isDeliveryModalOpen } = useDeliveryModalStore();
@@ -26,8 +27,23 @@ export const BookPriceBlock = ({ book, info, isGift }) => {
 
                 <div className="book-container__in-stock-row">
                     { info.format === "Паперова" ? (
-                        <span className={`book-container__book-status ${info?.in_stock ? "green-text": "gray-text"}`}>
-                            {info?.in_stock ? "В наявності" : "Немає в наявності"}
+                        <span className={`book-container__book-status ${!info?.in_stock || info?.delivery_time || info?.uk_delivery_time 
+                        ? "red-text": "green-text"} ${info.waiting_since ? "pink-text" : ""}`}>
+                            { info?.in_stock && !info.uk_delivery_time && !info?.delivery_time && (
+                                "В наявності"
+                            ) }
+                            { !info?.in_stock && (
+                                "Немає в наявності"
+                            ) } 
+                            { info?.delivery_time && (
+                                `Доставка протягом ${info.delivery_time} днів`
+                            )}
+                            { info.uk_delivery_time && (
+                                `Доставка з UK протягом ${info.uk_delivery_time} днів`
+                            ) }
+                            { info.waiting_since && (
+                                `Очікується з ${waitingSice}`
+                            ) }
                         </span>
                     ) : <></> }
                     

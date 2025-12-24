@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { FilterForm } from '.';
 import { fetchData } from '../../services';
 import Endpoints from '../../endpoints';
@@ -28,10 +28,12 @@ export const Filters = ({
   needBookCategories = false, 
   bookCategories = null,
   categorySlug=null,
+  subcategories=false
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const filters = useFilterStore()
+  const filters = useFilterStore();
+  const pathname = usePathname();
 
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
@@ -71,6 +73,11 @@ export const Filters = ({
       fromSearchParams(searchParams)
     }
   }, [searchParams])
+
+  const getDoubleSubcategorySlug = (href) => {
+    const path = `${pathname}/${href}`
+    return path
+  }
   
 
   const categoriesTitle = categories.map(c => c.title);
@@ -119,7 +126,8 @@ export const Filters = ({
               <div className="filters__book-subcategory" key={ index }>
                 <div className={`filters__book-subcategory-container`}>
                   <div className="filters__book-subcategory-container-header">
-                    <Link className="filters__book-subcategory-title" href={`/book-categories/${categorySlug}/${category.slug}`}>
+                    <Link className="filters__book-subcategory-title" 
+                    href={`${!subcategories ? `/book-categories/${categorySlug}/${category.slug}` : `${getDoubleSubcategorySlug(category.slug)}`}`}>
                       { category.title }
                     </Link>  
                     { category?.double_subcategories?.length > 0 ? 

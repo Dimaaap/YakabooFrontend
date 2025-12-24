@@ -36,3 +36,11 @@ export const formatLocalDate = (dateStr) => {
 
   return `${day} ${month} ${year}р.`;
 };
+
+export const SORTING_ORDERS = [
+  {id: "popular", label: "За популярністю"},
+  {id: "new", label: "За новизною"},
+  {id: "discount", label: "За знижкою"},
+  {id: "cheap", label: "Від найдешевших"},
+  {id: "expensive", label: "Від найдорожчих"}
+]

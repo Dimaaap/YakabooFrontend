@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
 
-export const Breadcrumbs = ({ linksList }) => {
+export const Breadcrumbs = ({ linksList, isSmaller=false }) => {
 
     const allLinks = {
         "Головна": "/",
@@ -12,7 +12,7 @@ export const Breadcrumbs = ({ linksList }) => {
     const allLinksLength = Object.keys(allLinks).length;
 
   return (
-    <ul className="breadcrumbs">
+    <ul className={`breadcrumbs ${isSmaller ? "small-text" : ""}`}>
         { Object.entries(allLinks).map(([label, path], index) => (
             <li key={ index } className="breadcrumbs__item">
                 <Link href={path} className="breadcrumbs__link">

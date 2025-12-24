@@ -64,7 +64,7 @@ export const BookSubcategoryClient = () => {
             <div className="subcategory__container">
                 { doubleSubcategories?.length > 0 ? (
                     <Filters needDifficultLevel={ false } needTheme={ false } needCategories={ false }
-                    needBookCategories={ true } bookCategories={ doubleSubcategories } categorySlug={ categorySlug }  />
+                    needBookCategories={ true } bookCategories={ doubleSubcategories } categorySlug={ categorySlug } subcategories={ true }  />
                 ) : (
                     <Filters needDifficultLevel={ false } needTheme={ false } needCategories={ false }/>
                 ) }

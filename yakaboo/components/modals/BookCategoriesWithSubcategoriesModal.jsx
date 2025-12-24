@@ -25,7 +25,6 @@ const BookCategoriesWithSubcategoriesModal = () => {
 
     useEffect(() => {
         fetchData(Endpoints.ALL_BOOK_CATEGORIES, setCategories, "book_categories");
-        console.log(categories)
     }, [])
 
 
@@ -83,6 +82,7 @@ const BookCategoriesWithSubcategoriesModal = () => {
                             categories.map((category, i) => (
                                 <Link href={` /book-categories/${category.slug}` } key={ category.id }
                                 className="categories__list-link"
+                                onClick={() => setIsCategoriesModalOpen(false)}
                                 onMouseEnter={() => {
                                     setHoveredCategory(category);
                                     setIsHovering(true)

@@ -33,7 +33,7 @@
         &-text {
             display: flex;
             align-items: center;
-            gap: rem(5);
+            gap: rem(15);
         }
     }
 
@@ -60,6 +60,7 @@
         border: rem(1) solid var(--color-gray-40);
         border-radius: rem(10);
         padding-inline: 1%;
+        position: relative;
 
         & img {
             width: rem(12);

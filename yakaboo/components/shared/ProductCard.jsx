@@ -19,7 +19,10 @@ export const ProductCard = ({
   isAudio=false,
   hasCashback=false,
   hasWinterSupport=false,
-  waitSince=null
+  deliveryTime=null,
+  UKDeliveryTime=null,
+  waitSince=null,
+  inStock=true
 }) => {
   return (
     <Link className={`product-card ${extraClass}`} href={productLink}>
@@ -108,7 +111,12 @@ export const ProductCard = ({
             </span>
           </div>
         )}
-        { !(isEbook || isAudio || waitSince) && (
+        { !inStock && (
+          <span className="product-card__info-span red-text">
+            Немає в наявності
+          </span>
+        ) }
+        { inStock && !(isEbook || isAudio || UKDeliveryTime || deliveryTime || waitSince) && (
           <span className="product-card__delivery-badge">
             <Image src="/icons/truck.svg" alt="" width="18" height="18" />
               Безкоштовна доставка
@@ -121,16 +129,30 @@ export const ProductCard = ({
           </span>
         ) }
 
-        { isEbook && (
+        { inStock && isEbook && (
           <span className="product-card__info-span">
             <Image src="/icons/el_book.svg" alt="" width="16" height="16" />
             Електронна книга
           </span>
         ) }
 
-        { waitSince && (
+        { inStock && waitSince && (
           <span className="product-card__info-span pink-text">
             Очікується з { waitSince }
+          </span>
+        ) }
+
+        { inStock && UKDeliveryTime && (
+          <span className="product-card__info-span red-text">
+            <Image src="/icons/truck-pink.svg" alt="" width="16" height="16" />
+            Доставка з UK {UKDeliveryTime} днів
+          </span>
+        ) }
+
+        { inStock && deliveryTime && (
+          <span className="product-card__info-span red-text">
+            <Image src="/icons/truck-pink.svg" alt="" width="16" height="16" />
+            Доставка { deliveryTime } днів
           </span>
         ) }
       </div>

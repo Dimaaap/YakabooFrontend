@@ -2,16 +2,22 @@
 
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
-import { useMemo } from 'react'
+import { useMemo, useRef, useEffect } from 'react'
 
-import { ProductCard, Stars, Badge, TopBadge } from '.'
+import { ProductCard, Stars, Badge, TopBadge, CommentsCount } from '.'
 import { wordDeclension } from '../../services/word-declension.service'
 import { badgeColors, ImagesLinks } from '../../site.config';
+import { useSortingOrderStore } from '../../states';
+import { SortingOrdersModal } from '../modals/SortingOrdersModal';
+import { SORTING_ORDERS } from '../../utils';
 
 export const CardsContainer = ({booksList, categoryTitle, 
     isHobbies=false, isAccessories=false, isNotebooks=false, isGifts=false, giftsBrand=null}) => {
 
     const searchParams = useSearchParams();
+    const selectRef = useRef(null);
+
+    const { isSortingModalOpen, setIsSortingModalOpen } = useSortingOrderStore();
 
     const filters = useMemo(() => {
         const getArray = (name) => {
@@ -38,8 +44,6 @@ export const CardsContainer = ({booksList, categoryTitle,
     }, [searchParams.toString()])
 
     const filterBooks = useMemo(() => {
-        console.log(booksList)
-        console.log(filters)
         return booksList?.filter(book => {
             if(filters.categories.length && !filters.categories.includes(book.category_slug)) return false 
             if(filters.brands.length && !filters.brands.includes(book?.brand?.title)) return false 
@@ -56,6 +60,25 @@ export const CardsContainer = ({booksList, categoryTitle,
             return true
         })
     }, [booksList, filters])
+
+    const sortingOrder = searchParams.get("sorting_order") || SORTING_ORDERS[0].label;
+
+    const sortedBooks = useMemo(() => {
+        if(!filterBooks) return [];
+
+        const books = [...filterBooks];
+
+        switch(sortingOrder) {
+            case "cheap":
+                return books.sort((a, b) => a.price - b.price);
+            case "expensive":
+                return books.sort((a, b) => b.price - a.price);
+            case "popular":
+            default:
+                return books.sort((a, b) => (b.stars || 0) - (a.stars || 0))
+        }
+    }, [filterBooks, sortingOrder])
+
 
     const returnLink = (slug) => {
         if(isAccessories) {
@@ -75,27 +98,36 @@ export const CardsContainer = ({booksList, categoryTitle,
     const getBookAuthor = (book) => {
         return `${book?.authors[0].first_name} ${book?.authors[0]?.last_name}`;
     }
+    
+    const toggleSortingOrderModal = () => {
+        if(isSortingModalOpen){
+            setIsSortingModalOpen(false)
+        } else {
+            setIsSortingModalOpen(true)
+        }
+    }
 
     return (
         <div className="author-books">
+            { isSortingModalOpen && <SortingOrdersModal /> }
             <div className="author-books__header">
                 
-                <div className="author-books__header-text">
+                <div className="author-books__header-text" onClick={() => setIsSortingModalOpen(false)}>
                     <h5 className="author-books__category">
                         { categoryTitle }
                     </h5>
-                    <span className="author-books__book-count">
+                    <span className="author-books__book-count" ref={ selectRef }>
                         {`${ filterBooks?.length } ${wordDeclension(filterBooks?.length)}`}
                     </span>
                 </div>
                 
-                <span className="author-books__select">
+                <span className="author-books__select" onClick={() => toggleSortingOrderModal() }>
                     <Image src="/icons/sort.svg" alt="" width="16" height="16" />
-                    За популярністю 
+                    { SORTING_ORDERS[0].label }
                 </span>
             </div>
-            <div className="author-books__books-container">
-                {filterBooks && filterBooks.map((book, index) => (
+            <div className="author-books__books-container" onClick={() => setIsSortingModalOpen(false)}>
+                {sortedBooks && sortedBooks.map((book, index) => (
                     <ProductCard 
                     key={ index } 
                     productLink={ returnLink(book.slug) }
@@ -106,6 +138,7 @@ export const CardsContainer = ({booksList, categoryTitle,
                     badges={
                         [
                             book.stars ? <Stars count={ book.stars } isSmaller={ true } />: <></>,
+                            book?.reviews?.length > 0 ? <CommentsCount count={ book.reviews.length } /> : <CommentsCount count={0} />, 
                             (book?.is_top || book.is_in_top) && (<TopBadge />),
                             book.is_new && (<Badge text="Новинка" backgroundColor={ badgeColors.green } /> ),
                             book?.book_info?.is_has_cashback && (<Badge text="Кешбек" backgroundColor={ badgeColors.blue }/>)    
@@ -115,6 +148,10 @@ export const CardsContainer = ({booksList, categoryTitle,
                     oldPrice={ book.price }
                     inStock={book?.book_info?.in_stock || book.is_in_stock || book?.gift_info?.in_stock || false}
                     bonusesCount={book?.book_info?.bonuses || book.bonuses}
+                    hasCashback={ book?.book_info?.is_has_cashback }
+                    hasWinterSupport={ book?.book_info?.is_has_winter_esupport }
+                    UKDeliveryTime={ book?.book_info?.uk_delivery_time }
+                    deliveryTime={ book?.book_info?.delivery_time }
                 />
                 ))}
             </div>

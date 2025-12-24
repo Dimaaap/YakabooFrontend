@@ -72,3 +72,5 @@ export const CartInfo = dynamic(() => import("../shared/CartInfo"));
 export const BonusInfoModal = dynamic(() => import("../modals/BonusInfoModal"));
 
 export const AddReviewModal = dynamic(() => import("../modals/AddReviewModal"));
+
+export const SortingOrdesModal = dynamic(() => import("../modals/SortingOrdersModal"))

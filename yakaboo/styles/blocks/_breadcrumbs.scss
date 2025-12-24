@@ -6,6 +6,10 @@
     align-items: center;
     gap: rem(10);
 
+    &.small-text {
+        font-size: rem(10) !important;
+    }
+
     &__item {
         @include fluid-text(16, 14);
         color: var(--color-gray-30);

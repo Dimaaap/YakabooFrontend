@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react"
 import { fetchData } from "../../services"
 import Endpoints from "../../endpoints"
 import Image from "next/image"
-import { CardsContainer, Filters } from "../shared"
+import { Breadcrumbs, CardsContainer, Filters } from "../shared"
 import { CategoryBanner } from "../shared/CategoryBanner"
 
 export const BookCategoryClient = () => {
@@ -19,7 +19,6 @@ export const BookCategoryClient = () => {
 
     const pathname = usePathname();
     const categorySlug = pathname.split("/")[2];
-    const banners = category?.banners
 
     useEffect(() => {
         fetchData(Endpoints.CATEGORY_BY_SLUG(categorySlug), setCategory)
@@ -32,7 +31,6 @@ export const BookCategoryClient = () => {
     }, [category])
 
     const subcategories = category?.subcategories || []
-    const total = subcategories?.length;
 
     const checkScroll = () => {
         const el = scrollRef.current;
@@ -59,30 +57,14 @@ export const BookCategoryClient = () => {
         }
     }, [category])
 
-    const handleNext = () => {
-        if(scrollRef.current){
-            scrollRef.current.scrollBy({
-                left: scrollRef.current.offsetWidth,
-                behavior: "smooth"
-            })
-        }
-    }
-
-    const handlePrev = () => {
-        if(scrollRef.current){
-            scrollRef.current.scrollBy({
-                left: -scrollRef.current.offsetWidth,
-                behavior: "smooth"
-            })
-        }
-    }
-
     if(!category) return null
+
+    const breadcrumbsLink = {"Книжки": "/books"}
 
     return(
         <div className="book-category">
-
-            <div className="book-category__container">
+            <Breadcrumbs linksList={ breadcrumbsLink } isSmaller={ true } />
+            <div className="book-category__container"> 
                 <Filters needBookCategories={ true } bookCategories={ subcategories || [] } categorySlug={ categorySlug } />
                 <div className="book-category__book-section">
                     <div className="book-category__books">
