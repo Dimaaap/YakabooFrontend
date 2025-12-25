@@ -6,7 +6,7 @@ const nextConfig = {
 
 
     images: {
-        domains: ["static.yakaboo.ua"],
+        domains: ["static.yakaboo.ua", "www.yakaboo.ua"],
     }
 };
 

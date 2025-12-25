@@ -11,6 +11,7 @@ export const FilterForm = ({
   searchPlaceholder = null,
   withShowMore = false,
   selected = [],
+  objectFields=false,
   onChange = () => {},
 }) => {
 
@@ -18,14 +19,21 @@ export const FilterForm = ({
   const [showAll, setShowAll] = useState(!withShowMore)
 
   const filterFields = useMemo(() => {
-    return fields.filter(field => 
-      field?.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    if(!objectFields){
+      return fields.filter(field => 
+        field?.toLowerCase().includes(searchTerm.toLowerCase())
+      )  
+    } else {
+      return fields.filter(field => field.value?.toLowerCase().includes(searchTerm.toLowerCase()))
+    }
+    
   }, [fields, searchTerm])
 
   const displayedFields = showAll ? filterFields : filterFields.slice(0, 5);
 
   const toggleField = field => {
+    console.log(field)
+    console.log(selected)
     if(selected.includes(field)){
       onChange(selected.filter((f) => f !== field))
     } else {
@@ -33,21 +41,41 @@ export const FilterForm = ({
     }
   }
 
-  const fieldElements = displayedFields.map((field, index) => (
-    <div className="filters__form-field" key={ index }>
-      <label className="filters__form-label custom-checkbox">
-        <input 
-          type="checkbox"
-          className="filters__form-checkbox"
-          value={ field }
-          checked={selected.includes(field)}
-          onChange={() => toggleField(field)}
-        />
-        <span className="filters__form-custom-box"></span>
-        { field }
-      </label>
-    </div>
-  ))
+  let fieldElements = null;
+
+  if(!objectFields){
+    fieldElements = displayedFields.map((field, index) => (
+      <div className="filters__form-field" key={ index }>
+        <label className="filters__form-label custom-checkbox">
+          <input 
+            type="checkbox"
+            className="filters__form-checkbox"
+            value={ field }
+            checked={selected.includes(field)}
+            onChange={() => toggleField(field)}
+          />
+          <span className="filters__form-custom-box"></span>
+          { field }
+        </label>
+      </div>
+    ))  
+  } else {
+    fieldElements = displayedFields.map((field) => (
+      <div className="filters__form-field" key={ field.value }>
+        <label className="filters__form-label custom-checkbox">
+          <input type="checkbox" className="filters__form-checkbox"
+          value={ field.value }
+          checked={ selected.includes(field.value) }
+          onChange={() => toggleField(field.value)} />
+
+          <span className="filters__form-custom-box"></span>
+          { field.label }
+        </label>
+      </div>
+    ))
+  }
+
+  
 
   return (
     <form className="filters__form" onSubmit={e => e.preventDefault()}>

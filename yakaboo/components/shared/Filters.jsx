@@ -158,7 +158,7 @@ export const Filters = ({
 
       { needFilters && (
         <FilterForm fields={filtersFields} formTitle="Фільтри"
-        selected={filters.filters}
+        selected={filters.filters} objectFields={ true }
         onChange={(values) => setArrayFilters('filters', values)} />  
       ) }
       

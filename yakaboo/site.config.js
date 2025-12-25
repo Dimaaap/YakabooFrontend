@@ -53,12 +53,12 @@ export const initialState = {
 export const diffLevels = ["1", "2", "3", "4", "5"]
 
 export const filtersFields = [
-    'Новинки',
-    'Знижка',
-    'Хіти продажу',
-    'Зимова ЄПідтримка',
-    'єКнига',
-    'Національний кешбек',
+    { value: "news", label: "Новинки" },
+    { value: "promo", label: "Знижки" },
+    { value: "hits", label: "Хіти продажу" },
+    { value: "winter-esupport", label: "Зимова ЄПідтримка" },
+    { value: "ebook", label: "ЄКнига" },
+    { value: "national-kashback", label: "Національний кешбек" }
 ];
 
 export const bookTypesFields = ["Паперова", "Електронна"]

@@ -7,7 +7,7 @@ import { useMemo, useRef, useEffect } from 'react'
 import { ProductCard, Stars, Badge, TopBadge, CommentsCount } from '.'
 import { wordDeclension } from '../../services/word-declension.service'
 import { badgeColors, ImagesLinks } from '../../site.config';
-import { useSortingOrderStore } from '../../states';
+import { useCurrentSortingOrderStore, useSortingOrderStore } from '../../states';
 import { SortingOrdersModal } from '../modals/SortingOrdersModal';
 import { SORTING_ORDERS } from '../../utils';
 
@@ -18,6 +18,7 @@ export const CardsContainer = ({booksList, categoryTitle,
     const selectRef = useRef(null);
 
     const { isSortingModalOpen, setIsSortingModalOpen } = useSortingOrderStore();
+    const { currentSortingOrder } = useCurrentSortingOrderStore();
 
     const filters = useMemo(() => {
         const getArray = (name) => {
@@ -57,11 +58,25 @@ export const CardsContainer = ({booksList, categoryTitle,
             if(filters.inStockOnly && !(book?.book_info?.in_stock || book.is_in_stock || book?.gift_info?.in_stock)) return false
             if(filters.priceFrom && book.price < Number(filters.priceFrom)) return false
             if(filters.priceTo && book.price > Number(filters.priceTo)) return false
+            if(filters.filters.includes("winter-esupport") && !book?.book_info?.is_has_winter_esupport) return false
+            if(filters.filters.includes("ebook") && !book?.book_info?.is_has_esupport) return false
+            if(filters.filters.includes("national-kashback") && !book?.book_info?.is_has_cashback) return false  
+            if(filters.filters.includes("promo") && !book?.is_promo) return false
             return true
         })
     }, [booksList, filters])
 
     const sortingOrder = searchParams.get("sorting_order") || SORTING_ORDERS[0].label;
+
+    const getDiscount = (book) => {
+        if(!book?.promo_price || !book?.price || book.promo_price >= book.price){
+            return null;
+        }
+
+        return Math.round(
+            ((book.price - book.promo_price) / book.price) * 100
+        );
+    }
 
     const sortedBooks = useMemo(() => {
         if(!filterBooks) return [];
@@ -73,6 +88,17 @@ export const CardsContainer = ({booksList, categoryTitle,
                 return books.sort((a, b) => a.price - b.price);
             case "expensive":
                 return books.sort((a, b) => b.price - a.price);
+            case "discount":
+                return [...books].sort((a, b) => {
+                    const discountA = getDiscount(a);
+                    const discountB = getDiscount(b);
+
+                    if(discountA === null && discountB === null) return 0;
+                    if(discountA === null) return 1;
+                    if(discountB === null) return -1;
+
+                    return discountB - discountA;
+                })
             case "popular":
             default:
                 return books.sort((a, b) => (b.stars || 0) - (a.stars || 0))
@@ -123,7 +149,7 @@ export const CardsContainer = ({booksList, categoryTitle,
                 
                 <span className="author-books__select" onClick={() => toggleSortingOrderModal() }>
                     <Image src="/icons/sort.svg" alt="" width="16" height="16" />
-                    { SORTING_ORDERS[0].label }
+                    { currentSortingOrder }
                 </span>
             </div>
             <div className="author-books__books-container" onClick={() => setIsSortingModalOpen(false)}>
@@ -140,18 +166,20 @@ export const CardsContainer = ({booksList, categoryTitle,
                             book.stars ? <Stars count={ book.stars } isSmaller={ true } />: <></>,
                             book?.reviews?.length > 0 ? <CommentsCount count={ book.reviews.length } /> : <CommentsCount count={0} />, 
                             (book?.is_top || book.is_in_top) && (<TopBadge />),
-                            book.is_new && (<Badge text="Новинка" backgroundColor={ badgeColors.green } /> ),
-                            book?.book_info?.is_has_cashback && (<Badge text="Кешбек" backgroundColor={ badgeColors.blue }/>)    
+                            book.is_new && (<Badge text="Новинка" backgroundColor={ badgeColors.green } /> ),   
                         ]
                     }
                     productCode={book?.book_info?.code || book.code || book?.gift_info?.code}
                     oldPrice={ book.price }
+                    newPrice={ book?.is_promo ? book?.promo_price : null }
                     inStock={book?.book_info?.in_stock || book.is_in_stock || book?.gift_info?.in_stock || false}
                     bonusesCount={book?.book_info?.bonuses || book.bonuses}
                     hasCashback={ book?.book_info?.is_has_cashback }
                     hasWinterSupport={ book?.book_info?.is_has_winter_esupport }
+                    hasESupport={ book?.book_info?.is_has_esupport }
                     UKDeliveryTime={ book?.book_info?.uk_delivery_time }
                     deliveryTime={ book?.book_info?.delivery_time }
+
                 />
                 ))}
             </div>

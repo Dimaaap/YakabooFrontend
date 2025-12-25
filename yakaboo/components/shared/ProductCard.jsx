@@ -19,6 +19,7 @@ export const ProductCard = ({
   isAudio=false,
   hasCashback=false,
   hasWinterSupport=false,
+  hasESupport=false,
   deliveryTime=null,
   UKDeliveryTime=null,
   waitSince=null,
@@ -38,6 +39,10 @@ export const ProductCard = ({
             <Image src="/images/support_programs/winter-support.svg" alt="Ця книга підтримує програму 'Зимвова підтримка'" 
             width="40" height="40"/>
           )}
+          { hasESupport && (
+            <Image src="https://www.yakaboo.ua/dist/e-book.png?a4f2e33a0e5fed77cdf6e0ed6c5a3fc7" alt="Ця книга підтримує програму 'ЄПідтримка'"
+            width="40" height="40" />
+          ) }
         </div>
       ) }
       <div className="product-card__header">
