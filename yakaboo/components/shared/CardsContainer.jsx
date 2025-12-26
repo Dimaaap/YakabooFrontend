@@ -10,6 +10,7 @@ import { badgeColors, ImagesLinks } from '../../site.config';
 import { useCurrentSortingOrderStore, useSortingOrderStore } from '../../states';
 import { SortingOrdersModal } from '../modals/SortingOrdersModal';
 import { SORTING_ORDERS } from '../../utils';
+import { getDiscount } from '../../services/discount.service';
 
 export const CardsContainer = ({booksList, categoryTitle, 
     isHobbies=false, isAccessories=false, isNotebooks=false, isGifts=false, giftsBrand=null}) => {
@@ -67,16 +68,6 @@ export const CardsContainer = ({booksList, categoryTitle,
     }, [booksList, filters])
 
     const sortingOrder = searchParams.get("sorting_order") || SORTING_ORDERS[0].label;
-
-    const getDiscount = (book) => {
-        if(!book?.promo_price || !book?.price || book.promo_price >= book.price){
-            return null;
-        }
-
-        return Math.round(
-            ((book.price - book.promo_price) / book.price) * 100
-        );
-    }
 
     const sortedBooks = useMemo(() => {
         if(!filterBooks) return [];
