@@ -18,7 +18,6 @@ export const PublishingBooks = ({publishingId}) => {
     return (
         books.length > 0 ? (
         <div className="author-books">
-            { console.log(books) }
                 <div className="author-books__header">
                     <h5 className="author-books__count">{`${ books.length } ${wordDeclension(books.length)}`}</h5>
                         <span className="author-books__select">

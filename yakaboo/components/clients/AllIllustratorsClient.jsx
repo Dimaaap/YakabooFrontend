@@ -36,7 +36,6 @@ export const AllIllustratorsClient = () => {
             <SearchBar />
             <div className="data">
                 <div className="data__container">
-                    { console.log(illustrators) }
                     { illustrators.length > 0 && (
                         illustrators.map((illustrator) => (
                             illustrator.is_active ? (

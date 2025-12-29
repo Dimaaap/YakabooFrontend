@@ -1,5 +1,6 @@
 import { Montserrat } from "next/font/google";
 import { Header, Footer, PageModals } from "../../components/shared";
+import { Providers } from "./providers";
 import "../../styles/main.scss"
 
 const monserrat = Montserrat(
@@ -21,10 +22,12 @@ export default function RootLayout({ children }) {
       <body
         className={ monserrat.className }
       >
+        <Providers>
           <Header />
           {children}
           <PageModals />
-          <Footer />
+          <Footer />  
+        </Providers>
       </body>
     </html>
   );

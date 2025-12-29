@@ -1,0 +1,29 @@
+@use '../helpers' as *;
+
+.spinner {
+    height: 100vh;
+    position: relative;
+
+    & img {
+        width: rem(40);
+        height: rem(40);
+        justify-content: center;
+        text-align: center;
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        animation: spin 1s linear infinite;
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}

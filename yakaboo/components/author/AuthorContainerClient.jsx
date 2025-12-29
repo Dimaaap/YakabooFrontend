@@ -1,32 +1,44 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { fetchData } from "../../services";
 import { Breadcrumbs, CardsContainer, Filters } from "../shared";
-import { AuthorBooks, AuthorHeader } from ".";
+import { AuthorHeader } from ".";
 import Endpoints from "../../endpoints";
+import { useQuery } from "@tanstack/react-query";
+import { fetcher } from "../../services/fetch.service";
+import Image from "next/image";
 
 export const AuthorContainerClient = () => {
-    const [author, setAuthor] = useState(null);
-    const [authorBooks, setAuthorBooks] = useState(null);
-    
       const pathname = usePathname();
       const authorSlug = pathname.split('/')[3];
+
+      const STALE_TIME = 1000 * 60 * 5;
 
       const breadcrumbsObject = {
         Автори: '/author/view/all',
       };
 
-      useEffect(() => {
-        fetchData(Endpoints.AUTHOR(authorSlug), setAuthor)
-      }, [])
+      const {data: author, isLoading: authorLoaing, error: authorError} = useQuery({
+        queryKey: ["author", authorSlug],
+        queryFn: () => fetcher(Endpoints.AUTHOR(authorSlug)),
+        enabled: !!authorSlug,
+        staleTime: STALE_TIME,
+        refetchOnWindowFocus: false
+      })
 
-       useEffect(() => {
-          if (author && author.id) {
-            fetchData(Endpoints.AUTHOR_BOOKS(author.id), setAuthorBooks);
-          }
-        }, [author]);
+      const { data: authorBooks, isLoading: booksLoading, error: booksError } = useQuery({
+        queryKey: ['authorBooks', author?.id],
+        queryFn: () => fetcher(Endpoints.AUTHOR_BOOKS(author.id)),
+        enabled: !!author?.id,
+        staleTime: STALE_TIME,
+        refetchOnWindowFocus: false
+      })
+
+      if(authorLoaing || booksLoading) return (
+         <div className="spinner">
+          <Image src="/icons/spinner.svg" alt="" width="20" height="20" />
+        </div>
+      )
 
       return (
           <div className="author">

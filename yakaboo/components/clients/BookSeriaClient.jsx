@@ -1,34 +1,47 @@
-"use client"
+"use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { fetchData } from "../../services";
 import Endpoints from "../../endpoints";
 import { Breadcrumbs, CardsContainer, Filters } from "../shared";
+import { useQuery } from "@tanstack/react-query";
+import { fetcher } from "../../services/fetch.service";
+import Image from "next/image";
 
 export function BookSeriaClient() {
-    const [seria, setSeria] = useState(null);
-    const [seriaBooks, setSeriaBooks] = useState([])
-
     const pathname = usePathname()
     const seriaSlug = pathname.split("/")[3]
+
+    const STALE_TIME = 1000 * 60 * 5;
 
     const breadcrumbsObject = {
         "Серія книг": "/book/seria/all"
     }
 
-    useEffect(() => {
-        fetchData(Endpoints.BOOK_SERIA(seriaSlug), setSeria)
-    }, [])
-    
-    useEffect(() => {
-        fetchData(Endpoints.ALL_SERIA_BOOKS(seriaSlug), setSeriaBooks)
-    }, [])
+    const { data: seria, isLoading: seriaLoading, error: seriaError } = useQuery({
+        queryKey: ["seria", seriaSlug],
+        queryFn: () => fetcher(Endpoints.BOOK_SERIA(seriaSlug)),
+        enabled: !!seriaSlug,
+        staleTime: STALE_TIME,
+        refetchOnWindowFocus: false
+    });
+
+    const { data: seriaBooks, isLoading: booksLoading, error: booksError } = useQuery({
+        queryKey: ["seriaBooks", seriaSlug],
+        queryFn: () => fetcher(Endpoints.ALL_SERIA_BOOKS(seriaSlug)),
+        enabled: !!seriaSlug,
+        staleTime: STALE_TIME,
+        refetchOnWindowFocus: false
+    })
+
+    if(seriaLoading || booksLoading) return (
+         <div className="spinner">
+            <Image src="/icons/spinner.svg" alt="" width="20" height="20" />
+        </div>
+    )
 
     return (
         <div className="seria author">
             <Breadcrumbs linksList={ breadcrumbsObject } />
-            { console.log(seria) }
 
             { seria && (
                 <h2 className="seria__title author__title">

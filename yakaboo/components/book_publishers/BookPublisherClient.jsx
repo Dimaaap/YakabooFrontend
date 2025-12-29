@@ -1,26 +1,38 @@
 "use client"
 
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react"
-import { fetchData } from "../../services";
 import { Breadcrumbs, Filters } from "../shared";
 import { PublishingBooks, PublishingHeader } from ".";
 import Endpoints from "../../endpoints";
+import { useQuery } from "@tanstack/react-query";
+import { fetcher } from "../../services/fetch.service";
+import Image from "next/image";
 
 export const BookPublisherClient = () => {
-    const [publisher, setPublisher] = useState(null);
 
     const pathname = usePathname();
     const publisherTitle = pathname.split('/')[3];
+
+    const STALE_TIME = 1000* 60 * 5;
 
     const links = {
         Головна: '/',
         Видавництва: '/book_publisher/view/all',
     };
 
-    useEffect(() => {
-        fetchData( Endpoints.PUBLISHING_BY_SLUG(publisherTitle), setPublisher)
-    }, [])
+    const { data: publisher, isLoading } = useQuery({
+      queryKey: ["publisher", publisherTitle],
+      queryFn: () => fetcher(Endpoints.PUBLISHING_BY_SLUG(publisherTitle)),
+      enable: !!publisherTitle,
+      staleTime: STALE_TIME,
+      refetchOnWindowFocus: false
+    })
+
+    if(isLoading) return (
+      <div className="spinner">
+        <Image src="/icons/spinner.svg" alt="" width="20" height="20" />
+      </div>
+    )
 
     return (
         <div className="publisher">
