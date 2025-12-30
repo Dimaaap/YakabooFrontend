@@ -1,36 +1,40 @@
 "use client"
 
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react"
-import { fetchData } from "../../services";
 import Endpoints from "../../endpoints";
-import { Breadcrumbs, CardsContainer, Filters } from "../shared";
+import { Breadcrumbs, CardsContainer, Filters, Spinner } from "../shared";
+import { useQuery } from "@tanstack/react-query";
+import { fetcher } from "../../services/fetch.service";
+import { STALE_TIME } from "../../site.config";
 
 export const BookIllustratorClient = () => {
-    const [illustrator, setIllustrator] = useState(null);
-    const [illustratorBooks, setIllustratorBooks] = useState([])
 
     const pathname = usePathname();
     const illustratorSlug = pathname.split("/")[3];
-    const illustratorId = illustrator?.id || null; 
+
+    const {data: illustrator, isLoading: isIllustratorLoading, error: illustratorError} = useQuery({
+        queryKey: ["illustrator", illustratorSlug],
+        queryFn: () => fetcher(Endpoints.ILLUSTRATOR(illustratorSlug)),
+        enabled: !!illustratorSlug,
+        staleTime: STALE_TIME
+    })
+
+    const { data: illustratorBooks = [], isLoading: isBooksLoading, error: booksError } = useQuery({
+        queryKey: ["illustrator-books", illustrator?.id],
+        queryFn: () => fetcher(Endpoints.ILLUSTRATOR_BOOK(illustrator.id)),
+        enabled: !!illustrator?.id,
+        staleTime: STALE_TIME
+    })
+
+    if(isIllustratorLoading || isBooksLoading) return <Spinner />
 
     const breadcrumbsObject ={ 
         "Ілюстратори": "/book-illustrators/view/all"
     }
 
-    useEffect(() => {
-        fetchData(Endpoints.ILLUSTRATOR(illustratorSlug), setIllustrator)
-    }, [])
-
-    useEffect(() => {
-        if(illustratorId){
-            fetchData(Endpoints.ILLUSTRATOR_BOOK(illustratorId), setIllustratorBooks)
-        }
-    }, [illustratorId])
-
     return (
         <div className="translator author">
-            <Breadcrumbs linksList={ breadcrumbsObject } />
+            <Breadcrumbs linksList={ breadcrumbsObject } isSmaller={ true } />
 
             { illustrator && (
                 <h2 className="seria__title author__title">

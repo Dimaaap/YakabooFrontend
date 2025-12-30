@@ -6,11 +6,12 @@ import { useMemo, useRef, useEffect } from 'react'
 
 import { ProductCard, Stars, Badge, TopBadge, CommentsCount } from '.'
 import { wordDeclension } from '../../services/word-declension.service'
-import { badgeColors, ImagesLinks } from '../../site.config';
+import { badgeColors, bookTypesFields, filtersFields, ImagesLinks } from '../../site.config';
 import { useCurrentSortingOrderStore, useSortingOrderStore } from '../../states';
 import { SortingOrdersModal } from '../modals/SortingOrdersModal';
 import { SORTING_ORDERS } from '../../utils';
 import { getDiscount } from '../../services/discount.service';
+import { useFilterStore } from '../../states/FilterState';
 
 export const CardsContainer = ({booksList, categoryTitle, 
     isHobbies=false, isAccessories=false, isNotebooks=false, isGifts=false, giftsBrand=null}) => {
@@ -20,6 +21,7 @@ export const CardsContainer = ({booksList, categoryTitle,
 
     const { isSortingModalOpen, setIsSortingModalOpen } = useSortingOrderStore();
     const { currentSortingOrder } = useCurrentSortingOrderStore();
+    const { selectedFilters } = useFilterStore();
 
     const filters = useMemo(() => {
         const getArray = (name) => {
@@ -124,11 +126,41 @@ export const CardsContainer = ({booksList, categoryTitle,
         }
     }
 
+    const getFilterLabel = (key) => {
+        let filterLabel = null;
+            if(key.key === "filters") {
+                const found = filtersFields.find(val => val.value === key.value);
+                filterLabel = found?.label;
+            } else if(key.key === "bookTypes"){
+                const found = bookTypesFields.find(val => val === key.value);
+                filterLabel = found;
+            } else if(key.key === "inStockOnly"){
+                filterLabel = "В наявності"
+            } else if(key.key === "priceFrom" || key.key === "priceTo"){
+                filterLabel = `${key.key === "priceFrom" ? key.value : "0"} грн - ${key.key === "priceTo" ? key.value : "3 000"} грн`
+            } else {
+                filterLabel = key.value;
+            }
+            return filterLabel
+    }
+
     return (
         <div className="author-books">
             { isSortingModalOpen && <SortingOrdersModal /> }
+            { selectedFilters.length > 0 && (
+                <div className="author-books__filters">
+                    { selectedFilters.map((key, index) => {
+                        let filterLabel = getFilterLabel(key)
+                        return <span className="author-books__filters-filter" key={ index }>
+                            { filterLabel }
+                        </span>
+                    }) }
+                    <button className="author-books__filters-clear-all">
+                        Очистити все
+                    </button>
+                </div>
+            ) }
             <div className="author-books__header">
-                
                 <div className="author-books__header-text" onClick={() => setIsSortingModalOpen(false)}>
                     <h5 className="author-books__category">
                         { categoryTitle }

@@ -1,31 +1,27 @@
 "use client";
 
-import { useEffect, useState } from "react"
 import { SearchBar } from "../book_publishers"
 import { useSearchPublisherStore } from "../../states";
 import { useDebounce } from "../../hooks/useDebounce";
-import Endpoints from "../../endpoints";
-import { fetchData } from "../../services";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { getSeries } from "../../services/getSeries.service";
+import { STALE_TIME } from "../../site.config";
+import { Spinner } from "../shared";
 
 export const AllSeriesClient = () => {
-    const [series, setSeries] = useState([])
 
     const { searchValue } = useSearchPublisherStore()
     const debouncedSearchValue = useDebounce(searchValue, 500)
 
-    useEffect(() => {
-        const fetchSeries = async() => {
-            const fetchUrl = debouncedSearchValue?.trim() ? Endpoints.SEARCH_SERIA(debouncedSearchValue) : Endpoints.ALL_SERIES
-            try {
-                fetchData(fetchUrl, setSeries)
-            } catch (err){
-                console.error(err)
-            }
-        }
+    const { data: series = [], isLoading, error } = useQuery({
+        queryKey: ["series", debouncedSearchValue],
+        queryFn: () => getSeries(debouncedSearchValue),
+        keepPreviousData: true,
+        staleTime: STALE_TIME
+    })
 
-        fetchSeries()
-    }, [debouncedSearchValue])
+    if(isLoading || error) return <Spinner />
 
     return(
         <div className="publishers translators">

@@ -24,11 +24,45 @@
     align-self: flex-start;
     border-left: rem(1) solid var(--color-gray-50);
 
+    &__filters {
+        display: flex;
+        align-items: center;
+        gap: 1%;
+
+        &-filter {
+            background-color: var(--color-pink-10);
+            color: var(--color-light);
+            font-size: rem(14);
+            font-weight: 500;
+            padding-inline: 1%;
+            padding-block: 0.5%;
+            border-radius: rem(10);
+            cursor: pointer;
+        }
+
+        &-clear-all {
+            background-color: transparent;
+            border: none;
+            font-size: rem(14);
+            font-weight: 500;
+            color: var(--color-blue-10);
+            transition: all 0.3s ease-in-out;
+
+            &:hover {
+                opacity: 0.8;
+            }
+        }
+    }
+
+    &__filters,
+    &__header {
+        border-bottom: rem(1) solid var(--color-gray-50);
+        padding: 2%;
+    }
+
     &__header {
         display: flex;
         justify-content: space-between;
-        border-bottom: rem(1) solid var(--color-gray-50);
-        padding: 2%;
 
         &-text {
             display: flex;

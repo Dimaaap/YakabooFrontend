@@ -1,31 +1,27 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import { useSearchPublisherStore } from "../../states"
 import { useDebounce } from "../../hooks/useDebounce"
-import Endpoints from "../../endpoints"
-import { fetchData } from "../../services"
 import { SearchBar } from "../book_publishers"
 import Link from "next/link"
+import { useQuery } from "@tanstack/react-query"
+import { getTranslators } from "../../services/getTranslators.service"
+import { Spinner } from "../shared"
+import { STALE_TIME } from "../../site.config"
 
 export const AllTranslatorsClient = () => {
-    const [translators, setTranslators] = useState([])
     
     const { searchValue } = useSearchPublisherStore()
     const debouncedSearchValue = useDebounce(searchValue, 500)
 
-    useEffect(() => {
-        const fetchTranslators = async() => {
-            const fetchUrl = debouncedSearchValue?.trim() ? Endpoints.SEARCH_TRANSLATOR(debouncedSearchValue) : Endpoints.ALL_TRANSLATORS;
-            try {
-                fetchData(fetchUrl, setTranslators)
-            } catch (err) {
-                console.error(err)
-            }
-        }
+    const { data: translators = [], isLoading, error } = useQuery({
+        queryKey: ["translators", debouncedSearchValue],
+        queryFn: () => getTranslators(debouncedSearchValue),
+        keepPreviousData: true,
+        staleTime: STALE_TIME
+    })
 
-        fetchTranslators()
-    }, [debouncedSearchValue])
+    if(isLoading || error) return <Spinner />
 
     return(
         <div className="authors publishers translators">

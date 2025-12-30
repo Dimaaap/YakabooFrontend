@@ -85,6 +85,7 @@
         flex-direction: column;
         gap: rem(5);
         padding-block: rem(5);
+        padding-inline: 2%;
 
         &-title {
             @include fluid-text(18, 14);

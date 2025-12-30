@@ -12,7 +12,6 @@ export const ProductCard = ({
   productLink = '#',
   oldPrice = 156,
   newPrice = null,
-  bonusesCount = 0,
   extraClass="",
   withAddToWishlist=true,
   isEbook=false,
@@ -108,14 +107,12 @@ export const ProductCard = ({
             <Image src="/icons/cart.svg" alt="" width="25" height="25" />
           </button>
         </div>
-        {bonusesCount > 0 && (
-          <div className="product-card__bonuses">
-            <Image src="/icons/bonus.svg" alt="" width="20" height="20" />
+        <div className="product-card__bonuses">
+          <Image src="/icons/bonus.svg" alt="" width="20" height="20" />
             <span className="product-card__bonuses-count">
-              +{bonusesCount} бонусів
+              +{newPrice ? Math.ceil(newPrice / 2) : Math.ceil(oldPrice / 2)} бонусів
             </span>
-          </div>
-        )}
+        </div>
         { !inStock && (
           <span className="product-card__info-span red-text">
             Немає в наявності

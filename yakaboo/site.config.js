@@ -70,3 +70,5 @@ export const badgeColors = {
     green: "#51a261ff",
     blue: "rgb(51, 51, 119)"
 }
+
+export const STALE_TIME = 1000 * 60 * 5;

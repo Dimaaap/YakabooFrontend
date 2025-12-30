@@ -1,32 +1,27 @@
 "use client"
 
 import Link from "next/link"
-import Endpoints from "../../endpoints"
-import { useDebounce } from "../../hooks/useDebounce"
-import { fetchData } from "../../services"
 import { useSearchPublisherStore } from "../../states"
 import { SearchBar } from "../book_publishers"
-import { useEffect, useState } from "react"
+import { useQuery } from "@tanstack/react-query"
+import { getIllustrators } from "../../services/getIllustrators.service"
+import { STALE_TIME } from "../../site.config"
+import { Spinner } from "../shared"
+import { useDebounce } from "../../hooks/useDebounce"
 
 export const AllIllustratorsClient = () => {
-    const [illustrators, setIllustrators] = useState([])
 
     const { searchValue } = useSearchPublisherStore()
     const debouncedSearchValue = useDebounce(searchValue, 500)
 
-    useEffect(() => {
-        const fetchIllustrators = async() => {
-            const fetchUrl = debouncedSearchValue?.trim() ? Endpoints.SEARCH_ILLUSTRATOR(debouncedSearchValue) : Endpoints.ALL_ILLUSTRATORS;
+    const { data: illustrators = [], isLoading, error } = useQuery({
+        queryKey: ["illustrators", debouncedSearchValue],
+        queryFn: () => getIllustrators(debouncedSearchValue),
+        keepPreviousData: true,
+        staleTime: STALE_TIME
+    })
 
-            try {
-                fetchData(fetchUrl, setIllustrators)
-            } catch(err){
-                console.error(err)
-            }
-        }
-
-        fetchIllustrators()
-    }, [debouncedSearchValue])
+    if(isLoading || error) return <Spinner />
 
     return(
         <div className="authors publishers translators">
@@ -41,7 +36,6 @@ export const AllIllustratorsClient = () => {
                             illustrator.is_active ? (
                                 <Link href={`/book-illustrators/view/${illustrator.slug}`}
                                 key={ illustrator.id } className="data__container-link">
-                                    { console.log(illustrator.last_name == '""') }
                                     { illustrator.first_name } { illustrator.last_name == '""' ? null : illustrator.last_name }
                                 </Link>
                             ) : (<></>)

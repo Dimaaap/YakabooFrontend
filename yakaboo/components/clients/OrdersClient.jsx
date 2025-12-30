@@ -1,11 +1,10 @@
 "use client"
 
-import Image from "next/image";
-
 import { UserLoginModal, ProfileSettingsModal, BookCategoriesWithSubcategoriesModal, MenuModal, OrderContainer } from "../dynamic";
 import { useProtectedPage } from "../../hooks";
 import { useProfileSettingsModalStore, useBookCategoriesModalStore, useMenuModalStore } from "../../states";
 import BonusesLeftSection from "../bonuses/BonusesLeftSection";
+import { Spinner } from "../shared";
 
 export const OrdersClient = () => {
 
@@ -15,8 +14,7 @@ export const OrdersClient = () => {
   const { isMenuModalOpen } = useMenuModalStore();
 
   if(loading){
-    return <Image src="/icons/spinner.svg" 
-            width="20" height="20" alt="" className="animate-spin" />
+    return <Spinner />
   }
 
   if(!isAuthenticated){

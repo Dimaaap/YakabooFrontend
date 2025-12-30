@@ -6,12 +6,11 @@ import { Breadcrumbs, CardsContainer, Filters } from "../shared";
 import { useQuery } from "@tanstack/react-query";
 import { fetcher } from "../../services/fetch.service";
 import Image from "next/image";
+import { STALE_TIME } from "../../site.config";
 
 export function BookSeriaClient() {
     const pathname = usePathname()
     const seriaSlug = pathname.split("/")[3]
-
-    const STALE_TIME = 1000 * 60 * 5;
 
     const breadcrumbsObject = {
         "Серія книг": "/book/seria/all"

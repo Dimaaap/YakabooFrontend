@@ -1,32 +1,36 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { useEffect, useState } from "react";
-import { fetchData } from "../../services";
-import { Breadcrumbs, CardsContainer, Filters } from "../shared";
+import { Breadcrumbs, CardsContainer, Filters, Spinner } from "../shared";
 import Endpoints from "../../endpoints";
+import { useQuery } from "@tanstack/react-query";
+import { fetcher } from "../../services/fetch.service";
+import { STALE_TIME } from "../../site.config";
 
 export const BookTranslatorClient = () => {
-    const [translator, setTranslator] = useState(null);
-    const [translatorBooks, setTranslatorBooks] = useState([]);
-    
+
     const pathname = usePathname();
     const translatorSlug = pathname.split("/")[3];
-    const translatorId = translator?.id || null;
 
     const breadcrumbsObject = {
         "Перекладачі": "/books-translator/view/all"
     }
 
-    useEffect(() => {
-            fetchData(Endpoints.TRANSLATOR(translatorSlug), setTranslator)
-        }, [])
+    const { data: translator, isLoading: isTranslatorLoading, error: translatorError } = useQuery({
+        queryKey: ["translator", translatorSlug],
+        queryFn: () => fetcher(Endpoints.TRANSLATOR(translatorSlug)),
+        enabled: !!translatorSlug,
+        staleTime: STALE_TIME
+    })
+
+    const { data: translatorBooks = [], isLoading: isTranslatorBooksLoading, error: booksError } = useQuery({
+        queryKey: ["translator-books", translator?.id],
+        queryFn: () => fetcher(Endpoints.TRANSLATOR_BOOKS(translator?.id)),
+        enabled: !!translator?.id,
+        staleTime: STALE_TIME
+    })
     
-    useEffect(() => {
-        if(translatorId){
-            fetchData(Endpoints.TRANSLATOR_BOOKS(translatorId), setTranslatorBooks)
-        }
-    }, [translatorId])
+    if(isTranslatorLoading || isTranslatorBooksLoading) return <Spinner />
 
     return (
         <div className="translator author">

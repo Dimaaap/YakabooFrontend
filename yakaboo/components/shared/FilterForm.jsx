@@ -32,8 +32,6 @@ export const FilterForm = ({
   const displayedFields = showAll ? filterFields : filterFields.slice(0, 5);
 
   const toggleField = field => {
-    console.log(field)
-    console.log(selected)
     if(selected.includes(field)){
       onChange(selected.filter((f) => f !== field))
     } else {

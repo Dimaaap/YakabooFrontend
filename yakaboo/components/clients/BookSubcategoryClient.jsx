@@ -1,45 +1,46 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
-import { fetchData } from "../../services";
 import Endpoints from "../../endpoints";
-import { Breadcrumbs, CardsContainer, Filters} from "../shared";;
+import { Breadcrumbs, CardsContainer, Filters, Spinner} from "../shared";
+import { useQuery } from "@tanstack/react-query";
+import { fetcher } from "../../services/fetch.service";
+import { STALE_TIME } from "../../site.config";
 
 export const BookSubcategoryClient = () => {
-    const [category, setCategory] = useState(null);
-    const [subcategory, setSubcategory] = useState(null)
-    const [doubleSubcategories, setDoubleSubcategories] = useState([]);
-    const [subcategoryBooks, setSubcategoryBooks] = useState([]);
 
     const pathname = usePathname();
     const subcategorySlug = pathname.split("/")[3];
     const categorySlug = pathname.split("/")[2];
 
-    useEffect(() => {
-        fetchData(Endpoints.CATEGORY_BY_SLUG(categorySlug), setCategory)
-    }, [])
+    const { data: category, isLoading: isCategoryLoading } = useQuery({
+        queryKey: ["category", categorySlug],
+        queryFn: () => fetcher(Endpoints.CATEGORY_BY_SLUG(categorySlug)),
+        enabled: !!categorySlug,
+        staleTime: STALE_TIME
+    })
 
-    useEffect(() => {
-        fetchData(Endpoints.SUBCATEGORY_BY_SLUG(subcategorySlug), setSubcategory)
-    }, [])
+    const { data: subcategory, isLoading: isSubcategoryLoading } = useQuery({
+        queryKey: ["subcategory", subcategorySlug],
+        queryFn: () => fetcher(Endpoints.SUBCATEGORY_BY_SLUG(subcategorySlug)),
+        enabled: !!subcategorySlug,
+        staleTime: STALE_TIME
+    })
 
-    useEffect(() => {
-        if(subcategory){
-            fetchData(Endpoints.SUBCATEGORY_BOOKS(subcategorySlug), setSubcategoryBooks)    
-        } else {
-            return
-        }       
-    }, [subcategory])
+    const { data: subcategoryBooks = [], isLoading: isBooksLoading } = useQuery({
+        queryKey: ["subcategory-books", subcategorySlug],
+        queryFn: () => fetcher(Endpoints.SUBCATEGORY_BOOKS(subcategorySlug)),
+        enabled: !!subcategorySlug,
+        staleTime: STALE_TIME
+    })
 
-    useEffect(() => {
-        if(subcategory){
-            fetchData(Endpoints.DOUBLE_SUBCATEGORIES(subcategory.id), setDoubleSubcategories)
-        } else {
-            return 
-        }
-    }, [subcategory])
+    const { data: doubleSubcategories = [] } = useQuery({
+        queryKey: ["double-subcategories", subcategory?.id],
+        queryFn: () => fetcher(Endpoints.DOUBLE_SUBCATEGORIES(subcategory?.id)),
+        enabled: !!subcategory?.id
+    })
 
+    if(isCategoryLoading || isSubcategoryLoading || isBooksLoading) return <Spinner />
 
 
     const breadcrumbsLink = {

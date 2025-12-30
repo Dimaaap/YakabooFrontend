@@ -4,7 +4,6 @@ import Image from "next/image"
 import { Delivery, DeliveryInfoModal, DownloadFile, MobileApp } from "../dynamic"
 import { DeliveryTerms } from "../shared"
 import { useDeliveryCityStore, useDeliveryModalStore } from "../../states";
-import { wordDeclension } from "../../services/word-declension.service";
 
 export const BookPriceBlock = ({ book, info, isGift }) => {
     const { isDeliveryModalOpen } = useDeliveryModalStore();
@@ -13,17 +12,44 @@ export const BookPriceBlock = ({ book, info, isGift }) => {
     return(
         <div className="book-container__section right-section">
             <div className="book-container__block-price-block">
-                <div className="book-container__price-row">
-                    <h2 className="book-container__header book-container__h2">
-                        { book.price } грн
-                    </h2>
-                    { info?.bonuses > 0 && (
+                { console.log(book) }
+                { !book?.promo_price ? (
+                    <div className="book-container__price-row">
+                        <h2 className="book-container__header book-container__h2">
+                            { book.price } грн
+                        </h2>
+                        { info?.bonuses > 0 && (
+                            <div className="book-container__bonuses product-bonuses">
+                                <Image src="/icons/bonus.svg" alt="" width="20" height="20" />
+                                <p className="product-bonuses__bonuses-count">+{ info.bonuses } бонусів</p>
+                            </div>
+                        ) }
+                    </div>    
+                ) : (
+                    <div className="book-container__block-discount">
+                        <div className="book-container__old-price">
+                            <div className="book-container__discount">
+                                <span className="book-container__cancelled-text">
+                                    { book.price } грн
+                                </span>
+                                <span className="product-card__discount-percents book-container__discount-percents">
+                                    -{Math.round(((book.price - book.promo_price) / book.price) * 100)}%
+                                </span>    
+                            </div>
+                            <h5 className="book-container__pink-text">
+                                { book.promo_price } грн
+                            </h5>
+                        </div>
+                        
                         <div className="book-container__bonuses product-bonuses">
                             <Image src="/icons/bonus.svg" alt="" width="20" height="20" />
-                            <p className="product-bonuses__bonuses-count">+{ info.bonuses } бонусів</p>
+                            <p className="product-bonuses__bonuses-count">
+                                +{ book?.promo_price ? Math.ceil(book.promo_price / 2) : Math.ceil(book.price / 2) } бонусів
+                            </p>
                         </div>
-                    ) }
-                </div>
+                    </div>
+                ) }
+                
 
                 <div className="book-container__in-stock-row">
                     { info.format === "Паперова" ? (

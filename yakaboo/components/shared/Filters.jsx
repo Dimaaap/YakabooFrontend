@@ -93,6 +93,15 @@ export const Filters = ({
     router.push(`?${queryString}`, { shallow: true})
   }
 
+  const onCheckboxChange = (filter, values, isArray=true) => {
+    if(isArray){
+      setArrayFilters(filter, values);
+    } else {
+      setValueFilter(filter, values)
+    }
+    applyFilters();
+  }
+
   const toggleShowSubcategories = () => {
     if(showSubcategories){
       setShowSubcategories(false)
@@ -112,7 +121,6 @@ export const Filters = ({
 
   return (
     <div className="filters games-filters">
-      
         <div className={`filters__book-subcategories ${!(needBookCategories && bookCategories?.length > 0) ? "hidden" : "" }`}>
           <div className={`filters__book-subcategories-header`}>
             <h6 className="filters__book-subcategories-title">Категорії книг</h6>  
@@ -159,7 +167,7 @@ export const Filters = ({
       { needFilters && (
         <FilterForm fields={filtersFields} formTitle="Фільтри"
         selected={filters.filters} objectFields={ true }
-        onChange={(values) => setArrayFilters('filters', values)} />  
+        onChange={(values) => onCheckboxChange("filters", values)} />  
       ) }
       
 
@@ -169,7 +177,7 @@ export const Filters = ({
           formTitle="Категорія"
           isScroll={true}
           selected={filters.categories}
-          onChange={(values) => setArrayFilters('categories', values)}
+          onChange={(values) => onCheckboxChange("categories", values)}
         />
       )}
 
@@ -182,7 +190,7 @@ export const Filters = ({
           searchPlaceholder="Пошук бренду"
           withShowMore={ true }
           selected={ filters.accessoriesBrands }
-          onChange={ (values) => setArrayFilters("accessoriesBrands", values) }
+          onChange={(values) => onCheckboxChange("accessoriesBrands", values)}
         />
       ) }
 
@@ -191,7 +199,7 @@ export const Filters = ({
         fields={bookTypesFields} 
         formTitle="Тип книги" 
         selected={ filters.bookTypes }
-        onChange={(values) => setArrayFilters('bookTypes', values)}/>  
+        onChange={(values) => onCheckboxChange('bookTypes', values)}/>  
       ) }
 
       {  }
@@ -204,7 +212,7 @@ export const Filters = ({
           searchPlaceholder="Пошук бренду"
           withShowMore={true}
           selected={filters.brands}
-          onChange={(values) => setArrayFilters('brands', values)}
+          onChange={(values) => onCheckboxChange('brands', values)}
         />
       ) }
       { needAge && (
@@ -212,7 +220,7 @@ export const Filters = ({
           fields={ gameAgesTitle }
           formTitle="Вік"
           selected={ filters.ages }
-          onChange={ (values) => setArrayFilters("ages", values) }
+          onChange={ (values) => onCheckboxChange("ages", values) }
         />
       ) }
 
@@ -221,7 +229,7 @@ export const Filters = ({
           fields={ diffLevels }
           formTitle="Рівень складності"
           selected={ filters.difficultLevels }
-          onChange={(values) => setArrayFilters("difficultLevels", values)}
+          onChange={(values) => onCheckboxChange("difficultLevels", values)}
           />
       ) }
 
@@ -233,7 +241,7 @@ export const Filters = ({
               type="checkbox"
               className="filters__form-checkbox"
               checked={filters.inStockOnly}
-              onChange={() => setValueFilter('inStockOnly', !filters.inStockOnly)}
+              onChange={() => onCheckboxChange('inStockOnly', !filters.inStockOnly, false)}
             />
             <span className="filters__form-custom-box"></span>
             Товари в наявності
@@ -251,7 +259,7 @@ export const Filters = ({
           searchPlaceholder="Пошук видав..."
           withShowMore={true}
           selected={filters.publishers}
-          onChange={(values) => setArrayFilters('publishers', values)}
+          onChange={(values) => onCheckboxChange('publishers', values)}
         />
       ) : needAuthors ?  (
         <FilterForm
@@ -261,7 +269,7 @@ export const Filters = ({
           searchPlaceholder="Пошук авторів"
           withShowMore={true}
           selected={filters.authors}
-          onChange={(values) => setArrayFilters('authors', values)}
+          onChange={(values) => onCheckboxChange('authors', values)}
         />
       ) : null}
 
@@ -271,7 +279,7 @@ export const Filters = ({
         formTitle="Тематика"
         isScroll={ true }
         selected={ filters.themes }
-        onChange={(values) => setArrayFilters('themes', values)}
+        onChange={(values) => onCheckboxChange('themes', values)}
         />
       ) }
 
@@ -280,20 +288,22 @@ export const Filters = ({
           fields={ languageFields }
           formTitle="Мова"
           selected={filters.languages}
-          onChange={(values) => setArrayFilters('languages', values)}
+          onChange={(values) => onCheckboxChange('languages', values)}
         />
       )}
 
       { needPrice && (
         <form className="filters__form"
+        // TODO: Виправити, щоб фільтр ціни не оновлювався при введенні нового символу в поле вводу, а лише після натискання на кнопку "Застосувати"
         onSubmit={(e) => e.preventDefault()}>
           <p className="filters__form-title">Ціна</p>
           <div className="filters__field-row">
             <PriceInput label="Від" value={ filters.priceFrom } onChange={ (e) => setValueFilter('priceFrom', e.target.value) } />
             <PriceInput label="До" value={ filters.priceTo } onChange={ (e) => setValueFilter('priceTo', e.target.value) } />
           </div>
-
-          <button className="filters__form-button" type="submit" onClick={applyFilters}>
+          
+          {/* TODO: Зробити, щоб при настиканні на кнопку додавались фільтри на мінімальну і максимальну ціни на книги */}
+          <button className="filters__form-button" type="button" onClick={applyFilters}>
             Застосувати
           </button>
         </form>  

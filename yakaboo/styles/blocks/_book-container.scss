@@ -269,6 +269,42 @@
         transform: rotate(180deg);
     }
 
+    &__block-discount {
+        display: flex;
+        align-items: end;
+    }
+
+    &__old-price {
+        display: flex;
+        flex-direction: column;
+        gap: rem(2);
+    }
+
+    &__cancelled-text {
+        text-decoration: line-through;
+        color: var(--color-gray-30);
+        font-weight: 500;
+        font-size: rem(14);
+    }
+
+    &__discount {
+        display: flex;
+        align-items: center; 
+        gap: rem(6);
+    }
+
+    &__pink-text {
+        font-size: rem(24);
+        color: var(--color-pink-10);
+        margin-left: 5%;
+        font-weight: 600;
+    }
+
+    &__bonuses {
+        margin-left: 5%;
+        padding-block: 1%;
+    }
+
     &__show-all {
         width: max-content;
         border: none;

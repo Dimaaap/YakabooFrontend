@@ -1,37 +1,40 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { useEffect, useState } from "react"
-import { fetchData } from "../../services"
 import Endpoints from "../../endpoints"
-import { Breadcrumbs, CardsContainer, Filters } from "../shared"
+import { Breadcrumbs, CardsContainer, Filters, Spinner } from "../shared"
+import { useQuery } from "@tanstack/react-query"
+import { fetcher } from "../../services/fetch.service"
+import { STALE_TIME } from "../../site.config"
 
 export const DoubleSubactegoryClient = () => {
-    const [doubleSubcategoryBooks, setDoubleSubcategoryBooks] = useState([])
-    const [subcategory, setSubcategory] = useState(null);
-    const [doubleSubcategory, setDoubleSubcategory] = useState(null);
-
     const pathname = usePathname();
+
     const doubleSubcategorySlug = pathname.split("/")[4];
     const subcategorySlug = pathname.split("/")[3];
+
+    const { data: doubleSubcategory, isLoading: isDoubleSubcategoryLoading } = useQuery({
+        queryKey: ["double-subcategory", doubleSubcategorySlug],
+        queryFn: () => fetcher(Endpoints.DOUBLE_SUBCATEGORY_BY_SLUG(doubleSubcategorySlug)),
+        enabled: !!doubleSubcategorySlug,
+        staleTime: STALE_TIME
+    })
     
-    
-    useEffect(() => {
-        fetchData(Endpoints.DOUBLE_SUBCATEGORY_BY_SLUG(doubleSubcategorySlug), setDoubleSubcategory)
-    }, [])
+    const { data: doubleSubcategoryBooks = [], isLoading: isBooksLoading } = useQuery({
+        queryKey: ["double-subcategory-books", doubleSubcategorySlug],
+        queryFn: () => fetcher(Endpoints.DOUBLE_SUBCATEGORY_BOOK(doubleSubcategorySlug)),
+        enabled: !!doubleSubcategorySlug,
+        staleTime: STALE_TIME
+    })
 
+    const { data: subcategory } = useQuery({
+        queryKey: ["subcategory", subcategorySlug],
+        queryFn: () => fetcher(Endpoints.SUBCATEGORY_BY_SLUG(subcategorySlug)),
+        enabled: !!subcategorySlug,
+        staleTime: STALE_TIME
+    })
 
-    useEffect(() => {
-        if(doubleSubcategory){
-            fetchData(Endpoints.DOUBLE_SUBCATEGORY_BOOK(doubleSubcategorySlug), setDoubleSubcategoryBooks)
-        } else {
-            return 
-        }
-    }, [doubleSubcategory])
-
-    useEffect(() => {
-        fetchData(Endpoints.SUBCATEGORY_BY_SLUG(subcategorySlug), setSubcategory)
-    }, [])
+    if(isDoubleSubcategoryLoading || isBooksLoading) return <Spinner />
 
     const breadcrumbsLink = {
         Книжки: "/book",

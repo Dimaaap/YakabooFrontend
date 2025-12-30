@@ -1,61 +1,38 @@
 "use client"
 
-import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useEffect, useRef, useState } from "react"
-import { fetchData } from "../../services"
 import Endpoints from "../../endpoints"
-import Image from "next/image"
-import { Breadcrumbs, CardsContainer, Filters } from "../shared"
-import { CategoryBanner } from "../shared/CategoryBanner"
+import { Breadcrumbs, CardsContainer, Filters, Spinner } from "../shared"
+import { useQuery } from "@tanstack/react-query"
+import { fetcher } from "../../services/fetch.service"
+import { STALE_TIME } from "../../site.config"
 
 export const BookCategoryClient = () => {
-    const [category, setCategory] = useState(null);
-    const [categoryBooks, setCategoryBooks] = useState([]);
-    const [canScrollLeft, setCanScrollLeft] = useState(false);
-    const [canScrollRight, setCanScrollRight] = useState(false);
-
-    const scrollRef = useRef(null);
 
     const pathname = usePathname();
     const categorySlug = pathname.split("/")[2];
 
-    useEffect(() => {
-        fetchData(Endpoints.CATEGORY_BY_SLUG(categorySlug), setCategory)
-    }, [])
+    const { data: category, isLoading: isCategoryLoading } = useQuery({
+        queryKey: ["category", categorySlug],
+        queryFn: () => fetcher(Endpoints.CATEGORY_BY_SLUG(categorySlug)),
+        enabled: !!categorySlug,
+        staleTime: STALE_TIME,
+        refetchOnWindowFocus: false
+    })
 
-
-    useEffect(() => {
-        if(!category) return;
-        fetchData(Endpoints.CATEGORY_BOOKS(category.id), setCategoryBooks)
-    }, [category])
+    const { data: categoryBooks = [], isLoading: isBooksLoading } = useQuery({
+        queryKey: ["category-books", category?.id],
+        queryFn: () => fetcher(Endpoints.CATEGORY_BOOKS(category?.id)),
+        enabled: !!category?.id,
+        staleTime: STALE_TIME,
+        refetchOnWindowFocus: false
+    })
 
     const subcategories = category?.subcategories || []
 
-    const checkScroll = () => {
-        const el = scrollRef.current;
-
-        if(!el) return 
-
-        const { scrollLeft, scrollWidth, clientWidth } = el;
-        setCanScrollLeft(scrollLeft > 0);
-        setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 1)
-    }
-
-    useEffect(() => {
-        const el = scrollRef.current 
-
-        if(!el) return 
-
-        checkScroll()
-        el.addEventListener("scroll", checkScroll);
-        el.addEventListener("resize", checkScroll)
-
-        return() => {
-            el.removeEventListener("scroll", checkScroll);
-            el.removeEventListener("resize", checkScroll)
-        }
-    }, [category])
+    if(isCategoryLoading || isBooksLoading) return (
+        <Spinner />
+    )
 
     if(!category) return null
 
