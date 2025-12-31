@@ -38,6 +38,9 @@
             padding-block: 0.5%;
             border-radius: rem(10);
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: rem(8);
         }
 
         &-clear-all {

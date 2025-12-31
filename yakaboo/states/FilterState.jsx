@@ -67,6 +67,28 @@ export const fromSearchParams = params => {
     useFilterStore.setState({ selectedFilters: selected })
 }
 
+export const removeFilter = ({ key, value }) => {
+    const state = useFilterStore.getState();
+
+    if(Array.isArray(state[key])){
+        useFilterStore.setState({
+            [key]: state[key].filter(v => v !== value)
+        })
+    } else if(typeof state[key] === "boolean"){
+        useFilterStore.setState({
+            [key]: false
+        })
+    } else {
+        useFilterStore.setState({
+            [key]: initialState[key]
+        })
+    }
+
+    useFilterStore.setState({
+        selectedFilters: state.selectedFilters.filter(f => !(f.key === key && f.value === value))
+    })  
+}
+
 export const toQueryString = () => {
     const state = useFilterStore.getState()
     const queryParams = new URLSearchParams()

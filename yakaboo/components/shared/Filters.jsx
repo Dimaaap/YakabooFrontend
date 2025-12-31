@@ -44,6 +44,8 @@ export const Filters = ({
   const [accessoriesBrands, setAccessoriesBrands] = useState([]);
   const [showSubcategories, setShowSubcategories] = useState(true);  
   const [doubleSubcategoriesList, setDoubleSubcategoriesList] = useState(null);
+  const [priceFrom, setPriceFrom] = useState(0)
+  const [priceTo, setPriceTo] = useState(4000);
 
   const fetchConfig = [
     { need: needCategories, endpoint: Endpoints.ALL_BOOK_CATEGORIES, setter: setCategories, key: "categories" },
@@ -115,8 +117,19 @@ export const Filters = ({
       setDoubleSubcategoriesList(category);  
     } else {
       setDoubleSubcategoriesList(null);
+    } 
+  }
+
+  const handleChangePrice = () => {
+
+    if(priceFrom){
+      setValueFilter("priceFrom", priceFrom)
+    } 
+    if(priceTo){
+      setValueFilter("priceTo", priceTo)
     }
-    
+
+    applyFilters();
   }
 
   return (
@@ -294,16 +307,14 @@ export const Filters = ({
 
       { needPrice && (
         <form className="filters__form"
-        // TODO: Виправити, щоб фільтр ціни не оновлювався при введенні нового символу в поле вводу, а лише після натискання на кнопку "Застосувати"
         onSubmit={(e) => e.preventDefault()}>
           <p className="filters__form-title">Ціна</p>
           <div className="filters__field-row">
-            <PriceInput label="Від" value={ filters.priceFrom } onChange={ (e) => setValueFilter('priceFrom', e.target.value) } />
-            <PriceInput label="До" value={ filters.priceTo } onChange={ (e) => setValueFilter('priceTo', e.target.value) } />
+            <PriceInput label="Від" value={ filters.priceFrom } onChange={ (e) => setPriceFrom(e.target.value) } />
+            <PriceInput label="До" value={ filters.priceTo } onChange={ (e) => setPriceTo(e.target.value) } />
           </div>
           
-          {/* TODO: Зробити, щоб при настиканні на кнопку додавались фільтри на мінімальну і максимальну ціни на книги */}
-          <button className="filters__form-button" type="button" onClick={applyFilters}>
+          <button className="filters__form-button" type="button" onClick={() => handleChangePrice()}>
             Застосувати
           </button>
         </form>  
