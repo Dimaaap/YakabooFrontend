@@ -29,13 +29,9 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
     const { isAddReviewModalOpen, setIsAddReviewModalOpen } = useAddReviewModalStore();
 
     const showProductInfoModal = useProductInfoState((state) => state.showProductInfoModal)
-
     const info = isGift ? book.gift_info : book.book_info;
-
     const images = book.images || [];
-
     const pageImages = images.filter((img) => img.type === "page");
-
     const bookInfo = {
         image_src: images[0]?.image_url,
         title: book?.title,
