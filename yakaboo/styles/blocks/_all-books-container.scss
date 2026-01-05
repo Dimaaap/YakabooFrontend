@@ -1,0 +1,11 @@
+@use "../helpers" as *;
+
+
+.all-books-container {
+    height: 100vh;
+
+    &__banner-wrapper {
+        max-height: rem(400);
+        overflow: hidden;
+    }
+}

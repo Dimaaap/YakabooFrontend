@@ -92,7 +92,6 @@ const Defaults = {
   VISIBLE_SIDEBARS: `${DOMAIN}sidebars/visible`,
   ALL_INTERESTING: `${DOMAIN}interesting/all`,
   ALL_FOOTER_LINKS: `${DOMAIN}footers/all`,
-  ALL_BANNERS: `${DOMAIN}banners/all`,
   ALL_BOOK_CATEGORIES: `${DOMAIN}categories/all`,
   ALL_CONTACTS: `${DOMAIN}contacts/all`,
   ALL_COUNTRIES: `${DOMAIN}countries/all`,
@@ -100,6 +99,11 @@ const Defaults = {
   ALL_TRANSLATORS: `${DOMAIN}translators/all`,
   ALL_PUBLISHINGS: `${DOMAIN}publishing/all`,
   BOOK_CATEGORIES: (hoverCategoryId) => `${DOMAIN}categories/${hoverCategoryId}/subcategories`
+}
+
+const Banners = {
+  MAIN_PAGE_BANNERS: `${DOMAIN}banners/all`,
+  ALL_BOOKS_BANNERS: `${DOMAIN}banners/all/books-page`
 }
 
 const Wishlists = {
@@ -192,6 +196,7 @@ const Endpoints = {
   ...Publishings,
   ...Translators,
   ...Wishlists,
+  ...Banners,
   ...LiteraturePeriods,
   ...BookSeries,
   ...Books,
