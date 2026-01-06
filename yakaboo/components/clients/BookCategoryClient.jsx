@@ -20,17 +20,9 @@ export const BookCategoryClient = () => {
         refetchOnWindowFocus: false
     })
 
-    const { data: categoryBooks = [], isLoading: isBooksLoading } = useQuery({
-        queryKey: ["category-books", category?.id],
-        queryFn: () => fetcher(Endpoints.CATEGORY_BOOKS(category?.id)),
-        enabled: !!category?.id,
-        staleTime: STALE_TIME,
-        refetchOnWindowFocus: false
-    })
-
     const subcategories = category?.subcategories || []
 
-    if(isCategoryLoading || isBooksLoading) return (
+    if(isCategoryLoading) return (
         <Spinner />
     )
 
@@ -45,7 +37,7 @@ export const BookCategoryClient = () => {
                 <Filters needBookCategories={ true } bookCategories={ subcategories || [] } categorySlug={ categorySlug } />
                 <div className="book-category__book-section">
                     <div className="book-category__books">
-                        <CardsContainer booksList={ categoryBooks || [] } categoryTitle={ category.title } />
+                        <CardsContainer source={{ type: "category", slug: categorySlug }} categoryTitle={ category.title } />
                     </div>
                 </div>
             </div>

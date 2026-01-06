@@ -128,6 +128,7 @@ const BookSeries = {
 }
 
 const Books = {
+  ALL_BOOKS: `${DOMAIN}books/all`,
   BOOK_BY_SLUG: (bookSlug) => `${DOMAIN}books/${bookSlug}`
 }
 
@@ -140,7 +141,8 @@ const Illustrators = {
 
 const BookCategories = {
   CATEGORY_BY_SLUG: (categorySlug) => `${DOMAIN}categories/by-slug/${categorySlug}`,
-  CATEGORY_BOOKS: (categoryId) => `${DOMAIN}categories/books/${categoryId}`
+  CATEGORY_BOOKS: (categoryId) => `${DOMAIN}categories/books/${categoryId}`,
+  CATEGORY_BOOKS_BY_SLUG: (categorySlug) => `${DOMAIN}categories/books/by-slug/${categorySlug}`
 }
 
 const BookSubcategories = {

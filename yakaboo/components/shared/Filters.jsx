@@ -5,11 +5,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { FilterForm } from '.';
-import { fetchData } from '../../services';
 import Endpoints from '../../endpoints';
 import { fromSearchParams, setArrayFilters, setValueFilter, toQueryString, useFilterStore } from '../../states/FilterState';
-import { bookTypesFields, diffLevels, filtersFields, languageFields } from '../../site.config';
+import { bookTypesFields, diffLevels, filtersFields, languageFields, STALE_TIME } from '../../site.config';
 import { PriceInput } from './PriceInput';
+import { useQueries } from '@tanstack/react-query';
+import { fetcher } from '../../services/fetch.service';
 
 export const Filters = ({ 
   needPublishers = true, 
@@ -26,6 +27,7 @@ export const Filters = ({
   needAccessoriesBrands = false,
   needGiftBrands = false,
   needBookCategories = false, 
+  needBookSeria = false,
   bookCategories = null,
   categorySlug=null,
   subcategories=false
@@ -35,40 +37,66 @@ export const Filters = ({
   const filters = useFilterStore();
   const pathname = usePathname();
 
-  const [categories, setCategories] = useState([]);
-  const [brands, setBrands] = useState([]);
-  const [hobbyThemes, setHobbyThemes] = useState([]);
-  const [authors, setAuthors] = useState([])
-  const [publishings, setPublishings] = useState([]);
-  const [age, setAge] = useState([])
-  const [accessoriesBrands, setAccessoriesBrands] = useState([]);
   const [showSubcategories, setShowSubcategories] = useState(true);  
   const [doubleSubcategoriesList, setDoubleSubcategoriesList] = useState(null);
   const [priceFrom, setPriceFrom] = useState(0)
   const [priceTo, setPriceTo] = useState(4000);
 
+
   const fetchConfig = [
-    { need: needCategories, endpoint: Endpoints.ALL_BOOK_CATEGORIES, setter: setCategories, key: "categories" },
-    { need: needBrands || needGiftBrands, endpoint: needGiftBrands ? Endpoints.ALL_GIFT_BRANDS : Endpoints.ALL_HOBBY_BRANDS, setter: setBrands },
-    { need: needTheme, endpoint: Endpoints.ALL_HOBBY_THEMES, setter: setHobbyThemes, key: "hobby_themes" },
-    { need: needAuthors, endpoint: Endpoints.ALL_AUTHORS, setter: setAuthors },
-    { need: needPublishers, endpoint: Endpoints.ALL_PUBLISHINGS, setter: setPublishings },
-    { need: needAge, endpoint: Endpoints.ALL_BOARD_GAME_AGES, setter: setAge }
+    {
+      key: "categories",
+      enabled: needCategories,
+      endpoint: Endpoints.ALL_BOOK_CATEGORIES,
+      dataKey: "categories"
+    },
+    {
+      key: "brands",
+      enabled: needBrands || needGiftBrands,
+      endpoint: needGiftBrands ? Endpoints.ALL_GIFT_BRANDS : Endpoints.ALL_HOBBY_BRANDS
+    },
+    {
+      key: "hobby_themes",
+      enabled: needTheme,
+      endpoint: Endpoints.ALL_HOBBY_THEMES
+    },
+    {
+      key: "authors",
+      enabled: needAuthors,
+      endpoint: Endpoints.ALL_AUTHORS
+    },
+    {
+      key: "publishing",
+      enabled: needPublishers,
+      endpoint: Endpoints.ALL_PUBLISHINGS
+    },
+    {
+      key: "ages",
+      enabled: needAge,
+      endpoint: Endpoints.ALL_BOARD_GAME_AGES
+    },
+    {
+      key: "accessoriesBrands",
+      enabled: needAccessoriesBrands,
+      endpoint: Endpoints.ALL_ACCESSORIES_BRANDS
+    },
+    {
+      key: "book_series",
+      enabled: needBookSeria,
+      endpoint: Endpoints.ALL_SERIES
+    }
   ]
 
-  useEffect(() => {
-    fetchConfig.forEach(({ need, endpoint, setter, key }) => {
-      if(need){
-        fetchData(endpoint, setter, key)
-      }
-    })
-  }, []);
-
-  useEffect(() => {
-    if(needAccessoriesBrands){
-      fetchData(Endpoints.ALL_ACCESSORIES_BRANDS, setAccessoriesBrands)
-    }
-  }, [])
+  const queries = useQueries({
+    queries: fetchConfig.map(
+      ({key, endpoint, enabled, dataKey}) => ({
+        queryKey: [key],
+        queryFn: () => fetcher(endpoint),
+        enabled,
+        staleTime: STALE_TIME
+      })
+    )
+  })
 
   useEffect(() => {
     if(searchParams){
@@ -80,6 +108,18 @@ export const Filters = ({
     const path = `${pathname}/${href}`
     return path
   }
+
+  const [categoriesQuery, brandsQuery, hobbyThemesQuery, authorsQuery, publishingsQuery, 
+    agesQuery, accessoriesBrandsQuery, bookSeriesQuery] = queries
+
+  const categories = categoriesQuery?.data ?? [];
+  const brands = brandsQuery?.data ?? [];
+  const authors = authorsQuery?.data ?? [];
+  const publishings = publishingsQuery?.data ?? [];
+  const ages = agesQuery?.data ?? [];
+  const accessoriesBrands = accessoriesBrandsQuery?.data ?? [];
+  const hobbyThemes = hobbyThemesQuery?.data ?? [];
+  const bookSeries = bookSeriesQuery?.data ?? [];
   
 
   const categoriesTitle = categories.map(c => c.title);
@@ -87,8 +127,9 @@ export const Filters = ({
   const themesTitle = hobbyThemes.map(t => t.value);
   const authorsName = authors.map(a => `${a.first_name} ${a.last_name}`);
   const publishingTitles = publishings.map(p => p.title);
-  const gameAgesTitle = age.map(a => a.age);
+  const gameAgesTitle = ages.map(a => a.age);
   const accessoriesBrandsTitle = accessoriesBrands.map(b => b.title)
+  const bookSeriesTitle = bookSeries.map(s => s.title)
 
   const applyFilters = () => {
     const queryString = toQueryString()
@@ -148,7 +189,7 @@ export const Filters = ({
                 <div className={`filters__book-subcategory-container`}>
                   <div className="filters__book-subcategory-container-header">
                     <Link className="filters__book-subcategory-title" 
-                    href={`${!subcategories ? `/book-categories/${categorySlug}/${category.slug}` : `${getDoubleSubcategorySlug(category.slug)}`}`}>
+                    href={`${!subcategories ? `/book-categories/${categorySlug ? categorySlug + "/" : ''}${category.slug}` : `${getDoubleSubcategorySlug(category.slug)}`}`}>
                       { category.title }
                     </Link>  
                     { category?.double_subcategories?.length > 0 ? 
@@ -162,7 +203,7 @@ export const Filters = ({
                   { doubleSubcategoriesList === category.title ? (
                     <div className="filters__book-subcategory-double-subcategories-list">
                       { category.double_subcategories.map((subcategory, index) => (
-                        <Link href={`/book-categories/${categorySlug}/${category.slug}/${subcategory.slug}`} 
+                        <Link href={`/book-categories/${categorySlug || ""}/${category.slug}/${subcategory.slug})`} 
                         className="filters__book-subcategory-double-subcategories-title" 
                         key={ index }>
                           { subcategory.title }
@@ -263,7 +304,7 @@ export const Filters = ({
       </form>
       
 
-      {needPublishers ? (
+      {needPublishers && (
         <FilterForm
           fields={ publishingTitles }
           formTitle="Видавництва"
@@ -274,7 +315,9 @@ export const Filters = ({
           selected={filters.publishers}
           onChange={(values) => onCheckboxChange('publishers', values)}
         />
-      ) : needAuthors ?  (
+      )}
+
+      {needAuthors &&  (
         <FilterForm
           fields={ authorsName }
           formTitle="Автор"
@@ -284,7 +327,19 @@ export const Filters = ({
           selected={filters.authors}
           onChange={(values) => onCheckboxChange('authors', values)}
         />
-      ) : null}
+      )}
+
+      {needBookSeria && (
+        <FilterForm 
+          fields={ bookSeriesTitle }
+          fortTitle="Серія книг"
+          withSearch={ true }
+          searchPlaceholder="Пошук серії"
+          withShowMore={ true }
+          selected={ filters.series }
+          onChange={(values) => onCheckboxChange("series", values)}
+          />
+      )}
 
       { needTheme && (
         <FilterForm 

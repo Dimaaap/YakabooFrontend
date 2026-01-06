@@ -6,15 +6,23 @@ import { useMemo, useRef } from 'react'
 
 import { ProductCard, Stars, Badge, TopBadge, CommentsCount } from '.'
 import { wordDeclension } from '../../services/word-declension.service'
-import { badgeColors, bookTypesFields, filtersFields, ImagesLinks } from '../../site.config';
+import { badgeColors, bookTypesFields, filtersFields, ImagesLinks, STALE_TIME } from '../../site.config';
 import { useCurrentSortingOrderStore, useSortingOrderStore } from '../../states';
 import { SortingOrdersModal } from '../modals/SortingOrdersModal';
 import { SORTING_ORDERS } from '../../utils';
 import { getDiscount } from '../../services/discount.service';
 import { removeFilter, resetFilters, toQueryString, useFilterStore } from '../../states/FilterState';
+import Endpoints from '../../endpoints';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
-export const CardsContainer = ({booksList, categoryTitle, 
-    isHobbies=false, isAccessories=false, isNotebooks=false, isGifts=false, giftsBrand=null}) => {
+export const CardsContainer = ({
+    source,
+    categoryTitle, 
+    isHobbies=false, 
+    isAccessories=false, 
+    isNotebooks=false, 
+    isGifts=false, 
+    giftsBrand=null}) => {
 
     const searchParams = useSearchParams();
     const selectRef = useRef(null);
@@ -26,54 +34,50 @@ export const CardsContainer = ({booksList, categoryTitle,
     const { currentSortingOrder } = useCurrentSortingOrderStore();
     const { selectedFilters } = useFilterStore();
 
-    const getArray = (name) => {
-        const value = searchParams.get(name);
-        return value ? value.split(",") : [];
+    const LIMIT = 100;
+
+    const getEndpoint = () => {
+        switch(source.type){
+            case "all":
+                return Endpoints.ALL_BOOKS
+            case "category":
+                return Endpoints.CATEGORY_BOOKS_BY_SLUG(source?.slug)
+            case "author":
+                return Endpoints.AUTHOR_BOOKS(source.id)
+            case "series":
+                return Endpoints.ALL_SERIA_BOOKS(source.slug)
+            case "publishing":
+                return Endpoints.ALL_PUBLISHING_BOOKS(source.id)
+        }
     }
 
-    const filters = {
-        categories: getArray("categories"),
-        brands: getArray("brands"),
-        publishers: getArray("publishers"),
-        languages: getArray("languages"),
-        bookTypes: getArray("bookTypes"),
-        authors: getArray("authors"),
-        themes: getArray("themes"),
-        filters: getArray("filters"),
-        ages: getArray("ages"),
-        accessoriesBrands: getArray("accessories_brands"),
-        difficultyLevels: getArray("difficulty_level").map(Number),
-        inStockOnly: searchParams.get("in_stock") === "true",
-        priceFrom: searchParams.get("price_min") || "",
-        priceTo: searchParams.get("price_max") || "",
-    }
+    const queryString = searchParams.toString();
 
-    const filterBooks = booksList?.filter(book => {
-        if(filters.categories.length && !filters.categories.includes(book.category_slug)) return false 
-        if(filters.brands.length && !filters.brands.includes(book?.brand?.title)) return false 
-        if(filters.publishers.length && !filters.publishers.includes(book?.publishing?.title)) return false 
-        if(filters.languages.length && !filters.languages.includes(book?.book_info?.language)) return false 
-        if(filters.bookTypes.length && !filters.bookTypes.includes(book?.book_info?.format)) return false 
-        if(filters.themes.length && !filters.themes.includes(book?.theme)) return false
-        if(filters.accessoriesBrands.length && !filters.accessoriesBrands.includes(book?.brand?.title)) return false
-        if(filters.ages.length && !book?.ages.some(a => filters.ages.includes(a.age))) return false
-        if(filters.difficultyLevels.length && !filters.difficultyLevels.includes(Number(book?.difficulty_level))) return false 
-        if(filters.inStockOnly && !(book?.book_info?.in_stock || book.is_in_stock || book?.gift_info?.in_stock)) return false
-        if(filters.priceFrom && book.price < Number(filters.priceFrom)) return false
-        if(filters.priceTo && book.price > Number(filters.priceTo)) return false
-        if(filters.filters.includes("winter-esupport") && !book?.book_info?.is_has_winter_esupport) return false
-        if(filters.filters.includes("ebook") && !book?.book_info?.is_has_esupport) return false
-        if(filters.filters.includes("national-kashback") && !book?.book_info?.is_has_cashback) return false  
-        if(filters.filters.includes("promo") && !book?.is_promo) return false
-        return true
+    const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
+        queryKey: ["books", source, queryString],
+        queryFn: async({ pageParam=0 }) => {
+            const res = await fetch(`${getEndpoint()}?limit=${LIMIT}&offset=${pageParam}&${queryString}`)
+            return res.json();
+        },
+        getNextPageParam: (lastPage) => {
+            lastPage.has_more ? lastPage.offset + lastPage.limit : undefined
+        },
+        staleTime: STALE_TIME,
+        gcTime: STALE_TIME
     })
+
+    const booksList = data?.pages.flatMap(p => p.results) ?? [];
+    const books = booksList
+    const total = data?.pages[0]?.count ?? 0;
+
+    const handleLoadMore = () => {
+        if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+    };
+
 
     const sortingOrder = searchParams.get("sorting_order") || SORTING_ORDERS[0].label;
 
     const sortedBooks = useMemo(() => {
-        if(!filterBooks) return [];
-
-        const books = [...filterBooks];
 
         switch(sortingOrder) {
             case "cheap":
@@ -95,7 +99,7 @@ export const CardsContainer = ({booksList, categoryTitle,
             default:
                 return books.sort((a, b) => (b.stars || 0) - (a.stars || 0))
         }
-    }, [filterBooks, sortingOrder])
+    }, [books, sortingOrder])
 
 
     const returnLink = (slug) => {
@@ -187,7 +191,7 @@ export const CardsContainer = ({booksList, categoryTitle,
                         { categoryTitle }
                     </h5>
                     <span className="author-books__book-count" ref={ selectRef }>
-                        {`${ filterBooks?.length } ${wordDeclension(filterBooks?.length)}`}
+                        {`${total} ${wordDeclension(total)}`}
                     </span>
                 </div>
                 
@@ -200,23 +204,23 @@ export const CardsContainer = ({booksList, categoryTitle,
                 {sortedBooks && sortedBooks.map((book, index) => (
                     <ProductCard 
                     key={ index } 
-                    productLink={ returnLink(book.slug) }
+                    productLink={ returnLink(book?.slug) }
                     extraClass="author-books__book" 
                     title={ book?.title } 
                     brand={ getBookAuthor(book) || book?.publishing?.title || book?.brand?.title || giftsBrand}
-                    imageSrc={ book.images[0]?.image_url ?? ImagesLinks.DEFAULT_IMAGE }
+                    imageSrc={ book?.images[0]?.image_url ?? ImagesLinks.DEFAULT_IMAGE }
                     badges={
                         [
-                            book.stars ? <Stars count={ book.stars } isSmaller={ true } />: <></>,
+                            book?.stars ? <Stars count={ book.stars } isSmaller={ true } />: <></>,
                             book?.reviews?.length > 0 ? <CommentsCount count={ book.reviews.length } /> : <CommentsCount count={0} />, 
-                            (book?.is_top || book.is_in_top) && (<TopBadge />),
-                            book.is_new && (<Badge text="Новинка" backgroundColor={ badgeColors.green } /> ),   
+                            (book?.is_top || book?.is_in_top) && (<TopBadge />),
+                            book?.is_new && (<Badge text="Новинка" backgroundColor={ badgeColors.green } /> ),   
                         ]
                     }
-                    productCode={book?.book_info?.code || book.code || book?.gift_info?.code}
-                    oldPrice={ book.price }
+                    productCode={book?.book_info?.code || book?.code || book?.gift_info?.code}
+                    oldPrice={ book?.price }
                     newPrice={ book?.is_promo ? book?.promo_price : null }
-                    inStock={book?.book_info?.in_stock || book.is_in_stock || book?.gift_info?.in_stock || false}
+                    inStock={book?.book_info?.in_stock || book?.is_in_stock || book?.gift_info?.in_stock || false}
                     hasCashback={ book?.book_info?.is_has_cashback }
                     hasWinterSupport={ book?.book_info?.is_has_winter_esupport }
                     hasESupport={ book?.book_info?.is_has_esupport }

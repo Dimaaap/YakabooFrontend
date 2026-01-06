@@ -2,10 +2,19 @@
 
 
 .all-books-container {
-    height: 100vh;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: rem(15);
 
     &__banner-wrapper {
         max-height: rem(400);
         overflow: hidden;
     }
+
+    &__section {
+        display: flex;
+        
+    }
+
 }
