@@ -42,12 +42,20 @@ export const CardsContainer = ({
                 return Endpoints.ALL_BOOKS
             case "category":
                 return Endpoints.CATEGORY_BOOKS_BY_SLUG(source?.slug)
+            case "subcategory":
+                return Endpoints.SUBCATEGORY_BOOKS(source?.slug)
+            case "double_subcategory":
+                return Endpoints.DOUBLE_SUBCATEGORY_BOOK(source?.slug)
             case "author":
                 return Endpoints.AUTHOR_BOOKS(source.id)
             case "series":
                 return Endpoints.ALL_SERIA_BOOKS(source.slug)
             case "publishing":
                 return Endpoints.ALL_PUBLISHING_BOOKS(source.id)
+            case "translator":
+                return Endpoints.TRANSLATOR_BOOKS(source?.id);
+            case "illustrator":
+                return Endpoints.ILLUSTRATOR_BOOK(source?.id);
         }
     }
 
@@ -73,7 +81,6 @@ export const CardsContainer = ({
     const handleLoadMore = () => {
         if (hasNextPage && !isFetchingNextPage) fetchNextPage();
     };
-
 
     const sortingOrder = searchParams.get("sorting_order") || SORTING_ORDERS[0].label;
 
@@ -176,7 +183,7 @@ export const CardsContainer = ({
                             { filterLabel }
                             <Image src="/icons/close.svg" alt="" width="14" height="14" onClick={() => {
                                 removeFilter(key);
-                                router.replace(`${pathname}?${toQueryString}`)
+                                router.replace(`${pathname}?${toQueryString()}`)
                             }} />
                         </span>
                     }) }

@@ -12,6 +12,7 @@ export const DoubleSubactegoryClient = () => {
 
     const doubleSubcategorySlug = pathname.split("/")[4];
     const subcategorySlug = pathname.split("/")[3];
+    const categorySlug = pathname.split("/")[2];
 
     const { data: doubleSubcategory, isLoading: isDoubleSubcategoryLoading } = useQuery({
         queryKey: ["double-subcategory", doubleSubcategorySlug],
@@ -19,13 +20,7 @@ export const DoubleSubactegoryClient = () => {
         enabled: !!doubleSubcategorySlug,
         staleTime: STALE_TIME
     })
-    
-    const { data: doubleSubcategoryBooks = [], isLoading: isBooksLoading } = useQuery({
-        queryKey: ["double-subcategory-books", doubleSubcategorySlug],
-        queryFn: () => fetcher(Endpoints.DOUBLE_SUBCATEGORY_BOOK(doubleSubcategorySlug)),
-        enabled: !!doubleSubcategorySlug,
-        staleTime: STALE_TIME
-    })
+
 
     const { data: subcategory } = useQuery({
         queryKey: ["subcategory", subcategorySlug],
@@ -34,27 +29,21 @@ export const DoubleSubactegoryClient = () => {
         staleTime: STALE_TIME
     })
 
-    if(isDoubleSubcategoryLoading || isBooksLoading) return <Spinner />
+    if(isDoubleSubcategoryLoading) return <Spinner />
 
     const breadcrumbsLink = {
         Книжки: "/book",
-        [subcategory?.title]: [subcategory?.slug],
+        [subcategory?.title]: `/book-categories/${categorySlug}/${subcategorySlug}`,
     }
 
     return (
         <div className="subcategory">
             <Breadcrumbs linksList={ breadcrumbsLink } />
-            { doubleSubcategory && (
-                <h3 className="subcategory__header-title">
-                    { doubleSubcategory.title }
-                </h3>
-            ) }
             <div className="subcategory__container">
                 <Filters needDifficultLevel={ false } needTheme={ false } needCategories={ false } />
 
-                { doubleSubcategoryBooks.length > 0 && (
-                    <CardsContainer booksList={ doubleSubcategoryBooks } />
-                ) }
+                <CardsContainer source={{ type: "double_subcategory", slug: doubleSubcategorySlug }} 
+                categoryTitle={ doubleSubcategory.title } />
             </div>
         </div>
     )

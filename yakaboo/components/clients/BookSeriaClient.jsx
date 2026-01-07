@@ -24,15 +24,7 @@ export function BookSeriaClient() {
         refetchOnWindowFocus: false
     });
 
-    const { data: seriaBooks, isLoading: booksLoading, error: booksError } = useQuery({
-        queryKey: ["seriaBooks", seriaSlug],
-        queryFn: () => fetcher(Endpoints.ALL_SERIA_BOOKS(seriaSlug)),
-        enabled: !!seriaSlug,
-        staleTime: STALE_TIME,
-        refetchOnWindowFocus: false
-    })
-
-    if(seriaLoading || booksLoading) return (
+    if(seriaLoading || seriaError) return (
          <div className="spinner">
             <Image src="/icons/spinner.svg" alt="" width="20" height="20" />
         </div>
@@ -50,7 +42,7 @@ export function BookSeriaClient() {
 
             <div className="seria__flex-container author__flex-container">
                 <Filters />
-                { seriaBooks.length > 0 && (<CardsContainer booksList={ seriaBooks } />) }
+                { seria && (<CardsContainer source={{ type: "series", slug: seria.slug }} />) }
             </div>
         </div>
     )

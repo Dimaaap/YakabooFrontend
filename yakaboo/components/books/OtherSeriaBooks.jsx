@@ -2,18 +2,17 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useEffect, useRef, useState } from "react"
-import { fetchData } from "../../services"
+import { useRef } from "react"
 import Endpoints from "../../endpoints"
-import { Badge, BookInfoBadge, ProductCard, Stars, TopBadge } from "../shared"
-import { badgeColors } from "../../site.config"
+import { Badge, ProductCard, Spinner, Stars, TopBadge } from "../shared"
+import { badgeColors, STALE_TIME } from "../../site.config"
+import { useQuery } from "@tanstack/react-query"
+import { fetcher } from "../../services/fetch.service"
 
 export const OtherSeriaBooks = ({ book }) => {
-    const [otherSeriaBooks, setOtherSeriaBooks] = useState([])
     const sliderRef = useRef(null);
 
     const scroll = direction => {
-        console.log(direction)
         if(sliderRef.current){
             const scrollAmount = sliderRef.current.offsetWidth;
 
@@ -24,10 +23,16 @@ export const OtherSeriaBooks = ({ book }) => {
         }
     }
 
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ["seria-books", book?.seria?.slug],
+        queryFn: () => fetcher(`${Endpoints.ALL_SERIA_BOOKS(book.seria.slug)}?limit=100&offset=0`),
+        enabled: !!book?.seria?.slug,
+        staleTime: STALE_TIME
+    })
+    
+    const books = data?.results ?? [];
 
-    useEffect(() => {
-        fetchData(Endpoints.ALL_SERIA_BOOKS(book.seria.slug), setOtherSeriaBooks)
-    }, [])
+    if(isLoading || isError) return <Spinner />
 
     return(
         <div className="books-container seria-container">
@@ -43,15 +48,15 @@ export const OtherSeriaBooks = ({ book }) => {
             </div>
 
             <div className="books-container__slider seria-slider">
-                { otherSeriaBooks.length > 4 && (
+                { books?.length > 4 && (
                     <button className={`books-container__btn prev-btn container-slider-btn`} type="button" onClick={() => scroll("left") }>
                         <Image src="/icons/arrow-left.svg" width="30" height="30" alt="" />
                     </button>    
                 ) }
                 
-                { otherSeriaBooks.length > 0 && (
+                { books?.length > 0 && (
                     <div className="books-container__slider book-slider seria-slider container-slider" ref={ sliderRef }>
-                        { otherSeriaBooks.map((book, index) => (
+                        { books.map((book, index) => (
                             <ProductCard key={ index } productLink={ `/book/${book.slug}` }
                             extraClass="container-slider__book"
                             title={ book.title }
@@ -73,7 +78,7 @@ export const OtherSeriaBooks = ({ book }) => {
                         
                     </div>    
                 ) }
-                { otherSeriaBooks.length > 4 && (
+                { books?.length > 4 && (
                     <button className={`books-container__btn next-btn container-slider-btn`}
                     type="button" onClick={() => scroll("right") }>
                         <Image src="/icons/arrow-left.svg" width="30" height="30" alt="" />

@@ -20,6 +20,24 @@
     }
   }
 
+  &__show-more {
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    gap: rem(2);
+    font-size: rem(14);
+    font-weight: 500;
+    color: var(--color-gray-30);
+    padding: 0;
+  }
+
+  &__text {
+    margin-bottom: 1%;
+    font-size: rem(16);
+    font-weight: 500;
+  }
+
   &__container {
     display: grid;
     grid-template-columns: 20% 75%;

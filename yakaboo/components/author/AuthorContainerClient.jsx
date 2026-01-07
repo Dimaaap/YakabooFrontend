@@ -26,15 +26,7 @@ export const AuthorContainerClient = () => {
         refetchOnWindowFocus: false
       })
 
-      const { data: authorBooks, isLoading: booksLoading, error: booksError } = useQuery({
-        queryKey: ['authorBooks', author?.id],
-        queryFn: () => fetcher(Endpoints.AUTHOR_BOOKS(author.id)),
-        enabled: !!author?.id,
-        staleTime: STALE_TIME,
-        refetchOnWindowFocus: false
-      })
-
-      if(authorLoaing || booksLoading) return (
+      if(authorLoaing || authorError) return (
          <div className="spinner">
           <Image src="/icons/spinner.svg" alt="" width="20" height="20" />
         </div>
@@ -46,7 +38,9 @@ export const AuthorContainerClient = () => {
             {author && <AuthorHeader author={author} />}
             <div className="author__flex-container">
               <Filters />
-              { authorBooks && (<CardsContainer booksList={ authorBooks } />) }
+              { author && (
+                <CardsContainer source={{ type: "author", id: author?.id}} />  
+              ) }
             </div>
           </div>
         );

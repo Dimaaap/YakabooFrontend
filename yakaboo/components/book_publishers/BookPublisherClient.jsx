@@ -1,8 +1,8 @@
 "use client"
 
 import { usePathname } from "next/navigation";
-import { Breadcrumbs, Filters } from "../shared";
-import { PublishingBooks, PublishingHeader } from ".";
+import { Breadcrumbs, CardsContainer, Filters } from "../shared";
+import { PublishingHeader } from ".";
 import Endpoints from "../../endpoints";
 import { useQuery } from "@tanstack/react-query";
 import { fetcher } from "../../services/fetch.service";
@@ -41,7 +41,11 @@ export const BookPublisherClient = () => {
     
           <div className="publisher-container">
             <Filters withPublishers={false} />
-            { publisher && <PublishingBooks publishingId={ publisher.id } /> }
+            {
+              publisher && (
+                <CardsContainer source={{ type: "publishing", id: publisher?.id }} />
+              )
+            }
           </div>
         </div>
       );

@@ -27,20 +27,13 @@ export const BookSubcategoryClient = () => {
         staleTime: STALE_TIME
     })
 
-    const { data: subcategoryBooks = [], isLoading: isBooksLoading } = useQuery({
-        queryKey: ["subcategory-books", subcategorySlug],
-        queryFn: () => fetcher(Endpoints.SUBCATEGORY_BOOKS(subcategorySlug)),
-        enabled: !!subcategorySlug,
-        staleTime: STALE_TIME
-    })
-
     const { data: doubleSubcategories = [] } = useQuery({
         queryKey: ["double-subcategories", subcategory?.id],
         queryFn: () => fetcher(Endpoints.DOUBLE_SUBCATEGORIES(subcategory?.id)),
         enabled: !!subcategory?.id
     })
 
-    if(isCategoryLoading || isSubcategoryLoading || isBooksLoading) return <Spinner />
+    if(isCategoryLoading || isSubcategoryLoading) return <Spinner />
 
 
     const breadcrumbsLink = {
@@ -70,9 +63,7 @@ export const BookSubcategoryClient = () => {
                     <Filters needDifficultLevel={ false } needTheme={ false } needCategories={ false }/>
                 ) }
                 
-                { subcategoryBooks.length > 0 && (
-                    <CardsContainer booksList={ subcategoryBooks } categoryTitle={ subcategory.title } />    
-                ) }
+                <CardsContainer source={{ type: "subcategory", slug: subcategorySlug }} categoryTitle={ subcategory.title } />    
             </div>
            
         </div>

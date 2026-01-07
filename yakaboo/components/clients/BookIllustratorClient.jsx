@@ -19,14 +19,7 @@ export const BookIllustratorClient = () => {
         staleTime: STALE_TIME
     })
 
-    const { data: illustratorBooks = [], isLoading: isBooksLoading, error: booksError } = useQuery({
-        queryKey: ["illustrator-books", illustrator?.id],
-        queryFn: () => fetcher(Endpoints.ILLUSTRATOR_BOOK(illustrator.id)),
-        enabled: !!illustrator?.id,
-        staleTime: STALE_TIME
-    })
-
-    if(isIllustratorLoading || isBooksLoading) return <Spinner />
+    if(isIllustratorLoading || illustratorError) return <Spinner />
 
     const breadcrumbsObject ={ 
         "Ілюстратори": "/book-illustrators/view/all"
@@ -44,7 +37,7 @@ export const BookIllustratorClient = () => {
 
             <div className="translator__flex-container author__flex-container">
                 <Filters />
-                { illustratorBooks.length > 0 && (<CardsContainer booksList={ illustratorBooks } />) }
+                { illustrator && (<CardsContainer source={{ type: "illustrator", id: illustrator.id }} />) }
             </div>
         </div>
     )

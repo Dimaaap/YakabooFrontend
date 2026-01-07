@@ -32,10 +32,32 @@ export const PublishingHeader = ({ publisher }) => {
                 />
               </div>
             )}
+            <div className="publishing-header__section right-section">
+              { !showFull ? (
+                <div className="publishing-header__text" dangerouslySetInnerHTML={{__html:publisher.short_description}} />  
+              ) : (
+                <div className="publishing-header__text" dangerouslySetInnerHTML={{__html: publisher.long_description}} />
+              ) }
+              
 
-            <div className="publishing-header__section right-section"
-            dangerouslySetInnerHTML={{__html:publisher.long_description}} />
+            { publisher.long_description !== publisher.short_description && !showFull && (
+              <button className="publishing-header__show-more" type="buttson" onClick={() => changeShowFull()}>
+                Показати повністю
+                <Image src="/icons/chevron-down.svg" alt="" width="18" height="18" />
+              </button>
+            ) }
+
+            { publisher.long_description && showFull && (
+              <div className="publishing-header__show-full">
+                <button className="publishing-header__show-more" type="button" onClick={() => changeShowFull()}>
+                  Показати менше
+                  <Image src="/icons/chevron-down.svg" alt="" width="18" height="18"/>
+                </button>  
+              </div>
+              
+            ) }
           </div>
+        </div>
         </div>
       ) : (
         <h3 className="publishing-header__title">
