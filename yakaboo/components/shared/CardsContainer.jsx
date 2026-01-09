@@ -34,7 +34,7 @@ export const CardsContainer = ({
     const { currentSortingOrder } = useCurrentSortingOrderStore();
     const { selectedFilters } = useFilterStore();
 
-    const LIMIT = 100;
+    const LIMIT = 90;
 
     const getEndpoint = () => {
         switch(source.type){
@@ -62,14 +62,16 @@ export const CardsContainer = ({
     const queryString = searchParams.toString();
 
     const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-        queryKey: ["books", source, queryString],
+        queryKey: ["books", source.type, source.slug, source.id, queryString],
+
         queryFn: async({ pageParam=0 }) => {
             const res = await fetch(`${getEndpoint()}?limit=${LIMIT}&offset=${pageParam}&${queryString}`)
             return res.json();
         },
-        getNextPageParam: (lastPage) => {
-            lastPage.has_more ? lastPage.offset + lastPage.limit : undefined
-        },
+
+        getNextPageParam: (lastPage) => 
+            lastPage.has_more ? lastPage.offset + lastPage.limit : undefined,
+
         staleTime: STALE_TIME,
         gcTime: STALE_TIME
     })
@@ -77,6 +79,7 @@ export const CardsContainer = ({
     const booksList = data?.pages.flatMap(p => p.results) ?? [];
     const books = booksList
     const total = data?.pages[0]?.count ?? 0;
+    const PAGES_COUNT = Math.ceil(total / LIMIT);
 
     const handleLoadMore = () => {
         if (hasNextPage && !isFetchingNextPage) fetchNextPage();
@@ -88,9 +91,9 @@ export const CardsContainer = ({
 
         switch(sortingOrder) {
             case "cheap":
-                return books.sort((a, b) => a.price - b.price);
+                return [...books].sort((a, b) => a.price - b.price);
             case "expensive":
-                return books.sort((a, b) => b.price - a.price);
+                return [...books].sort((a, b) => b.price - a.price);
             case "discount":
                 return [...books].sort((a, b) => {
                     const discountA = getDiscount(a);
@@ -104,7 +107,7 @@ export const CardsContainer = ({
                 })
             case "popular":
             default:
-                return books.sort((a, b) => (b.stars || 0) - (a.stars || 0))
+                return [...books].sort((a, b) => (b.stars || 0) - (a.stars || 0))
         }
     }, [books, sortingOrder])
 
@@ -237,6 +240,38 @@ export const CardsContainer = ({
                 />
                 ))}
             </div>
+
+            { hasNextPage && (<div className="pagination-buttons">
+                { console.log(data) }
+                <button className="pagination-buttons__btn" type="button">
+                    Показати більше
+                    <span className="pagination-buttons__btn-icon">
+                        <Image src="/icons/show-more.svg" alt="" width="18" height="18" />
+                    </span>
+                </button>
+                
+                <div className="pagination-buttons__page-btns">
+                    <button className="pagination-buttons__page-btns-back" type="button">
+                        <span className="pagination-buttons__btn-icon">
+                            <Image src="/icons/chevron-down.svg" width="18" height="18" alt="" />
+                        </span>
+                        Назад
+                    </button>
+
+                    { [...Array(PAGES_COUNT)].map((_, index) => (
+                        <button className="paguination-buttons__page-btns-number" type="button" key={ index }>
+                            { index + 1 }
+                        </button>
+                    )) }
+
+                    <button className="pagination-buttons__page-btns-forward" type="button">
+                        Вперед
+                        <span className="pagination-buttons__btn-icon">
+                            <Image src="/icons/chevron-down.svg" width="18" height="18" alt="" />
+                        </span>
+                    </button>
+                </div>
+            </div>) }
         </div>
     )
 }
