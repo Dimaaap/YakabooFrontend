@@ -1,0 +1,89 @@
+@use "../helpers/" as *;
+
+.pagination-buttons {
+    margin-top: 3%;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    gap: rem(20);
+    margin-bottom: 5%;
+
+    &__btn {
+        padding-inline: 6%;
+        padding-block: 0.75%;
+        border-radius: rem(10);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+        gap: rem(5);
+        background-color: var(--color-gray-50);
+        border: rem(1) solid var(--color-gray-40);
+        font-size: rem(14);
+        color: var(--color-blue-10);
+        font-weight: 500;
+        transition: all 0.3s ease;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+
+    &__page-btns {
+        margin: auto;
+        display: flex;
+        align-items: center;
+        gap: rem(10);
+
+        &-back {
+            & span {
+                & img {
+                    transform: rotate(90deg);
+                }
+            }
+        }
+
+        &-forward {
+            & span {
+                & img {
+                    transform: rotate(-90deg);
+                }
+            }
+        }
+
+        &-back,
+        &-forward {
+            display: flex;
+            align-items: center;
+            gap: rem(3);
+
+        }
+
+        &-back {
+            &.disabled {
+                opacity: 0.5;
+                pointer-events: none;
+                background-color: var(--color-gray-50);
+                border-color: var(--color-gray-50);
+            }
+        }
+
+        &-number {
+            &.active {
+                background-color: var(--color-gray-40);
+            }
+        }
+
+        &-number,
+        &-back,
+        &-forward {
+            font-size: rem(14);
+            background-color: transparent;
+            border: rem(2) solid var(--color-gray-40);
+            padding-inline: rem(30);
+            padding-block: rem(10);
+            border-radius: rem(10);
+            font-weight: 500;
+        }
+    }
+}

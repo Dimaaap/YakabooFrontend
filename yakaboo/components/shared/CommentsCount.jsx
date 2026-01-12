@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image"
 
 export const CommentsCount = ({ count = 0 }) => {

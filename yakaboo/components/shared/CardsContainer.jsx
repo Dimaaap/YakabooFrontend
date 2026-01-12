@@ -4,16 +4,16 @@ import Image from 'next/image'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useMemo, useRef } from 'react'
 
-import { ProductCard, Stars, Badge, TopBadge, CommentsCount } from '.'
+import { ProductCard, Stars, Badge, TopBadge, CommentsCount, Spinner } from '.'
 import { wordDeclension } from '../../services/word-declension.service'
-import { badgeColors, bookTypesFields, filtersFields, ImagesLinks, STALE_TIME } from '../../site.config';
+import { badgeColors, ImagesLinks, STALE_TIME } from '../../site.config';
 import { useCurrentSortingOrderStore, useSortingOrderStore } from '../../states';
 import { SortingOrdersModal } from '../modals/SortingOrdersModal';
-import { SORTING_ORDERS } from '../../utils';
+import { getBookAuthor, getFilterLabel, SORTING_ORDERS } from '../../utils';
 import { getDiscount } from '../../services/discount.service';
 import { removeFilter, resetFilters, toQueryString, useFilterStore } from '../../states/FilterState';
 import Endpoints from '../../endpoints';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 export const CardsContainer = ({
     source,
@@ -28,64 +28,39 @@ export const CardsContainer = ({
     const selectRef = useRef(null);
     const router = useRouter();
     const pathname = usePathname();
+
+    const LIMIT = 90;
+    const page = Number(searchParams.get("page")) || 1;
+    const offset = (page - 1) * LIMIT;
+
+    const sortingOrder = searchParams.get("sorting_order") || SORTING_ORDERS[0].label;
+
     let labelForPrice = false
 
     const { isSortingModalOpen, setIsSortingModalOpen } = useSortingOrderStore();
     const { currentSortingOrder } = useCurrentSortingOrderStore();
     const { selectedFilters } = useFilterStore();
 
-    const LIMIT = 90;
-
-    const getEndpoint = () => {
-        switch(source.type){
-            case "all":
-                return Endpoints.ALL_BOOKS
-            case "category":
-                return Endpoints.CATEGORY_BOOKS_BY_SLUG(source?.slug)
-            case "subcategory":
-                return Endpoints.SUBCATEGORY_BOOKS(source?.slug)
-            case "double_subcategory":
-                return Endpoints.DOUBLE_SUBCATEGORY_BOOK(source?.slug)
-            case "author":
-                return Endpoints.AUTHOR_BOOKS(source.id)
-            case "series":
-                return Endpoints.ALL_SERIA_BOOKS(source.slug)
-            case "publishing":
-                return Endpoints.ALL_PUBLISHING_BOOKS(source.id)
-            case "translator":
-                return Endpoints.TRANSLATOR_BOOKS(source?.id);
-            case "illustrator":
-                return Endpoints.ILLUSTRATOR_BOOK(source?.id);
-        }
-    }
-
     const queryString = searchParams.toString();
 
-    const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-        queryKey: ["books", source.type, source.slug, source.id, queryString],
+    const { data, isLoading } = useQuery({
+        queryKey: ["books", source.type, source.slug, source.id, queryString, page],
 
-        queryFn: async({ pageParam=0 }) => {
-            const res = await fetch(`${getEndpoint()}?limit=${LIMIT}&offset=${pageParam}&${queryString}`)
+        queryFn: async() => {
+            const res = await fetch(`${getEndpoint(source)}?limit=${LIMIT}&offset=${offset}&${queryString}`)
             return res.json();
         },
 
-        getNextPageParam: (lastPage) => 
-            lastPage.has_more ? lastPage.offset + lastPage.limit : undefined,
-
         staleTime: STALE_TIME,
-        gcTime: STALE_TIME
+        gcTime: STALE_TIME,
+        refetchOnWindowFocus: false
     })
 
-    const booksList = data?.pages.flatMap(p => p.results) ?? [];
-    const books = booksList
-    const total = data?.pages[0]?.count ?? 0;
+    const books = data?.results ?? [];
+    const total = data?.count ?? 0;
     const PAGES_COUNT = Math.ceil(total / LIMIT);
-
-    const handleLoadMore = () => {
-        if (hasNextPage && !isFetchingNextPage) fetchNextPage();
-    };
-
-    const sortingOrder = searchParams.get("sorting_order") || SORTING_ORDERS[0].label;
+    const isFirstPage = page === 1;
+    const isLastPage = page === PAGES_COUNT;
 
     const sortedBooks = useMemo(() => {
 
@@ -126,10 +101,6 @@ export const CardsContainer = ({
             return `/book/${slug}`
         }
     }
-
-    const getBookAuthor = (book) => {
-        return `${book?.authors[0]?.first_name} ${book?.authors[0]?.last_name}`;
-    }
     
     const toggleSortingOrderModal = () => {
         if(isSortingModalOpen){
@@ -144,26 +115,34 @@ export const CardsContainer = ({
         router.replace(pathname)
     }
 
-    const getFilterLabel = (key, selectedFilters) => {
-        let filterLabel = null;
-        
-        if(key.key === "filters") {
-            const found = filtersFields.find(val => val.value === key.value);
-            filterLabel = found?.label;
-        } else if(key.key === "bookTypes"){
-            const found = bookTypesFields.find(val => val === key.value);
-            filterLabel = found;
-        } else if(key.key === "inStockOnly"){
-            filterLabel = "В наявності"
-        } else if( key.key === "priceFrom" || key.key === "priceTo"){
-            filterLabel = `${selectedFilters.find(item => item.key === "priceFrom")?.value || 0} грн - 
-            ${selectedFilters.find(item => item.key === "priceTo")?.value || 3000} грн`
-        } else {
-            filterLabel = key.value;
+    const getEndpoint = () => {
+        switch(source.type){
+            case "all":
+            return Endpoints.ALL_BOOKS
+        case "category":
+            return Endpoints.CATEGORY_BOOKS_BY_SLUG(source?.slug)
+        case "subcategory":
+            return Endpoints.SUBCATEGORY_BOOKS(source?.slug)
+        case "double_subcategory":
+            return Endpoints.DOUBLE_SUBCATEGORY_BOOK(source?.slug)
+        case "author":
+            return Endpoints.AUTHOR_BOOKS(source.id)
+        case "series":
+            return Endpoints.ALL_SERIA_BOOKS(source.slug)
+        case "publishing":
+            return Endpoints.ALL_PUBLISHING_BOOKS(source.id)
+        case "translator":
+            return Endpoints.TRANSLATOR_BOOKS(source?.id);
+        case "illustrator":
+            return Endpoints.ILLUSTRATOR_BOOK(source?.id);
         }
+}
 
-        return filterLabel
-    }
+    const updatePageInQuery = (page) => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("page", String(page));
+        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    };
 
     return (
         <div className="author-books">
@@ -240,38 +219,40 @@ export const CardsContainer = ({
                 />
                 ))}
             </div>
-
-            { hasNextPage && (<div className="pagination-buttons">
-                { console.log(data) }
-                <button className="pagination-buttons__btn" type="button">
-                    Показати більше
-                    <span className="pagination-buttons__btn-icon">
-                        <Image src="/icons/show-more.svg" alt="" width="18" height="18" />
-                    </span>
-                </button>
-                
-                <div className="pagination-buttons__page-btns">
-                    <button className="pagination-buttons__page-btns-back" type="button">
-                        <span className="pagination-buttons__btn-icon">
-                            <Image src="/icons/chevron-down.svg" width="18" height="18" alt="" />
-                        </span>
-                        Назад
-                    </button>
-
-                    { [...Array(PAGES_COUNT)].map((_, index) => (
-                        <button className="paguination-buttons__page-btns-number" type="button" key={ index }>
-                            { index + 1 }
+            
+            { books?.length > LIMIT && (
+                <div className="pagination-buttons">                
+                    <div className="pagination-buttons__page-btns">
+                        <button className={`pagination-buttons__page-btns-back ${isFirstPage ? "disabled": ""}`} disabed={ isFirstPage } type="button"
+                        onClick={ ()=> updatePageInQuery(page - 1) }>
+                            <span className="pagination-buttons__btn-icon">
+                                <Image src="/icons/chevron-down.svg" width="18" height="18" alt="" />
+                            </span>
+                            Назад
                         </button>
-                    )) }
 
-                    <button className="pagination-buttons__page-btns-forward" type="button">
-                        Вперед
-                        <span className="pagination-buttons__btn-icon">
-                            <Image src="/icons/chevron-down.svg" width="18" height="18" alt="" />
-                        </span>
-                    </button>
-                </div>
-            </div>) }
+                        { [...Array(PAGES_COUNT)].map((_, index) => {
+                            const pageNumber = index + 1;
+
+                            return(
+                                <button className={`pagination-buttons__page-btns-number ${page === pageNumber ? 'active' : ''}`} 
+                                type="button" key={ index } onClick={ () => updatePageInQuery(pageNumber) }>
+                                    { pageNumber}
+                                </button>    
+                            );
+                        })}
+                        { console.log(isLastPage) }
+                        <button className={`pagination-buttons__page-btns-forward ${isLastPage ? "disabled" : ""}`} disabled={ isLastPage } type="button"
+                        onClick={ () => updatePageInQuery(page + 1) }>
+                            Вперед
+                            <span className="pagination-buttons__btn-icon">
+                                <Image src="/icons/chevron-down.svg" width="18" height="18" alt="" />
+                            </span>
+                        </button>
+                    </div>
+                </div>    
+            ) }
+            
         </div>
     )
 }

@@ -1,7 +1,10 @@
+"use client";
+
 import React from 'react';
 import { Badge, BookInfoBadge } from '.';
 import Link from 'next/link';
 import Image from 'next/image';
+
 
 export const ProductCard = ({
   title = 'Подорожуємо світом. Гра ходилка',

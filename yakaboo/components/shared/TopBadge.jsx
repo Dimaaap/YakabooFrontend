@@ -1,3 +1,5 @@
+"use client";
+
 export const TopBadge = () => {
     return (
         <div className="badge top-badge">
