@@ -14,6 +14,32 @@
     }
 }
 
+.seen-books {
+    margin-top: 1%;
+
+    &-header {
+        border-bottom: rem(1) solid var(--color-gray-50);
+    }
+
+    &-slider {
+        padding-bottom: 2%;
+    }
+
+    &-btn {
+        top: 35% !important;
+        height: rem(60) !important; 
+        background-color: var(--color-gray-40) !important;
+    }
+
+    &-prev {
+        left: 2% !important;
+    }
+
+    &-next {
+        right: 2.4% !important;
+    }
+}
+
 .books-container {
     display: flex;
     background-color: var(--color-light);

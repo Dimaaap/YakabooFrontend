@@ -183,6 +183,10 @@ const NewPostOffices = {
   NEW_POST_OFFICE_BY_CITY_ID: (cityId) => `${DOMAIN}new_post_offices/by-city/${cityId}`
 }
 
+const UserSeenBooks = {
+  ALL_USER_SEEN_BOOKS: (userEmail) => userEmail ? `${DOMAIN}user-seen-books/all/${userEmail}` : ""
+}
+
 
 const Endpoints = {
   ...BoardGames,
@@ -211,6 +215,7 @@ const Endpoints = {
   ...MeestPostOffices,
   ...NewPostPostomats,
   ...NewPostOffices,
+  ...UserSeenBooks,
   ACTIVE_TITLE: `${DOMAIN}page-title/active`,
   USE_PROMO_CODE: (userEmail, promoCode) => `${DOMAIN}promo-codes-usage/use?user_email=${userEmail}&code=${promoCode}`,
   GET_PROMO_CODE_BY_ID: (promoId) => `${DOMAIN}promo-codes/by-id/${promoId}`,
