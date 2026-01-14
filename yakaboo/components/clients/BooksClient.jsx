@@ -14,11 +14,12 @@ export const BooksClient = () => {
 
     const userEmail = CookiesWorker.get("email") || null;
 
-    const { data: banners = [], isBannersLoading } = useQuery({
+    const { data: banners = [], isLoading: isBannersLoading } = useQuery({
         queryKey: ["books-banners"],
         queryFn: () => fetcher(Endpoints.ALL_BOOKS_BANNERS),
         staleTime: STALE_TIME,
-        gcTime: STALE_TIME
+        gcTime: STALE_TIME,
+        keepPreviousData: true
     })
 
     const { data: categories = [], isLoading: isCategoryLoading } = useQuery({
@@ -35,13 +36,12 @@ export const BooksClient = () => {
         gcTime: STALE_TIME
     })
 
-    if(isBannersLoading || isCategoryLoading) return <Spinner />
-
     return (
         <div className="main-container all-books-container">
+            
             <div className="all-books-container__banner-wrapper">
-                <Banner banners={ banners } bigger={ true } />    
-            </div>
+                <Banner banners={ banners } bigger={ true } isLoading={ isBannersLoading } />    
+            </div>    
             <div className="all-books-container__body">
                 <div className="all-books-container__section">
                     <Filters needLanguages={ true } needFilters={ true } needBookTypes={ true } 

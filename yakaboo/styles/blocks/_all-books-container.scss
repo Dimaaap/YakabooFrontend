@@ -17,4 +17,36 @@
         
     }
 
+    &__text-content {
+        display: flex;
+        flex-direction: column;
+        gap: rem(10);
+        margin-top: 2%;
+        color: var(--color-gray-30);
+        font-size: rem(14);
+        font-weight: 500;
+    }
+
+    &__text-header {
+        @include fluid-text(23, 18);
+
+        font-weight: 700;
+    }
+
+    &__text-list {
+        display: flex;
+        flex-direction: column;
+        gap: rem(5);
+        padding-left: 1.5%;
+        list-style: disc;
+    }
+
+    &__text-subheader {
+        @include fluid-text(18, 16);
+    }
+
+    &__black-text {
+        color: var(--color-black);
+    }
+
 }

@@ -46,3 +46,4 @@ export { CheckoutPaymentInfo } from "./CheckoutPaymentInfo";
 export { OtherPersonDataForm } from "./OtherPersonDataForm";
 export { CommentsCount } from "./CommentsCount";
 export { Spinner } from "./Spinner";
+export { ProductCardSkeleton } from "./ProductCardSkeleton";

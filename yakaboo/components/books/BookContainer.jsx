@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import Image from "next/image"
 import { Breadcrumbs, FlashMessage, FlashMessageWithAgreement, Rate } from "../shared"
@@ -27,6 +27,8 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
     const [isSimpleFlashMessage, setIsSimpleFlashMessage] = useState(false);
     const { removeBookFromWishlist } = useWishlistBooksStore();
     const { isAddReviewModalOpen, setIsAddReviewModalOpen } = useAddReviewModalStore();
+    
+    const hasTrackedViewRef = useRef(false);
 
     const showProductInfoModal = useProductInfoState((state) => state.showProductInfoModal)
     const info = isGift ? book.gift_info : book.book_info;
@@ -38,6 +40,7 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
         format: book?.book_info?.format,
         author: book?.authors?.[0]?.first_name + " " + book?.authors[0]?.last_name
     };
+    const userEmail = CookiesWorker.get("email") || null;
 
     useEffect(() => {
         const handleScroll = () => handleScrollForProductInfoModal(90);
@@ -47,6 +50,19 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
             window.removeEventListener("scroll", handleScroll)
         }
     }, [])
+
+    useEffect(() => {
+        if(hasTrackedViewRef.current) return;
+        if(!userEmail) return;
+        if(!book?.id) return;
+
+        hasTrackedViewRef.current = true;
+
+        fetch(Endpoints.ADD_BOOK_TO_USER_SEEN_BOOKS(userEmail, book.id), {
+            method: "POST"
+        }).catch(() => {})
+
+    }, [book.id])
 
     const viewReadPartClick = () => {
         setIsReadPart(true)

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import React, { useState, useEffect, useRef } from 'react';
 
 
-export const Banner = ({ banners=[], bigger=false }) => {
+export const Banner = ({ banners=[], bigger=false, isLoading=false }) => {
   const intervalRef = useRef(null);
   const [index, setIndex] = useState(0);
 
@@ -49,6 +49,22 @@ export const Banner = ({ banners=[], bigger=false }) => {
     }
     return () => clearAutoScroll();
   }, [banners, maxIndex]);
+
+  const showSkeleton = isLoading || banners.length === 0;
+
+  if(showSkeleton){
+    return (
+      <div className="banner loading">
+        <div className="banner__viewport loading__viewport">
+          <div className="banner__track loading__track">
+            {[...Array(3)].map((_, i) => (
+              <div className="banner__image loading__image" key={ i }></div>  
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className={`banner ${bigger ? "bigger" : ""}`}>

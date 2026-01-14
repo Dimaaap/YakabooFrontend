@@ -184,7 +184,8 @@ const NewPostOffices = {
 }
 
 const UserSeenBooks = {
-  ALL_USER_SEEN_BOOKS: (userEmail) => userEmail ? `${DOMAIN}user-seen-books/all/${userEmail}` : ""
+  ALL_USER_SEEN_BOOKS: (userEmail) => userEmail ? `${DOMAIN}user-seen-books/all/${userEmail}` : "",
+  ADD_BOOK_TO_USER_SEEN_BOOKS: (userEmail, bookId) => `${DOMAIN}user-seen-books/add?user_email=${userEmail}&book_id=${bookId}`
 }
 
 

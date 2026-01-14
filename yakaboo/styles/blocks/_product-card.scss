@@ -1,5 +1,33 @@
 @use '../helpers' as *;
 
+.skeleton {
+  &__image {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    background-color: var(--color-gray-40);
+    border-radius: rem(10);
+    animation: skeleton-pulse 1.4s ease-in-out infinite;
+  }
+
+  &__line {
+    height: rem(12);
+    background-color: var(--color-gray-40);
+    border-radius: rem(4);
+    margin-top: rem(8);
+    animation: skeleton-pulse 1.4s ease-in-out infinite;
+
+    &.short {
+      width: 60%;
+    }
+
+    &.price {
+      width: 40%;
+      margin-top: rem(12);
+    }
+  }
+}
+
+
 .product-card {
   flex-direction: column;
   position: relative;
@@ -242,4 +270,11 @@
     width: max-content;
     margin-top: 3%;
   }
+}
+
+
+@keyframes skeleton-pulse {
+  0% { opacity: 1 }
+  50% { opacity: 0.45 }
+  100% { opacity: 1 }
 }

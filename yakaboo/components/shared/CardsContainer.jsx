@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useMemo, useRef } from 'react'
 
-import { ProductCard, Stars, Badge, TopBadge, CommentsCount, Spinner } from '.'
+import { ProductCard, Stars, Badge, TopBadge, CommentsCount, Spinner, ProductCardSkeleton } from '.'
 import { wordDeclension } from '../../services/word-declension.service'
 import { badgeColors, ImagesLinks, STALE_TIME } from '../../site.config';
 import { useCurrentSortingOrderStore, useSortingOrderStore } from '../../states';
@@ -144,6 +144,9 @@ export const CardsContainer = ({
         router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     };
 
+    const showSkeleton = isLoading;
+    const SKELETON_COUNT = 10;
+
     return (
         <div className="author-books">
             { isSortingModalOpen && <SortingOrdersModal /> }
@@ -190,37 +193,43 @@ export const CardsContainer = ({
                 </span>
             </div>
             <div className="author-books__books-container" onClick={() => setIsSortingModalOpen(false)}>
-                {sortedBooks && sortedBooks.map((book, index) => (
-                    <ProductCard 
-                    key={ index } 
-                    productLink={ returnLink(book?.slug) }
-                    extraClass="author-books__book" 
-                    title={ book?.title } 
-                    brand={ getBookAuthor(book) || book?.publishing?.title || book?.brand?.title || giftsBrand}
-                    imageSrc={ book?.images[0]?.image_url ?? ImagesLinks.DEFAULT_IMAGE }
-                    badges={
-                        [
-                            book?.stars ? <Stars count={ book.stars } isSmaller={ true } />: <></>,
-                            book?.reviews?.length > 0 ? <CommentsCount count={ book.reviews.length } /> : <CommentsCount count={0} />, 
-                            (book?.is_top || book?.is_in_top) && (<TopBadge />),
-                            book?.is_new && (<Badge text="Новинка" backgroundColor={ badgeColors.green } /> ),   
-                        ]
-                    }
-                    productCode={book?.book_info?.code || book?.code || book?.gift_info?.code}
-                    oldPrice={ book?.price }
-                    newPrice={ book?.is_promo ? book?.promo_price : null }
-                    inStock={book?.book_info?.in_stock || book?.is_in_stock || book?.gift_info?.in_stock || false}
-                    hasCashback={ book?.book_info?.is_has_cashback }
-                    hasWinterSupport={ book?.book_info?.is_has_winter_esupport }
-                    hasESupport={ book?.book_info?.is_has_esupport }
-                    UKDeliveryTime={ book?.book_info?.uk_delivery_time }
-                    deliveryTime={ book?.book_info?.delivery_time }
+                { isLoading ? (
+                    [...Array(SKELETON_COUNT)].map((_, index) => (
+                        <ProductCardSkeleton key={ index } />
+                    ))
+                ) : (
+                    sortedBooks.map((book, index) => (
+                        <ProductCard 
+                        key={ index } 
+                        productLink={ returnLink(book?.slug) }
+                        extraClass="author-books__book" 
+                        title={ book?.title } 
+                        brand={ getBookAuthor(book) || book?.publishing?.title || book?.brand?.title || giftsBrand}
+                        imageSrc={ book?.images[0]?.image_url ?? ImagesLinks.DEFAULT_IMAGE }
+                        badges={
+                            [
+                                book?.stars ? <Stars count={ book.stars } isSmaller={ true } />: <></>,
+                                book?.reviews?.length > 0 ? <CommentsCount count={ book.reviews.length } /> : <CommentsCount count={0} />, 
+                                (book?.is_top || book?.is_in_top) && (<TopBadge />),
+                                book?.is_new && (<Badge text="Новинка" backgroundColor={ badgeColors.green } /> ),   
+                            ]
+                        }
+                        productCode={book?.book_info?.code || book?.code || book?.gift_info?.code}
+                        oldPrice={ book?.price }
+                        newPrice={ book?.is_promo ? book?.promo_price : null }
+                        inStock={book?.book_info?.in_stock || book?.is_in_stock || book?.gift_info?.in_stock || false}
+                        hasCashback={ book?.book_info?.is_has_cashback }
+                        hasWinterSupport={ book?.book_info?.is_has_winter_esupport }
+                        hasESupport={ book?.book_info?.is_has_esupport }
+                        UKDeliveryTime={ book?.book_info?.uk_delivery_time }
+                        deliveryTime={ book?.book_info?.delivery_time }
 
-                />
-                ))}
+                    />
+                ))
+                ) }
             </div>
             
-            { books?.length > LIMIT && (
+            { PAGES_COUNT > 1 && (
                 <div className="pagination-buttons">                
                     <div className="pagination-buttons__page-btns">
                         <button className={`pagination-buttons__page-btns-back ${isFirstPage ? "disabled": ""}`} disabed={ isFirstPage } type="button"
@@ -230,18 +239,15 @@ export const CardsContainer = ({
                             </span>
                             Назад
                         </button>
-
                         { [...Array(PAGES_COUNT)].map((_, index) => {
                             const pageNumber = index + 1;
-
                             return(
                                 <button className={`pagination-buttons__page-btns-number ${page === pageNumber ? 'active' : ''}`} 
                                 type="button" key={ index } onClick={ () => updatePageInQuery(pageNumber) }>
                                     { pageNumber}
                                 </button>    
-                            );
+                                );
                         })}
-                        { console.log(isLastPage) }
                         <button className={`pagination-buttons__page-btns-forward ${isLastPage ? "disabled" : ""}`} disabled={ isLastPage } type="button"
                         onClick={ () => updatePageInQuery(page + 1) }>
                             Вперед
@@ -252,7 +258,6 @@ export const CardsContainer = ({
                     </div>
                 </div>    
             ) }
-            
         </div>
     )
 }

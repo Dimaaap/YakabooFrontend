@@ -135,6 +135,12 @@ export const extraFields = [
         ),
     },
     {
+        key: "has_color_cut",
+        title: "Кольоровий зріз",
+        show: (book, isGift) => !isGift && book.book_info?.has_color_cut === true,
+        render: (book) => <p>Так</p>
+    },
+    {
         key: "papers",
         title: "Листи",
         show: (book, isGift) => !isGift && book.book_info?.papers,

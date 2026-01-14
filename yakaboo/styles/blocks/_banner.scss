@@ -1,5 +1,16 @@
 @use "../helpers" as *;
 
+.loading {
+    &__image {
+        aspect-ratio: 3 / 4;
+        width: 100%;
+        border-radius: rem(10);
+        display: block;
+        background-color: var(--color-gray-40);
+        animation: skeleton-pulse 1.4s ease-in-out;
+    }
+}
+
 .banner {
     width: 100%;
     overflow: hidden;
@@ -73,4 +84,16 @@
             }
         }
     }
+}
+
+@keyframes skeleton-pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+  100% {
+    opacity: 1;
+  }
 }
