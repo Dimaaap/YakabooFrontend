@@ -141,6 +141,12 @@ export const extraFields = [
         render: (book) => <p>Так</p>
     },
     {
+        key: "print",
+        title: "Шрифт",
+        show: (book, isGift) => !isGift && book.book_info?.print,
+        render: (book) => <p>{ book.book_info.print }</p>
+    },
+    {
         key: "papers",
         title: "Листи",
         show: (book, isGift) => !isGift && book.book_info?.papers,

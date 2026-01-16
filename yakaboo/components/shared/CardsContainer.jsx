@@ -48,6 +48,11 @@ export const CardsContainer = ({
 
         queryFn: async() => {
             const res = await fetch(`${getEndpoint(source)}?limit=${LIMIT}&offset=${offset}&${queryString}`)
+            
+            if (!res.ok) {
+                return { count: 0, results: [] };
+            }
+
             return res.json();
         },
 

@@ -1,4 +1,5 @@
 import { CookiesWorker } from './services';
+import { bookTypesFields, filtersFields } from './site.config';
 
 export const getUserFullName = () => {
   const firstName = CookiesWorker.get('first_name');
