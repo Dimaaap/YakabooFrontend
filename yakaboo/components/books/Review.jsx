@@ -1,6 +1,9 @@
 'use client';
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import { CookiesWorker } from "../../services";
+import Endpoints from "../../endpoints";
 
 export const Review = ({ review }) => {
     const MAX_RATE = 5;
@@ -8,16 +11,44 @@ export const Review = ({ review }) => {
     const isLongText = review.comment.length > MAX_COMMENT_LENGTH;
 
     const [isExpanded, setIsExpanded] = useState(false);
+    const [reviewLikesCount, setReviewLikesCount] = useState(review.likes_count ?? 0);
+    const [reviewDislikesCount, setReviewDislikesCount] = useState(review.dislikes_count ?? 0);
 
     const displayedText = isExpanded || !isLongText ? review.comment : review.comment.slice(0, MAX_COMMENT_LENGTH - 1) + "...";
 
     const date = new Date(review.created_date);
+    const userEmail = CookiesWorker.get("email");
 
     const formattedDate = new Intl.DateTimeFormat("uk-UA", {
         day: "numeric",
         month: "long",
         year: "numeric"
     }).format(date)
+
+    const handleReaction = async(isLike) => {
+        if(!userEmail) return;
+
+        try {
+            const res = await fetch(
+                Endpoints.ADD_REACTION_TO_REVIEW(review.id, isLike, userEmail),
+                {
+                    method: "POST",
+                    credentials: "include"
+                }
+            )
+
+            if(!res.ok) throw new Error();
+
+            const data = await res.json();
+            
+            setReviewLikesCount(data.likes_count);
+            setReviewDislikesCount(data.dislikes_count)
+        } catch(e) {
+            console.error("Reaction error", e);
+        }
+    }
+
+    
 
     return(
         <div className="book-container__review review">
@@ -55,13 +86,15 @@ export const Review = ({ review }) => {
                     </button>
                 ) }
                 <div className="review__like-buttons">
-                    <button className="review__like review__likes">
+                    <button className={`review__like review__likes`}
+                    onClick={() => handleReaction(true)}>
                         <Image src="/icons/like.svg" alt="" width="12" height="12" />
-                        1
+                        { reviewLikesCount }
                     </button>
-                    <button className="review__like review__dislikes">
+                    <button className={`review__like review__dislikes`}
+                    onClick={() => handleReaction(false)}>
                         <Image src="/icons/dislike.svg" alt="" width="12" height="12" />
-                        0
+                        { reviewDislikesCount }
                     </button>
                 </div>
             </div>

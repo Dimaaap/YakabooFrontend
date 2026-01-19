@@ -188,6 +188,11 @@ const UserSeenBooks = {
   ADD_BOOK_TO_USER_SEEN_BOOKS: (userEmail, bookId) => `${DOMAIN}user-seen-books/add?user_email=${userEmail}&book_id=${bookId}`
 }
 
+const ReviewReactions = {
+  ADD_REACTION_TO_REVIEW: (reviewId, isLike, userEmail) => `${DOMAIN}reviews-reactions/${reviewId}/react?is_like=${isLike}&user_email=${userEmail}`,
+  GET_USER_REACTION_TO_REVIEW: (reviewId, userEmail) => `${DOMAIN}reviews-reactions/${reviewId}/my-reaction?user_email=${userEmail}`
+}
+
 
 const Endpoints = {
   ...BoardGames,
@@ -217,10 +222,11 @@ const Endpoints = {
   ...NewPostPostomats,
   ...NewPostOffices,
   ...UserSeenBooks,
+  ...ReviewReactions,
   ACTIVE_TITLE: `${DOMAIN}page-title/active`,
   USE_PROMO_CODE: (userEmail, promoCode) => `${DOMAIN}promo-codes-usage/use?user_email=${userEmail}&code=${promoCode}`,
   GET_PROMO_CODE_BY_ID: (promoId) => `${DOMAIN}promo-codes/by-id/${promoId}`,
-  ADD_REVIEW: `${DOMAIN}reviews/create`
+  ADD_REVIEW: `${DOMAIN}reviews/create`,
 };
 
 export default Endpoints;
