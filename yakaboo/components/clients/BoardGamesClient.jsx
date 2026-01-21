@@ -2,6 +2,7 @@
 
 import { BoardGamesFilters, BoardGamesHeader, GamesContainer } from "../board_games"
 import { DescriptionText } from "../dynamic"
+import { CardsContainer } from "../shared"
 
 
 export function BoardGamesClient() {

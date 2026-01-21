@@ -34,10 +34,10 @@ export const AuthorContainerClient = () => {
 
       return (
           <div className="author">
-            <Breadcrumbs linksList={breadcrumbsObject} />
+            <Breadcrumbs linksList={breadcrumbsObject} isSmaller={ true } />
             {author && <AuthorHeader author={author} />}
             <div className="author__flex-container">
-              <Filters />
+              <Filters needAuthors={ false } />
               { author && (
                 <CardsContainer source={{ type: "author", id: author?.id}} />  
               ) }

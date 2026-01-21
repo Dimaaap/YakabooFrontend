@@ -98,7 +98,7 @@ export const BookPriceBlock = ({ book, info, isGift }) => {
             
             { isDeliveryModalOpen && <DeliveryInfoModal /> }
 
-            { deliveryLocation && <DeliveryTerms deliveryLocation={ deliveryLocation } productCode={ info.code } /> }
+            { deliveryLocation && <DeliveryTerms deliveryLocation={ deliveryLocation } productCode={ book.code } /> }
         </div>
     )
 

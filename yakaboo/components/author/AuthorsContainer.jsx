@@ -26,6 +26,7 @@ export const AuthorsContainer = () => {
   return (
     <div className="data">
       <div className="data__container">
+        { console.log(authors) }
         {authors &&
           authors.map((author) => (
             <Link
@@ -34,7 +35,6 @@ export const AuthorsContainer = () => {
               className="data__container-link"
             >
               {author.first_name} {author.last_name}
-              <span className="data__books-count">(477)</span>
             </Link>
           ))}
       </div>

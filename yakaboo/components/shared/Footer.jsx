@@ -3,10 +3,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
-import { fetchData } from '../../services'
+import { CookiesWorker, fetchData } from '../../services'
 import Endpoints from '../../endpoints'
+import { Spinner } from '.'
 
 export const Footer = () => {
+
+    const USER_EMAIL = CookiesWorker.get("email") || null;
 
     const scrollToTop = () => {
         window.scrollTo({
@@ -17,6 +20,39 @@ export const Footer = () => {
     
     const [links, setLinks] = useState([])
     const [contacts, setContacts] = useState([])
+    const [userEmail, setUserEmail] = useState(USER_EMAIL);
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [isSubscribed, setIsSubscribed] = useState(false);
+    const [emailInputErrors, setEmailInputErrors] = useState(null);
+
+    const isEmailValid = (userEmail) => {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)
+    }
+
+
+    const subscribeUser = async email => {
+        if(!isEmailValid(email)){
+            setEmailInputErrors("Неправильний формат email. Спробуйте ще раз");
+            return;
+        } 
+
+        try {
+            setIsSubmitting(true);
+
+            await fetch(Endpoints.SUBSCRIBE_USER_EMAIL, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ email: userEmail })
+            })
+
+            setIsSubscribed(true);
+        } catch(e){
+            setEmailInputErrors("Сталась помилка. Спробуйте ще раз пізніше або напишіть на email: procdima49@gmail.com")
+        } finally {
+            setIsSubmitting(false);
+            setEmailInputErrors(null);
+        }
+    }
 
     useEffect(() => {
         fetchData(Endpoints.ALL_CONTACTS, setContacts, "contact_links")
@@ -38,8 +74,27 @@ export const Footer = () => {
                 </p>
             </div>
             <div className="footer__right-part">
-                <input type="email" className="footer__email-input" placeholder="Введіть email" />
-                <button className="footer__submit-btn is-disabled" type="button" disabled={true}>Отримувати цікавинки</button>
+                { !isSubmitting ? (
+                    <div className="footer__input-container">
+                        <input type="email" className="footer__email-input" placeholder="Введіть email" 
+                        value={ userEmail } onChange={(e) => setUserEmail(e.target.value)} />     
+                        { emailInputErrors ? (
+                            <p className="footer__input-error">
+                                { emailInputErrors }
+                            </p> 
+                        ) : <></> }  
+                    </div>
+                     
+                ) : (
+                    <Spinner />
+                ) }
+                
+                <button className={`footer__submit-btn ${!userEmail?.length || isSubmitting || isSubscribed ? "is-disabled" : ""}`}
+                onClick={() => subscribeUser(userEmail)}
+                type="button" 
+                disabled={ !userEmail.length || isSubmitting || isSubscribed }>
+                    Отримувати цікавинки
+                </button>
             </div>
         </div>
         <div className="footer__bottom-row">

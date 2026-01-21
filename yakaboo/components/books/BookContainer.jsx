@@ -174,7 +174,8 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
                 { book?.seria && (
                     <OtherSeriaBooks book={ book } />
                 ) }
-
+                
+                { console.log(book.authors) }
                 { !isGift && !book?.is_notebook && book?.authors[0]?.short_description && <BookAuthorBlock book={ book } author={ book.authors[0] } /> }
 
                 <BookReviewsBlock />

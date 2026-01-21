@@ -54,6 +54,23 @@
         gap: rem(10);
     }
 
+    &__author-info {
+        display: flex;
+        align-items: start;
+        gap: 5%;
+    }
+
+    &__author-image-container {
+        width: 15%;
+
+        & img {
+            width: rem(100);
+            height: rem(100);
+            border-radius: rem(50);
+            object-fit: cover;
+        }
+    }
+
     &__header-btn {
         height: rem(50);
         background-color: var(--color-gray-40);
@@ -347,6 +364,10 @@
         align-items: start;
         gap: rem(5);
         justify-content: space-between;
+    }
+
+    &__desc-container {
+        width: 80%;
     }
 
     &__author-image {

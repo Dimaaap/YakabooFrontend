@@ -22,6 +22,7 @@ export const CardsContainer = ({
     isAccessories=false, 
     isNotebooks=false, 
     isGifts=false, 
+    isBoardGames=false,
     giftsBrand=null}) => {
 
     const searchParams = useSearchParams();

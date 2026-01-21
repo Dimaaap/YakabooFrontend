@@ -38,13 +38,20 @@
         }
     }
 
+    &__input-container {
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        gap: rem(5);
+    }
+
     &__email-input {
         font-size: rem(14);
         color: var(--color-gray-10);
         font-weight: 500;
         padding-inline: 2%;
-        width: 70%;
         height: rem(55);
+        width: 100%;
         background-color: var(--color-gray-40);
         border: rem(1) solid #ddd;
         border-radius: rem(10);
@@ -53,7 +60,7 @@
     &__right-part {
         width: 60%;
         display: flex;
-        align-items: center;
+        align-items: start;
         gap: 2%;
     }
 

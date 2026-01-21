@@ -194,6 +194,7 @@ const ReviewReactions = {
 }
 
 
+
 const Endpoints = {
   ...BoardGames,
   ...Accessories,
@@ -227,6 +228,7 @@ const Endpoints = {
   USE_PROMO_CODE: (userEmail, promoCode) => `${DOMAIN}promo-codes-usage/use?user_email=${userEmail}&code=${promoCode}`,
   GET_PROMO_CODE_BY_ID: (promoId) => `${DOMAIN}promo-codes/by-id/${promoId}`,
   ADD_REVIEW: `${DOMAIN}reviews/create`,
+  SUBSCRIBE_USER_EMAIL: `${DOMAIN}subs/create`
 };
 
 export default Endpoints;
