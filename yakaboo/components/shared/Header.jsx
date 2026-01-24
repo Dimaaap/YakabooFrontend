@@ -44,7 +44,7 @@ export const Header = () => {
                 Каталог
             </button>
             <div className="header__search-container">
-                <input type="search" placeholder='Знайти книгу' className="header__search" />  
+                <input type="search" placeholder='Знайти книгу' className="header__search" name='q' />  
                 <Image src="/icons/search.svg" className="header__search-icon" width="30" height="30" alt="" />
             <button type="button" className="header__search-button">Пошук</button>      
             </div>
