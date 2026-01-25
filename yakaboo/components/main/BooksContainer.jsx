@@ -186,10 +186,12 @@ const BooksContainer = () => {
                     <h3 className="books-container__title">Новорічні хіти для дітей</h3>
 
                     <Link className="books-container__title-link" href="#">
+
                         <span>
                             Показати все 
                             <Image src="icons/chevron-down.svg" width="15" height="15" alt="" />
                         </span>
+                    
                     </Link>  
                 </div>
                 <div className="books-container__slider">
