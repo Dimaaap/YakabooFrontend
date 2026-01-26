@@ -25,3 +25,4 @@ export { usePromoCodeStore } from "./PromoCodeStore";
 export { useAddReviewModalStore } from "./AddReviewModalStore";
 export { useSortingOrderStore } from "./SortingOrderStore";
 export { useCurrentSortingOrderStore } from "./CurrentSortingOrderStore"
+export { useSearchHistoryOpenStore } from "./SearchHistoryOpenStore";

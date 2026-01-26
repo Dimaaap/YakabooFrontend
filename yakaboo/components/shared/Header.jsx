@@ -8,6 +8,7 @@ import { useBookCategoriesModalStore, useCartModalStore,
     useCartStore, 
     useMenuModalStore, 
     useProfileSettingsModalStore, 
+    useSearchHistoryOpenStore, 
     useUserLoginModalStore} from '../../states';
 import { useAuth } from '../../hooks';
 import { UserProfileButton } from '.';
@@ -20,9 +21,14 @@ export const Header = () => {
     const { setIsCategoriesModalOpen } = useBookCategoriesModalStore();
     const { setIsLoginModalOpen } = useUserLoginModalStore();
     const { setIsProfileSettingsModalOpen } = useProfileSettingsModalStore();
+    const { isSearchHistoryModalOpen, setIsSearchHistoryModalOpen } = useSearchHistoryOpenStore();
     const { cartItems } = useCartStore();
 
     const isAuthenticated = useAuth();
+
+    const handleSearchInputClick = () => {
+        setIsSearchHistoryModalOpen(true);
+    }
 
   return (
     <div className="header">
@@ -44,7 +50,10 @@ export const Header = () => {
                 Каталог
             </button>
             <div className="header__search-container">
-                <input type="search" placeholder='Знайти книгу' className="header__search" name='q' />  
+                <input type="search" placeholder='Знайти книгу' className="header__search" name='q' 
+                onClick={handleSearchInputClick} /> 
+                { isSearchHistoryModalOpen && <Image src="/icons/close.svg" alt="" width="20" height="20" 
+                className="header__close-icon" onClick={ () => setIsSearchHistoryModalOpen(false) } /> } 
                 <Image src="/icons/search.svg" className="header__search-icon" width="30" height="30" alt="" />
             <button type="button" className="header__search-button">Пошук</button>      
             </div>

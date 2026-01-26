@@ -2,8 +2,8 @@
 
 import React, { useEffect } from 'react'
 
-import {  useCartModalStore,useSubcategoriesModalStore, useMenuModalStore, useDeliveryModalStore, useCartStore } from '../../states';
-import { CartModal, MenuModal, BooksContainer, MainHeader, AdditionalInfo, MainSidebar, DeliveryInfoModal, CartInfo} from '../dynamic';
+import {  useCartModalStore,useSubcategoriesModalStore, useMenuModalStore, useDeliveryModalStore, useCartStore, useSearchHistoryOpenStore } from '../../states';
+import { CartModal, MenuModal, BooksContainer, MainHeader, AdditionalInfo, MainSidebar, DeliveryInfoModal, CartInfo, SearchHistoryModal} from '../dynamic';
 import { Banner } from '../main';
 import { PageModals } from '../shared';
 import { useQuery } from '@tanstack/react-query';
@@ -15,6 +15,7 @@ export const HomeClient = () => {
   const { isCartModalOpen } = useCartModalStore();
   const { isMenuModalOpen } = useMenuModalStore();
   const { isDeliveryModalOpen } = useDeliveryModalStore();
+  const { isSearchHistoryModalOpen } = useSearchHistoryOpenStore();
   const { setIsHoveringCategory, setIsHoveringSubcategoryModal, setIsSubcategoriesModalOpen } = useSubcategoriesModalStore();
   const { cartItems } = useCartStore();
 
@@ -38,6 +39,7 @@ export const HomeClient = () => {
         <MainSidebar />
         <div className="main-container__right">
           <MainHeader />
+          { isSearchHistoryModalOpen && <SearchHistoryModal /> }
           <Banner banners={ banners } />
           { cartItems?.items?.length > 0 && (
             <CartInfo itemsCount={ cartItems.items.length } 

@@ -12,6 +12,8 @@ export const ChatOptions = dynamic(() => import('../modals/ChatOptions'));
 export const ConfirmationCodeModal = dynamic(
   () => import('../modals/ConfirmationCodeModal')
 );
+export const SearchHistoryModal = dynamic(() => import("../modals/SearchHistoryModal"));
+
 export const MenuModal = dynamic(() => import('../modals/MenuModal'));
 export const UserRegisterModal = dynamic(
   () => import('../modals/UserRegisterModal')

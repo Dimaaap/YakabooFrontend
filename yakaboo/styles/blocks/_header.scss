@@ -92,6 +92,16 @@
             @include mobile {
                 @include visually-hidden;
             }
+
+        }
+
+        & .header__close-icon {
+            position: absolute;
+            right: 20%;
+            top: 30%;
+            filter: invert(0.5);
+            cursor: pointer;
+            z-index: 1011;
         }
         
         & .header__search-button {
@@ -170,6 +180,7 @@
     &__search-container {
         position: relative;
         width: 60%;
+        z-index: 1011;
 
         @include tablet {
             flex: 1;
@@ -190,6 +201,7 @@
             height: rem(50);
             border-radius: rem(10);
             padding-inline: 10%;
+            z-index: 1011;
 
             @include tablet {
                 flex: 1;
