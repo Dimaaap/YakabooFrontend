@@ -52,8 +52,8 @@ export const fetchData = async (
   }
 };
 
-export const fetcher = async (url) => {
-  const res = await fetch(url);
+export const fetcher = async (url, options={}) => {
+  const res = await fetch(url, options);
 
   if(!res.ok) {
     throw new Error("Fetch error");

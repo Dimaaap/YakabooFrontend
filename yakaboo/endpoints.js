@@ -193,6 +193,11 @@ const ReviewReactions = {
   GET_USER_REACTION_TO_REVIEW: (reviewId, userEmail) => `${DOMAIN}reviews-reactions/${reviewId}/my-reaction?user_email=${userEmail}`
 }
 
+const UserSearchStory = {
+  USER_SEARCH_STORY: (userEmail) => `${DOMAIN}user-search-story/all/${userEmail}`,
+  CLEAR_USER_SEARCH_STORY: (userEmail) => `${DOMAIN}user-search-story/update/${userEmail}`
+}
+
 
 
 const Endpoints = {
@@ -224,6 +229,7 @@ const Endpoints = {
   ...NewPostOffices,
   ...UserSeenBooks,
   ...ReviewReactions,
+  ...UserSearchStory,
   ACTIVE_TITLE: `${DOMAIN}page-title/active`,
   USE_PROMO_CODE: (userEmail, promoCode) => `${DOMAIN}promo-codes-usage/use?user_email=${userEmail}&code=${promoCode}`,
   GET_PROMO_CODE_BY_ID: (promoId) => `${DOMAIN}promo-codes/by-id/${promoId}`,

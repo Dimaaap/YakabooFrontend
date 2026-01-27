@@ -16,6 +16,8 @@ import { UserProfileButton } from '.';
 export const Header = () => {
 
     const [isContactsOpen, setIsContactsOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
+
     const { setIsMenuModalOpen } = useMenuModalStore();
     const { setIsCartModalOpen } = useCartModalStore();
     const { setIsCategoriesModalOpen } = useBookCategoriesModalStore();
@@ -30,8 +32,14 @@ export const Header = () => {
         setIsSearchHistoryModalOpen(true);
     }
 
+    const handleCancelInputButtonClick = () => {
+        setSearchTerm("");
+        setIsSearchHistoryModalOpen(false);
+    }
+
   return (
-    <div className="header">
+    //TODO: Прибрати цей костиль і змінити нормальний z-index через CSS і HTML
+    <div className={`header ${isSearchHistoryModalOpen ? "increase-z-index": ""}`}>
         <div className="header__section header__first-section">
             <button type="button" id="burger" onClick={() => setIsMenuModalOpen(true)}>
                 <Image src="/icons/burger.svg" alt="Burger" width="20" height="20" />
@@ -51,9 +59,9 @@ export const Header = () => {
             </button>
             <div className="header__search-container">
                 <input type="search" placeholder='Знайти книгу' className="header__search" name='q' 
-                onClick={handleSearchInputClick} /> 
+                onClick={handleSearchInputClick} value={ searchTerm } onChange={(e) => setSearchTerm(e.target.value)} /> 
                 { isSearchHistoryModalOpen && <Image src="/icons/close.svg" alt="" width="20" height="20" 
-                className="header__close-icon" onClick={ () => setIsSearchHistoryModalOpen(false) } /> } 
+                className="header__close-icon" onClick={ () => handleCancelInputButtonClick() } /> } 
                 <Image src="/icons/search.svg" className="header__search-icon" width="30" height="30" alt="" />
             <button type="button" className="header__search-button">Пошук</button>      
             </div>

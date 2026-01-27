@@ -14,6 +14,10 @@
     -webkit-box-shadow: -2px 3px 12px 2px rgba(0,0,0,0.34); 
     box-shadow: -2px 3px 12px 2px rgba(0,0,0,0.34);
 
+    &.increase-z-index {
+        z-index: 1011 !important;
+    }
+
     @include tablet {
         grid-template-columns: 30% 30% 30%;
         gap: 0;
@@ -68,11 +72,13 @@
     }
 
     &__center-section {
+        position: relative;
         display: flex;
         align-self: center;
         gap: 3%;
         padding-inline: 0;
         width: 50%;
+        z-index: 1011;
 
         @include tablet {
             width: 100%;
@@ -194,7 +200,7 @@
         & input {
             @include fluid-text(14, 12);
             font-weight: 500;
-            color: var(--color-gray-30);
+            color: var(--color-black);
             width: 100%;
             border: rem(1) solid var(--color-black);
             background-color: var(--color-light);
