@@ -16,8 +16,11 @@ export const BookAuthorBlock = ({ book, author }) => {
                         dangerouslySetInnerHTML={{__html: firstParagraph(book.authors[0]?.description)}} />  
 
                         <div className="book-container__author-image-container">
-                            <Image src={ author?.images[0]?.image_path } className="book-container__author-image" 
-                            alt={`${author.first_name} ${author.last_name} Image`} width={80} height={80} />
+                            { author?.images[0] && (
+                                <Image src={ author?.images[0]?.image_path } className="book-container__author-image" 
+                                alt={`${author.first_name} ${author.last_name} Image`} width={80} height={80} />    
+                            ) }
+                            
                         </div>  
                     </div>
                     {!book?.is_notebook && (

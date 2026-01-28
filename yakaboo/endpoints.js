@@ -235,7 +235,8 @@ const Endpoints = {
   GET_PROMO_CODE_BY_ID: (promoId) => `${DOMAIN}promo-codes/by-id/${promoId}`,
   ADD_REVIEW: `${DOMAIN}reviews/create`,
   SUBSCRIBE_USER_EMAIL: `${DOMAIN}subs/create`,
-  BOOKS_TEXT: `${DOMAIN}book_text/`
+  BOOKS_TEXT: `${DOMAIN}book_text/`,
+  SEARCH: (query) => `${DOMAIN}search?q=${query}`
 };
 
 export default Endpoints;

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
 import { ContactsModal } from '../modals';
@@ -12,11 +12,15 @@ import { useBookCategoriesModalStore, useCartModalStore,
     useUserLoginModalStore} from '../../states';
 import { useAuth } from '../../hooks';
 import { UserProfileButton } from '.';
+import { useDebounce } from '../../hooks/useDebounce';
+import Endpoints from '../../endpoints';
+import { useQueries, useQuery } from '@tanstack/react-query';
 
 export const Header = () => {
 
     const [isContactsOpen, setIsContactsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
+    const [searchResponse, setSearchResponse] = useState(null);
 
     const { setIsMenuModalOpen } = useMenuModalStore();
     const { setIsCartModalOpen } = useCartModalStore();
@@ -37,6 +41,42 @@ export const Header = () => {
         setIsSearchHistoryModalOpen(false);
     }
 
+    const debouncedSearchValue = useDebounce(searchTerm, 300);
+
+    useEffect(() => {
+        if(!debouncedSearchValue.trim()){
+            setSearchResponse(null);
+            return;
+        }
+
+        let isCanceled = false;
+
+        const fetchData = async () => {
+            try {
+                const res = await fetch(Endpoints.SEARCH(debouncedSearchValue));
+                if(!res.ok){
+                    throw new Error("Error")
+                } else {
+                    const data = await res.json();
+                    console.log(data);
+                }
+            } catch(err){
+                console.error(err)
+            }
+        }
+
+        fetchData();
+
+        return () => {
+            isCanceled = true;
+        }
+    }, [debouncedSearchValue]
+    )
+
+    const handleInputValueChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
   return (
     //TODO: Прибрати цей костиль і змінити нормальний z-index через CSS і HTML
     <div className={`header ${isSearchHistoryModalOpen ? "increase-z-index": ""}`}>
@@ -52,6 +92,7 @@ export const Header = () => {
             </Link>
             
         </div>
+        { console.log() }
         <div className="header__section header__center-section">
             <button className="header__categories-btn" onClick={() => setIsCategoriesModalOpen(true)}>
                 <Image src="/icons/menu.svg" className="header__icon-menu menu-icon" width="25" alt="" height="25" />
@@ -59,7 +100,7 @@ export const Header = () => {
             </button>
             <div className="header__search-container">
                 <input type="search" placeholder='Знайти книгу' className="header__search" name='q' 
-                onClick={handleSearchInputClick} value={ searchTerm } onChange={(e) => setSearchTerm(e.target.value)} /> 
+                onClick={handleSearchInputClick} value={ searchTerm } onChange={(e) => handleInputValueChange(e)} /> 
                 { isSearchHistoryModalOpen && <Image src="/icons/close.svg" alt="" width="20" height="20" 
                 className="header__close-icon" onClick={ () => handleCancelInputButtonClick() } /> } 
                 <Image src="/icons/search.svg" className="header__search-icon" width="30" height="30" alt="" />
