@@ -6,6 +6,7 @@ export const BookAuthorBlock = ({ book, author }) => {
     return (
         author ? (
             <div className="book-container__block-container">
+                
                 <h2 className="book-container__header">
                     Про автора
                 </h2>
@@ -17,7 +18,7 @@ export const BookAuthorBlock = ({ book, author }) => {
 
                         <div className="book-container__author-image-container">
                             { author?.images[0] && (
-                                <Image src={ author?.images[0]?.image_path } className="book-container__author-image" 
+                                <Image src={ author.images[0]?.image_path } className="book-container__author-image" 
                                 alt={`${author.first_name} ${author.last_name} Image`} width={80} height={80} />    
                             ) }
                             
