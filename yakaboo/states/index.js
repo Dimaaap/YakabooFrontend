@@ -26,3 +26,5 @@ export { useAddReviewModalStore } from "./AddReviewModalStore";
 export { useSortingOrderStore } from "./SortingOrderStore";
 export { useCurrentSortingOrderStore } from "./CurrentSortingOrderStore"
 export { useSearchHistoryOpenStore } from "./SearchHistoryOpenStore";
+export { useSearchTerm } from "./SearchTermStore";
+export { useHistoryStore } from "./HistoryStore"

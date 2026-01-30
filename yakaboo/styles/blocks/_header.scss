@@ -134,6 +134,25 @@
         }
     }
 
+    &__input-loader {
+        position: absolute;
+        right: 25%;
+        top: 30%;
+        width: rem(20);
+        height: rem(20);
+    }
+
+    &__loader {
+        margin: auto;
+        border: rem(3) solid var(--color-pink-10);
+        border-bottom-color: transparent;
+        border-radius: 50%;
+        box-sizing: border-box;
+        width: rem(20);
+        height: rem(20);
+        animation: rotation-data 1s linear infinite;
+    }
+
     &__categories-btn {
         @include fluid-text(12, 14);
         font-weight: 600;
@@ -304,5 +323,16 @@
         text-align: center;
         left: 60%;
         top: -40%;
+    }
+}
+
+
+@keyframes rotation-data {
+    0% {
+        transform: rotate(0deg);;
+    }
+
+    100% {
+        transform: rotate(360deg);
     }
 }

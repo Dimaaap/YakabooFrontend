@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from "next/image"
 import { useBlockBodyScroll } from '../../hooks'
-import { useSearchHistoryOpenStore } from '../../states'
+import { useHistoryStore, useSearchHistoryOpenStore } from '../../states'
 import { CookiesWorker } from '../../services'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Endpoints from '../../endpoints'
@@ -10,6 +10,7 @@ import { fetcher } from '../../services/fetch.service'
 const SearchHistoryModal = () => {
 
     const { isSearchHistoryModalOpen } = useSearchHistoryOpenStore();
+    const { history, setHistory } = useHistoryStore();
 
     const USER_EMAIL = CookiesWorker.get("email") || null;
     const TWO_MINUTES = 2 * 60 * 1000;
@@ -18,7 +19,7 @@ const SearchHistoryModal = () => {
 
     const queryClient = useQueryClient();
 
-    const { data: history = [], isLoading } = useQuery({
+    const { data = [], isLoading } = useQuery({
         queryKey: ["search-history", USER_EMAIL],
         queryFn: () => fetcher(Endpoints.USER_SEARCH_STORY(USER_EMAIL)),
         enabled: !!USER_EMAIL && isSearchHistoryModalOpen,
@@ -26,6 +27,9 @@ const SearchHistoryModal = () => {
         refetchOnMount: false,
         staleTime: TWO_MINUTES,
         gcTime: TWO_MINUTES,
+        onSuccess: (data) => {
+            setHistory(data);
+        }
 
     })
 
@@ -42,6 +46,7 @@ const SearchHistoryModal = () => {
                 ["search-history", USER_EMAIL],
                 []
             )
+            setHistory([])
         }
 
     })

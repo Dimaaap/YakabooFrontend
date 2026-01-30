@@ -6,20 +6,20 @@ import Link from 'next/link';
 import { ContactsModal } from '../modals';
 import { useBookCategoriesModalStore, useCartModalStore, 
     useCartStore, 
+    useHistoryStore, 
     useMenuModalStore, 
     useProfileSettingsModalStore, 
     useSearchHistoryOpenStore, 
+    useSearchTerm, 
     useUserLoginModalStore} from '../../states';
 import { useAuth } from '../../hooks';
 import { UserProfileButton } from '.';
 import { useDebounce } from '../../hooks/useDebounce';
 import Endpoints from '../../endpoints';
-import { useQueries, useQuery } from '@tanstack/react-query';
 
 export const Header = () => {
 
     const [isContactsOpen, setIsContactsOpen] = useState(false);
-    const [searchTerm, setSearchTerm] = useState("");
     const [searchResponse, setSearchResponse] = useState(null);
 
     const { setIsMenuModalOpen } = useMenuModalStore();
@@ -29,6 +29,8 @@ export const Header = () => {
     const { setIsProfileSettingsModalOpen } = useProfileSettingsModalStore();
     const { isSearchHistoryModalOpen, setIsSearchHistoryModalOpen } = useSearchHistoryOpenStore();
     const { cartItems } = useCartStore();
+    const { history } = useHistoryStore();
+    const { searchTerm, setSearchTerm } = useSearchTerm();
 
     const isAuthenticated = useAuth();
 
@@ -41,7 +43,8 @@ export const Header = () => {
         setIsSearchHistoryModalOpen(false);
     }
 
-    const debouncedSearchValue = useDebounce(searchTerm, 300);
+    const debouncedSearchValue = useDebounce(searchTerm, 500);
+    const isDebouncing = searchTerm.trim() && searchTerm !== debouncedSearchValue;
 
     useEffect(() => {
         if(!debouncedSearchValue.trim()){
@@ -101,8 +104,12 @@ export const Header = () => {
             <div className="header__search-container">
                 <input type="search" placeholder='Знайти книгу' className="header__search" name='q' 
                 onClick={handleSearchInputClick} value={ searchTerm } onChange={(e) => handleInputValueChange(e)} /> 
-                { isSearchHistoryModalOpen && <Image src="/icons/close.svg" alt="" width="20" height="20" 
+                { isSearchHistoryModalOpen && !searchTerm.length && history.length > 0 && 
+                <Image src="/icons/close.svg" alt="" width="20" height="20" 
                 className="header__close-icon" onClick={ () => handleCancelInputButtonClick() } /> } 
+                <div className="header__input-loader">
+                    { isDebouncing && <div className="header__loader"></div> }
+                </div>
                 <Image src="/icons/search.svg" className="header__search-icon" width="30" height="30" alt="" />
             <button type="button" className="header__search-button">Пошук</button>      
             </div>
