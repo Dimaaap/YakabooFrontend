@@ -10,6 +10,8 @@ import { useQuery } from '@tanstack/react-query';
 import { fetcher } from '../../services/fetch.service';
 import { STALE_TIME } from '../../site.config';
 import Endpoints from '../../endpoints';
+import { SearchResponseModal } from '../modals/SearchResponseModal';
+import { useBlockBodyScroll } from '../../hooks';
 
 export const HomeClient = () => {
   const { isCartModalOpen } = useCartModalStore();
@@ -19,7 +21,7 @@ export const HomeClient = () => {
   const { setIsHoveringCategory, setIsHoveringSubcategoryModal, setIsSubcategoriesModalOpen } = useSubcategoriesModalStore();
   const { cartItems } = useCartStore();
   const { history } = useHistoryStore();
-  const { searchTerm } = useSearchTerm();
+  const { searchTerm, searchResponse } = useSearchTerm();
 
   const { data: banners = [] } = useQuery({
     queryKey: ["banners"],
@@ -34,6 +36,8 @@ export const HomeClient = () => {
     }
   }, [setIsHoveringCategory, setIsHoveringSubcategoryModal, setIsSubcategoriesModalOpen]);
 
+  useBlockBodyScroll(searchResponse)
+
   return (
     <div className="main-container">
       {isMenuModalOpen && <MenuModal />}
@@ -42,6 +46,7 @@ export const HomeClient = () => {
         <div className="main-container__right">
           <MainHeader />
           { isSearchHistoryModalOpen && !searchTerm.length && history.length > 0 && <SearchHistoryModal /> }
+          { searchResponse && searchTerm.length && <SearchResponseModal searchResponse={ searchResponse } /> }
           <Banner banners={ banners } />
           { cartItems?.items?.length > 0 && (
             <CartInfo itemsCount={ cartItems.items.length } 

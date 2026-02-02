@@ -3,7 +3,9 @@ import Link from 'next/link'
 import React from 'react'
 
 export const SearchResponseModal = ({ searchResponse }) => {
-  return (
+
+  
+    return (
     <div className="menu response-modal">
        <div className="menu__content response-modal__content">
             <div className="response-modal__row">
@@ -20,12 +22,13 @@ export const SearchResponseModal = ({ searchResponse }) => {
 
                                 <div className="search-book__left-container">
                                     <div className="search-book__image">
-                                        <Image src={book.image} alt={`Книга ${book.title}`} width="120" height="150" />    
+                                        <Image src={book.image} alt={`Книга ${book.title}`} width="60" height="70" 
+                                        className={`${book.format === "Електронна" ? "el-image": ""}`}/>    
                                     </div>
                                     
                                     <div className="search-book__info">
-                                        <p className="search-book__boosk-title">
-                                            { book.titlte }
+                                        <p className="search-book__book-title">
+                                            { book.title }
                                         </p>
                                         <p className="search-book__author">
                                             {`${book.author_first_name} ${book.author_last_name}`}
@@ -36,24 +39,30 @@ export const SearchResponseModal = ({ searchResponse }) => {
                                                     { book.price } грн
                                                 </h5>
                                             ) }
-                                            <div className="dot-separator"></div>
-                                            { book.in_stock ? (
-                                                <span className="search-book__stock-author-green">
+                                            { book.price && book.in_stock && (
+                                                <div className="dot-separator"></div>    
+                                            ) }
+                                            
+                                            { book.in_stock && book.format === "Паперова" && (
+                                                <span className="search-book__stock-author green">
                                                     <Image src="/icons/green-truck.svg" alt="" width="18" height="18" />
                                                     В наявності
                                                 </span>
-                                            ) : (
-                                                <span className="search-book__stock-author">
+                                            )}
+
+                                            { !book.in_stock && (
+                                                <span className="search-book__stock-author gray">
                                                     <Image src="/icons/truck.svg" alt="" width="18" height="19" />
                                                     Немає в наявності
                                                 </span>
                                             ) }
-                                            <div className="dot-separator"></div>
-                                            { book.format === "Електронна" && (
-                                                <p className="search-book__text">
+
+                                            { book.in_stock && book.format !== "Паперова" && (
+                                                <span className="search-book__stock-author gray">
                                                     { book.format }
-                                                </p>
+                                                </span>
                                             ) }
+                                            
                                             <div className="dot-separator"></div>
 
                                             <p className="search-book__text">
@@ -64,7 +73,7 @@ export const SearchResponseModal = ({ searchResponse }) => {
                                 </div>
 
                                 <div className="search-book__right-container">
-                                    <Image src="/icons/chevron-left.svg" alt="" widht="16" height="16" />
+                                    <Image src="/icons/chevron-down.svg" alt="" width="16" height="16" />
                                 </div>
                             </div>
                         </Link>
@@ -72,7 +81,7 @@ export const SearchResponseModal = ({ searchResponse }) => {
                 </div>    
             ) }
 
-            { searchResponse.authors.lenght > 0 && (
+            { searchResponse.authors.length > 0 && (
                 <div className="response-modal__authors-container authors-container">
                     <div className="authors-container__left">
                         <h5 className="authors-container__title">
@@ -82,6 +91,9 @@ export const SearchResponseModal = ({ searchResponse }) => {
                     <div className="authors-container__right">
                         { searchResponse.authors.map((author, index) => (
                             <Link href={ author.slug } className="authors-container__author" key={ index }>
+                                { author?.image && (
+                                    <Image src={ author.image } alt="" width="20" height="18" className="authors-container__image" />
+                                ) }
                                 { author.first_name } { author.last_name }
                             </Link>
                         )) }
@@ -101,7 +113,7 @@ export const SearchResponseModal = ({ searchResponse }) => {
                         { searchResponse.publishers.map((publisher, index) => (
                             <Link href={ publisher.slug } className="publishers-container__block" key={ index }>
                                 { publisher?.logo && (
-                                    <Image src={ publisher.logo } alt="" widht="16" height="16" className="publishers-container__logo" />
+                                    <Image src={ publisher.logo } alt="" width="16" height="16" className="publishers-container__logo" />
                                 ) }
                                 <p className="publishers-container__title">
                                     { publisher.title }

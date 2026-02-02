@@ -20,7 +20,6 @@ import Endpoints from '../../endpoints';
 export const Header = () => {
 
     const [isContactsOpen, setIsContactsOpen] = useState(false);
-    const [searchResponse, setSearchResponse] = useState(null);
 
     const { setIsMenuModalOpen } = useMenuModalStore();
     const { setIsCartModalOpen } = useCartModalStore();
@@ -30,7 +29,7 @@ export const Header = () => {
     const { isSearchHistoryModalOpen, setIsSearchHistoryModalOpen } = useSearchHistoryOpenStore();
     const { cartItems } = useCartStore();
     const { history } = useHistoryStore();
-    const { searchTerm, setSearchTerm } = useSearchTerm();
+    const { searchTerm, setSearchTerm, setSearchResponse } = useSearchTerm();
 
     const isAuthenticated = useAuth();
 
@@ -61,7 +60,7 @@ export const Header = () => {
                     throw new Error("Error")
                 } else {
                     const data = await res.json();
-                    console.log(data);
+                    setSearchResponse(data);
                 }
             } catch(err){
                 console.error(err)
