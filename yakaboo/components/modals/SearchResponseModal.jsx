@@ -90,7 +90,7 @@ export const SearchResponseModal = ({ searchResponse }) => {
                     </div>
                     <div className="authors-container__right">
                         { searchResponse.authors.map((author, index) => (
-                            <Link href={ author.slug } className="authors-container__author" key={ index }>
+                            <Link href={ `author/view/${author.slug}` } className="authors-container__author" key={ index }>
                                 { author?.image && (
                                     <Image src={ author.image } alt="" width="20" height="18" className="authors-container__image" />
                                 ) }

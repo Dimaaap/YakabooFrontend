@@ -203,7 +203,7 @@ export const Filters = ({
                   { doubleSubcategoriesList === category.title ? (
                     <div className="filters__book-subcategory-double-subcategories-list">
                       { category.double_subcategories.map((subcategory, index) => (
-                        <Link href={`/book-categories/${categorySlug || ""}/${category.slug}/${subcategory.slug})`} 
+                        <Link href={`/book-categories/${categorySlug || ""}/${category.slug}/${subcategory.slug}`} 
                         className="filters__book-subcategory-double-subcategories-title" 
                         key={ index }>
                           { subcategory.title }

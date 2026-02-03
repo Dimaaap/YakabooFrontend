@@ -45,8 +45,8 @@ export const HomeClient = () => {
         <MainSidebar />
         <div className="main-container__right">
           <MainHeader />
-          { isSearchHistoryModalOpen && !searchTerm.length && history.length > 0 && <SearchHistoryModal /> }
-          { searchResponse && searchTerm.length && <SearchResponseModal searchResponse={ searchResponse } /> }
+          { isSearchHistoryModalOpen && <SearchHistoryModal /> }
+          { searchResponse && searchTerm.length > 0 && <SearchResponseModal searchResponse={ searchResponse } /> }
           <Banner banners={ banners } />
           { cartItems?.items?.length > 0 && (
             <CartInfo itemsCount={ cartItems.items.length } 

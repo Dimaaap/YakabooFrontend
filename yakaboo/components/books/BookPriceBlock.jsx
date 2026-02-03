@@ -9,10 +9,16 @@ export const BookPriceBlock = ({ book, info, isGift }) => {
     const { isDeliveryModalOpen } = useDeliveryModalStore();
     const { deliveryLocation } = useDeliveryCityStore();
 
+    const bookPromoOptions = {
+        "Книга на фронт": info?.is_for_war,
+        "Нацкешбек": info?.is_has_cashback,
+        "Зимова Підтримка": info?.is_has_winter_esupport,
+        "Єкнига": info?.is_has_esupport
+    }
+
     return(
         <div className="book-container__section right-section">
             <div className="book-container__block-price-block">
-                { console.log(book) }
                 { !book?.promo_price ? (
                     <div className="book-container__price-row">
                         <h2 className="book-container__header book-container__h2">
@@ -77,6 +83,22 @@ export const BookPriceBlock = ({ book, info, isGift }) => {
                     { info.format === "Електронна" && <Image src="/icons/mobile.svg" alt="" width="15" height="15" /> }
                     {!isGift && <span className={`book-container__text`}>{ info?.format } книга</span>}
                 </div>
+                { (info?.is_has_cashback || info?.is_has_esupport || info?.is_has_winter_esupport || info?.is_far_war) && (
+                    <div className="book-container__participant-promo">
+                        <p className="book-container__participant-promo-title">
+                            Товар бере участь у таких промо:
+                        </p>
+                        <div className="book-container__participant-promo-items">
+                            { Object.entries(bookPromoOptions).filter(([_, isActive]) => isActive).map(([title]) => (
+                                <span key={ title } className="book-container__participant-promo-item">
+                                    { title }
+                                </span>
+                            )) }    
+                        </div>
+                        
+                    </div>    
+                )  }
+                
             </div>
 
             { info?.has_esupport && (

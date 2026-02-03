@@ -108,6 +108,33 @@
         }
     }
 
+    &__participant-promo {
+        display: flex;
+        flex-direction: column;
+        gap: rem(10);
+        font-size: rem(14);
+        font-weight: 500;
+        width: 80%;
+
+        &-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: rem(10);
+            width: 100%;
+            row-gap: rem(10);
+        }
+
+        &-item {
+            flex-wrap: wrap;
+            background-color: var(--color-gray-40);
+            border: rem(1) solid var(--color-gray-30);
+            padding: 1.5% 3%;
+            color: var(--color-gray-30);
+            border-radius: rem(10);
+            cursor: pointer;
+        }
+    }
+
     &__images-carousel {
         position: relative;
         display: flex;

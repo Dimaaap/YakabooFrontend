@@ -25,6 +25,12 @@
         &.search-row {
             justify-content: start;
             gap: 2%;
+            transition: all 0.3s ease;
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--color-gray-40);
+            }
 
             & img {
                 width: rem(16);

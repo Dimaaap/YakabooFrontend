@@ -16,6 +16,7 @@ import { useAuth } from '../../hooks';
 import { UserProfileButton } from '.';
 import { useDebounce } from '../../hooks/useDebounce';
 import Endpoints from '../../endpoints';
+import { CookiesWorker } from '../../services';
 
 export const Header = () => {
 
@@ -29,9 +30,10 @@ export const Header = () => {
     const { isSearchHistoryModalOpen, setIsSearchHistoryModalOpen } = useSearchHistoryOpenStore();
     const { cartItems } = useCartStore();
     const { history } = useHistoryStore();
-    const { searchTerm, setSearchTerm, setSearchResponse } = useSearchTerm();
+    const { searchTerm, setSearchTerm, searchResponse, setSearchResponse } = useSearchTerm();
 
     const isAuthenticated = useAuth();
+    const USER_EMAIL = CookiesWorker.get("email") || ""
 
     const handleSearchInputClick = () => {
         setIsSearchHistoryModalOpen(true);
@@ -55,9 +57,9 @@ export const Header = () => {
 
         const fetchData = async () => {
             try {
-                const res = await fetch(Endpoints.SEARCH(debouncedSearchValue));
+                const res = await fetch(Endpoints.SEARCH(debouncedSearchValue, USER_EMAIL));
                 if(!res.ok){
-                    throw new Error("Error")
+                    throw new Error("Error")    
                 } else {
                     const data = await res.json();
                     setSearchResponse(data);
@@ -76,12 +78,17 @@ export const Header = () => {
     )
 
     const handleInputValueChange = (e) => {
-        setSearchTerm(e.target.value);
+        const value = e.target.value;
+        setSearchTerm(value);
+
+        if(value.trim()){
+            setIsSearchHistoryModalOpen(false);
+        }
     };
 
   return (
     //TODO: Прибрати цей костиль і змінити нормальний z-index через CSS і HTML
-    <div className={`header ${isSearchHistoryModalOpen ? "increase-z-index": ""}`}>
+    <div className={`header ${isSearchHistoryModalOpen || searchResponse ? "increase-z-index": ""}`}>
         <div className="header__section header__first-section">
             <button type="button" id="burger" onClick={() => setIsMenuModalOpen(true)}>
                 <Image src="/icons/burger.svg" alt="Burger" width="20" height="20" />
@@ -94,7 +101,6 @@ export const Header = () => {
             </Link>
             
         </div>
-        { console.log() }
         <div className="header__section header__center-section">
             <button className="header__categories-btn" onClick={() => setIsCategoriesModalOpen(true)}>
                 <Image src="/icons/menu.svg" className="header__icon-menu menu-icon" width="25" alt="" height="25" />
@@ -102,10 +108,21 @@ export const Header = () => {
             </button>
             <div className="header__search-container">
                 <input type="search" placeholder='Знайти книгу' className="header__search" name='q' 
-                onClick={handleSearchInputClick} value={ searchTerm } onChange={(e) => handleInputValueChange(e)} /> 
-                { isSearchHistoryModalOpen && !searchTerm.length && history.length > 0 && 
-                <Image src="/icons/close.svg" alt="" width="20" height="20" 
-                className="header__close-icon" onClick={ () => handleCancelInputButtonClick() } /> } 
+                onClick={() => handleSearchInputClick()} value={ searchTerm } onChange={(e) => handleInputValueChange(e)} /> 
+                { isSearchHistoryModalOpen &&  
+                    <Image src="/icons/close.svg" alt="" width="20" height="20" 
+                    className="header__close-icon" onClick={ () => handleCancelInputButtonClick() } /> 
+                } 
+                
+                { searchResponse && (
+                    <Image src="/icons/close.svg" alt="" width="20" height="20" 
+                    className="header__close-icon" onClick={ () => {
+                        setSearchTerm("");
+                        setSearchResponse(null);
+                        setIsSearchHistoryModalOpen(false);
+                    } } />
+                ) }
+
                 <div className="header__input-loader">
                     { isDebouncing && <div className="header__loader"></div> }
                 </div>

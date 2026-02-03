@@ -236,7 +236,7 @@ const Endpoints = {
   ADD_REVIEW: `${DOMAIN}reviews/create`,
   SUBSCRIBE_USER_EMAIL: `${DOMAIN}subs/create`,
   BOOKS_TEXT: `${DOMAIN}book_text/`,
-  SEARCH: (query) => `${DOMAIN}search?q=${query}`
+  SEARCH: (query, user_email) => `${DOMAIN}search/${user_email}?q=${query}`
 };
 
 export default Endpoints;

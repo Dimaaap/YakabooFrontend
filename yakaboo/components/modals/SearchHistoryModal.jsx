@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Image from "next/image"
 import { useBlockBodyScroll } from '../../hooks'
 import { useHistoryStore, useSearchHistoryOpenStore } from '../../states'
@@ -9,7 +9,7 @@ import { fetcher } from '../../services/fetch.service'
 
 const SearchHistoryModal = () => {
 
-    const { isSearchHistoryModalOpen } = useSearchHistoryOpenStore();
+    const { isSearchHistoryModalOpen, setIsSearchHistoryModalOpen } = useSearchHistoryOpenStore();
     const { history, setHistory } = useHistoryStore();
 
     const USER_EMAIL = CookiesWorker.get("email") || null;
@@ -19,21 +19,22 @@ const SearchHistoryModal = () => {
 
     const queryClient = useQueryClient();
 
-    const { data = [], isLoading } = useQuery({
+    const { data = []} = useQuery({
         queryKey: ["search-history", USER_EMAIL],
         queryFn: () => fetcher(Endpoints.USER_SEARCH_STORY(USER_EMAIL)),
         enabled: !!USER_EMAIL && isSearchHistoryModalOpen,
         refetchOnWindowFocus: false,
-        refetchOnMount: false,
-        staleTime: TWO_MINUTES,
-        gcTime: TWO_MINUTES,
-        onSuccess: (data) => {
-            setHistory(data);
-        }
-
+        refetchOnMount: "always"
     })
 
+    useEffect(() => {
+        if(data?.length){
+            setHistory(data);
+        }
+    }, [data, setHistory])
+
     const clearSearchHistory = () => {
+        setIsSearchHistoryModalOpen(false);
         return fetcher(Endpoints.CLEAR_USER_SEARCH_STORY(USER_EMAIL), {
             method: "PATCH"
         })
@@ -53,6 +54,7 @@ const SearchHistoryModal = () => {
   
     return (
     <div className="menu history-modal">
+        { console.log(data) }
         <div className="menu__content history-modal__content">
             <div className="history-modal__row">
                 <p className="history-modal__text">
