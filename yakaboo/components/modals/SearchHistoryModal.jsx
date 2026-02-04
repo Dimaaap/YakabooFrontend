@@ -54,7 +54,6 @@ const SearchHistoryModal = () => {
   
     return (
     <div className="menu history-modal">
-        { console.log(data) }
         <div className="menu__content history-modal__content">
             <div className="history-modal__row">
                 <p className="history-modal__text">
