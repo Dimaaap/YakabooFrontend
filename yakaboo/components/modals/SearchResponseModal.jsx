@@ -1,13 +1,38 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { useSearchTerm } from '../../states'
 
-export const SearchResponseModal = ({ searchResponse }) => {
+export const SearchResponseModal = () => {
 
+    const { searchResponse } = useSearchTerm();
+
+    const alsoSearch = searchResponse.also_searched;
   
     return (
     <div className="menu response-modal">
        <div className="menu__content response-modal__content">
+
+            { alsoSearch.length > 0 && (
+                <div className="response-modal__also-searched">
+                    <div className="response-modal__row">
+                        <p className="response-modal__text">
+                            Також шукають
+                        </p>
+                    </div>  
+                    <div className="response-modal__also-serched-items">
+                        { alsoSearch.map((term, index) => (
+                            <Link className="response-modal__also-searched-res" href="#" key={ index }>
+                                <Image src="/icons/search.svg" alt="" width="16" height="16" />
+                                <p className="response-modal__also-searched-text">
+                                    { term }
+                                </p>
+                            </Link>         
+                        )) }    
+                    </div>
+                </div>
+            ) }
+            
             <div className="response-modal__row">
                 <p className="response-modal__text">
                     Результати пошуку
@@ -125,12 +150,20 @@ export const SearchResponseModal = ({ searchResponse }) => {
             ) }
 
             { searchResponse.series.length > 0 && (
-                <div className="response-modal__series-container series-container">
-                    <div className="series-container__left">
-                        <h5 className="series-container__title">
+                <div className="response-modal__authors-container authors-container">
+                    <div className="authors-container__left">
+                        <h5 className="authors-container__title">
                             Серії книг
                         </h5>
-                
+                    </div>
+                    <div className="auhtors-container__right">
+                        { searchResponse.series.map((seria, index) => (
+                            <Link href={`book/seria/${seria.slug}`} className="authors-container__author" key={ index }>
+                                <p className="authors-container__title">
+                                    { seria.title }
+                                </p>
+                            </Link>
+                        )) }
                     </div>
                 </div>
             ) }

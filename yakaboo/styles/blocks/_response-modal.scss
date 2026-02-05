@@ -23,6 +23,7 @@
         align-items: center;
         border-bottom: rem(1) solid var(--color-gray-40);
         padding: 2% 4%;
+        padding-top: 1%;
     }
 
     &__books-container {
@@ -35,6 +36,33 @@
     &__text {
         font-size: rem(14);
         font-weight: 500;
+    }
+
+    &__also-searched {
+        display: flex;
+        flex-direction: column;
+        gap: 5%;
+
+        &-items {
+            display: flex;
+            flex-direction: column;
+            gap: 5%;
+        }
+
+        &-res {
+            display: flex;
+            align-items: center;
+            gap: rem(7);
+            border-bottom: rem(1) solid var(--color-gray-40);
+            padding: 1.5% 4%;
+            font-size: rem(14);
+            font-weight: 500;
+            transition: all 0.3s ease;
+
+            &:hover {
+                background-color: var(--color-gray-40);
+            }
+        }
     }
 }
 

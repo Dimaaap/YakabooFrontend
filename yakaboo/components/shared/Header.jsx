@@ -17,6 +17,7 @@ import { UserProfileButton } from '.';
 import { useDebounce } from '../../hooks/useDebounce';
 import Endpoints from '../../endpoints';
 import { CookiesWorker } from '../../services';
+import { useRouter } from 'next/navigation';
 
 export const Header = () => {
 
@@ -33,6 +34,7 @@ export const Header = () => {
     const { searchTerm, setSearchTerm, searchResponse, setSearchResponse } = useSearchTerm();
 
     const isAuthenticated = useAuth();
+    const router = useRouter();
     const USER_EMAIL = CookiesWorker.get("email") || ""
 
     const handleSearchInputClick = () => {
@@ -86,6 +88,11 @@ export const Header = () => {
         }
     };
 
+    const handleIsSearchClick = () => {
+        const urlPath = `/search?q=${searchTerm}`
+        router.push(urlPath)
+    }
+
   return (
     //TODO: Прибрати цей костиль і змінити нормальний z-index через CSS і HTML
     <div className={`header ${isSearchHistoryModalOpen || searchResponse ? "increase-z-index": ""}`}>
@@ -127,7 +134,7 @@ export const Header = () => {
                     { isDebouncing && <div className="header__loader"></div> }
                 </div>
                 <Image src="/icons/search.svg" className="header__search-icon" width="30" height="30" alt="" />
-            <button type="button" className="header__search-button">Пошук</button>      
+            <button type="button" className="header__search-button" onClick={() => handleIsSearchClick()}>Пошук</button>      
             </div>
         </div>
         <div className="header__section header__right-section">

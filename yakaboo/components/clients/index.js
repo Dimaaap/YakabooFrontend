@@ -12,3 +12,4 @@ export { BookCategoryClient } from "./BookCategoryClient";
 export { BookSubcategoryClient } from "./BookSubcategoryClient";
 export { DoubleSubcategoryClient } from "./DoubleSubcategoryClient";
 export { BooksClient } from "./BooksClient";
+export { SearchPageClient } from "./SearchPageClient";
