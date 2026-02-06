@@ -31,7 +31,7 @@ export const Header = () => {
     const { isSearchHistoryModalOpen, setIsSearchHistoryModalOpen } = useSearchHistoryOpenStore();
     const { cartItems } = useCartStore();
     const { history } = useHistoryStore();
-    const { searchTerm, setSearchTerm, searchResponse, setSearchResponse } = useSearchTerm();
+    const { searchTerm, setSearchTerm, searchResponse, setSearchResponse, finalSearchTerm, setFinalSearchTerm } = useSearchTerm();
 
     const isAuthenticated = useAuth();
     const router = useRouter();
@@ -88,10 +88,19 @@ export const Header = () => {
         }
     };
 
-    const handleIsSearchClick = () => {
-        const urlPath = `/search?q=${searchTerm}`
-        router.push(urlPath)
+    const handleIsSearchClick = async () => {
+        setFinalSearchTerm(searchTerm)
     }
+
+    useEffect(() => {
+        if(!finalSearchTerm){
+            return;
+        }
+
+        router.push(`/search?q=${encodeURIComponent(finalSearchTerm)}`)
+    }, [finalSearchTerm
+
+    ])
 
   return (
     //TODO: Прибрати цей костиль і змінити нормальний z-index через CSS і HTML

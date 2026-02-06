@@ -5,6 +5,7 @@ import React from 'react'
 import { useSearchTerm } from '../../states';
 import Link from 'next/link';
 import Image from 'next/image';
+import { CardsContainer, Filters } from '../shared';
 
 export const SearchPageClient = () => {
   
@@ -14,9 +15,14 @@ export const SearchPageClient = () => {
   const { searchResponse } = useSearchTerm();
 
   const calculateTotalSearchCount = () => {
-    const { authors, books, publishers, series } = searchResponse;
+    try {
+        const { authors, books, publishers, series } = searchResponse;
 
-    return authors.length + books.length + publishers.length + series.length
+        return authors.length + books.length + publishers.length + series.length    
+    } catch (e) {
+        notFound();
+    }
+   
   }
 
   if (!searchTerm || calculateTotalSearchCount() === 0){
@@ -26,7 +32,6 @@ export const SearchPageClient = () => {
   return (
     
     <div className="search-container">
-        { console.log(searchResponse) }
         { searchResponse && (
             <div className="search-container__header">
                 <div className="search-container__header-first-row">
@@ -41,17 +46,17 @@ export const SearchPageClient = () => {
                 
                 { searchResponse.authors.length > 0 && (
                     <div className="search-container__header-search-res-row authors-container">
-                        <div className="authors-container__left">
-                            <h5 className="authors-container__title">
+                        <div className="authors-container__left search-container__left">
+                            <h5 className="authors-container__title search-container__res-title">
                                 Автори
                             </h5>
                         </div>
 
-                        <div className="authors-container__right">
+                        <div className="authors-container__right search-container__right">
                             { searchResponse.authors.map((author, index) => (
-                                <Link href={`author/view/${author.slug}`} className="authors-container__author" key={ index }>
+                                <Link href={`author/view/${author.slug}`} className="authors-container__author search-container__author" key={ index }>
                                     { author?.image && (
-                                        <Image src={ author.image } alt="" width="20" height="18" className="authors-container__image" />
+                                        <Image src={ author.image } alt="" width="20" height="18" className="authors-container__image search-container__image" />
                                     ) }
                                     
                                     { author.first_name } { author.last_name }
@@ -64,17 +69,17 @@ export const SearchPageClient = () => {
 
                 { searchResponse.publishers.length > 0 && (
                     <div className="search-container__header-search-res-row authors-container">
-                        <div className="authors-container__left">
-                            <h5 className="authors-container__title">
+                        <div className="authors-container__left search-container__left">
+                            <h5 className="authors-container__title search-container__author-title">
                                 Видавництва
                             </h5>
                         </div>
 
-                        <div className="authors-container__right">
+                        <div className="authors-container__right search-container__right">
                             { searchResponse.publishers.map((publisher, index) => (
-                                <Link href={`book_publishing/view/${publisher.slug}`} className="authors-container__authors" key={ index }>
+                                <Link href={`book_publishing/view/${publisher.slug}`} className="authors-container__authors search-container__authors" key={ index }>
                                     { publisher?.logo && (
-                                        <Image src={ publisher.logo } alt='' width="16" height="16" className="authors-container__image" />
+                                        <Image src={ publisher.logo } alt='' width="16" height="16" className="authors-container__image search-container__image" />
                                     ) }
 
                                     { publisher.title }
@@ -84,7 +89,33 @@ export const SearchPageClient = () => {
                     </div>
                 ) }
                 
+                { searchResponse.series.length > 0 && (
+                    <div className="search-container__header-search-res-row authors-container">
+                        <div className="authors-container__left search-container__left">
+                            <div className="authors-container__title search-container__res-title">
+                                Серії книг
+                            </div>
+                        </div>
+
+                        <div className="authors-container__right search-container__right">
+                            { searchResponse.series.map((seria, index) => (
+                                <Link href={`book-series/view/${seria.slug}`} className="authors-container__author search-container__author" key={ index }>
+                                    { seria.title }
+                                </Link>
+                            )) }
+                        </div>
+                    </div>
+                ) }
             </div>    
+        ) }
+
+        { searchResponse.books.length > 0 && (
+            <div className="search-container__books-content">
+                <Filters needFilters={ true } needCategories={ true } needBookTypes={ true } needPublishers={ true } needLanguages={ true }
+                needAuthors={ true } needPrice={ true } />
+
+                <CardsContainer source={{ type: "all" }} />
+            </div>
         ) }
         
     </div>

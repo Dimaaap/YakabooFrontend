@@ -23,7 +23,8 @@ export const CardsContainer = ({
     isNotebooks=false, 
     isGifts=false, 
     isBoardGames=false,
-    giftsBrand=null}) => {
+    giftsBrand=null, 
+    booksList=null}) => {
 
     const searchParams = useSearchParams();
     const selectRef = useRef(null);
@@ -38,13 +39,17 @@ export const CardsContainer = ({
 
     let labelForPrice = false
 
+    if(booksList?.length > 0){
+
+    }
+
     const { isSortingModalOpen, setIsSortingModalOpen } = useSortingOrderStore();
     const { currentSortingOrder } = useCurrentSortingOrderStore();
     const { selectedFilters } = useFilterStore();
 
     const queryString = searchParams.toString();
 
-    const { data, isLoading } = useQuery({
+    const { data, isLoading } = booksList.length > 0 ? booksList : useQuery({
         queryKey: ["books", source.type, source.slug, source.id, queryString, page],
 
         queryFn: async() => {
