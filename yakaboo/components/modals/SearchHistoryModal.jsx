@@ -6,6 +6,7 @@ import { CookiesWorker } from '../../services'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Endpoints from '../../endpoints'
 import { fetcher } from '../../services/fetch.service'
+import Link from 'next/link'
 
 const SearchHistoryModal = () => {
 
@@ -13,7 +14,6 @@ const SearchHistoryModal = () => {
     const { history, setHistory } = useHistoryStore();
 
     const USER_EMAIL = CookiesWorker.get("email") || null;
-    const TWO_MINUTES = 2 * 60 * 1000;
 
     useBlockBodyScroll(isSearchHistoryModalOpen)
 
@@ -68,9 +68,9 @@ const SearchHistoryModal = () => {
             { history && history.length > 0 && history.map((item, index) => (
                 <div className="history-modal__row search-row" key={ index }>
                     <Image src="/icons/search.svg" alt="" width="18" height="18" />
-                    <div className="history-modal__text">
+                    <Link className="history-modal__text" href={`/search?q=${decodeURIComponent(item.term)}`}>
                         { item.term }
-                    </div>
+                    </Link>
                 </div>
             )) }
         </div>

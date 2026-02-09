@@ -25,6 +25,12 @@
         }
     }
 
+    &__books-content {
+        display: flex;
+        align-items: start;
+        margin-top: 1%;
+    }
+
     &__title {
         font-weight: 600;
     }

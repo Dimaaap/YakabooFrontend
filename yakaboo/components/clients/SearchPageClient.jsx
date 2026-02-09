@@ -2,36 +2,57 @@
 
 import { notFound, useSearchParams } from 'next/navigation'
 import React from 'react'
-import { useSearchTerm } from '../../states';
 import Link from 'next/link';
 import Image from 'next/image';
 import { CardsContainer, Filters } from '../shared';
+import { useQuery } from '@tanstack/react-query';
+import { CookiesWorker } from '../../services';
+import Endpoints from '../../endpoints';
+import { STALE_TIME } from '../../site.config';
+import { fetcher } from '../../services/fetch.service';
+import { CardsContainerWithBooksList } from '../shared/CardsContainerWithBooksList';
 
 export const SearchPageClient = () => {
   
   const searchParams = useSearchParams();
   const searchTerm = searchParams.get('q');
 
-  const { searchResponse } = useSearchTerm();
+  const emptyResponse = {
+    authors: [],
+    books: [],
+    publishers: [],
+    series: [],
+  }
+  const USER_EMAIL = CookiesWorker.get("email") || ""
+
+  const { data: searchResponse = emptyResponse} = useQuery({
+    queryKey: ["search-response", USER_EMAIL, searchTerm],
+    queryFn: () => fetcher(Endpoints.SEARCH(searchTerm, USER_EMAIL)),
+    enabled: !!USER_EMAIL && !!searchTerm,
+    refetchOnMount: false,
+    gcTime: STALE_TIME,
+    staleTime: STALE_TIME
+  })
 
   const calculateTotalSearchCount = () => {
     try {
         const { authors, books, publishers, series } = searchResponse;
 
-        return authors.length + books.length + publishers.length + series.length    
+        return authors?.length + books?.length + publishers?.length + series?.length    
     } catch (e) {
         notFound();
     }
    
   }
 
-  if (!searchTerm || calculateTotalSearchCount() === 0){
-    notFound();
+  if(!searchResponse){
+    notFound()
   }
 
   return (
     
     <div className="search-container">
+        { console.log(searchResponse.books) }
         { searchResponse && (
             <div className="search-container__header">
                 <div className="search-container__header-first-row">
@@ -114,7 +135,7 @@ export const SearchPageClient = () => {
                 <Filters needFilters={ true } needCategories={ true } needBookTypes={ true } needPublishers={ true } needLanguages={ true }
                 needAuthors={ true } needPrice={ true } />
 
-                <CardsContainer source={{ type: "all" }} />
+                <CardsContainerWithBooksList booksList={ searchResponse.books } categoryTitle="" />
             </div>
         ) }
         

@@ -1,17 +1,15 @@
 "use client";
 
-import Image from 'next/image'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useMemo, useRef } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { useMemo } from 'react'
 
-import { ProductCard, Stars, Badge, TopBadge, CommentsCount, Spinner, ProductCardSkeleton } from '.'
-import { wordDeclension } from '../../services/word-declension.service'
+import { ProductCard, Stars, Badge, TopBadge, CommentsCount, ProductCardSkeleton, SortingOrderComponent, Pagination, AuthorsHeader } from '.'
 import { badgeColors, ImagesLinks, STALE_TIME } from '../../site.config';
-import { useCurrentSortingOrderStore, useSortingOrderStore } from '../../states';
+import { useSortingOrderStore } from '../../states';
 import { SortingOrdersModal } from '../modals/SortingOrdersModal';
-import { getBookAuthor, getFilterLabel, SORTING_ORDERS } from '../../utils';
-import { getDiscount } from '../../services/discount.service';
-import { removeFilter, resetFilters, toQueryString, useFilterStore } from '../../states/FilterState';
+import { getBookAuthor, SORTING_ORDERS } from '../../utils';
+import { getDiscount, sortBooks } from '../../services/discount.service';
+import { useFilterStore } from '../../states/FilterState';
 import Endpoints from '../../endpoints';
 import { useQuery } from '@tanstack/react-query';
 
@@ -27,9 +25,6 @@ export const CardsContainer = ({
     booksList=null}) => {
 
     const searchParams = useSearchParams();
-    const selectRef = useRef(null);
-    const router = useRouter();
-    const pathname = usePathname();
 
     const LIMIT = 90;
     const page = Number(searchParams.get("page")) || 1;
@@ -37,19 +32,16 @@ export const CardsContainer = ({
 
     const sortingOrder = searchParams.get("sorting_order") || SORTING_ORDERS[0].label;
 
-    let labelForPrice = false
-
     if(booksList?.length > 0){
-
+        return null;
     }
 
     const { isSortingModalOpen, setIsSortingModalOpen } = useSortingOrderStore();
-    const { currentSortingOrder } = useCurrentSortingOrderStore();
     const { selectedFilters } = useFilterStore();
 
     const queryString = searchParams.toString();
 
-    const { data, isLoading } = booksList.length > 0 ? booksList : useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ["books", source.type, source.slug, source.id, queryString, page],
 
         queryFn: async() => {
@@ -70,32 +62,8 @@ export const CardsContainer = ({
     const books = data?.results ?? [];
     const total = data?.count ?? 0;
     const PAGES_COUNT = Math.ceil(total / LIMIT);
-    const isFirstPage = page === 1;
-    const isLastPage = page === PAGES_COUNT;
 
-    const sortedBooks = useMemo(() => {
-
-        switch(sortingOrder) {
-            case "cheap":
-                return [...books].sort((a, b) => a.price - b.price);
-            case "expensive":
-                return [...books].sort((a, b) => b.price - a.price);
-            case "discount":
-                return [...books].sort((a, b) => {
-                    const discountA = getDiscount(a);
-                    const discountB = getDiscount(b);
-
-                    if(discountA === null && discountB === null) return 0;
-                    if(discountA === null) return 1;
-                    if(discountB === null) return -1;
-
-                    return discountB - discountA;
-                })
-            case "popular":
-            default:
-                return [...books].sort((a, b) => (b.stars || 0) - (a.stars || 0))
-        }
-    }, [books, sortingOrder])
+    const sortedBooks = useMemo(() => sortBooks(books, sortingOrder), [books, sortingOrder])
 
 
     const returnLink = (slug) => {
@@ -111,19 +79,6 @@ export const CardsContainer = ({
         else {
             return `/book/${slug}`
         }
-    }
-    
-    const toggleSortingOrderModal = () => {
-        if(isSortingModalOpen){
-            setIsSortingModalOpen(false)
-        } else {
-            setIsSortingModalOpen(true)
-        }
-    }
-
-    const handleResetFilters = () => {
-        resetFilters();
-        router.replace(pathname)
     }
 
     const getEndpoint = () => {
@@ -147,62 +102,17 @@ export const CardsContainer = ({
         case "illustrator":
             return Endpoints.ILLUSTRATOR_BOOK(source?.id);
         }
-}
-
-    const updatePageInQuery = (page) => {
-        const params = new URLSearchParams(searchParams.toString());
-        params.set("page", String(page));
-        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-    };
-
-    const showSkeleton = isLoading;
+    }
     const SKELETON_COUNT = 10;
 
     return (
         <div className="author-books">
             { isSortingModalOpen && <SortingOrdersModal /> }
             { selectedFilters.length > 0 && (
-                <div className="author-books__filters">
-                    { selectedFilters.map((key, index) => {
-                        let filterLabel = null;
-                        if(labelForPrice && (key.key === "priceFrom" || key.key === "priceTo")){
-                            console.log("here")
-                            return null
-                        } else if(!labelForPrice && (key.key == "priceFrom" || key.key == "priceTo")){
-                            filterLabel = getFilterLabel(key, selectedFilters)
-                            console.log("here")
-                            labelForPrice = true;
-                        } else {
-                            filterLabel = getFilterLabel(key, selectedFilters)
-                        }
-                        return <span className="author-books__filters-filter" key={ index }>
-                            { filterLabel }
-                            <Image src="/icons/close.svg" alt="" width="14" height="14" onClick={() => {
-                                removeFilter(key);
-                                router.replace(`${pathname}?${toQueryString()}`)
-                            }} />
-                        </span>
-                    }) }
-                    <button className="author-books__filters-clear-all" onClick={handleResetFilters}>
-                        Очистити все
-                    </button>
-                </div>
+                <SortingOrderComponent />
             ) }
-            <div className="author-books__header">
-                <div className="author-books__header-text" onClick={() => setIsSortingModalOpen(false)}>
-                    <h5 className="author-books__category">
-                        { categoryTitle }
-                    </h5>
-                    <span className="author-books__book-count" ref={ selectRef }>
-                        {`${total} ${wordDeclension(total)}`}
-                    </span>
-                </div>
-                
-                <span className="author-books__select" onClick={() => toggleSortingOrderModal() }>
-                    <Image src="/icons/sort.svg" alt="" width="16" height="16" />
-                    { currentSortingOrder }
-                </span>
-            </div>
+            <AuthorsHeader categoryTitle={ categoryTitle } total={ total } />
+           
             <div className="author-books__books-container" onClick={() => setIsSortingModalOpen(false)}>
                 { isLoading ? (
                     [...Array(SKELETON_COUNT)].map((_, index) => (
@@ -241,33 +151,7 @@ export const CardsContainer = ({
             </div>
             
             { PAGES_COUNT > 1 && (
-                <div className="pagination-buttons">                
-                    <div className="pagination-buttons__page-btns">
-                        <button className={`pagination-buttons__page-btns-back ${isFirstPage ? "disabled": ""}`} disabed={ isFirstPage } type="button"
-                        onClick={ ()=> updatePageInQuery(page - 1) }>
-                            <span className="pagination-buttons__btn-icon">
-                                <Image src="/icons/chevron-down.svg" width="18" height="18" alt="" />
-                            </span>
-                            Назад
-                        </button>
-                        { [...Array(PAGES_COUNT)].map((_, index) => {
-                            const pageNumber = index + 1;
-                            return(
-                                <button className={`pagination-buttons__page-btns-number ${page === pageNumber ? 'active' : ''}`} 
-                                type="button" key={ index } onClick={ () => updatePageInQuery(pageNumber) }>
-                                    { pageNumber}
-                                </button>    
-                                );
-                        })}
-                        <button className={`pagination-buttons__page-btns-forward ${isLastPage ? "disabled" : ""}`} disabled={ isLastPage } type="button"
-                        onClick={ () => updatePageInQuery(page + 1) }>
-                            Вперед
-                            <span className="pagination-buttons__btn-icon">
-                                <Image src="/icons/chevron-down.svg" width="18" height="18" alt="" />
-                            </span>
-                        </button>
-                    </div>
-                </div>    
+                <Pagination total={ total } limit={ LIMIT } />   
             ) }
         </div>
     )
