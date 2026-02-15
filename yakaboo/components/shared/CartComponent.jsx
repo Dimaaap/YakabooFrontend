@@ -29,8 +29,7 @@ export const CartComponent = () => {
   return (
     <div className="checkout__cart-content">
       <div className="checkout__cart-header">
-        {cartItems?.items?.length} {wordDeclension(cartItems?.items?.length)} у
-        кошику
+        {cartItems?.items?.length} {wordDeclension(cartItems?.items?.length)} у кошику
         <button
           className={`checkout__cart-edit-btn ${editCartMode ? 'edit-cart' : ''}`}
           onClick={() => toggleEditMode()}
