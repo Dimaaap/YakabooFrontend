@@ -15,7 +15,7 @@ export const HobbyDescriptionContainer = ({ hobby }) => {
     return (
         <div className="book-container__block-container hobby-page__block-container">
             <h3 className="book-container__header hobby-page__header">
-                Опис товару
+                Опис книги
             </h3>
             <div 
                 className="book-container__text hobby-page__text"

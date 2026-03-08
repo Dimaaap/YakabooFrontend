@@ -44,6 +44,12 @@ export const baseFields = [
         )
     },
     {
+        key: "publishing_year",
+        title: "Рік видавництва",
+        show: (book, isGift) => !isGift && book.book_info?.publishing_year,
+        render: (book) => <p>{ book.book_info.publishing_year }</p>
+    },
+    {
         key: "packing_size",
         title: "Розмір упаковки",
         show: (book, isGift) => isGift && book.gift_info?.packing_size,

@@ -1,7 +1,7 @@
 import Link from "next/link"
 import Image from 'next/image'
 
-export const BookInfoBlock = ({ book, info, isGift }) => {
+export const BookInfoBlock = ({ book, isGift }) => {
 
     const filteredRelatedBooks = book?.related_books ? Object.values(
         book.related_books.reduce((acc, b) => {
@@ -36,6 +36,9 @@ export const BookInfoBlock = ({ book, info, isGift }) => {
                                         alt="" width="18" height="18" />
                                         <p className="tile__header">{ b.book_info.format }</p>
                                     </div>
+                                    <div className="book-container__tile-price tile-price">
+                                        { book.price }
+                                    </div>
                                 </div>
                             ) : (
                                 <Link className="book-container__tile tile format-tile" key={ index } href={`/book/${b.slug}`}>
@@ -57,57 +60,14 @@ export const BookInfoBlock = ({ book, info, isGift }) => {
                                 alt="" width="18" height="18" />
                                 <p className="tile__header">{ book.book_info.format }</p>
                             </div>
+                            <div className="book-container__tile-price tile-price">
+                                { book.price } грн
+                            </div>
                         </div>
                     ) }
                     </div>
                 </div>
                 )}
-
-            <div className="book-container__blocks">
-                <div className="book-container__block language-block">
-                    <p className="book-container__block-title">{!isGift ? "Мова книги" : "Мова"}</p>
-                    <div className="book-container__tiles-block">
-                        <div className={`book-container__tile tile ${info?.language === "Українська" ? "current" : ""}`}>
-                            <p className="tile__desc">Українська</p>
-                        </div>
-                </div>
-            </div>
-
-            {!isGift && (
-                <div className="book-container__block publishing-block">
-                    <p className="book-container__block-title">Видавництво</p>
-                    <div className="book-container__tiles-block">
-                        <div className="book-container__tile tile small-tile current">
-                            <Link className="book-container__link publishing-link" href={`/book_publisher/view/${book?.publishing?.slug}`}>
-                                {book?.publishing?.title}
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {!isGift && info?.publishing_year !== 0 && (
-                <div className="book-container__block publishing-block">
-                    <p className="book-container__block-title">Рік видання</p>
-                    <div className="book-container__tiles-block">
-                        <div className="book-container__tile tile small-tile current">
-                            <p className="tile__desc">{info?.publishing_year}</p>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {isGift && (
-                <Link className="book-container__block publishing-block" href={`/gifts/category/${book?.gift_category?.slug}`}>
-                    <p className="book-container__block-title">Категорія</p>
-                    <div className="book-container__tiles-block">
-                        <div className="book-container__tile tile">
-                            <p className="tile__desc">{book?.gift_category?.title}</p>
-                        </div>
-                    </div>
-                </Link>
-            )}
-            </div>
         </>
     )
 }

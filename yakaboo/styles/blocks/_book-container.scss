@@ -21,6 +21,24 @@
     width: 100%;
     font-family: "Montserrat", "Montserrat Fallback";
 
+     &__reviews-block {
+        display: flex;
+        gap: rem(7);
+        width: max-content;
+    }
+
+    &__comments {
+        display: flex;
+        align-items: center;
+        gap: rem(2);
+
+        &-count {
+            font-size: rem(12);
+            font-weight: 500;
+            color: var(--color-gray-30);
+        }
+    }
+
     &__big-image {
         width: rem(250) !important;
         height: rem(300);
@@ -40,11 +58,16 @@
         flex-direction: column;
         gap: rem(10);
 
+        &.left-section {
+            position: sticky;
+            top: 12%;
+        }
+
         &.center-section {
             width: 50%;
             display: flex;
             flex-direction: column;
-            gap: rem(20);
+            gap: rem(10);
         };
 
         &.right-section {
@@ -227,6 +250,7 @@
         display: flex;
         align-items: center;
         gap: rem(2);
+        cursor: pointer;
     }
 
     &__desc-container {
@@ -235,11 +259,22 @@
         gap: rem(3);
     }
 
+     &__book-title {
+        display: flex;
+        align-items: start;
+        gap: rem(5);
+        font-weight: 600;
+
+        &-template {
+            font-weight: 500;
+        }
+    }
+
     &__grade-count {
         font-size: rem(12);
         color: var(--color-gray-30);
         font-weight: 500;
-        margin-left: rem(5);
+        margin-left: rem(2);
     }
 
     &__code {

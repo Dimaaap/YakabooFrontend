@@ -33,12 +33,17 @@ export default function BookPage() {
     if(error) return <p>adasd</p>
 
     const breadcrumbsObject = {
+        Книжки: '/books',
         Автор: `/author/view/${book.authors[0].slug}`,
     }
 
     return(
         book && (
-            <BookComponent book={ book } breadcrumbs={ breadcrumbsObject } />
+            <div>
+                { console.log(book) }
+                <BookComponent book={ book } breadcrumbs={ breadcrumbsObject } />     
+            </div>
+            
         )
     )
 }

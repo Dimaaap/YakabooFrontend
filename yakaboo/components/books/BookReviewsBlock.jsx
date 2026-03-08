@@ -1,12 +1,12 @@
 "use client";
 
-import { useBlockBodyScroll } from "../../hooks";
+import { forwardRef } from "react";
 import { useAddReviewModalStore } from "../../states";
 
-export const BookReviewsBlock = () => {
+export const BookReviewsBlock = forwardRef(({}, ref) => {
     const { isAddReviewModalOpen, setIsAddReviewModalOpen } = useAddReviewModalStore();
 
-    const handleOpenModal = () => {
+    const handleOpenModal = (ref) => {
         if(isAddReviewModalOpen){
             setIsAddReviewModalOpen(false)
         } else {
@@ -15,7 +15,7 @@ export const BookReviewsBlock = () => {
     }
     
     return(
-        <div className="book-container__block-container">
+        <div className="book-container__block-container" ref={ ref }>
             <div className="book-container__reviews">
                 <h3 className="book-container__header h3-header">
                     Відгуки
@@ -29,4 +29,4 @@ export const BookReviewsBlock = () => {
         </div>    
     )
     
-}
+})

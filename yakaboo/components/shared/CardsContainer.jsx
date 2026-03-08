@@ -129,9 +129,9 @@ export const CardsContainer = ({
                         imageSrc={ book?.images[0]?.image_url ?? ImagesLinks.DEFAULT_IMAGE }
                         badges={
                             [
-                                book?.stars ? <Stars count={ book.stars } isSmaller={ true } />: <></>,
-                                book?.reviews?.length > 0 ? <CommentsCount count={ book.reviews.length } /> : <CommentsCount count={0} />, 
-                                (book?.is_top || book?.is_in_top) && (<TopBadge />),
+                                book?.reviews?.length ? <Stars reviews={ book.reviews } isSmaller={ true } />: <></>,
+                                book?.reviews?.length > 0 && <CommentsCount count={ book.reviews.length } />, 
+                                (book?.reviews?.length && book?.reviews?.every(review => review.rate === 5)) ? (<TopBadge />) : <></>,
                                 book?.is_new && (<Badge text="Новинка" backgroundColor={ badgeColors.green } /> ),   
                             ]
                         }

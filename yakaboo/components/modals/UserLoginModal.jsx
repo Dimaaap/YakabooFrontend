@@ -12,6 +12,7 @@ import {
   handleBackdropClick,
 } from '../../services';
 import { useBlockBodyScroll } from '../../hooks';
+import { Spinner } from '../shared';
 
 const UserLoginModal = ({ afterClose = null }) => {
   const TWO_MINUTES = 2 * 60 * 1000;
@@ -331,13 +332,7 @@ const UserLoginModal = ({ afterClose = null }) => {
             )}
 
             {sendgingLoading && (
-              <Image
-                src="/icons/spinner.svg"
-                width="20"
-                height="20"
-                alt=""
-                className="animate-spin"
-              />
+              <Spinner />
             )}
           </div>
           <button className="form__submit-btn" type="submit">

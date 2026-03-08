@@ -18,7 +18,7 @@ export const Breadcrumbs = ({ linksList, isSmaller=false }) => {
                 <Link href={path} className="breadcrumbs__link">
                     {label}
                     { index + 1 < allLinksLength && <Image src="/icons/separator.svg" alt="" 
-                    width="16" height="16" /> }
+                    width="12" height="12" /> }
                     
                 </Link>
             </li>

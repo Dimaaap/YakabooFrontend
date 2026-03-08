@@ -7,12 +7,13 @@ import { AuthorFacts } from '../shared';
 import { formatLocalDate } from '../../utils';
 import { fetchData } from '../../services';
 import Endpoints from '../../endpoints';
+import { setDescription, setShowAll, useHobbyDescriptionStore } from '../../states/hobbies/HobbyDescriptionStore';
 
 export const AuthorHeader = ({ author }) => {
   const [authorImages, setAuthorImages] = useState([]);
   const [activeImage, setActiveImage] = useState(0);
   const [authorFact, setAuthorFact] = useState(null);
-  const [showAll, setShowAll] = useState(false);
+  const { firstParagraph, showAll, isSingle } = useHobbyDescriptionStore()
 
   useEffect(() => {
     fetchData(
@@ -22,6 +23,10 @@ export const AuthorHeader = ({ author }) => {
   useEffect(() => {
     fetchData(Endpoints.AUTHOR_FACTS(author.id), setAuthorFact);
   }, []);
+
+  useEffect(() => {
+        setDescription(author.description)
+  }, [author.description])
 
   const handleChangeShowAll = () => {
     if (showAll) {
@@ -121,28 +126,22 @@ export const AuthorHeader = ({ author }) => {
             )}
           </div>
         )}
-        { showAll && author.description && (
-          <div className="author-header__desc-block" dangerouslySetInnerHTML={{ __html: author.description }} />
-        ) }
-        { !showAll && (
-          <div className="author-header__desc-block" dangerouslySetInnerHTML={{ __html: author.short_description }} />   
-        ) }
-        
-        {author.description && (
-          <button
-            className="author-header__more-info"
-            onClick={handleChangeShowAll}
-          >
-            Показати {showAll ? 'менше' : 'повністю'}
-            <Image
-              src="/icons/arrow-left.svg"
-              alt=""
-              width="16"
-              height="16"
-              className={`${showAll ? 'rotated' : ''}`}
-            />
-          </button>
-        )}
+        <div className="author-header__desc-block" dangerouslySetInnerHTML={{ __html: showAll ? author.description : firstParagraph }}/>
+        { !isSingle && (
+          !showAll ? (
+            <button
+            onClick={() => setShowAll(true)} className="hobby-page__show-more">
+              Показати все
+              <Image src="/icons/chevron-down.svg" alt="" width="18" height="18" />
+            </button>
+            ) : (
+              <button 
+              onClick={() => setShowAll(false)} className="hobby-page__show-more">
+                Показати менше
+                <Image src="/icons/chevron-down.svg" alt="" width="18" height="18" className="rotated" />
+              </button>
+              )
+              ) }
       </div>
       {authorFact && authorFact.fact_text && (
         <div className="author-header__right">
