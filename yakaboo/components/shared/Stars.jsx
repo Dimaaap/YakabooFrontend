@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import React from 'react'
 
-export const Stars = ({ reviews, isSmaller=false }) => {
+export const Stars = ({ reviews=[], isSmaller=false }) => {
   const avgRate = reviews.reduce((sum, review) => sum + review.rate, 0) / reviews.length;
   const count = Math.round(avgRate)
   return (
