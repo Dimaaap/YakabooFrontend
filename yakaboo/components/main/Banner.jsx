@@ -80,8 +80,8 @@ export const Banner = ({ banners=[], bigger=false, isLoading=false }) => {
             transition: `transform 0.5s ease-in-out`,
           }}
         >
-          {banners.length > 0 ? (
-            banners.map((banner, i) => (
+          {banners.filter((banner) => banner.image_src !== "test").length > 0 ? (
+            banners.filter((banner) => banner.image_src !== "test").map((banner, i) => (
               <Link key={i} className="banner__image" href={banner.link}>
                 <Image
                   src={banner.image_src}

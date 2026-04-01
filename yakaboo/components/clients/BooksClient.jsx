@@ -8,14 +8,13 @@ import { Banner } from "../main";
 import { CardsContainer, Filters, Spinner } from "../shared";
 import { SeenBooks } from "../shared/SeenBooks";
 import { CookiesWorker } from "../../services";
-import Link from "next/link";
 
 export const BooksClient = () => {
 
     const userEmail = CookiesWorker.get("email") || null;
 
     const { data: banners = [], isLoading: isBannersLoading } = useQuery({
-        queryKey: ["books-banners"],
+        queryKey: ["book-banners"],
         queryFn: () => fetcher(Endpoints.ALL_BOOKS_BANNERS),
         staleTime: STALE_TIME,
         gcTime: STALE_TIME,
@@ -45,7 +44,7 @@ export const BooksClient = () => {
 
     return (
         <div className="main-container all-books-container">
-            
+            { console.log(banners) }
             <div className="all-books-container__banner-wrapper">
                 <Banner banners={ banners } bigger={ true } isLoading={ isBannersLoading } />    
             </div>    

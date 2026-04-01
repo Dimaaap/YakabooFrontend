@@ -51,3 +51,4 @@ export { SortingOrderComponent } from "./SortingOrderComponent";
 export { Pagination } from "./Pagination";
 export { AuthorsHeader } from "./AuthorsHeader";
 export { CardsContainerWithBooksList } from "./CardsContainerWithBooksList"
+export { TopSalesSection } from "./TopSalesSection";

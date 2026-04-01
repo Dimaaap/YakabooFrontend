@@ -2,13 +2,14 @@
 
 import { useSearchParams } from 'next/navigation'
 import { useMemo } from 'react'
+import { useState, useEffect } from 'react';
 
 import { ProductCard, Stars, Badge, TopBadge, CommentsCount, ProductCardSkeleton, SortingOrderComponent, Pagination, AuthorsHeader } from '.'
 import { badgeColors, ImagesLinks, STALE_TIME } from '../../site.config';
 import { useSortingOrderStore } from '../../states';
 import { SortingOrdersModal } from '../modals/SortingOrdersModal';
 import { getBookAuthor, SORTING_ORDERS } from '../../utils';
-import { getDiscount, sortBooks } from '../../services/discount.service';
+import { sortBooks } from '../../services/discount.service';
 import { useFilterStore } from '../../states/FilterState';
 import Endpoints from '../../endpoints';
 import { useQuery } from '@tanstack/react-query';
@@ -38,6 +39,12 @@ export const CardsContainer = ({
 
     const { isSortingModalOpen, setIsSortingModalOpen } = useSortingOrderStore();
     const { selectedFilters } = useFilterStore();
+
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const queryString = searchParams.toString();
 
@@ -107,8 +114,8 @@ export const CardsContainer = ({
 
     return (
         <div className="author-books">
-            { isSortingModalOpen && <SortingOrdersModal /> }
-            { selectedFilters.length > 0 && (
+            { mounted && isSortingModalOpen && <SortingOrdersModal /> }
+            { mounted && selectedFilters.length > 0 && (
                 <SortingOrderComponent />
             ) }
             <AuthorsHeader categoryTitle={ categoryTitle } total={ total } />

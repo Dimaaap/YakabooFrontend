@@ -41,6 +41,10 @@
   width: 100%;
   border-bottom: rem(1) solid var(--color-gray-50);
 
+  &.top-sales-card {
+    background-color: var(--color-light);
+  }
+
   &__support {
     position: absolute;
     z-index: 2;

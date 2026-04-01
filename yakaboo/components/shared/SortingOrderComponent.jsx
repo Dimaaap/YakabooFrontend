@@ -2,13 +2,14 @@
 
 import Image from 'next/image';
 import React from 'react'
-import { removeFilter, toQueryString, useFilterStore } from '../../states/FilterState';
+import { removeFilter, resetFilters, toQueryString, useFilterStore} from '../../states/FilterState';
 import { getFilterLabel } from '../../utils';
-import { useRouter } from 'next/router';
+import { usePathname, useRouter } from 'next/navigation';
 
 export const SortingOrderComponent = () => {
     
     const router = useRouter();
+    const pathname = usePathname();
 
     const { selectedFilters } = useFilterStore();
     
@@ -34,7 +35,10 @@ export const SortingOrderComponent = () => {
                 }} />
                 </span> 
             }) }
-        <button className="author-books__filters-clear-all" onClick={handleResetFilters}>
+        <button className="author-books__filters-clear-all" onClick={ () => {
+            resetFilters();
+            router.replace(pathname);
+            } }>
             Очистити все
         </button>
     </div>

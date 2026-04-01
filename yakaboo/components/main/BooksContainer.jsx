@@ -1,12 +1,15 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { Badge, BookInfoBadge, CommentsCount, ProductCard, Stars, TopBadge } from '../shared'
+import { Badge, BookInfoBadge, CommentsCount, ProductCard, Stars, TopBadge, TopSalesSection } from '../shared'
 
 const BooksContainer = () => {
   return (
     <div className="categories">
         <div className="books-container">
+
+            <TopSalesSection />
+
             <div className="books-container__section">
                 <div className="books-container__header">
                     <h3 className="books-container__title">
@@ -174,52 +177,6 @@ const BooksContainer = () => {
                         imageSrc="https://static.yakaboo.ua/media/cloudflare/product/webp/352x340/9/7/9780349132884_0.jpg"
                         badges={[<Stars count={ 0 } isSmaller={ true } />, <CommentsCount />]} 
                         productCard="212312" productLink="#" oldPrice={ 796 } bonusesCount={ 398 } inStock={ true } />
-                    </div>  
-                    <button className="books-container__btn next-btn" type="btn">
-                        <Image src="/icons/arrow-left.svg" width="30" height="30" alt="" />
-                    </button>
-                </div>
-            </div>  
-
-            <div className="books-container__section">
-                <div className="books-container__header">
-                    <h3 className="books-container__title">Новорічні хіти для дітей</h3>
-
-                    <Link className="books-container__title-link" href="#">
-
-                        <span>
-                            Показати все 
-                            <Image src="icons/chevron-down.svg" width="15" height="15" alt="" />
-                        </span>
-                    
-                    </Link>  
-                </div>
-                <div className="books-container__slider">
-                    <button className="books-container__btn prev-btn visually-hidden" type="btn">
-                        <Image src="/icons/arrow-left.svg" width="30" height="30" alt="" />
-                    </button>
-                    <div className="books-container__slider book-slider">
-                        <ProductCard title="Пан Сирник і різдвяний пампушок"
-                        brand="Світлана Лінинська" 
-                        imageSrc="https://static.yakaboo.ua/media/cloudflare/product/webp/352x340/9/7/978-966-10-8816-9_pan_sirnik_obkl.jpg"
-                        badges={[<Stars count={ 0 } isSmaller={ true } />, <CommentsCount count={ 0 } />]}
-                        productCode="2131" productLink="#" oldPrice={ 129 } bonusesCount={ 65 } inStock={ true } isEbook={ true } />
-
-                        <ProductCard title="Павлусь і Сантові олені" 
-                        brand="Галина Манів" 
-                        imageSrc="https://static.yakaboo.ua/media/cloudflare/product/webp/352x340/9/7/978-966-10-8815-2_obkl.jpg"
-                        badges={[<Stars count={ 0 } isSmaller={ true } />, <CommentsCount />]}
-                        productCode="121231" productLink="#" oldPrice={ 229 } bonusesCount={ 115 } inStock={ true } isEbook={ true } />
-
-                        <ProductCard title="Різдвяні казки" brand="Ніна Воскрсесенська" 
-                        imageSrc="https://static.yakaboo.ua/media/cloudflare/product/webp/352x340/9/7/978-966-10-8821-3.jpg"
-                        badges={[ <Stars count={ 0 } isSmaller={ true } />, <CommentsCount /> ]} 
-                        productCode="231" productLink="#" oldPrice={ 329 } bonusesCount={ 165 } inStock={ true } isEbook={ true } />
-
-                        <ProductCard title="Хто зробить сніг" brand="Тарас Прохасько"
-                        imageSrc="https://static.yakaboo.ua/media/cloudflare/product/webp/352x340/f/i/file_215_2.jpg"
-                        badges={[<Stars count={ 0 } isSmaller={ true } />, <CommentsCount />]} 
-                        productCard="212312" productLink="#" oldPrice={ 79 } bonusesCount={ 40 } inStock={ true } isAudio={ true }/>
                     </div>  
                     <button className="books-container__btn next-btn" type="btn">
                         <Image src="/icons/arrow-left.svg" width="30" height="30" alt="" />

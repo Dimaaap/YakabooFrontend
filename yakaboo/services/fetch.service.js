@@ -53,7 +53,10 @@ export const fetchData = async (
 };
 
 export const fetcher = async (url, options={}) => {
-  const res = await fetch(url, options);
+  const res = await fetch(url, {
+    ...options,
+    cache: "no-store"
+  });
 
   if(!res.ok) {
     throw new Error("Fetch error");
