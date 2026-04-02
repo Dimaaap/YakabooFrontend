@@ -1,0 +1,120 @@
+@use "../helpers" as *;
+
+.top-sales {
+    &-section {
+        background-color: var(--color-light);
+        background-image: url('/images/top-sales-background.png');
+        color: var(--color-light);
+        display: flex;
+        flex-direction: column;
+        gap: 0%;
+        padding-inline: rem(15); 
+        border-radius: rem(7);   
+        width: 100%;
+        min-width: 0;
+    }
+
+    &-header {
+        display: flex;
+        align-items: center;
+        gap: rem(10);
+        max-width: 100%;
+
+        & h3 {
+            font-weight: 600;
+        }
+
+        &-show-all-link {
+            background-color: var(--color-light);
+            color: var(--color-black);
+            padding-inline: rem(10);
+            font-weight: 500;
+            font-size: rem(14);
+            border-radius: rem(10);
+            padding-block: rem(3);
+            font-weight: 500;
+
+            & span {
+                display: flex;
+                align-items: center;
+            }
+
+            &-icon {
+                transform: rotate(270deg);
+            }
+        }
+    }
+  
+    &-slider {
+        margin-top: 0;
+        position: relative;
+        width: 100%;
+
+        &-btn {
+            width: rem(70);
+            border-radius: rem(10);
+            position: absolute;
+            background-color: var(--color-gray-50);
+            border: none;
+            z-index: 100;
+            top: 50%;
+            height: rem(80);
+            justify-content: center;
+            text-align: center;
+            display: inline-flex;
+            transform: translateY(-50%);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+
+            &:hover {
+                opacity: 0.9;
+            }
+
+            &.prev-btn {
+                left: 0;
+
+                & img {
+                    transform: rotate(90deg) translateX(0) translateY(0%);
+                }
+            }
+
+            &.next-btn {
+                right: 0;
+
+                & img {
+                    transform: rotate(270deg) translateX(0) translateY(0);
+                }
+            }
+        }
+    }
+}
+
+.slider {
+
+    &-viewport {
+        overflow: hidden;
+        width: 100%;
+        position: relative;
+    }
+
+    &-track {
+        display: flex;
+        transition: transform 0.5s ease;
+        flex-wrap: nowrap;
+        will-change: transform;
+        padding-bottom: rem(12);
+        width: max-content;
+    }
+
+    &-item {
+        flex: 0 0 20%;
+        width: 20%;
+        padding: 0 rem(5);
+        box-sizing: border-box;
+
+        & > * {
+            width: 100% !important;
+            min-width: 0 !important; 
+        }
+    }
+}

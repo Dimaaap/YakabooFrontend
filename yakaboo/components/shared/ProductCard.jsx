@@ -26,10 +26,11 @@ export const ProductCard = ({
   deliveryTime=null,
   UKDeliveryTime=null,
   waitSince=null,
-  inStock=true
+  inStock=true,
+  changeStyles=false
 }) => {
   return (
-    <Link className={`product-card ${extraClass}`} href={productLink}>
+    <Link className={`${changeStyles ? `${extraClass}` : `product-card ${extraClass}`}`}href={productLink}>
       { (hasCashback || hasWinterSupport || hasESupport) && (
         <SupportIcons hasCashback={hasCashback} hasWinterSupport={hasWinterSupport} hasESupport={hasESupport} />
       ) }
