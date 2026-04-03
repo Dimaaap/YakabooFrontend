@@ -33,11 +33,21 @@
   display: flex !important;
   min-width: 0;
   word-wrap: break-word;
+  border-right: rem(1) solid var(--color-gray-50);
+  overflow: hidden;
+  height: rem(570);
+  border-bottom: rem(1) solid var(--color-gray-50);
+  background-color: var(--color-light);
+  color: var(--color-black);
+  padding-block: 10%;
+  position: relative;
+  padding-inline: 2%;
 
 }
 
 
-.product-card {
+.product-card,
+.top-sales-card {
   flex-direction: column;
   position: relative;
   padding: rem(5);
@@ -60,8 +70,8 @@
     display: flex;
     flex-direction: column;
     gap: rem(5);
-    top: 0;
-    left: 5%;
+    top: 3%;
+    left: 4%;
   }
 
   &__info-span {

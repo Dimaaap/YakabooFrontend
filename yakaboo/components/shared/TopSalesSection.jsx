@@ -14,7 +14,7 @@ export const TopSalesSection = () => {
 
   const [index, setIndex] = useState(0);
 
-  const VISIBLE = 5;
+  const VISIBLE = 4;
 
   const { data: books = [] } = useQuery({
     queryKey: ["top-books"],
@@ -51,23 +51,27 @@ export const TopSalesSection = () => {
         <div className="top-sales-slider">
             { books.length > VISIBLE && (
                 <>
-                    <button className="top-sales-slider-btn prev-btn" type="btn" onClick={ prev }>
+                    <button className={`top-sales-slider-btn prev-btn ${ index === 0 ? "hidden" : ""}`} type="btn" onClick={ prev }>
                         <Image src="/icons/arrow-left.svg" width="30" height="30" alt="Prev" />
                     </button>
 
-                    <button className="top-sales-slider-btn next-btn" type="btn" onClick={ next }>
+                    <button className={`top-sales-slider-btn next-btn ${ index === maxIndex ? "hidden" : ""}`} type="btn" onClick={ next }>
                         <Image src="/icons/arrow-left.svg" width="30" height="30" alt="Next" />
                     </button>
                 </>
             ) }
             <div className="slider-viewport">
-                <div className="slider-track">
+                <div className="slider-track"
+                style={{
+                    transform: `translateX(-${index * (100 / VISIBLE)}%)`
+                }}>
                     { books.length > 0 && (
                         books.map((book) => (
                             <div className="slider-item" key={ book.id }>
                                 <ProductCard title={ book.title } 
                                 brand={`${book?.authors[0]?.first_name} ${book?.authors[0]?.last_name}`} 
                                 imageSrc={book.images[0]?.image_url ?? ImagesLinks.DEFAULT_IMAGE}
+                                productLink={book.slug}
                                 badges={[
                                 book?.reviews?.length ? <Stars reviews={ book.reviews} isSmaller={ true } /> : <></>,
                                 book?.reviews?.length > 0 && <CommentsCount count={ book.reviews.length } />,
