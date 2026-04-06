@@ -15,6 +15,15 @@
         padding-block: rem(12);
     }
 
+    &-without-image {
+        background-image: none;
+        color: var(--color-black);
+
+        &-badge {
+            background-color: var(--color-gray-50) !important;
+        }
+    }
+
     &-header {
         display: flex;
         align-items: center;
@@ -120,6 +129,15 @@
         & > * {
             width: 100% !important;
             min-width: 0 !important; 
+        }
+    }
+
+    &-image {
+        height: rem(300);
+
+        & img {
+            object-fit: cover;
+            border-radius: rem(5);
         }
     }
 }

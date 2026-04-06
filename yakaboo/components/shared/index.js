@@ -52,3 +52,6 @@ export { Pagination } from "./Pagination";
 export { AuthorsHeader } from "./AuthorsHeader";
 export { CardsContainerWithBooksList } from "./CardsContainerWithBooksList"
 export { TopSalesSection } from "./TopSalesSection";
+export { NewBanners } from "./NewBanners";
+export { SliderCountBar } from "./SliderCountBar";
+export { BaseSlider } from "./BaseSlider";

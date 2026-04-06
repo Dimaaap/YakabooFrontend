@@ -103,7 +103,8 @@ const Defaults = {
 
 const Banners = {
   MAIN_PAGE_BANNERS: `${DOMAIN}banners/all`,
-  ALL_BOOKS_BANNERS: `${DOMAIN}banners/all/books-page`
+  ALL_BOOKS_BANNERS: `${DOMAIN}banners/all/books-page`,
+  NEW_BANNERS: `${DOMAIN}banners/all/news`
 }
 
 const Wishlists = {

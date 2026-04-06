@@ -1,0 +1,26 @@
+@use "../helpers" as *;
+
+.slider-count-bar {
+    position: absolute;
+    top: 90%;
+    left: 10%;
+    display: flex;
+    align-items: center;
+    gap: 2%;
+    z-index: 101;
+}
+
+.bar {
+    height: rem(7);
+    border-radius: rem(5);
+    width: rem(65);
+    background-color: var(--color-gray-30);
+    opacity: 0.7;
+    transition: 0.3s;
+    cursor: pointer;
+
+    &.active {
+        background-color: var(--color-black);
+        opacity: 1;
+    }
+}

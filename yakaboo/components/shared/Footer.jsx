@@ -92,7 +92,7 @@ export const Footer = () => {
                 <button className={`footer__submit-btn ${!userEmail?.length || isSubmitting || isSubscribed ? "is-disabled" : ""}`}
                 onClick={() => subscribeUser(userEmail)}
                 type="button" 
-                disabled={ !userEmail.length || isSubmitting || isSubscribed }>
+                disabled={ !userEmail?.length || isSubmitting || isSubscribed }>
                     Отримувати цікавинки
                 </button>
             </div>

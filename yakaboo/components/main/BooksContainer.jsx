@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { Badge, BookInfoBadge, CommentsCount, ProductCard, Stars, TopBadge, TopSalesSection } from '../shared'
+import { CommentsCount, NewBanners, ProductCard, Stars, TopBadge, TopSalesSection } from '../shared'
 
 const BooksContainer = () => {
   return (
@@ -10,52 +10,7 @@ const BooksContainer = () => {
 
             <TopSalesSection />
 
-            <div className="books-container__section">
-                <div className="books-container__header">
-                    <h3 className="books-container__title">
-                        Новинки книг
-                    </h3>
-                    <Link className="books-container__title-link" href="#">
-                        <span>
-                            Показати все 
-                            <Image src="icons/chevron-down.svg" width="15" height="15" alt="" />
-                        </span>
-                    </Link>    
-                </div>
-                <div className="books-container__slider">
-                    <button className="books-container__btn prev-btn visually-hidden" type="btn">
-                        <Image src="/icons/arrow-left.svg" width="30" height="30" alt="" />
-                    </button>
-                    <div className="books-container__slider book-slider">
-                        <ProductCard title="Чорти" brand="Джо Аберкромбі" 
-                        imageSrc='https://static.yakaboo.ua/media/cloudflare/product/webp/352x340/9/7/978-617-8383-94-7_cr.jpg'
-                        badges={[<Stars isSmaller={true} />, <CommentsCount />,  <Badge text="Новинка" backgroundColor="#00945F" />]}
-                        productCode='1231' productLink='#' oldPrice={890} bonusesCount={445}
-                        inStock={ true } withAddToWishlist={ true } />
-
-                        <ProductCard title="Джерело Вознесіння" brand="Брендон Сандерсон" 
-                        imageSrc='https://static.yakaboo.ua/media/cloudflare/product/webp/352x340/a/a/aa4239e8744c44faa913b754d8e3fc41.webp'
-                        badges={[<Stars isSmaller={true} />,  <Badge text="Новинка" backgroundColor="#00945F" />]}
-                        productCode='1231' productLink='#' oldPrice={930} bonusesCount={250}
-                        inStock={ true } withAddToWishlist={ true } />
-
-                        <ProductCard title="Нічний трунок" brand="Алекс Астер" 
-                        imageSrc='https://static.yakaboo.ua/media/cloudflare/product/webp/352x340/6/3/635ef7c2_nichnyi-trunok.webp'
-                        badges={[<Stars isSmaller={true} />,  <Badge text="Новинка" backgroundColor="#00945F" />]}
-                        productCode='1231' productLink='#' oldPrice={500} bonusesCount={250}
-                        inStock={ true } withAddToWishlist={ true } />
-                        
-                        <ProductCard title="Нічний трунок" brand="Алекс Астер" 
-                        imageSrc='https://static.yakaboo.ua/media/cloudflare/product/webp/352x340/6/3/635ef7c2_nichnyi-trunok.webp'
-                        badges={[<Stars isSmaller={true} />,  <Badge text="Новинка" backgroundColor="#00945F" />]}
-                        productCode='1231' productLink='#' oldPrice={500} bonusesCount={250}
-                        inStock={ true } withAddToWishlist={ true } />
-                    </div>  
-                    <button className="books-container__btn next-btn" type="btn">
-                        <Image src="/icons/arrow-left.svg" width="30" height="30" alt="" />
-                    </button>
-                </div>    
-            </div>
+            <NewBanners />
 
             <div className="books-container__section">
                 <div className="books-container__header">
