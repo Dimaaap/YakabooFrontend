@@ -1,10 +1,17 @@
 'use client';
 
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { setDescription, setShowAll, useHobbyDescriptionStore } from '../../states/hobbies/HobbyDescriptionStore';
 
 export const PublishingHeader = ({ publisher }) => {
   const [showFull, setShowFull] = useState(false);
+
+  const { firstParagraph, showAll, isSingle } = useHobbyDescriptionStore()
+
+  useEffect(() => {
+    setDescription(publisher.description)
+  }, [publisher.description])
 
   const changeShowFull = () => {
     if (showFull) {
@@ -13,6 +20,14 @@ export const PublishingHeader = ({ publisher }) => {
       setShowFull(true);
     }
   };
+
+  const handleChangeShowAll = () => {
+      if (showAll) {
+        setShowAll(false);
+      } else {
+        setShowAll(true);
+      }
+    };
 
   return (
     <>
@@ -40,7 +55,7 @@ export const PublishingHeader = ({ publisher }) => {
               ) }
               
 
-            { publisher.long_description !== publisher.short_description && !showFull && (
+            {/* { publisher.long_description !== publisher.short_description && !showFull && (
               <button className="publishing-header__show-more" type="buttson" onClick={() => changeShowFull()}>
                 Показати повністю
                 <Image src="/icons/chevron-down.svg" alt="" width="18" height="18" />
@@ -55,6 +70,24 @@ export const PublishingHeader = ({ publisher }) => {
                 </button>  
               </div>
               
+            ) } */}
+
+            <div className="author-header__desc-block" dangerouslySetInnerHTML={{__html: showAll ? publisher.description : firstParagraph}} />
+            
+            { !isSingle && (
+              !showAll ? (
+                <button
+                onClick={() => setShowAll(true)} className="hobby-page__show-more">
+                  Показати все
+                   <Image src="/icons/chevron-down.svg" alt="" width="18" height="18" />
+                </button>
+              ) : (
+                <button 
+                onClick={() => setShowAll(false)} className="hobby-page__show-more">
+                  Показати менше
+                  <Image src="/icons/chevron-down.svg" alt="" width="18" height="18" className="rotated" />
+                </button>
+              )
             ) }
           </div>
         </div>

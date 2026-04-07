@@ -2,26 +2,18 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useRef } from "react"
+import { useState } from "react"
 import Endpoints from "../../endpoints"
-import { Badge, ProductCard, Spinner, Stars, TopBadge } from "../shared"
-import { badgeColors, STALE_TIME } from "../../site.config"
+import { CommentsCount, ProductCard, Spinner, Stars, TopBadge } from "../shared"
+import { STALE_TIME } from "../../site.config"
 import { useQuery } from "@tanstack/react-query"
 import { fetcher } from "../../services/fetch.service"
 
 export const OtherSeriaBooks = ({ book }) => {
-    const sliderRef = useRef(null);
+    const VISIBLE = 3;
 
-    const scroll = direction => {
-        if(sliderRef.current){
-            const scrollAmount = sliderRef.current.offsetWidth;
+    const [index, setIndex] = useState(0);
 
-            sliderRef.current.scrollBy({
-                left: direction === "left" ? -scrollAmount: scrollAmount,
-                behavior: "smooth"
-            })
-        }
-    }
 
     const { data, isLoading, isError } = useQuery({
         queryKey: ["seria-books", book?.seria?.slug],
@@ -32,59 +24,77 @@ export const OtherSeriaBooks = ({ book }) => {
     
     const books = data?.results ?? [];
 
+    const maxIndex = Math.max(0, books.length - VISIBLE);
+    
+    const next = () => {
+        setIndex((prev) => Math.min(prev + 1, maxIndex));
+    }
+    
+    const prev = () => {
+        setIndex((prev) => Math.max(prev - 1, 0))
+    }
+
     if(isLoading || isError) return <Spinner />
 
     return(
-        <div className="books-container seria-container">
-            <div className="books-container__header">
-                <h3 className="books-container__header-title">
+        <div className="top-sales-section top-sales-without-image top-sales-smaller">
+            <div className="top-sales-header">
+                <h3>
                     Книга входить в серію
                 </h3>
-                <Link className="books-container__header-view-all"
-                href={`/book/seria/${book.seria.slug}`}>
+                <Link className="top-sales-header-show-all-link" href="#">
+                <span>
                     Показати все 
-                    <Image src="/icons/arrow-left.svg" alt="" width="12" height="12" />
-                </Link>
+                    <Image src="icons/chevron-down.svg" width="18" height="19" alt="" 
+                    className="top-sales-header-show-all-link-icon"/>
+                </span>
+            </Link>   
             </div>
-
-            <div className="books-container__slider seria-slider">
-                { books?.length > 4 && (
-                    <button className={`books-container__btn prev-btn container-slider-btn`} type="button" onClick={() => scroll("left") }>
-                        <Image src="/icons/arrow-left.svg" width="30" height="30" alt="" />
-                    </button>    
+            <div className="top-sales-slider">
+                { books?.length > VISIBLE && (
+                     <>
+                        <button className={`top-sales-slider-btn prev-btn ${ index === 0 ? "hidden" : ""}`} type="btn" onClick={ prev }>
+                            <Image src="/icons/arrow-left.svg" width="30" height="30" alt="Prev" />
+                        </button>
+                    
+                        <button className={`top-sales-slider-btn next-btn ${ index === maxIndex ? "hidden" : ""}`} type="btn" onClick={ next }>
+                            <Image src="/icons/arrow-left.svg" width="30" height="30" alt="Next" />
+                        </button>
+                    </>
                 ) }
-                
-                { books?.length > 0 && (
-                    <div className="books-container__slider book-slider seria-slider container-slider" ref={ sliderRef }>
-                        { books.map((book, index) => (
-                            <ProductCard key={ index } productLink={ `/book/${book.slug}` }
-                            extraClass="container-slider__book"
-                            title={ book.title }
-                            imageSrc={ book.images[0].image_url } 
-                            brand={`${book.authors[0].first_name} ${book.authors[0].last_name}`}
-                            badges={
-                                [ 
-                                    book.stars > 0 ? <Stars count={ book.stars } isSmaller={ true } /> : null,
-                                    book.is_top && <TopBadge />,
-                                    book.is_in_chart && <Badge text="Добірка" backgroundColor={badgeColors.green} />
-                                ]
-                            }
-                            productCode={ book.book_info.code }
-                            oldPrice={ book.price }
-                            inStock={ book.book_info.in_stock }
-                            bonusesCount={ book.book_info.bonuses }
-                            isEbook={ book.book_info.format === "Електронна" }/>
-                        )) }
-                        
-                    </div>    
-                ) }
-                { books?.length > 4 && (
-                    <button className={`books-container__btn next-btn container-slider-btn`}
-                    type="button" onClick={() => scroll("right") }>
-                        <Image src="/icons/arrow-left.svg" width="30" height="30" alt="" />
-                    </button>
-                ) }
-
+                <div className="slider-viewport">
+                    <div className="slider-track"
+                    style={{
+                        transform: `translateX(-${index * (100 / VISIBLE)}%)`
+                    }}>
+                        { books?.length > 0 && (
+                            books.map((book => (
+                                <div className="slider-item slider-item-smaller" key={ book.id }>
+                                    <ProductCard title={ book.title } 
+                                    brand={`${book?.authors[0]?.first_name} ${book?.authors[0]?.last_name}`} 
+                                    imageSrc={book.images[0]?.image_url ?? ImagesLinks.DEFAULT_IMAGE}
+                                    productLink={book.slug}
+                                    badges={[
+                                        book?.reviews?.length ? <Stars reviews={ book.reviews} isSmaller={ true } /> : <></>,
+                                        book?.reviews?.length > 0 && <CommentsCount count={ book.reviews.length } />,
+                                        <TopBadge />]}
+                                    productCode={ book?.book_info?.code }
+                                    oldPrice={ book?.price }
+                                    newPrice={ book?.is_promo ? book?.promo_price : null }
+                                    inStock={ book?.book_info?.in_stock || book?.is_in_stock || false }
+                                    hasCashback={ book?.book_info?.is_has_cashback }
+                                    hasWinterSupport={ book?.book_info?.is_has_winter_esupport }
+                                    hasESupport={ book?.book_info?.is_has_esupport }
+                                    UKDeliveryTime={ book?.book_info?.uk_delivery_time }
+                                    deliveryTime={ book?.book_info?.delivery_time }
+                                    extraClass="top-sales-card"
+                                    changeStyles={ true }
+                                    />    
+                                </div>
+                            )))
+                        ) }
+                    </div>
+                </div>
             </div>
         </div>
     )

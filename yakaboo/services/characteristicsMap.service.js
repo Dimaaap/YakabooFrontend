@@ -25,7 +25,7 @@ export const baseFields = [
         title: "Видавництво",
         show: (book, isGift) => !isGift && book.publishing?.title,
         render: (book) => (
-            <Link href={`/book-publisher/view/${book.publishing.slug}`} className="book-container__link author-link">
+            <Link href={`/book_publisher/view/${book.publishing.slug}`} className="book-container__link author-link">
                 { book.publishing.title }
             </Link>
         )

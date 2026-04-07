@@ -1,33 +1,32 @@
-"use client"
+"use client";
 
 import React, { useState } from 'react'
-import Image from 'next/image'
+import Image from "next/image"
 
 import { CommentsCount, ProductCard, Stars, TopBadge } from '.';
 import { ImagesLinks } from '../../site.config';
 import Link from 'next/link';
 
-export const TopSalesSection = ({ books }) => {
-
-  const [index, setIndex] = useState(0);
-
-  const VISIBLE = 4;
-
-  const maxIndex = Math.max(0, books.length - VISIBLE);
-
-  const next = () => {
-    setIndex((prev) => Math.min(prev + 1, maxIndex));
-  }
-
-  const prev = () => {
-    setIndex((prev) => Math.max(prev - 1, 0))
-  }
-
-  return (
-    <div className="top-sales-section">
+export const BooksSection = ({ categoryTitle, books }) => {
+    const [index, setIndex] = useState(0);
+    
+    const VISIBLE = 4;
+    
+    const maxIndex = Math.max(0, books.length - VISIBLE);
+    
+    const next = () => {
+        setIndex((prev) => Math.min(prev + 1, maxIndex));
+    }
+    
+    const prev = () => {
+        setIndex((prev) => Math.max(prev - 1, 0))
+    }
+  
+    return (
+    <div className="top-sales-section top-sales-without-image">
         <div className="top-sales-header">
             <h3>
-                Топ продажів 🔥
+                { categoryTitle }
             </h3>
             <Link className="top-sales-header-show-all-link" href="#">
                 <span>

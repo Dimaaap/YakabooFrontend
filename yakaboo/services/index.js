@@ -6,3 +6,4 @@ export { fetchData } from './fetch.service';
 export { handleBackdropClick } from './handleBackdropClick.service';
 export { Validators } from "./inputDataValidators.service";
 export { validationRules } from "./validationRules";
+export { getDiscountedBooks } from "./getDiscountedBooks";

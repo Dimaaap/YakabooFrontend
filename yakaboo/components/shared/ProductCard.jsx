@@ -30,7 +30,7 @@ export const ProductCard = ({
   changeStyles=false
 }) => {
   return (
-    <Link className={`${changeStyles ? `${extraClass}` : `product-card ${extraClass}`}`}href={productLink}>
+    <Link className={`${changeStyles ? `${extraClass}` : `product-card ${extraClass}`}`} href={`${productLink}`}>
       { (hasCashback || hasWinterSupport || hasESupport) && (
         <SupportIcons hasCashback={hasCashback} hasWinterSupport={hasWinterSupport} hasESupport={hasESupport} />
       ) }

@@ -55,3 +55,4 @@ export { TopSalesSection } from "./TopSalesSection";
 export { NewBanners } from "./NewBanners";
 export { SliderCountBar } from "./SliderCountBar";
 export { BaseSlider } from "./BaseSlider";
+export { BooksSection } from "./BooksSection";
