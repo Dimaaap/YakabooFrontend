@@ -7,6 +7,7 @@ import Endpoints from "../../endpoints";
 import { useQuery } from "@tanstack/react-query";
 import { fetcher } from "../../services/fetch.service";
 import Image from "next/image";
+import { Banner } from "../main";
 
 export const BookPublisherClient = () => {
 
@@ -37,6 +38,11 @@ export const BookPublisherClient = () => {
     return (
         <div className="publisher">
           <Breadcrumbs linksList={links} />
+          
+          { publisher.banners.length > 0 && (
+            <Banner banners={ publisher.banners } smallerHeight={ true } />
+          
+          ) }
           {publisher && <PublishingHeader publisher={publisher} />}
     
           <div className="publisher-container">

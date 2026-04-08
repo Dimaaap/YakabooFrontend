@@ -5,7 +5,7 @@ import Link from 'next/link';
 import React, { useState, useEffect, useRef } from 'react';
 
 
-export const Banner = ({ banners=[], bigger=false, isLoading=false }) => {
+export const Banner = ({ banners=[], bigger=false, smallerHeight=false, isLoading=false }) => {
   const intervalRef = useRef(null);
   const [index, setIndex] = useState(0);
 
@@ -67,7 +67,7 @@ export const Banner = ({ banners=[], bigger=false, isLoading=false }) => {
   }
 
   return (
-    <div className={`banner ${bigger ? "bigger" : ""}`}>
+    <div className={`banner ${bigger ? "bigger" : ""}${smallerHeight ? "small-height": ""}`}>
       <button className="banner__btn prev-btn" type="btn" onClick={handlePrev}>
         <Image src="/icons/arrow-left.svg" width="30" height="30" alt="" />
       </button>
