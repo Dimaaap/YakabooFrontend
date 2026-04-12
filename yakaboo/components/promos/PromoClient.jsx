@@ -1,20 +1,23 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { fetchData } from "../../services";
 import Endpoints from "../../endpoints";
 import { Filters, Skeleton } from "../shared";
 import { PromoContainer } from ".";
 import { usePathname } from "next/navigation";
+import { fetcher } from "../../services/fetch.service";
+import { STALE_TIME } from "../../site.config";
+import { useQuery } from "@tanstack/react-query";
 
 export const PromoClient = () => {
-    const [currentPromo, setCurrentPromo] = useState(null);
 
     const pathname = usePathname();
     const promoSlug = pathname.split("/")[2]
     
-    useEffect(() => {
-        fetchData(Endpoints.PROMOTION(promoSlug), setCurrentPromo)
+
+    const { data: currentPromo } = useQuery({
+        queryKey: ["promotion", promoSlug],
+        queryFn: () => fetcher(Endpoints.PROMOTION(promoSlug)),
+        staleTime: STALE_TIME
     })
 
     return(

@@ -8,7 +8,6 @@ export { AuthorFacts } from './AuthorFacts';
 export { Filters } from './Filters';
 export { BookCard } from './BookCard';
 export { PromoTimer } from './PromoTimer';
-export { PromotionsSidebar } from './PromotionsSidebar';
 export { Promotions } from './Promotions';
 export { FlashMessage } from './FlashMessage';
 export { UserProfileButton } from './UserProfileButton';
@@ -34,7 +33,6 @@ export { ScrollContainer } from "./ScrollContainer";
 export { Checkbox } from "./Checkbox";
 export { ContactDataForm } from "./ContactDataForm";
 export { FormInput } from "./FormInput"
-export { PhoneInput } from "./PhoneInput"
 export { DeliveryDataForm } from "./DeliveryDataForm";
 export { SelectField } from "./SelectField";
 export { PaymentMethodForm } from "./PaymentMethodForm";

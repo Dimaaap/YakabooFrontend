@@ -87,7 +87,7 @@ export const Banner = ({ banners=[], bigger=false, smallerHeight=false, isLoadin
                   src={banner.image_src}
                   alt={`Banner_${i + 1}`}
                   width={400}
-                  height={400}
+                  height={300}
                 />
               </Link>
             ))

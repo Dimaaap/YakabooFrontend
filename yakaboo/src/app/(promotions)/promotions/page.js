@@ -1,24 +1,24 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
 import Endpoints from '../../../../endpoints';
-import { PromotionsSidebar, Promotions } from '../../../../components';
-import { fetchData } from '../../../../services';
+import { Promotions } from '../../../../components';
+import { useQuery } from '@tanstack/react-query';
+import { fetcher } from '../../../../services/fetch.service';
+import { STALE_TIME } from '../../../../site.config';
 
 
 export default function PromotionsPage() {
 
-    const [promos, setPromos] = useState([]);
-
-    useEffect(() => {
-        fetchData(Endpoints.ALL_PROMOTIONS, setPromos, "promotions");
-    }, []);
-
+    const { data: promos = [] } = useQuery({
+      queryKey: ["promotions"],
+      queryFn: () => fetcher(Endpoints.ALL_PROMOTIONS),
+      refetchOnWindowFocus: false,
+      staleTime: STALE_TIME
+    })
   return (
     <div className="promotions">
       <h4 className="promotions__title">Акції та знижки</h4>
       <div className="promotions__content">
-        <PromotionsSidebar />
         <Promotions promos={ promos } />
       </div>
     </div>

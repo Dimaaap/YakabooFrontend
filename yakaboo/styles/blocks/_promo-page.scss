@@ -75,6 +75,11 @@
         gap: rem(10);
     }
 
+    &__short-decription {
+        margin-top: rem(20);
+        font-weight: 600;
+    }
+
     &__promo-desc {
         font-size: rem(15);
         font-weight: 500;
