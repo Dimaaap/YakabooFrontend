@@ -9,6 +9,8 @@ export const Banner = ({ banners=[], bigger=false, smallerHeight=false, isLoadin
   const intervalRef = useRef(null);
   const [index, setIndex] = useState(0);
 
+  const validBanners = banners.filter((banner) => banner.image_src !== "test");
+
   const visibleSlides = !bigger ? 3 : 4;
   const gap = 16;
 
@@ -17,7 +19,7 @@ export const Banner = ({ banners=[], bigger=false, smallerHeight=false, isLoadin
     return `calc(-${index} * ( (100% - ${(visibleSlides - 1) * gap}px) / ${visibleSlides} + ${gap}px ))`;
   }
 
-  const maxIndex = Math.max(0, banners.length - visibleSlides);
+  const maxIndex = Math.max(0, validBanners.length - visibleSlides);
 
   const clearAutoScroll = () => {
     if (intervalRef.current) {
@@ -44,13 +46,13 @@ export const Banner = ({ banners=[], bigger=false, smallerHeight=false, isLoadin
   };
 
   useEffect(() => {
-    if (banners.length > 0) {
+    if (validBanners.length > 0) {
       startAutoScroll();
     }
     return () => clearAutoScroll();
   }, [banners, maxIndex]);
 
-  const showSkeleton = isLoading || banners.length === 0;
+  const showSkeleton = isLoading || validBanners.length === 0;
 
   if(showSkeleton){
     return (
@@ -80,8 +82,7 @@ export const Banner = ({ banners=[], bigger=false, smallerHeight=false, isLoadin
             transition: `transform 0.5s ease-in-out`,
           }}
         >
-          {banners.filter((banner) => banner.image_src !== "test").length > 0 ? (
-            banners.filter((banner) => banner.image_src !== "test").map((banner, i) => (
+          {validBanners.map((banner, i) => (
               <Link key={i} className="banner__image" href={banner.link}>
                 <Image
                   src={banner.image_src}
@@ -90,14 +91,7 @@ export const Banner = ({ banners=[], bigger=false, smallerHeight=false, isLoadin
                   height={300}
                 />
               </Link>
-            ))
-          ) : (
-            <div className="loading">
-              {[...Array(3)].map((_, i) => (
-                <div className="loading__rect" key={i}></div>
-              ))}
-            </div>
-          )}
+            ))}
         </div>  
       </div>
       

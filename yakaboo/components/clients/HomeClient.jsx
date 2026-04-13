@@ -20,10 +20,9 @@ export const HomeClient = () => {
   const { isSearchHistoryModalOpen } = useSearchHistoryOpenStore();
   const { setIsHoveringCategory, setIsHoveringSubcategoryModal, setIsSubcategoriesModalOpen } = useSubcategoriesModalStore();
   const { cartItems } = useCartStore();
-  const { history } = useHistoryStore();
   const { searchTerm, searchResponse } = useSearchTerm();
 
-  const { data: banners = [] } = useQuery({
+  const { data: banners = [], isLoading } = useQuery({
     queryKey: ["banners"],
     queryFn: () => fetcher(Endpoints.MAIN_PAGE_BANNERS),
     staleTime: STALE_TIME,
@@ -47,7 +46,7 @@ export const HomeClient = () => {
           <MainHeader />
           { isSearchHistoryModalOpen && <SearchHistoryModal /> }
           { searchResponse && searchTerm.length > 0 && <SearchResponseModal searchResponse={ searchResponse } /> }
-          <Banner banners={ banners } />
+          <Banner banners={ banners } isLoading={ isLoading } />
           { cartItems?.items?.length > 0 && (
             <CartInfo itemsCount={ cartItems.items.length } 
             totalPrice={ cartItems.total_price } />

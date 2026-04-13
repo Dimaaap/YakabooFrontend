@@ -1,7 +1,7 @@
 "use client"
 
 import Endpoints from "../../endpoints";
-import { Filters, Skeleton } from "../shared";
+import { CardsContainer, Filters, Skeleton } from "../shared";
 import { PromoContainer } from ".";
 import { usePathname } from "next/navigation";
 import { fetcher } from "../../services/fetch.service";
@@ -29,6 +29,9 @@ export const PromoClient = () => {
             <div className="promotion-page__main-content promo-content">
                 <div className="promo-content__left">
                     <Filters />
+                    { currentPromo && currentPromo.books.length > 0 && (
+                        <CardsContainer passedBooks={ currentPromo.books } />
+                    ) }
                 </div>
             </div>
         </div>

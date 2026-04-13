@@ -9,7 +9,7 @@ import { getDiscountedBooks } from '../../services'
 
 const BooksContainer = () => {
 
-  const { data: books = [] } = useQuery({
+  const { data: books = [], isLoading } = useQuery({
     queryKey: ["all-books"],
     queryFn: () => fetcher(Endpoints.ALL_BOOKS(500)),
     staleTime: STALE_TIME,
@@ -27,11 +27,11 @@ const BooksContainer = () => {
     <div className="categories">
         <div className="books-container">
 
-            <TopSalesSection books={ TOP_BOOKS } />
+            <TopSalesSection books={ TOP_BOOKS } isLoading={ isLoading } />
 
             <NewBanners />
 
-            <BooksSection categoryTitle="Yakaboo Publishing" books={ YAKABOO_PUBLISHING_BOOKS } />
+            <BooksSection categoryTitle="Yakaboo Publishing" books={ YAKABOO_PUBLISHING_BOOKS } isLoading={ isLoading } />
 
             <div className="books-container__section">
                 <div className="books-container__header">
@@ -47,23 +47,23 @@ const BooksContainer = () => {
                         <ProductCard title="Стіни в моїй голові. Жити з тривожністю і депресією"
                         brand="Володимир Станчишин" 
                         imageSrc="https://static.yakaboo.ua/media/cloudflare/product/webp/352x340/s/t/stanchyshyn_-_1500__1.png" 
-                        badges={[<Stars count={ 5 } isSmaller={ true } />, <CommentsCount count={ 2 } />, <TopBadge />]}
+                        badges={[<CommentsCount count={ 2 } />, <TopBadge />]}
                         productCode="1231" productLink="#" oldPrice={ 295 } bonusesCount={ 148 } inStock={ true } isAudio={ true }/>
 
                         <ProductCard title="Танець недоумка" brand="Ілларіон Павлюк" 
                         imageSrc="https://static.yakaboo.ua/media/cloudflare/product/webp/352x340/c/o/cover_178_73.jpg"
-                        badges={[<Stars count={ 5 } isSmaller={ true } />, <CommentsCount count={ 32 } />, <TopBadge />]}
+                        badges={[<CommentsCount count={ 32 } />, <TopBadge />]}
                         productCode="1231" productLink="#" oldPrice={ 270 } bonusesCount={ 135 } inStock={ true } isEbook={ true } />
 
                         <ProductCard title="Я бачу, вас цікавить пітьма" brand="Ілларіон Павлюк" 
                         imageSrc="https://static.yakaboo.ua/media/cloudflare/product/webp/352x340/i/m/img_67890_1.jpg"
-                        badges={[<Stars count={ 4 } isSmaller={ true } />, <CommentsCount count={ 116 } />, <TopBadge />]}
+                        badges={[<CommentsCount count={ 116 } />, <TopBadge />]}
                         productCode="1241" productLink="#" oldPrice={ 600 } bonusesCount={ 300 } inStock={ false } 
                         waitSince={"31.12.25"} hasCashback={ true } hasWinterSupport={ true } />
 
                         <ProductCard title="За маму, за тата" brand="Каріна Саварина"
                         imageSrc="https://static.yakaboo.ua/media/cloudflare/product/webp/352x340/z/a/za_mamy_za_tata_new_copy.png"
-                        badges={[<Stars count={4} isSmaller={ true } />, <CommentsCount count={ 8 } />, <TopBadge />]}
+                        badges={[<CommentsCount count={ 8 } />, <TopBadge />]}
                         productCode="121" productLink='#' oldPrice={ 350 } newPrice={ 323 } bonusesCount={ 162 } inStock={ true } />
                     </div>  
                     <button className="books-container__btn next-btn" type="btn">

@@ -12,13 +12,37 @@ export const NewBanners = () => {
 
     const VISIBLE = 4;
 
-    const { data: banners = [] } = useQuery({
+    const { data: banners = [], isLoading } = useQuery({
         queryKey: ["new-banners"],
         queryFn: () => fetcher(Endpoints.NEW_BANNERS),
         gcTime: STALE_TIME,
         refetchOnWindowFocus: false
     })
 
+    const showSkeleton = isLoading || banners.length === 0;
+
+    if(showSkeleton) {
+        return (
+            <div className="top-sales-section top-sales-without-image">
+                <div className="top-sales-header">
+                    <h3>
+                        Новинки
+                    </h3>
+                </div>
+                <div className="top-sales-slider">
+                    <div className="slider-viewport">
+                        <div className="slider-track">
+                            {[...Array(VISIBLE)].map((_, i) => (
+                                <div className="slider-item" key={ i }>
+                                    <div className="banner-skeleton"></div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 
   return (
     <div className="top-sales-section top-sales-without-image">

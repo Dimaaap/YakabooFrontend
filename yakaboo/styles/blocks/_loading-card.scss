@@ -1,0 +1,81 @@
+@use "../helpers" as *;
+
+.loading {
+  &-image {
+    width: rem(200);
+    height: rem(300);
+    margin-inline: auto;
+    background-color: var(--color-gray-50);
+    animation: skeleton-pulse 2s ease-in-out infinite;
+    border-radius: rem(10);
+  }
+
+  &-content {
+    width: 100%;
+    height: rem(100);
+    display: flex;
+    padding-inline: 5%;
+    flex-direction: column;
+    gap: rem(10);
+  }
+
+  &-text {
+    height: rem(20);
+    width: 100%;
+    background-color: var(--color-gray-50);
+    animation: skeleton-pulse 2s ease-in-out infinite;
+
+    &.short-text {
+      width: 50%;
+    }
+  }
+
+  &-price-container {
+      width: 100%;
+      padding-inline: 5%;
+      height: rem(150);
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+
+      &-price-block {
+        width: 50%;
+        height: rem(140);
+        display: flex;
+        flex-direction: column;
+        gap: rem(10);
+      }
+
+      &-price {
+        width: 100%;
+        height: rem(30);
+        background-color: var(--color-gray-50);
+        animation: skeleton-pulse 2s ease-in-out infinite;
+      }
+
+      &-bonuses {
+        width: 100%;
+        height: rem(25);
+        background-color: var(--color-gray-50);
+        animation: skeleton-pulse 2s ease-in-out infinite;
+      }
+
+      &-cart-btn {
+        width: rem(45);
+        height: rem(45);
+        border-radius: rem(10);
+        background-color: var(--color-gray-50);
+        animation: skeleton-pulse 2s ease-in-out infinite;
+      }
+    }
+
+    &-delivery-status {
+      width: rem(150);
+      height: rem(20);
+      background-color: var(--color-gray-50);
+      animation: skeleton-pulse 2s ease-in-out infinite;
+      margin-left: 5%;
+      margin-top: -15%;
+      margin-bottom: 5%;
+    }
+}

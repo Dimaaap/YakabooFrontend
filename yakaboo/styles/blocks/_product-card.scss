@@ -43,6 +43,15 @@
   position: relative;
   padding-inline: 2%;
 
+  &.loading-card {
+    background-color: var(--color-gray-50);
+    animation: skeleton-pulse 4s ease-in-out infinite;
+    height: rem(550) !important;
+    display: flex;
+    flex-direction: column;
+    gap: 2%;
+  }
+
 }
 
 

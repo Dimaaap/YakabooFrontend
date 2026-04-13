@@ -3,11 +3,11 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 
-import { CommentsCount, ProductCard, Stars, TopBadge } from '.';
+import { CommentsCount, LoadingCard, ProductCard, Stars, TopBadge } from '.';
 import { ImagesLinks } from '../../site.config';
 import Link from 'next/link';
 
-export const TopSalesSection = ({ books }) => {
+export const TopSalesSection = ({ books, isLoading }) => {
 
   const [index, setIndex] = useState(0);
 
@@ -21,6 +21,31 @@ export const TopSalesSection = ({ books }) => {
 
   const prev = () => {
     setIndex((prev) => Math.max(prev - 1, 0))
+  }
+
+  const showSkeleton = isLoading || books.length === 0;
+
+  if(showSkeleton){
+    return (
+        <div className="top-sales-section">
+            <div className="top-sales-header">
+                <h3>
+                    Топ продажів 🔥
+                </h3>  
+            </div>
+            <div className="top-sales-slider">
+                <div className="slider-viewport">
+                    <div className="slider-track">
+                        {[...Array(VISIBLE)].map((_, i) => (
+                            <div className="slider-item" key={ i }>
+                                <LoadingCard />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                </div>
+            </div>
+    )
   }
 
   return (

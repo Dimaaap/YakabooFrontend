@@ -3,11 +3,11 @@
 import React, { useState } from 'react'
 import Image from "next/image"
 
-import { CommentsCount, ProductCard, Stars, TopBadge } from '.';
+import { CommentsCount, LoadingCard, ProductCard, Stars, TopBadge } from '.';
 import { ImagesLinks } from '../../site.config';
 import Link from 'next/link';
 
-export const BooksSection = ({ categoryTitle, books }) => {
+export const BooksSection = ({ categoryTitle, books, isLoading }) => {
     const [index, setIndex] = useState(0);
     
     const VISIBLE = 4;
@@ -22,6 +22,31 @@ export const BooksSection = ({ categoryTitle, books }) => {
         setIndex((prev) => Math.max(prev - 1, 0))
     }
   
+    const showSkeleton = isLoading || books.length === 0;
+
+    if(showSkeleton){
+        return (
+            <div className="top-sales-section">
+                <div className="top-sales-header">
+                    <h3>
+                        Топ продажів 🔥
+                    </h3>  
+                </div>
+                <div className="top-sales-slider">
+                    <div className="slider-viewport">
+                        <div className="slider-track">
+                            {[...Array(VISIBLE)].map((_, i) => (
+                                <div className="slider-item" key={ i }>
+                                    <LoadingCard />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    </div>
+                </div>
+        )
+      }
+
     return (
     <div className="top-sales-section top-sales-without-image">
         <div className="top-sales-header">
@@ -59,7 +84,7 @@ export const BooksSection = ({ categoryTitle, books }) => {
                                 <ProductCard title={ book.title } 
                                 brand={`${book?.authors[0]?.first_name} ${book?.authors[0]?.last_name}`} 
                                 imageSrc={book.images[0]?.image_url ?? ImagesLinks.DEFAULT_IMAGE}
-                                productLink={book.slug}
+                                productLink={`/book/${book.slug}`}
                                 badges={[
                                 book?.reviews?.length ? <Stars reviews={ book.reviews} isSmaller={ true } /> : <></>,
                                 book?.reviews?.length > 0 && <CommentsCount count={ book.reviews.length } />,

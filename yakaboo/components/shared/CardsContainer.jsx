@@ -15,15 +15,16 @@ import Endpoints from '../../endpoints';
 import { useQuery } from '@tanstack/react-query';
 
 export const CardsContainer = ({
-    source,
-    categoryTitle, 
+    source=null,
+    categoryTitle=null, 
     isHobbies=false, 
     isAccessories=false, 
     isNotebooks=false, 
     isGifts=false, 
     isBoardGames=false,
     giftsBrand=null, 
-    booksList=null}) => {
+    booksList=null,
+    passedBooks=null}) => {
 
     const searchParams = useSearchParams();
 
@@ -53,21 +54,22 @@ export const CardsContainer = ({
 
         queryFn: async() => {
             const res = await fetch(`${getEndpoint(source)}?limit=${LIMIT}&offset=${offset}&${queryString}`)
-            
+                
             if (!res.ok) {
                 return { count: 0, results: [] };
             }
 
             return res.json();
         },
-
+        enabled: !passedBooks?.length,
         staleTime: STALE_TIME,
         gcTime: STALE_TIME,
         refetchOnWindowFocus: false
-    })
+    }) 
+    
 
-    const books = data?.results ?? [];
-    const total = data?.count ?? 0;
+    const books = passedBooks || data?.results || [];
+    const total = passedBooks?.length || data?.count || [];
     const PAGES_COUNT = Math.ceil(total / LIMIT);
 
     const sortedBooks = useMemo(() => sortBooks(books, sortingOrder), [books, sortingOrder])
@@ -121,7 +123,7 @@ export const CardsContainer = ({
             <AuthorsHeader categoryTitle={ categoryTitle } total={ total } />
            
             <div className="author-books__books-container" onClick={() => setIsSortingModalOpen(false)}>
-                { isLoading ? (
+                { !passedBooks && isLoading ? (
                     [...Array(SKELETON_COUNT)].map((_, index) => (
                         <ProductCardSkeleton key={ index } />
                     ))

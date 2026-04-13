@@ -54,3 +54,4 @@ export { NewBanners } from "./NewBanners";
 export { SliderCountBar } from "./SliderCountBar";
 export { BaseSlider } from "./BaseSlider";
 export { BooksSection } from "./BooksSection";
+export { LoadingCard } from "./LoadingCard";
