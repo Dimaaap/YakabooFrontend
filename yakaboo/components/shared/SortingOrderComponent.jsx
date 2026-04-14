@@ -2,18 +2,44 @@
 
 import Image from 'next/image';
 import React from 'react'
-import { removeFilter, resetFilters, toQueryString, useFilterStore} from '../../states/FilterState';
-import { getFilterLabel } from '../../utils';
-import { usePathname, useRouter } from 'next/navigation';
+import { removeFilter, resetFilters, useFilterStore} from '../../states/FilterState';
+import { getFilterLabel, updateQueryParam } from '../../utils';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { filtersMapping } from '../../site.config';
 
 export const SortingOrderComponent = () => {
     
     const router = useRouter();
     const pathname = usePathname();
+    const searchParams = useSearchParams();
 
     const { selectedFilters } = useFilterStore();
     
     let labelForPrice = false;
+
+    const handleRemove = filter => {
+        removeFilter(filter);
+
+        const queryKey = filtersMapping[filter.key];
+        const currentState = useFilterStore.getState()[filter.key];
+
+        const newQuery = updateQueryParam(
+            searchParams,
+            queryKey,
+            currentState
+        )
+
+        router.replace(`${pathname}?${newQuery}`)
+    }
+
+     const handleReset = () => {
+        resetFilters();
+        router.replace(pathname);
+    };
+
+    if(!selectedFilters?.length){
+        return null
+    }
 
   return (
     <div className="author-books__filters">
@@ -29,16 +55,10 @@ export const SortingOrderComponent = () => {
             }
             return <span className="author-books__filters-filter" key={ index }>
                 { filterLabel }
-                <Image src="/icons/close.svg" alt="" width="14" height="14" onClick={() => {
-                    removeFilter(key);
-                    router.replace(`${pathname}?${toQueryString()}`)
-                }} />
+                <Image src="/icons/close.svg" alt="" width="14" height="14" onClick={() => handleRemove(key)} />
                 </span> 
             }) }
-        <button className="author-books__filters-clear-all" onClick={ () => {
-            resetFilters();
-            router.replace(pathname);
-            } }>
+        <button className="author-books__filters-clear-all" onClick={handleReset}>
             Очистити все
         </button>
     </div>

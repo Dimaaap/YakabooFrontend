@@ -7,29 +7,34 @@ export const useFilterStore = create(() => ({
 }))
 
 export const setArrayFilters = (key, values) => {
-    useFilterStore.setState({ [key]: values })
+    const state = useFilterStore.getState();
 
-    const selected = values.map(v => ({key, value: v}))
-    const current = useFilterStore.getState().selectedFilters.filter(f => f.key !== key)
-    useFilterStore.setState({ selectedFilters: [...current, ...selected] })
+    const selected = values.map(v => ({ key, value: v }));
+    const current = state.selectedFilters.filter(f => f.key !== key);
+
+    useFilterStore.setState({
+        [key]: values,
+        selectedFilters: [...current, ...selected]
+    });
 }
 
 export const setValueFilter = (key, value) => {
-    useFilterStore.setState({ [key]: value })
+    const state = useFilterStore.getState();
 
-    const current = useFilterStore.getState().selectedFilters.filter(f => f.key !== key)
+    const current = state.selectedFilters.filter(f => f.key !== key)
 
-    if(typeof value === "boolean"){
-        if(value){
-            useFilterStore.setState({selectedFilters: [...current, { key, value }]})
-        } else {
-            useFilterStore.setState({ selectedFilters: current })
-        }
-    } else if(value){
-        useFilterStore.setState({ selectedFilters: [...current, { key, value }] })
+    let newSelected;
+
+    if(!value){
+        newSelected = current;
     } else {
-        useFilterStore.setState({ selectedFilters: current })
+        newSelected = [...current, { key, value }]
     }
+
+    useFilterStore.setState({
+        [key]: value,
+        selectedFilters: newSelected
+    })
 }
 
 export const resetFilters = () => {
@@ -41,12 +46,14 @@ export const fromSearchParams = params => {
     const newState = {}
 
     for(const [stateKey, queryKey] of Object.entries(filtersMapping)){
+        const value = params.get(queryKey);
+
         if(Array.isArray(initialState[stateKey])){
-            newState[stateKey] = params.get(queryKey)?.split(",") ?? []
+            newState[stateKey] = value ? value.split(",") : []
         } else if(typeof initialState[stateKey] === "boolean"){
-            newState[stateKey] = params.get(queryKey) === "true"
+            newState[stateKey] = value === "true"
         } else {
-            newState[stateKey] = params.get(queryKey) ?? ""
+            newState[stateKey] = value ?? ""
         }
     }
 
@@ -87,23 +94,4 @@ export const removeFilter = ({ key, value }) => {
     useFilterStore.setState({
         selectedFilters: state.selectedFilters.filter(f => !(f.key === key && f.value === value))
     })  
-}
-
-export const toQueryString = () => {
-    const state = useFilterStore.getState()
-    const queryParams = new URLSearchParams()
-    
-    for(const [stateKey, queryKey] of Object.entries(filtersMapping)){
-        const value = state[stateKey]
-
-        if(Array.isArray(value) && value.length){
-            queryParams.append(queryKey, value.join(","))
-        } else if(typeof value === "boolean" && value){
-            queryParams.append(queryKey, "true")
-        } else if(typeof value === "string" && value){
-            queryParams.append(queryKey, value)
-        }
-    }
-
-    return queryParams.toString();
 }

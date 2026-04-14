@@ -10,7 +10,6 @@ import { useSortingOrderStore } from '../../states';
 import { SortingOrdersModal } from '../modals/SortingOrdersModal';
 import { getBookAuthor, SORTING_ORDERS } from '../../utils';
 import { sortBooks } from '../../services/discount.service';
-import { useFilterStore } from '../../states/FilterState';
 import Endpoints from '../../endpoints';
 import { useQuery } from '@tanstack/react-query';
 
@@ -21,9 +20,7 @@ export const CardsContainer = ({
     isAccessories=false, 
     isNotebooks=false, 
     isGifts=false, 
-    isBoardGames=false,
     giftsBrand=null, 
-    booksList=null,
     passedBooks=null}) => {
 
     const searchParams = useSearchParams();
@@ -33,13 +30,9 @@ export const CardsContainer = ({
     const offset = (page - 1) * LIMIT;
 
     const sortingOrder = searchParams.get("sorting_order") || SORTING_ORDERS[0].label;
-
-    if(booksList?.length > 0){
-        return null;
-    }
+    const queryString = searchParams.toString();
 
     const { isSortingModalOpen, setIsSortingModalOpen } = useSortingOrderStore();
-    const { selectedFilters } = useFilterStore();
 
     const [mounted, setMounted] = useState(false);
 
@@ -47,13 +40,11 @@ export const CardsContainer = ({
         setMounted(true);
     }, []);
 
-    const queryString = searchParams.toString();
-
     const { data, isLoading } = useQuery({
-        queryKey: ["books", source.type, source.slug, source.id, queryString, page],
+        queryKey: ["books", source?.type, source?.slug, source?.id, queryString, page],
 
         queryFn: async() => {
-            const res = await fetch(`${getEndpoint(source)}?limit=${LIMIT}&offset=${offset}&${queryString}`)
+            const res = await fetch(`${getEndpoint()}?limit=${LIMIT}&offset=${offset}&${queryString}`)
                 
             if (!res.ok) {
                 return { count: 0, results: [] };
@@ -61,19 +52,49 @@ export const CardsContainer = ({
 
             return res.json();
         },
-        enabled: !passedBooks?.length,
+        enabled: !passedBooks,
         staleTime: STALE_TIME,
         gcTime: STALE_TIME,
         refetchOnWindowFocus: false
     }) 
     
 
-    const books = passedBooks || data?.results || [];
-    const total = passedBooks?.length || data?.count || [];
+    const rawBooks = passedBooks ?? data?.results ?? [];
+    const total = passedBooks?.length ?? data?.count ?? 0;
+
+    const filteredBooks = useMemo(() => {
+        let result = [...rawBooks]
+
+        const priceFrom = searchParams.get("priceFrom");
+        const priceTo = searchParams.get("priceTo");
+        const inStockOnly = searchParams.get("inStockOnly") === "true";
+
+        if(priceFrom){
+            result = result.filter(b => (b.price ?? 0) >= Number(priceFrom))
+        }
+
+        if(priceTo){
+            result = result.filter(b => (b.price ?? 0) <= Number(priceTo));
+        }
+
+        if(inStockOnly){
+            result = result.filter(
+                b =>
+                b?.book_info?.in_stock ||
+                b?.is_in_stock ||
+                b?.gift_info?.in_stock
+            );
+        }
+
+        return result;
+    }, [rawBooks, searchParams])
+
+    const sortedBooks = useMemo(
+        () => sortBooks(filteredBooks, sortingOrder),
+        [filteredBooks, sortingOrder]
+    );
+
     const PAGES_COUNT = Math.ceil(total / LIMIT);
-
-    const sortedBooks = useMemo(() => sortBooks(books, sortingOrder), [books, sortingOrder])
-
 
     const returnLink = (slug) => {
         if(isAccessories) {
@@ -117,13 +138,11 @@ export const CardsContainer = ({
     return (
         <div className="author-books">
             { mounted && isSortingModalOpen && <SortingOrdersModal /> }
-            { mounted && selectedFilters.length > 0 && (
-                <SortingOrderComponent />
-            ) }
-            <AuthorsHeader categoryTitle={ categoryTitle } total={ total } />
+            { mounted && <SortingOrderComponent /> }
+            <AuthorsHeader categoryTitle={ categoryTitle } total={ sortedBooks.length } />
            
             <div className="author-books__books-container" onClick={() => setIsSortingModalOpen(false)}>
-                { !passedBooks && isLoading ? (
+                { isLoading ? (
                     [...Array(SKELETON_COUNT)].map((_, index) => (
                         <ProductCardSkeleton key={ index } />
                     ))

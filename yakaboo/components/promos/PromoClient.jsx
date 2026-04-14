@@ -27,7 +27,7 @@ export const PromoClient = () => {
             { currentPromo ? <PromoContainer currentPromo={ currentPromo } /> : <Skeleton /> }
        
             <div className="promotion-page__main-content promo-content">
-                <div className="promo-content__left">
+                <div className="author__flex-container">
                     <Filters />
                     { currentPromo && currentPromo.books.length > 0 && (
                         <CardsContainer passedBooks={ currentPromo.books } />

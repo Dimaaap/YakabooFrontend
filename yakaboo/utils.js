@@ -1,3 +1,4 @@
+import Endpoints from './endpoints';
 import { CookiesWorker } from './services';
 import { bookTypesFields, filtersFields } from './site.config';
 
@@ -94,4 +95,77 @@ export const getEndpoint = (source) => {
     case "illustrator":
         return Endpoints.ILLUSTRATOR_BOOK(source?.id);
     }
+}
+
+
+export const updateQueryParam = (searchParams, key, value) => {
+  const params = new URLSearchParams(searchParams.toString());
+
+  if (!value || (Array.isArray(value) && !value.length)) {
+    params.delete(key);
+  } else if (Array.isArray(value)) {
+    params.set(key, value.join(","));
+  } else if (typeof value === "boolean") {
+    value ? params.set(key, "true") : params.delete(key);
+  } else {
+    params.set(key, value);
+  }
+
+  return params.toString();
+};
+
+
+export const getFetchConfig = (
+    needCategories, needBrands, needTheme, 
+    needAuthors, needPublishers, needAge, needAccessoriesBrands, 
+    needBookSeria, needGiftBrands=null
+) => {
+    return [
+        {
+            key: "categories",
+            enabled: needCategories,
+            endpoint: Endpoints.ALL_BOOK_CATEGORIES,
+            dataKey: "categories"
+        },
+        {
+            key: "brands",
+            enabled: needBrands || needGiftBrands,
+            endpoint: needGiftBrands ? Endpoints.ALL_GIFT_BRANDS : Endpoints.ALL_HOBBY_BRANDS
+        },
+        {
+            key: "hobby_themes",
+            enabled: needTheme,
+            endpoint: Endpoints.ALL_HOBBY_THEMES
+        },
+        {
+            key: "authors",
+            enabled: needAuthors,
+            endpoint: Endpoints.ALL_AUTHORS
+        },
+        {
+            key: "publishing",
+            enabled: needPublishers,
+            endpoint: Endpoints.ALL_PUBLISHINGS
+        },
+        {
+            key: "ages",
+            enabled: needAge,
+            endpoint: Endpoints.ALL_BOARD_GAME_AGES
+        },
+        {
+            key: "accessoriesBrands",
+            enabled: needAccessoriesBrands,
+            endpoint: Endpoints.ALL_ACCESSORIES_BRANDS
+        },
+        {
+            key: "book_series",
+            enabled: needBookSeria,
+            endpoint: Endpoints.ALL_SERIES
+        }
+    ]
+}
+
+export const getDoubleSubcategorySlug = (href, pathname) => {
+    const path = `${pathname}/${href}`
+    return path
 }

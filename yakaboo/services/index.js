@@ -7,3 +7,4 @@ export { handleBackdropClick } from './handleBackdropClick.service';
 export { Validators } from "./inputDataValidators.service";
 export { validationRules } from "./validationRules";
 export { getDiscountedBooks } from "./getDiscountedBooks";
+export { getFilterData } from "./getFilterData"

@@ -31,6 +31,7 @@ export const BooksClient = () => {
     const { data: userSeenBooks = [], isLoading: isSeenBooksLoading } = useQuery({
         queryKey: ["user-seen-books", userEmail],
         queryFn: () => fetcher(Endpoints.ALL_USER_SEEN_BOOKS(userEmail)),
+        enabled: !!userEmail,
         staleTime: STALE_TIME,
         gcTime: STALE_TIME
     })
@@ -44,7 +45,6 @@ export const BooksClient = () => {
 
     return (
         <div className="main-container all-books-container">
-            { console.log(banners) }
             <div className="all-books-container__banner-wrapper">
                 <Banner banners={ banners } bigger={ true } isLoading={ isBannersLoading } />    
             </div>    
