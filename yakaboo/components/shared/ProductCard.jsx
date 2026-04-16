@@ -12,7 +12,6 @@ export const ProductCard = ({
   brand = 'Авторський проєкт Євгенії Кузнєцової',
   imageSrc = 'https://static.yakaboo.ua/media/cloudflare/product/webp/352x340/i/m/img_52333.jpg',
   badges = [],
-  productCode = '1245917',
   productLink = '#',
   oldPrice = 156,
   newPrice = null,
@@ -20,22 +19,17 @@ export const ProductCard = ({
   withAddToWishlist=true,
   isEbook=false,
   isAudio=false,
-  hasCashback=false,
-  hasWinterSupport=false,
-  hasESupport=false,
-  deliveryTime=null,
-  UKDeliveryTime=null,
+  bookInfo=null,
+  changeStyles=false,
   waitSince=null,
-  inStock=true,
-  changeStyles=false
 }) => {
   return (
     <Link className={`${changeStyles ? `${extraClass}` : `product-card ${extraClass}`}`} href={`${productLink}`}>
-      { (hasCashback || hasWinterSupport || hasESupport) && (
-        <SupportIcons hasCashback={hasCashback} hasWinterSupport={hasWinterSupport} hasESupport={hasESupport} />
+      { (bookInfo?.is_has_cashback || bookInfo?.is_has_winter_esupport || bookInfo?.is_has_esupport || bookInfo?.is_for_war) && (
+        <SupportIcons hasCashback={bookInfo?.is_has_cashback} hasWinterSupport={bookInfo?.is_has_winter_esupport} hasESupport={bookInfo?.is_has_esupport} isForWar={bookInfo?.is_for_war} />
       ) }
       <div className="product-card__header">
-        <BookInfoBadge text={productCode} backgroundColor="#F4F6F8" />
+        <BookInfoBadge text={bookInfo?.code} backgroundColor="#F4F6F8" />
         { withAddToWishlist && (
           <div className="info-badge" style={{ backgroundColor: '#F4F6F8' }}>
             <svg
@@ -103,12 +97,12 @@ export const ProductCard = ({
               +{newPrice ? Math.ceil(newPrice / 2) : Math.ceil(oldPrice / 2)} бонусів
             </span>
         </div>
-        { !inStock && (
+        { !bookInfo?.in_stock && (
           <span className="product-card__info-span red-text">
             Немає в наявності
           </span>
         ) }
-        { inStock && !(isEbook || isAudio || UKDeliveryTime || deliveryTime || waitSince) && (
+        { bookInfo?.in_stock && !(isEbook || isAudio || bookInfo?.uk_delivery_time || bookInfo?.delivery_time || waitSince) && (
           <span className="product-card__delivery-badge">
             <Image src="/icons/truck.svg" alt="" width="18" height="18" />
               Безкоштовна доставка
@@ -121,30 +115,30 @@ export const ProductCard = ({
           </span>
         ) }
 
-        { inStock && isEbook && (
+        { bookInfo?.in_stock && isEbook && (
           <span className="product-card__info-span">
             <Image src="/icons/el_book.svg" alt="" width="16" height="16" />
             Електронна книга
           </span>
         ) }
 
-        { inStock && waitSince && (
+        { bookInfo?.in_stock && waitSince && (
           <span className="product-card__info-span pink-text">
             Очікується з { waitSince }
           </span>
         ) }
 
-        { inStock && UKDeliveryTime && (
+        { bookInfo?.in_stock && bookInfo?.uk_delivery_time && (
           <span className="product-card__info-span red-text">
             <Image src="/icons/truck-pink.svg" alt="" width="16" height="16" />
-            Доставка з UK {UKDeliveryTime} днів
+            Доставка з UK {bookInfo?.uk_delivery_time} днів
           </span>
         ) }
 
-        { inStock && deliveryTime && (
+        { bookInfo?.in_stock && bookInfo?.deliveryTime && (
           <span className="product-card__info-span red-text">
             <Image src="/icons/truck-pink.svg" alt="" width="16" height="16" />
-            Доставка { deliveryTime } днів
+            Доставка { bookInfo?.delivery_time } днів
           </span>
         ) }
       </div>

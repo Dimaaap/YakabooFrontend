@@ -163,15 +163,9 @@ export const CardsContainer = ({
                                 book?.is_new && (<Badge text="Новинка" backgroundColor={ badgeColors.green } /> ),   
                             ]
                         }
-                        productCode={book?.book_info?.code || book?.code || book?.gift_info?.code}
                         oldPrice={ book?.price }
                         newPrice={ book?.is_promo ? book?.promo_price : null }
-                        inStock={book?.book_info?.in_stock || book?.is_in_stock || book?.gift_info?.in_stock || false}
-                        hasCashback={ book?.book_info?.is_has_cashback }
-                        hasWinterSupport={ book?.book_info?.is_has_winter_esupport }
-                        hasESupport={ book?.book_info?.is_has_esupport }
-                        UKDeliveryTime={ book?.book_info?.uk_delivery_time }
-                        deliveryTime={ book?.book_info?.delivery_time }
+                        bookInfo={ book?.book_info }
 
                     />
                 ))

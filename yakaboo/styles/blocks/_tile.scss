@@ -9,6 +9,7 @@
     flex-direction: column;
     gap: rem(5);   
     cursor: pointer;
+    width: fit-content;
 
     &.format-tile {
         height: rem(70);
@@ -25,6 +26,11 @@
             background-color: var(--color-gray-50);
             color: black;
         }
+    }
+
+    &.big-tile {
+        padding-inline: 4%;
+        font-weight: 500;
     }
 
     &.active {

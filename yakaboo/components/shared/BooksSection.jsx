@@ -86,18 +86,13 @@ export const BooksSection = ({ categoryTitle, books, isLoading }) => {
                                 imageSrc={book.images[0]?.image_url ?? ImagesLinks.DEFAULT_IMAGE}
                                 productLink={`/book/${book.slug}`}
                                 badges={[
-                                book?.reviews?.length ? <Stars reviews={ book.reviews} isSmaller={ true } /> : <></>,
-                                book?.reviews?.length > 0 && <CommentsCount count={ book.reviews.length } />,
-                                <TopBadge />]}
-                                productCode={ book?.book_info?.code }
+                                    book?.reviews?.length ? <Stars reviews={ book.reviews} isSmaller={ true } /> : <></>,
+                                    book?.reviews?.length > 0 && <CommentsCount count={ book.reviews.length } />,
+                                    <TopBadge />
+                                ]}
                                 oldPrice={ book?.price }
                                 newPrice={ book?.is_promo ? book?.promo_price : null }
-                                inStock={ book?.book_info?.in_stock || book?.is_in_stock || false }
-                                hasCashback={ book?.book_info?.is_has_cashback }
-                                hasWinterSupport={ book?.book_info?.is_has_winter_esupport }
-                                hasESupport={ book?.book_info?.is_has_esupport }
-                                UKDeliveryTime={ book?.book_info?.uk_delivery_time }
-                                deliveryTime={ book?.book_info?.delivery_time }
+                                bookInfo={ book?.book_info }
                                 extraClass="top-sales-card"
                                 changeStyles={ true }
                                 />    

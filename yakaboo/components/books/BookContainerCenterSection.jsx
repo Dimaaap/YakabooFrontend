@@ -56,7 +56,7 @@ export const BookContainerCenterSection = forwardRef(({ breadcrumbLinks, book, i
                     <OtherSeriaBooks book={ book } />
                 ) }
                 
-                { !isGift && !book?.is_notebook && book?.authors[0]?.short_description && 
+                { !isGift && !book?.is_notebook && book?.authors[0]?.description && 
                 <BookAuthorBlock book={ book } author={ book.authors[0] } /> }
 
                 <BookReviewsBlock ref={ ref } />

@@ -11,7 +11,7 @@ const BooksContainer = () => {
 
   const { data: books = [], isLoading } = useQuery({
     queryKey: ["all-books"],
-    queryFn: () => fetcher(Endpoints.ALL_BOOKS(500)),
+    queryFn: () => fetcher(`${Endpoints.ALL_BOOKS}?limit=500&offset=0`),
     staleTime: STALE_TIME,
     refetchOnWindowFocus: false
   })

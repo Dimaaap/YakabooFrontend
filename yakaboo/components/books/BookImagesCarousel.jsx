@@ -34,7 +34,7 @@ export const BookImagesCarousel = ({ images=[], title, isGift, book }) => {
         <div className="book-container__images-carousel">
             <div className="book-container__main-image">
                 <SupportIcons hasCashback={ book?.book_info?.is_has_cashback } hasWinterSupport={ book?.book_info?.is_has_winter_esupport }
-                hasESupport={ book?.book_info?.is_has_esupport } />
+                hasESupport={ book?.book_info?.is_has_esupport } isForWar={ book?.book_info?.is_for_war } />
                 { coverImages.length > 1 && (
                     <button className="book-container__slider-btn prev-btn slider-btn"
                     onClick={ showPrevImage }>
