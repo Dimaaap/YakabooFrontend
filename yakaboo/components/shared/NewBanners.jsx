@@ -7,10 +7,13 @@ import { STALE_TIME } from '../../site.config';
 import { fetcher } from '../../services/fetch.service';
 import Endpoints from '../../endpoints';
 import { BaseSlider, SliderCountBar } from '.';
+import { useEffect, useState } from 'react';
 
 export const NewBanners = () => {
 
-    const VISIBLE = 4;
+    const [visible, setVisible] = useState(4);
+
+    const VISIBLE = visible;
 
     const { data: banners = [], isLoading } = useQuery({
         queryKey: ["new-banners"],
@@ -20,6 +23,23 @@ export const NewBanners = () => {
     })
 
     const showSkeleton = isLoading || banners.length === 0;
+
+    useEffect(() => {
+        const handleResize = () => {
+            if(window.innerWidth <= 481){
+                setVisible(2);
+            } else if(window.innerWidth <= 767){
+                setVisible(3);
+            } else {
+                setVisible(4);
+            }
+        }
+
+        handleResize();
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("resize", handleResize)
+    }, [])
 
     if(showSkeleton) {
         return (

@@ -84,7 +84,6 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
 
     return(
         <div className="book-container">
-            { console.log(book) }
             <BookPageModals book={ book } />
             <BookContainerLeftSection book={ book } setIsSimpleFlashMessage={ setIsSimpleFlashMessage } isGift={ isGift } />
 

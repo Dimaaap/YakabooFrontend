@@ -13,6 +13,10 @@
         width: 80vw !important;
         min-width: 0;
         padding-block: rem(12);
+
+        @include laptop {
+            width: 100vw !important;
+        }
     }
 
     &-without-image {
@@ -63,6 +67,10 @@
         margin-top: 0;
         position: relative;
         width: 100%;
+
+        @include laptop {
+            width: 100%;
+        }
 
         &-btn {
             width: rem(70);
@@ -131,13 +139,42 @@
         box-sizing: border-box;
 
         &-smaller {
-            flex: 0 0 calc(100% / 3);
-            max-width: calc(100% / 3);
+            
+            @include mobile-above {
+                flex: 0 0 calc(100% / 3);
+                max-width: calc(100% / 3);    
+            }
+
+            @include mobile {
+                flex: 0 0 calc(100% / 2);
+                max-width: calc(100% / 2);
+            }
+
+            @include mobile-s {
+                flex: 0 0 calc(100% / 1);
+                max-width: calc(100% / 1);
+            }
+            
         }
 
         & > * {
             width: 100% !important;
             min-width: 0 !important; 
+        }
+
+        @include mobile-above {
+            flex: 0 0 calc(100% / 4);
+            max-width: calc(100% / 4);
+        }
+
+        @include mobile {
+            flex: 0 0 calc(100% / 3);
+            max-width: calc(100% / 3);
+        }
+
+        @include mobile-s {
+            flex: 0 0 calc(100% / 2);
+            max-width: calc(100% / 2);
         }
     }
 

@@ -5,11 +5,19 @@
     padding-top: 2%;
     padding-inline: 2%;
 
+    @include laptop {
+        padding-inline: 0;
+    }
+
     &__top {
         display: flex;
         gap: 1%;
         padding-inline: var(--container-padding-x);
         padding-bottom: 5%;
+
+        @include laptop {
+            padding-inline: 0;
+        }
     }
 
     &__right {
@@ -22,7 +30,7 @@
         @include laptop {
             width: 100%;
             flex: 1;
-            margin-left: -15%;
+            padding: 0;
         }
     }
 }

@@ -81,7 +81,7 @@ export const BookPriceBlock = ({ book, info, isGift }) => {
                     
                     {!isGift && info.format === "Паперова" && <div className="book-container__dot-separator" />}
                     { info.format === "Електронна" && <Image src="/icons/mobile.svg" alt="" width="15" height="15" /> }
-                    {!isGift && <span className={`book-container__text`}>{ info?.format } книга</span>}
+                    {!isGift && <span className={`book-container__text-gray`}>{ info?.format } книга</span>}
                 </div>
                 { (info?.is_has_cashback || info?.is_has_esupport || info?.is_has_winter_esupport || info?.is_far_war) && (
                     <div className="book-container__participant-promo">

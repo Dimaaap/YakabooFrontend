@@ -12,6 +12,13 @@
     }
 }
 
+.images-block-item {
+    width: rem(30);
+    height: rem(5);
+    border-radius: rem(7);
+    background-color: var(--color-gray-30);
+}
+
 .book-container {
     padding: 2%;
     background-color: var(--color-light);
@@ -21,7 +28,11 @@
     width: 100%;
     font-family: "Montserrat", "Montserrat Fallback";
 
-     &__reviews-block {
+    @include laptop {
+        flex-direction: column;
+    }
+
+    &__reviews-block {
         display: flex;
         gap: rem(7);
         width: max-content;
@@ -45,6 +56,16 @@
         object-fit: contain;  
         object-position: center;
         cursor: pointer;
+
+    }
+
+    &__main-image {
+
+        @include laptop {
+            & img {
+                margin-left: auto;
+            }    
+        }
     }
 
     &__authors-block {
@@ -58,9 +79,21 @@
         flex-direction: column;
         gap: rem(10);
 
+        @include laptop {
+            width: 100%;
+        }
+
         &.left-section {
-            position: sticky;
+            
             top: 12%;
+
+            @include laptop-above {
+                position: sticky;
+            }
+
+            @include laptop {
+                top: 5%;
+            }
         }
 
         &.center-section {
@@ -68,10 +101,18 @@
             display: flex;
             flex-direction: column;
             gap: rem(10);
+
+            @include laptop {
+                width: 100%;
+            }
         };
 
         &.right-section {
             width: 25%;
+
+            @include laptop {
+                width: 100%;
+            }
         }
     }
 
@@ -85,6 +126,13 @@
         display: flex;
         align-items: start;
         gap: 5%;
+    }
+
+    &__rest-images {
+        display: flex;
+        width: 50%;
+        align-items: center;
+        gap: rem(5);
     }
 
     &__author-image-container {
@@ -143,6 +191,10 @@
         font-weight: 500;
         width: 80%;
 
+        &-title {
+            font-weight: 500;
+        }
+
         &-items {
             display: flex;
             flex-wrap: wrap;
@@ -167,12 +219,17 @@
         display: flex;
         flex-direction: column;
         gap: rem(11);
+        margin: auto;
+
+        @include laptop {
+            width: 100%;
+            align-items: center;
+        }
     }
 
     &__slider-btn {
         position: absolute;
         top: 33%;
-        background-color: rgba(255, 255, 255, 0.8);
         border: none;
         height: rem(80);
         width: rem(40);
@@ -180,8 +237,21 @@
         left: -2%;
         transition: all 0.3s ease;
 
+        @include laptop-above {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        @include laptop {
+            background-color: var(--color-gray-40);
+        }
+
         &.next-btn {
             left: 85%;
+
+            @include laptop {
+                left: 97%;
+                top: 33%;
+            }
 
             & img {
                 transform: rotate(270deg);
@@ -356,6 +426,11 @@
     &__text {
         font-size: rem(14);
         font-weight: 500;
+
+        &-gray {
+            color: var(--color-gray-30);
+            font-weight: 500;
+        }
 
         &.green-text {
             color: var(--color-green-10);

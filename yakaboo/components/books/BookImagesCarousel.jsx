@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ImagesLinks } from "../../site.config";
 import { useProductImagesStore } from "../../states";
 import Image from "next/image";
@@ -8,6 +8,7 @@ import { SupportIcons } from "../shared/SupportIcons";
 
 export const BookImagesCarousel = ({ images=[], title, isGift, book }) => {
     const [activeImage, setActiveImage] = useState(0);
+    const [hideRestImage, setHideRestImages] = useState(false);
     const { setIsProductImagesOpen } = useProductImagesStore();
 
     const coverImages = !isGift 
@@ -29,6 +30,19 @@ export const BookImagesCarousel = ({ images=[], title, isGift, book }) => {
             setActiveImage(coverImages.length - 1)
         }
     }
+
+    useEffect(() => {
+        const handleResize = () => {
+            if(window.innerWidth <= 1441){
+                setHideRestImages(true)
+            }
+        }
+
+        handleResize();
+        window.addEventListener("resize", handleResize)
+
+        return () => window.removeEventListener("resize", handleResize)
+    }, [])
 
     return(
         <div className="book-container__images-carousel">
@@ -56,19 +70,28 @@ export const BookImagesCarousel = ({ images=[], title, isGift, book }) => {
                 ) }
             </div>
 
-            <div className="book-container__rest-images">
-                { images.length > 0 && (
-                    images 
-                        .map((image, index) => ({image, index}))
-                        .filter(({ index }) => index >= activeImage -1 && index <= activeImage + 3)
-                        .map(({ image, index }) => image.type === "cover" || isGift ? (
-                            <Image key={ index } src={ image.image_url || "" }
-                            alt={`${title}_${index + 1}`}
-                            width="50" height="50" className={activeImage === index ? "cur-img": ""}
-                            onClick={() => setActiveImage(index)}/>
-                        ) : null)
-                ) }
-            </div>
+            {!hideRestImage ? (
+                <div className="book-container__rest-images">
+                    { images.length > 0 && (
+                        images 
+                            .map((image, index) => ({image, index}))
+                            .filter(({ index }) => index >= activeImage -1 && index <= activeImage + 3)
+                            .map(({ image, index }) => image.type === "cover" || isGift ? (
+                                <Image key={ index } src={ image.image_url || "" }
+                                alt={`${title}_${index + 1}`}
+                                width="50" height="50" className={activeImage === index ? "cur-img": ""}
+                                onClick={() => setActiveImage(index)}/>
+                            ) : null)
+                    ) }
+                </div>    
+            ) : (
+                <div className="book-container__rest-images images-block">
+                    {[...Array(images.filter((image) => image.type === "cover").length)].map((_, i) => (
+                        <div className="images-block-item" key={ i }></div>
+                    ))}
+                </div>
+            )}
+            
         </div>
     )
 }

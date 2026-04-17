@@ -57,8 +57,25 @@
         flex-basis: calc((100% - (2 * rem(16))) / 3);
         aspect-ratio: 4 / 3;
 
+        @include mobile {
+            flex-basis: calc((100% - (1 * rem(16))) / 2);
+        }
+
+        @include mobile-s {
+            flex-basis: calc((100% - rem(16)) / 1);
+        }
+
         .banner.bigger & {
             flex-basis: calc((100% - (3 * rem(16))) / 4);
+
+            @include mobile {
+                flex-basis: calc((100% - (2 * rem(16))) / 3);
+            }
+
+            @include mobile-s {
+                flex-basis: calc((100% - rem(16)) / 2);
+            }
+
         }
 
         & img {

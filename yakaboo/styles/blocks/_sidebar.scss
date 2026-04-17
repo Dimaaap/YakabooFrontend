@@ -21,6 +21,7 @@
 
         @include laptop {
             @include visually-hidden;
+            widtth: 0;
         }
     }
 
@@ -46,6 +47,10 @@
             max-width: rem(25);
             min-width: rem(22);
         }
+    }
+
+    @include laptop {
+        width: 0;
     }
 }
 

@@ -69,6 +69,11 @@
   width: 100%;
   border-bottom: rem(1) solid var(--color-gray-50);
 
+  @include mobile {
+    padding: 0;
+    height: rem(500);
+  }
+
   &.top-sales-card {
     background-color: var(--color-light);
   }
@@ -140,6 +145,11 @@
     flex-direction: column;
     gap: rem(5);
     padding-inline: 3%;
+
+    @include mobile {
+      gap: rem(2);
+      padding-inline: 2%;
+    }
   }
 
   &__image-container {
@@ -181,6 +191,10 @@
   &__title {
     font-size: rem(16);
     font-weight: 600;
+
+    @include mobile {
+      font-size: rem(14);
+    }
   }
 
   &__brand,
@@ -198,18 +212,31 @@
     font-size: rem(14);
     font-weight: 500;
     color: var(--color-gray-10);
+
+    @include mobile {
+      font-size: rem(12);
+    }
   }
 
   &__price-container {
     font-size: rem(15);
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between;  
+
+    @include mobile {
+      font-size: rem(12);
+      gap: 20%;
+    }
   }
 
   &__default-price {
     font-size: rem(26);
     font-weight: 600;
+
+    @include mobile {
+      font-size: rem(20);
+    }
   }
 
   &__discount {
@@ -237,6 +264,14 @@
     padding-inline: rem(15);
     border-radius: rem(15);
     transition: all 0.3s ease;
+
+    @include mobile {
+      padding-inline: rem(10);
+
+      & img {
+        width: rem(20);
+      }
+    }
 
     &:disabled{
       background-color: var(--color-blue-10);
@@ -266,6 +301,10 @@
     color: var(--color-pink-10);
     font-size: rem(26);
     margin-top: -5%;
+
+    @include mobile {
+      font-size: rem(20);
+    }
   }
 
   & .cancelled-price {
@@ -274,6 +313,10 @@
     font-size: rem(16);
     margin-bottom: -2%;
     text-decoration: line-through;
+
+    @include mobile {
+      font-size: rem(14);
+    }
   }
 
   & .blue-price {
@@ -288,6 +331,15 @@
     gap: rem(5);
     font-size: rem(14);
     font-weight: 600;
+
+    @include mobile {
+      font-size: rem(12);
+
+      & img {
+        width: rem(18);
+        height: rem(18);
+      }
+    }
   }
 
   &__delivery-badge {
@@ -302,6 +354,14 @@
     border: rem(2) solid var(--color-gray-20);
     width: max-content;
     margin-top: 3%;
+
+    @include mobile {
+      font-size: rem(12);
+      width: 100%;
+      gap: rem(3);
+      margin-top: 2%;
+      width: fit-content;
+    }
   }
 }
 

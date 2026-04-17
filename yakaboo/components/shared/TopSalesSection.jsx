@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 
 import { CommentsCount, LoadingCard, ProductCard, Stars, TopBadge } from '.';
@@ -10,8 +10,9 @@ import Link from 'next/link';
 export const TopSalesSection = ({ books, isLoading }) => {
 
   const [index, setIndex] = useState(0);
+  const [visible, setVisible] = useState(4);
 
-  const VISIBLE = 4;
+  const VISIBLE = visible;
 
   const maxIndex = Math.max(0, books.length - VISIBLE);
 
@@ -24,6 +25,23 @@ export const TopSalesSection = ({ books, isLoading }) => {
   }
 
   const showSkeleton = isLoading || books.length === 0;
+
+  useEffect(() => {
+    const handleResize = () => {
+        if(window.innerWidth <= 481){
+            setVisible(2);
+        } else if(window.innerWidth <= 767) {
+            setVisible(3);
+        } else {
+            setVisible(4);
+        }
+    }
+
+    handleResize();
+    window.addEventListener("resize", handleResize)
+
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
 
   if(showSkeleton){
     return (
@@ -85,7 +103,7 @@ export const TopSalesSection = ({ books, isLoading }) => {
                                 <ProductCard title={ book.title } 
                                 brand={`${book?.authors[0]?.first_name} ${book?.authors[0]?.last_name}`} 
                                 imageSrc={book.images[0]?.image_url ?? ImagesLinks.DEFAULT_IMAGE}
-                                productLink={book.slug}
+                                productLink={`book/${book.slug}`}
                                 badges={[
                                 book?.reviews?.length ? <Stars reviews={ book.reviews} isSmaller={ true } /> : <></>,
                                 book?.reviews?.length > 0 && <CommentsCount count={ book.reviews.length } />,

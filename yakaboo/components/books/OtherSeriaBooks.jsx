@@ -78,15 +78,9 @@ export const OtherSeriaBooks = ({ book }) => {
                                         book?.reviews?.length ? <Stars reviews={ book.reviews} isSmaller={ true } /> : <></>,
                                         book?.reviews?.length > 0 && <CommentsCount count={ book.reviews.length } />,
                                         <TopBadge />]}
-                                    productCode={ book?.book_info?.code }
                                     oldPrice={ book?.price }
                                     newPrice={ book?.is_promo ? book?.promo_price : null }
-                                    inStock={ book?.book_info?.in_stock || book?.is_in_stock || false }
-                                    hasCashback={ book?.book_info?.is_has_cashback }
-                                    hasWinterSupport={ book?.book_info?.is_has_winter_esupport }
-                                    hasESupport={ book?.book_info?.is_has_esupport }
-                                    UKDeliveryTime={ book?.book_info?.uk_delivery_time }
-                                    deliveryTime={ book?.book_info?.delivery_time }
+                                    bookInfo={ book.book_info }
                                     extraClass="top-sales-card"
                                     changeStyles={ true }
                                     />    

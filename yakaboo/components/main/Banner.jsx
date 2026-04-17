@@ -8,10 +8,10 @@ import React, { useState, useEffect, useRef } from 'react';
 export const Banner = ({ banners=[], bigger=false, smallerHeight=false, isLoading=false }) => {
   const intervalRef = useRef(null);
   const [index, setIndex] = useState(0);
+  const [visibleSlides, setVisibleSlides] = useState(bigger ? 3 : 4);
 
   const validBanners = banners.filter((banner) => banner.image_src !== "test");
 
-  const visibleSlides = !bigger ? 3 : 4;
   const gap = 16;
 
   const getTranslateX = () => {
@@ -51,6 +51,29 @@ export const Banner = ({ banners=[], bigger=false, smallerHeight=false, isLoadin
     }
     return () => clearAutoScroll();
   }, [banners, maxIndex]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if(window.innerWidth <= 481){
+        setVisibleSlides(1);
+      } else if(window.innerWidth <= 767){
+        setVisibleSlides(2);
+      } else {
+        setVisibleSlides(!bigger ? 3 : 4);
+      }
+    }
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize)
+  }, [bigger])
+
+  useEffect(() => {
+    setIndex((prev) =>
+      Math.min(prev, Math.max(0, validBanners.length - visibleSlides))
+    );
+  }, [visibleSlides, validBanners.length]);
 
   const showSkeleton = isLoading || validBanners.length === 0;
 
