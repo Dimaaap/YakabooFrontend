@@ -11,6 +11,10 @@
     cursor: pointer;
     width: fit-content;
 
+    @include laptop {
+        width: 50%;
+    }
+
     &.format-tile {
         height: rem(70);
         justify-content: center;
@@ -48,6 +52,12 @@
         display: flex;
         align-items: center;
         gap: 5%;
+        font-size: rem(14);
+        font-weight: 500;
+
+        @include laptop {
+            gap: 2%;
+        }
 
         & img {
             &.active-img {

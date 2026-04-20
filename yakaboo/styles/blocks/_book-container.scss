@@ -12,11 +12,19 @@
     }
 }
 
+.images-block {
+    margin-left: 5%;
+}
+
 .images-block-item {
-    width: rem(30);
-    height: rem(5);
+    width: rem(35);
+    height: rem(7);
     border-radius: rem(7);
-    background-color: var(--color-gray-30);
+    background-color: var(--color-gray-40);
+    
+    &.active {
+        background-color: var(--color-gray-30);
+    }
 }
 
 .book-container {
@@ -36,6 +44,13 @@
         display: flex;
         gap: rem(7);
         width: max-content;
+    }
+
+    &__flex-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
     }
 
     &__comments {
@@ -154,6 +169,7 @@
         border-radius: rem(10);
         transition: all 0.3s ease;
 
+
         & svg {
             margin-top: rem(5);
         }
@@ -166,6 +182,10 @@
                 & svg {
                     filter: invert(1);
                 }
+            }
+
+            @include laptop {
+                padding-inline: 4%;
             }
         }
 
@@ -180,6 +200,12 @@
             font-weight: 600;
             color: var(--color-blue-10);
             font-size: rem(14);
+
+            @include laptop {
+                width: 90%;
+                justify-content: center;
+                text-align: center;
+            }
         }
     }
 
@@ -193,6 +219,10 @@
 
         &-title {
             font-weight: 500;
+
+            @include laptop {
+                font-weight: 600;
+            }
         }
 
         &-items {
@@ -211,6 +241,12 @@
             color: var(--color-gray-30);
             border-radius: rem(10);
             cursor: pointer;
+
+            @include laptop {
+                font-size: rem(14);
+                font-weight: 500;
+                padding: 1% 2%;
+            }
         }
     }
 
@@ -358,6 +394,10 @@
         flex-direction: column;
         gap: rem(7);
 
+        @include laptop {
+            width: 100% !important;
+        }
+
         &-title {
             font-weight: 600;
             font-size: rem(12);
@@ -367,6 +407,10 @@
             display: flex;
             flex-direction: column;
             gap: rem(0);
+
+            @include laptop {
+                width: 100%;
+            }
         }
 
         &.publishing-block {
@@ -449,6 +493,10 @@
     &__block-discount {
         display: flex;
         align-items: end;
+
+        @include laptop {
+            width: 100%;
+        }
     }
 
     &__old-price {
@@ -475,11 +523,21 @@
         color: var(--color-pink-10);
         margin-left: 5%;
         font-weight: 600;
+
+        @include laptop {
+            margin-left: 0;
+        }
     }
 
     &__bonuses {
         margin-left: 5%;
         padding-block: 1%;
+
+        @include laptop {
+            margin-left: 1%;
+            padding-block: 0.5%;
+            font-size: rem(14);
+        }
     }
 
     &__show-all {
@@ -596,5 +654,14 @@
         & img {
             background-color: transparent;
         }
+    }
+
+    &__underlined-container {
+        display: flex;
+        flex-direction: column;
+        gap: rem(10);
+        border-bottom: rem(3) solid var(--color-gray-40);
+        padding-bottom: 2%;
+        margin-bottom: 2%;
     }
 }

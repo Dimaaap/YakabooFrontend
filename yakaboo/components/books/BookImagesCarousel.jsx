@@ -35,6 +35,8 @@ export const BookImagesCarousel = ({ images=[], title, isGift, book }) => {
         const handleResize = () => {
             if(window.innerWidth <= 1441){
                 setHideRestImages(true)
+            } else {
+                setHideRestImages(false)
             }
         }
 
@@ -87,7 +89,8 @@ export const BookImagesCarousel = ({ images=[], title, isGift, book }) => {
             ) : (
                 <div className="book-container__rest-images images-block">
                     {[...Array(images.filter((image) => image.type === "cover").length)].map((_, i) => (
-                        <div className="images-block-item" key={ i }></div>
+                        <div className={`images-block-item ${ i === activeImage ? "active": "" }`} key={ i }
+                        onClick={ () => setActiveImage(i) }></div>
                     ))}
                 </div>
             )}

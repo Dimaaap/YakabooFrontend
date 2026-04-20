@@ -1,7 +1,7 @@
 import Link from "next/link"
 import Image from 'next/image'
 
-export const BookInfoBlock = ({ book, isGift }) => {
+export const BookInfoBlock = ({ book, isGift, withTitle=true }) => {
 
     const filteredRelatedBooks = book?.related_books ? Object.values(
         book.related_books.reduce((acc, b) => {
@@ -25,7 +25,9 @@ export const BookInfoBlock = ({ book, isGift }) => {
          <>
             {!isGift && (
                 <div className="book-container__block format">
-                    <p className="book-container__block-title">Формат</p>
+                    { withTitle && (
+                        <p className="book-container__block-title">Формат</p>    
+                    ) }
                     <div className="book-container__tiles-block">
                     { filteredRelatedBooks.length > 0 && (
                         filteredRelatedBooks.map((b, index) => (

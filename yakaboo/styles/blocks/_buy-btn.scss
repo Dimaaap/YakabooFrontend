@@ -21,6 +21,12 @@
     padding-block: 4%;
     font-weight: 500;
     font-size: rem(14);
+
+    @include laptop {
+      padding-block: 2%;
+      font-size: rem(12);
+      font-weight: 500;
+    }
   }
 
   &.disabled-btn {

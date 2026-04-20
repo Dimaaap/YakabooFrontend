@@ -1,18 +1,42 @@
-import React, { forwardRef } from 'react'
+"use client"
+
+import { forwardRef, useEffect, useState } from 'react'
 import { Breadcrumbs, Rate } from '../shared'
 import Link from 'next/link'
 import { BookAuthorBlock, BookInfoBlock, BookReviewsBlock, OtherBookOptions, OtherSeriaBooks, ReviewsList } from '.'
 import { HobbyDescriptionContainer } from '../shared/hobbies/HobbyDescriptionContainer'
 import { BookCharacteristics } from '../shared/BookCharacteristics'
 import { BookMainInfo } from './BookMainInfo'
+import { setIsAddToWishlistModalOpen } from '../../states/AddToWishlistModalStore'
 
 export const BookContainerCenterSection = forwardRef(({ breadcrumbLinks, book, isGift }, ref) => {
     
+    const [smallScreen, setSmallScreen] = useState(false)
+
     const info = isGift ? book.gift_info : book.book_info;
+
+    useEffect(() => {
+        const handleResize = () => {
+            if(window.innerWidth <= 1441){
+                setSmallScreen(true)
+            } else {
+                setSmallScreen(false)
+            }
+        }
+
+        handleResize();
+        window.addEventListener("resize", handleResize)
+
+        return () => window.removeEventListener("resize", handleResize)
+    }, [])
 
     return (
      <div className="book-container__section center-section">
-        <Breadcrumbs linksList={ breadcrumbLinks } />
+        { !smallScreen && (
+            <Breadcrumbs linksList={ breadcrumbLinks } />    
+        ) }
+
+        { !smallScreen && (
             <div className="book-container__author-block">
                 <h3 className="book-container__book-title">
                     <span className="book-container__book-title-template">
@@ -32,38 +56,46 @@ export const BookContainerCenterSection = forwardRef(({ breadcrumbLinks, book, i
                         ))} 
                     </div>
                 ) }     
-            </div>
-            {book?.reviews?.length > 0 && (
-                <Rate reviews={ book?.reviews } onClick={() => {
-                    if(ref.current){
-                        ref.current.scrollIntoView({ behavior: "smooth", block: "start" })
-                    }
-                }} />
-            )}
+            </div>    
+        ) }
+
+        {book?.reviews?.length > 0 && !smallScreen && (
+            <Rate reviews={ book?.reviews } onClick={() => {
+                if(ref.current){
+                    ref.current.scrollIntoView({ behavior: "smooth", block: "start" })
+                }
+            }} />
+        )}
+
+        { !smallScreen && (
             <p className="book-container__code">
                 Код товару: {info.code}
-            </p>
-            <BookInfoBlock book={ book } info={ info } isGift={ isGift } />
+            </p>    
+        ) }
 
-            <HobbyDescriptionContainer hobby={ !isGift ? book.book_info : book.gift_info } /> 
-
-            <BookMainInfo book={ book } info={ info } isGift={ isGift } />
+        {!smallScreen && (
+            <BookInfoBlock book={ book } isGift={ isGift } withTitle={ false } />    
+        )}
+        
+        <HobbyDescriptionContainer hobby={ !isGift ? book.book_info : book.gift_info } /> 
+  
+        <BookMainInfo book={ book } info={ info } isGift={ isGift } />
             { book?.related_books?.length > 0 && (
                 <OtherBookOptions book={ book } />    
             ) }
-            <BookCharacteristics book={book} isGift={ isGift } />
-                { book?.seria && (
-                    <OtherSeriaBooks book={ book } />
-                ) }
+        <BookCharacteristics book={book} isGift={ isGift } />
+        { book?.seria && (
+            <OtherSeriaBooks book={ book } />
+        ) }
                 
-                { !isGift && !book?.is_notebook && book?.authors[0]?.description && 
-                <BookAuthorBlock book={ book } author={ book.authors[0] } /> }
+        { !isGift && !book?.is_notebook && book?.authors[0]?.description && 
+        <BookAuthorBlock book={ book } author={ book.authors[0] } /> }
 
-                <BookReviewsBlock ref={ ref } />
+        <BookReviewsBlock ref={ ref } />
 
-                { book?.reviews?.length > 0 && (
-                    <ReviewsList reviews={ book.reviews } />
-                ) }
-            </div>
+        { book?.reviews?.length > 0 && (
+            <ReviewsList reviews={ book.reviews } />
+        ) }
+    </div>
   )
 })

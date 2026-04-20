@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react";
 import Image from "next/image"
 import { Delivery, DeliveryInfoModal, DownloadFile, MobileApp } from "../dynamic"
 import { DeliveryTerms } from "../shared"
@@ -9,11 +10,32 @@ export const BookPriceBlock = ({ book, info, isGift }) => {
     const { isDeliveryModalOpen } = useDeliveryModalStore();
     const { deliveryLocation } = useDeliveryCityStore();
 
+    const [smallScreen, setSmallScreen] = useState(false);
+
     const bookPromoOptions = {
         "Книга на фронт": info?.is_for_war,
         "Нацкешбек": info?.is_has_cashback,
         "Зимова Підтримка": info?.is_has_winter_esupport,
         "Єкнига": info?.is_has_esupport
+    }
+
+    useEffect(() => {
+        const handleResize = () => {
+            if(window.innerWidth <= 1441){
+                setSmallScreen(true)
+            } else {
+                setSmallScreen(false)
+            }
+        }
+
+        handleResize();
+        window.addEventListener("resize", handleResize)
+
+        return () => window.removeEventListener("resize", handleResize)
+    }, [])
+
+    if(smallScreen) {
+        return null
     }
 
     return(
