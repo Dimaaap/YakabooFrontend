@@ -14,8 +14,17 @@
   &__point {
     padding-inline: 8%;
     padding-block: 1%;
-    border-left: rem(2) solid transparent;
     cursor: pointer;
+
+    @include mobile-above {
+      border-left: rem(2) solid transparent;
+    }
+
+    @include mobile {
+      padding-inline: 0;
+      padding-block: 0.5%;
+      border-bottom: rem(2) solid transparent;
+    }
 
     &.is-active {
       border-color: var(--color-pink-10);

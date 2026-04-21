@@ -13,6 +13,67 @@
   font-weight: 500;
   column-gap: rem(1);
 
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+    gap: rem(10);
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: rem(5);
+
+    @include mobile-above {
+      display: none;
+    }
+
+    @include mobile {
+      display: block;
+    }
+  }
+
+  &__list {
+    display: flex;
+    align-items: center;
+    gap: rem(20);
+
+    @include mobile {
+      font-size: rem(12);
+      font-weight: 600;
+    }
+  }
+
+  &__container {
+    width: 100%;
+    display: grid;
+    padding-block: 1%;
+    padding-inline: 2%;
+    row-gap: rem(5);
+    grid-template-columns: repeat(27, 1fr);
+    column-gap: rem(1);
+
+    @include laptop {
+      grid-template-columns: repeat(21, 1fr);
+    }
+
+    @include tablet {
+      grid-template-columns: repeat(18, 1fr);
+    }
+
+    @include mobile {
+      grid-template-columns: repeat(14, 1fr);
+    }
+
+    @include mobile-s {
+      grid-template-columns: repeat(10, 1fr);
+    }
+  }
+
+  @include laptop {
+    font-size: rem(14);
+  }
+
   &__letter-link {
     padding: 0%;
     justify-content: center;

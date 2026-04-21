@@ -1,5 +1,13 @@
 @use '../helpers/' as *;
 
+.container-info {
+  &__price-container-title {
+    @include laptop {
+      width: max-content;
+    }
+  }
+}
+
 .product-info {
   position: fixed;
   bottom: 0;
@@ -27,9 +35,19 @@
     }
   }
 
+  &__price {
+    @include laptop {
+      width: 50%;
+    }
+  }
+
   &__row {
     display: flex;
     align-items: center;
+
+    @include laptop {
+      justify-content: end;
+    }
   }
 
 

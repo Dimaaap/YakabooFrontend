@@ -46,6 +46,13 @@
         width: max-content;
     }
 
+    &__header {
+        @include laptop {
+            font-size: rem(16);
+            font-weight: 600;
+        }
+    }
+
     &__flex-container {
         display: flex;
         align-items: center;
@@ -72,6 +79,13 @@
         object-position: center;
         cursor: pointer;
 
+    }
+
+    &__delivery-section {
+        @include laptop {
+            padding-inline: rem(1);
+            gap: rem(5);
+        }
     }
 
     &__main-image {
@@ -141,6 +155,15 @@
         display: flex;
         align-items: start;
         gap: 5%;
+
+        @include laptop {
+            width: 100%;
+            align-items: center;
+        }
+    }
+
+    &__author-name {
+        @include fluid-text(14, 18);
     }
 
     &__rest-images {
@@ -153,11 +176,20 @@
     &__author-image-container {
         width: 15%;
 
+        @include laptop {
+            width: 10%;
+        }
+
         & img {
             width: rem(100);
             height: rem(100);
             border-radius: rem(50);
             object-fit: cover;
+
+            @include laptop {
+                width: rem(60);
+                height: rem(60);
+            }
         }
     }
 
@@ -345,6 +377,12 @@
 
         &.extended-link {
             color: var(--color-gray-30);
+
+            @include laptop {
+                @include fluid-text(12, 14);
+                color: var(--color-blue-10);
+                font-weight: 500;
+            }
         }
 
         &:hover {
@@ -584,6 +622,11 @@
         justify-content: space-between;
     }
 
+    &__line {
+        height: rem(1);
+        color: var(--color-gray-40);
+    }
+
     &__desc-container {
         width: 80%;
     }
@@ -591,6 +634,11 @@
     &__author-image {
         & img {
             clip-path: circle();
+
+            @include laptop {
+                width: rem(60) !important;
+                height: rem(60) !important;
+            }
         }
     }
 

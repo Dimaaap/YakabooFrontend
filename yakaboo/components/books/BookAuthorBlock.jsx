@@ -2,10 +2,10 @@ import Link from "next/link"
 import { firstParagraph } from "../../services/paragraphSlicer.service"
 import Image from "next/image"
 
-export const BookAuthorBlock = ({ book, author }) => {
+export const BookAuthorBlock = ({ book, author, smallVersion=false }) => {
     return (
         author ? (
-            <div className="book-container__block-container">
+            <div className={`book-container__block-container ${smallVersion ? "book-container__underlined-container" : ""}`}>
                 
                 <h2 className="book-container__header">
                     Про автора
@@ -13,8 +13,18 @@ export const BookAuthorBlock = ({ book, author }) => {
                         
                 <div className="book-container__author-desc">
                     <div className="book-container__author-info">
-                        <div className="book-container__desc-container" 
-                        dangerouslySetInnerHTML={{__html: firstParagraph(book.authors[0]?.description)}} />  
+
+                        { !smallVersion ? (
+                            <div className="book-container__desc-container" 
+                            dangerouslySetInnerHTML={{__html: firstParagraph(book.authors[0]?.description)}} />      
+                        ) : (
+                            <div className="book-container__desc-container author-name">
+                                <h4 className="book-container__author-name">
+                                    { author?.first_name } { author?.last_name }
+                                </h4>
+                            </div>
+                        ) }
+                        
 
                         <div className="book-container__author-image-container">
                             { author?.images[0] && (

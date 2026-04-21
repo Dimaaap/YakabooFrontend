@@ -15,6 +15,12 @@
         width: 50%;
     }
 
+    &.current {
+        @include laptop {
+            width: max-content;
+        }
+    }
+
     &.format-tile {
         height: rem(70);
         justify-content: center;
@@ -29,6 +35,10 @@
         &.current {
             background-color: var(--color-gray-50);
             color: black;
+        }
+
+        @include laptop {
+            width: max-content;
         }
     }
 

@@ -22,6 +22,11 @@
     font-weight: 500;
     font-size: rem(14);
 
+    &.smaller-pink {
+      width: rem(200);
+      padding-block: 3%;
+    }
+
     @include laptop {
       padding-block: 2%;
       font-size: rem(12);

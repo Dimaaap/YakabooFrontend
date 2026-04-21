@@ -14,6 +14,15 @@
     font-size: rem(16);
     font-weight: 500;
 
+    @include tablet {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include mobile {
+      grid-template-columns: repeat(2, 1fr);
+      font-size: rem(14);
+    }
+
     &-count {
       font-weight: 600;
       color: var(--color-gray-30);

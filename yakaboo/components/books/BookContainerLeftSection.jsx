@@ -4,13 +4,14 @@ import { useState, useEffect, forwardRef } from 'react'
 import Image from "next/image"
 import AddToWishlistBtn from '../shared/AddToWishlistBtn'
 import { BookImagesCarousel, BookInfoBlock } from '.';
-import { useProductImagesStore } from '../../states';
+import {  useProductImagesStore } from '../../states';
 import { Breadcrumbs, Rate } from '../shared';
 import Link from 'next/link';
 
 export const BookContainerLeftSection = forwardRef(({ book, setIsSimpleFlashMessage, isGift, breadcrumbLinks }, ref) => {
     
     const [smallScreen, setSmallScreen] = useState(false)
+
 
     const images = book.images || [];
     const pageImages = images.filter((img) => img.type === "page");
@@ -106,7 +107,7 @@ export const BookContainerLeftSection = forwardRef(({ book, setIsSimpleFlashMess
     
         <BookImagesCarousel images={ images } title={ book.title } isGift={ isGift } book={ book } />
 
-        { smallScreen && (
+         { smallScreen && (
             <div className="book-container__underlined-container">
                 <div className="book-container__block-price-block">
                     { !book?.promo_price ? (

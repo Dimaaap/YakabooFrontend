@@ -12,6 +12,12 @@
   border-radius: rem(10);
   cursor: pointer;
 
+  @include laptop {
+    padding: 1%;
+    gap: rem(5);
+    margin-bottom: 2%;
+  }
+
   &__text {
     display: flex;
     flex-direction: column;
@@ -21,6 +27,11 @@
   &__city-title {
     color: var(--color-blue-10);
     font-weight: 500;
+
+    @include laptop {
+      color: var(--color-black);
+      font-weight: 500;
+    }
   }
 
   &__city-description {

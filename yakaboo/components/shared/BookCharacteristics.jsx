@@ -6,12 +6,12 @@ import Image from 'next/image'
 import { Row } from "./Row";
 import { baseFields, extraFields } from "../../services/characteristicsMap.service";
 
-export const BookCharacteristics = ({ book, isGift=false }) => {
+export const BookCharacteristics = ({ book, isGift=false, isUnderlined=false }) => {
 
     const [showAllInfo, setShowAllInfo] = useState(false);
 
     return (
-        <div className="book-container__block-container">
+        <div className={`book-container__block-container ${ isUnderlined ? "book-container__underlined-container" : "" }`}>
             <h2 className="book-container__header">
                 Характеристики
             </h2>

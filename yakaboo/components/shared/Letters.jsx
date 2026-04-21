@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
-import React, { useEffect } from 'react';
-import { useLetterStore } from '../../states';
+import React, { useEffect, useState } from 'react';
+import { useLanguageStore, useLetterStore } from '../../states';
 
 export const Letters = ({ lang }) => {
   const pathname = usePathname();
@@ -11,6 +11,7 @@ export const Letters = ({ lang }) => {
   const router = useRouter();
 
   const { activeLetter, setActiveLetter } = useLetterStore();
+  const { activeLang, setActiveLang } = useLanguageStore();
 
   const UKRAINIAN_LETTERS = 'АБВГҐДЕЄЖЗИІЙКЛМНОПРСТУФХЦШЩЮЯ'.split('');
   const ENGLISH_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -22,6 +23,23 @@ export const Letters = ({ lang }) => {
   const isValidLetter = rawLetter && letters.includes(rawLetter);
   const resolvedLetter = isValidLetter ? rawLetter : defaultLetter;
 
+  const handleLangClick = (lang) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (lang === 'uk') {
+      params.delete('lang');
+    } else {
+      params.set('lang', 'en');
+    }
+
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
+  useEffect(() => {
+    const lang = searchParams.get('lang');
+  setActiveLang(lang === 'en' ? 'en' : 'uk');
+  }, [searchParams]);
+  
   useEffect(() => {
     if (resolvedLetter !== activeLetter) {
       setActiveLetter(resolvedLetter);
@@ -36,30 +54,47 @@ export const Letters = ({ lang }) => {
     }
   }, [lang, rawLetter, isValidLetter, pathname, router, searchParams]);
 
+
   return (
     <div className="letters">
-      {letters.map((letter) => {
-        const params = new URLSearchParams(searchParams.toString());
-        params.set('letter', letter);
+      <div className="letters__header">
+          <ul className="letters__list">
+            <li className={`languages__point ${activeLang === "uk" ? "is-active" : ""}`} 
+            onClick={() => handleLangClick("uk")}>
+              Українська
+            </li>
 
-        if (lang === 'uk') {
-          params.delete('lang');
-        } else {
-          params.set('lang', 'en');
-        }
+            <li className={`languages__point ${activeLang === "en" ? "is-active" : ""}`} 
+            onClick={() => handleLangClick("en")}>
+              Латинська
+            </li>
+          </ul>
+        </div>
 
-        const href = `${pathname}?${params.toString()}`;
+      <div className="letters__container">
+          {letters.map((letter) => {
+          const params = new URLSearchParams(searchParams.toString());
+          params.set('letter', letter);
 
-        return (
-          <Link
-            key={letter}
-            href={href}
-            className={`letters__letter-link ${resolvedLetter === letter ? 'is-active' : ''}`}
-          >
-            {letter}
-          </Link>
-        );
-      })}
+          if (lang === 'uk') {
+            params.delete('lang');
+          } else {
+            params.set('lang', 'en');
+          }
+
+          const href = `${pathname}?${params.toString()}`;
+
+          return (
+            <Link
+              key={letter}
+              href={href}
+              className={`letters__letter-link ${resolvedLetter === letter ? 'is-active' : ''}`}
+            >
+              {letter}
+            </Link>
+          );
+        })}  
+        </div>
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { useProductInfoState } from '../../states/hobbies/ProductInfoState';
 import { AddBookToWishlistModal } from '../modals/AddBookToWishlist';
 import { useAddToWishlistModalStore } from '../../states/AddToWishlistModalStore';
 
-export const BookPageModals = ({ book }) => {
+export const BookPageModals = ({ book, isSmall=false }) => {
 
     const images = book.images || [];
 
@@ -29,7 +29,7 @@ export const BookPageModals = ({ book }) => {
         userEmail={ CookiesWorker.get("email") || null } />) }
         { showProductInfoModal && (
             <ProductInfoModal productImage={ book.images[0].image_url } productTitle={ book.title } productPrice={ book.price } 
-            isInStock={ book.book_info.in_stock } 
+            isInStock={ book.book_info.in_stock } isSmall={ isSmall }
             />
         ) }
         { (isProductImagesOpen && !isReadPart) && <ProductImagesModal productTitle={book.title} images={ images } />}

@@ -6,7 +6,7 @@ const ProductInfoModal = ({
   productTitle,
   productPrice,
   isInStock=true,
-  oldPrice=null,
+  oldPrice=null
 }) => {
   return (
     <div className="product-info">
@@ -24,18 +24,15 @@ const ProductInfoModal = ({
               <p className="container-info__old-price cancelled-text">
                 {oldPrice} грн
               </p>  
-            ) }
-            <p className={`container-info__status-text ${isInStock ? "green-text" : "gray-text"}`}>
-              {isInStock ? "В наявності" : "Немає в наявності"}
-            </p>  
+            ) } 
           </div>
-          <button className={`book-container__pink-buy-btn buy-btn ${isInStock ? "buy-btn-pink" : "notify-btn-gray"}`}>
+
+          <button className={`book-container__pink-buy-btn buy-btn ${isInStock ? "buy-btn-pink smaller-pink" : "notify-btn-gray"}`}>
               { isInStock ? "Купити" : "Сповістити про наявність" }
           </button>
         </div>
         <div className="product-info__row container-info__row">
           <div className="container-info__status">
-            
           </div>
         </div>
       </div>

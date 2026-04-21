@@ -19,6 +19,10 @@
     border-radius: rem(10);
     padding-inline: 3%;
     outline: none;
+
+    @include tablet {
+      padding-inline: 5%;
+    }
   }
 
   &__icon {
@@ -39,6 +43,10 @@
     padding-inline: 2%;
     border-radius: 0 rem(20) rem(20) 0;
     transition: opacity 0.3s ease;
+
+    @include tablet {
+      display: none;
+    }
 
     &:hover {
       opacity: 0.8;

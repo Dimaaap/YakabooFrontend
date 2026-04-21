@@ -6,6 +6,11 @@
   flex-direction: column;
   gap: rem(7);
 
+  @include mobile {
+    gap: rem(15);
+    padding-top: 2%;
+  }
+
   &__title {
     font-size: rem(24);
     font-weight: 600;
@@ -17,7 +22,15 @@
   }
 
   &__left-section {
-    width: 20%;
+
+    @include mobile-above {
+      width: 20%;  
+    }
+
+    @include mobile {
+      @include visually-hidden
+    }
+    
   }
 
   &__right-section {
@@ -25,5 +38,9 @@
     display: flex;
     flex-direction: column;
     gap: rem(15);
+
+    @include mobile {
+      width: 100%;
+    }
   }
 }

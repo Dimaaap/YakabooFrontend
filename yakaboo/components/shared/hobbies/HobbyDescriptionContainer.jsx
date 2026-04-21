@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useHobbyDescriptionStore, setShowAll, setDescription } from '../../../states/hobbies/HobbyDescriptionStore'
 import { useEffect } from 'react'
 
-export const HobbyDescriptionContainer = ({ hobby }) => {
+export const HobbyDescriptionContainer = ({ hobby, isUnderlined=false }) => {
 
     const { firstParagraph, showAll, isSingle } = useHobbyDescriptionStore()
 
@@ -13,7 +13,7 @@ export const HobbyDescriptionContainer = ({ hobby }) => {
     }, [hobby.description])
     
     return (
-        <div className="book-container__block-container hobby-page__block-container">
+        <div className={`book-container__block-container hobby-page__block-container ${isUnderlined ? "book-container__underlined-container" : ""}`}>
             <h3 className="book-container__header hobby-page__header">
                 Опис книги
             </h3>

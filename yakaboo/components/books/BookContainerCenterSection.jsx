@@ -1,17 +1,22 @@
 "use client"
 
 import { forwardRef, useEffect, useState } from 'react'
-import { Breadcrumbs, Rate } from '../shared'
+import { Breadcrumbs, DeliveryTerms, Rate } from '../shared'
 import Link from 'next/link'
 import { BookAuthorBlock, BookInfoBlock, BookReviewsBlock, OtherBookOptions, OtherSeriaBooks, ReviewsList } from '.'
 import { HobbyDescriptionContainer } from '../shared/hobbies/HobbyDescriptionContainer'
 import { BookCharacteristics } from '../shared/BookCharacteristics'
 import { BookMainInfo } from './BookMainInfo'
-import { setIsAddToWishlistModalOpen } from '../../states/AddToWishlistModalStore'
+import { Delivery, DeliveryInfoModal, DownloadFile, MobileApp } from '../dynamic'
+import { useDeliveryCityStore, useDeliveryModalStore } from '../../states'
 
 export const BookContainerCenterSection = forwardRef(({ breadcrumbLinks, book, isGift }, ref) => {
     
     const [smallScreen, setSmallScreen] = useState(false)
+
+    const { isDeliveryModalOpen } = useDeliveryModalStore();
+    const { deliveryLocation } = useDeliveryCityStore();
+    
 
     const info = isGift ? book.gift_info : book.book_info;
 
@@ -77,21 +82,31 @@ export const BookContainerCenterSection = forwardRef(({ breadcrumbLinks, book, i
             <BookInfoBlock book={ book } isGift={ isGift } withTitle={ false } />    
         )}
         
-        <HobbyDescriptionContainer hobby={ !isGift ? book.book_info : book.gift_info } /> 
+        <HobbyDescriptionContainer hobby={ !isGift ? book.book_info : book.gift_info } isUnderlined={ smallScreen } /> 
   
-        <BookMainInfo book={ book } info={ info } isGift={ isGift } />
+        <BookMainInfo book={ book } info={ info } isGift={ isGift }  isUnderlined={ smallScreen } />
             { book?.related_books?.length > 0 && (
                 <OtherBookOptions book={ book } />    
             ) }
-        <BookCharacteristics book={book} isGift={ isGift } />
+        <BookCharacteristics book={book} isGift={ isGift } isUnderlined={ smallScreen } />
         { book?.seria && (
             <OtherSeriaBooks book={ book } />
         ) }
                 
         { !isGift && !book?.is_notebook && book?.authors[0]?.description && 
-        <BookAuthorBlock book={ book } author={ book.authors[0] } /> }
+        <BookAuthorBlock book={ book } author={ book.authors[0] } smallVersion={ smallScreen } /> }
 
-        <BookReviewsBlock ref={ ref } />
+        { smallScreen && (
+            <div className="book-container__delivery-section book-container__underlined-container">
+                { info?.format !== "Електронна" ? (<Delivery />) : <MobileApp /> }
+                { info?.format === "Електронна" && <DownloadFile />}
+                { isDeliveryModalOpen && <DeliveryInfoModal /> }
+                { deliveryLocation && <DeliveryTerms deliveryLocation={ deliveryLocation } productCode={ book.code } /> }
+            </div>
+        ) }
+
+        <BookReviewsBlock ref={ ref } />    
+        
 
         { book?.reviews?.length > 0 && (
             <ReviewsList reviews={ book.reviews } />
