@@ -648,6 +648,10 @@
         height: rem(2);
     }
 
+    &__additinal-info-separator {
+        cursor: pointer;
+    }
+
     &__write-review {
         background-color: var(--color-blue-10);
         color: var(--color-light) !important;
@@ -677,6 +681,7 @@
 
     &__in-stock-row {
         display: flex;
+        position: relative;
         align-items: center;
         gap: rem(5);
         font-size: rem(14);
@@ -686,6 +691,7 @@
         display: flex;
         align-items: center;
         font-weight: 500;
+        gap: rem(5);
 
         &.green-text {
             color: var(--color-green-10);

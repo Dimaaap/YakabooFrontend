@@ -1,0 +1,18 @@
+@use "../helpers" as *;
+
+.info-modal {
+    position: absolute;
+    top: rem(25);
+    right: 0;
+    width: rem(250);
+    height: rem(140);
+    font-size: rem(12);
+    font-weight: 500;
+    color: var(--color-black);
+    border: rem(1) solid var(--color-gray-40);
+    border-radius: rem(10);
+    background-color: var(--color-light);
+    padding: rem(5);
+    line-height: rem(20);
+    display: block;
+}

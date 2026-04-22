@@ -5,12 +5,14 @@ import Image from "next/image"
 import { Delivery, DeliveryInfoModal, DownloadFile, MobileApp } from "../dynamic"
 import { DeliveryTerms } from "../shared"
 import { useDeliveryCityStore, useDeliveryModalStore } from "../../states";
+import { AdditionalFromUkInfo } from "../modals";
 
 export const BookPriceBlock = ({ book, info, isGift }) => {
     const { isDeliveryModalOpen } = useDeliveryModalStore();
     const { deliveryLocation } = useDeliveryCityStore();
 
     const [smallScreen, setSmallScreen] = useState(false);
+    const [isAdditinalModalOpen, setIsAdditionalModalOpen] = useState(false)
 
     const bookPromoOptions = {
         "Книга на фронт": info?.is_for_war,
@@ -81,27 +83,41 @@ export const BookPriceBlock = ({ book, info, isGift }) => {
 
                 <div className="book-container__in-stock-row">
                     { info.format === "Паперова" ? (
-                        <span className={`book-container__book-status ${!info?.in_stock || info?.delivery_time || info?.uk_delivery_time 
-                        ? "red-text": "green-text"} ${info.waiting_since ? "pink-text" : ""}`}>
-                            { info?.in_stock && !info.uk_delivery_time && !info?.delivery_time && (
-                                "В наявності"
-                            ) }
-                            { !info?.in_stock && (
-                                "Немає в наявності"
-                            ) } 
-                            { info?.delivery_time && (
-                                `Доставка протягом ${info.delivery_time} днів`
-                            )}
-                            { info.uk_delivery_time && (
-                                `Доставка з UK протягом ${info.uk_delivery_time} днів`
-                            ) }
-                            { info.waiting_since && (
-                                `Очікується з ${waitingSice}`
-                            ) }
-                        </span>
-                    ) : <></> }
+                        <span className={`book-container__book-status 
+                            ${info.status !== "in_stock" ? "red-text": "green-text"}
+                            ${info.status === "pending" ? "pink-text": ""}`}>
+                                { info.status === "in_stock" && (
+                                    "В наявності"
+                                ) }
+                                { info.status === "not_in_stock" && (
+                                    "Немає в наявності"
+                                ) }
+                                { info.status === "delivery_from_ukraine" && (
+                                    `Доставка протягом ${info?.delivery_time || 10} днів`
+                                ) }
+                                { info.status === "delivery_from_uk" && (
+                                    <span className="book-container__book-status">
+                                        <Image src="/icons/uk-flag.svg" alt="" width="16" height="16" />
+                                        Доставка з UK протягом {info?.uk_delivery_time || 15} днів    
+                                    </span>
+                                    
+                                ) }
+                                { info.status === "pending" && (
+                                    `Очікується з ${info.waiting_since}`
+                                ) }
+                            </span>
+                    ) : <></>}
+
                     
-                    {!isGift && info.format === "Паперова" && <div className="book-container__dot-separator" />}
+                    {!isGift && info.format === "Паперова" && 
+                    info?.status !== "delivery_from_uk" ? <div className="book-container__dot-separator" /> : 
+                    <div className="book-container__additinal-info-separator" 
+                    onMouseEnter={() => setIsAdditionalModalOpen(!isAdditinalModalOpen)}
+                    onMouseLeave={() => setIsAdditionalModalOpen(!isAdditinalModalOpen)}>
+                        { isAdditinalModalOpen && <AdditionalFromUkInfo days={ info?.uk_delivery_time || 15 } /> }
+                        <Image src="/icons/red-info.svg" alt="Attention" width="15" height="15" />
+                    </div>
+                    }
                     { info.format === "Електронна" && <Image src="/icons/mobile.svg" alt="" width="15" height="15" /> }
                     {!isGift && <span className={`book-container__text-gray`}>{ info?.format } книга</span>}
                 </div>
@@ -131,10 +147,10 @@ export const BookPriceBlock = ({ book, info, isGift }) => {
             ) }
 
             <button
-                className={`book-container__pink-buy-btn buy-btn ${info.in_stock ? "buy-btn-pink" : "disabled-btn"}`}
-                disabled={!info.in_stock}
+                className={`book-container__pink-buy-btn buy-btn ${info.status !== "pending" ? "buy-btn-pink" : "disabled-btn"}`}
+                disabled={info.status !== "in_stock"}
             >
-                {info.in_stock ? "Купити" : "Сповістити про наявність"}
+                {info.status !== "not_in_stock" ? "Купити" : "Сповістити про наявність"}
             </button>
 
             { info?.format !== "Електронна" ? (<Delivery />) : <MobileApp /> }

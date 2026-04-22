@@ -93,6 +93,7 @@ export const TopSalesSection = ({ books, isLoading }) => {
                 </>
             ) }
             <div className="slider-viewport">
+                { console.log(books) }
                 <div className="slider-track"
                 style={{
                     transform: `translateX(-${index * (100 / VISIBLE)}%)`

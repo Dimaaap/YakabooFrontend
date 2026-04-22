@@ -97,12 +97,12 @@ export const ProductCard = ({
               +{newPrice ? Math.ceil(newPrice / 2) : Math.ceil(oldPrice / 2)} бонусів
             </span>
         </div>
-        { !bookInfo?.in_stock && (
+        { bookInfo?.status === "not_in_stock" && (
           <span className="product-card__info-span red-text">
             Немає в наявності
           </span>
         ) }
-        { bookInfo?.in_stock && !(isEbook || isAudio || bookInfo?.uk_delivery_time || bookInfo?.delivery_time || waitSince) && (
+        { bookInfo?.status === "in_stock" && !(isEbook || isAudio || bookInfo?.uk_delivery_time || bookInfo?.delivery_time || waitSince) && (
           <span className="product-card__delivery-badge">
             <Image src="/icons/truck.svg" alt="" width="18" height="18" />
               Безкоштовна доставка
@@ -115,27 +115,27 @@ export const ProductCard = ({
           </span>
         ) }
 
-        { bookInfo?.in_stock && isEbook && (
+        { bookInfo?.status === "in_stock" && isEbook && (
           <span className="product-card__info-span">
             <Image src="/icons/el_book.svg" alt="" width="16" height="16" />
             Електронна книга
           </span>
         ) }
 
-        { bookInfo?.in_stock && waitSince && (
+        { bookInfo?.status === "pending" && waitSince && (
           <span className="product-card__info-span pink-text">
             Очікується з { waitSince }
           </span>
         ) }
 
-        { bookInfo?.in_stock && bookInfo?.uk_delivery_time && (
+        { bookInfo?.status === "delivery_from_uk" && bookInfo?.uk_delivery_time && (
           <span className="product-card__info-span red-text">
-            <Image src="/icons/truck-pink.svg" alt="" width="16" height="16" />
+            <Image src="/icons/uk-flag.svg" alt="" width="16" height="16" />
             Доставка з UK {bookInfo?.uk_delivery_time} днів
           </span>
         ) }
 
-        { bookInfo?.in_stock && bookInfo?.deliveryTime && (
+        { bookInfo?.status === "delivery_from_ukraine" && bookInfo?.deliveryTime && (
           <span className="product-card__info-span red-text">
             <Image src="/icons/truck-pink.svg" alt="" width="16" height="16" />
             Доставка { bookInfo?.delivery_time } днів
