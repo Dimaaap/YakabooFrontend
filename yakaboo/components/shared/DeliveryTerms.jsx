@@ -301,16 +301,6 @@ export const DeliveryTerms = (deliveryLocation, productCode) => {
           </div>
         </div>
       )}
-      <div className="delivery-terms__additional">
-        <div className="delivery-terms__seller-info">
-          <p className="delivery-terms__cell">Продавець товару</p>
-          <p className="delivery-terms__cell">Код товару</p>
-        </div>
-        <div className="delivery-terms__seller-info">
-          <Image src="/icons/logo.svg" alt="" width="80" height="30" />
-          <p className="delivery-terms__cell">{ productCode }</p>
-        </div>
-      </div>
     </div>
   );
 };

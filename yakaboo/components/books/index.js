@@ -9,3 +9,5 @@ export { OtherSeriaBooks } from "./OtherSeriaBooks";
 export { OtherBookOptions } from "./OtherBookOptions"
 export { Review } from "./Review";
 export { ReviewsList } from "./ReviewsList";
+export { PaymentMethods } from "./PaymentMethods";
+export { AudioFiles } from "./AudioFiles"

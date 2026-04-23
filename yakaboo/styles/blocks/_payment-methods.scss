@@ -1,0 +1,42 @@
+@use "../helpers" as *;
+
+.payment-methods {
+    font-size: rem(14);
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    gap: rem(5);
+    margin-top: 2%;
+
+    &__title {
+        font-size: rem(16);
+        font-weight: 600;
+    }
+
+    &__row-container {
+        display: flex;
+        flex-direction: column;
+        gap: rem(7);
+    }
+
+    &__methods-row {
+        display: flex;
+        align-items: center;
+        gap: rem(8);
+    }
+
+    &__show-more {
+        background-color: transparent;
+        border: none;
+        display: flex;
+        align-items: center;
+        gap: rem(1);
+        color: var(--color-blue-10);
+
+        &.rotated {
+            & img {
+                transform: rotate(180deg);
+            }
+        }
+    }
+}

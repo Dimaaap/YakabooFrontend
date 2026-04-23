@@ -6,6 +6,7 @@ import { Delivery, DeliveryInfoModal, DownloadFile, MobileApp } from "../dynamic
 import { DeliveryTerms } from "../shared"
 import { useDeliveryCityStore, useDeliveryModalStore } from "../../states";
 import { AdditionalFromUkInfo } from "../modals";
+import { AudioFiles, PaymentMethods } from ".";
 
 export const BookPriceBlock = ({ book, info, isGift }) => {
     const { isDeliveryModalOpen } = useDeliveryModalStore();
@@ -109,16 +110,19 @@ export const BookPriceBlock = ({ book, info, isGift }) => {
                     ) : <></>}
 
                     
-                    {!isGift && info.format === "Паперова" && 
+                    {!isGift && (info.format === "Паперова" || info.format === "Аудіо") && 
                     info?.status !== "delivery_from_uk" ? <div className="book-container__dot-separator" /> : 
                     <div className="book-container__additinal-info-separator" 
                     onMouseEnter={() => setIsAdditionalModalOpen(!isAdditinalModalOpen)}
-                    onMouseLeave={() => setIsAdditionalModalOpen(!isAdditinalModalOpen)}>
+                    onMouseLeave={() => setIsAdditionalModalOpen(!isAdditinalModalOpen
+
+                    )}>
                         { isAdditinalModalOpen && <AdditionalFromUkInfo days={ info?.uk_delivery_time || 15 } /> }
                         <Image src="/icons/red-info.svg" alt="Attention" width="15" height="15" />
                     </div>
                     }
                     { info.format === "Електронна" && <Image src="/icons/mobile.svg" alt="" width="15" height="15" /> }
+                    { info.format === "Аудіо" && <Image src="/icons/audio.svg" alt="" width="15" height="15" /> }
                     {!isGift && <span className={`book-container__text-gray`}>{ info?.format } книга</span>}
                 </div>
                 { (info?.is_has_cashback || info?.is_has_esupport || info?.is_has_winter_esupport || info?.is_far_war) && (
@@ -153,12 +157,17 @@ export const BookPriceBlock = ({ book, info, isGift }) => {
                 {info.status !== "not_in_stock" ? "Купити" : "Сповістити про наявність"}
             </button>
 
-            { info?.format !== "Електронна" ? (<Delivery />) : <MobileApp /> }
+            { (info?.format !== "Електронна" && info.format !== "Аудіо") ? (<Delivery />) : <MobileApp /> }
+            { info.format === "Аудіо" && <AudioFiles /> }
             { info?.format === "Електронна" && <DownloadFile />}
             
             { isDeliveryModalOpen && <DeliveryInfoModal /> }
 
-            { deliveryLocation && <DeliveryTerms deliveryLocation={ deliveryLocation } productCode={ book.code } /> }
+            { deliveryLocation && info.format === "Паперова" && <DeliveryTerms deliveryLocation={ deliveryLocation } productCode={ book.code } /> }
+
+            { deliveryLocation?.payment_methods || info.format === "Аудіо" && (
+                <PaymentMethods locationPaymentMethods={ deliveryLocation?.payment_methods || { cart_or_scholar_pack: true }  } />
+            ) }
         </div>
     )
 
