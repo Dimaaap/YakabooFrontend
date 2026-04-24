@@ -141,6 +141,12 @@ export const ProductCard = ({
             Доставка { bookInfo?.delivery_time } днів
           </span>
         ) }
+
+        { bookInfo?.has_legal_restrictions && (
+          <p className="product-card__legal-restrictions">
+            За вимогою видавця читання книги доступне лише в мобільному застосунку Yakaboo
+          </p>
+        ) }
       </div>
     </Link>
   );

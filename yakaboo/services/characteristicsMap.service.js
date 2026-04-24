@@ -235,9 +235,10 @@ export const extraFields = [
                 { book.illustrators.map((illustrator, index) => (
                     <React.Fragment key={ index }>
                         <Link href={`/book-illustrators/view/${illustrator.slug}`}
-                        className="book-container__link publishing-ling">
+                        className="book-container__link author-ling">
                             {`${illustrator.first_name} ${illustrator.last_name}`}
                         </Link>
+                        { index < book.illustrators.length - 1 && ", " }
                     </React.Fragment>
                 )) }
             </>

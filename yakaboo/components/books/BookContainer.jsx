@@ -13,11 +13,12 @@ import { BookContainerLeftSection } from "./BookContainerLeftSection";
 import { BookPageModals } from "./BookPageModals";
 import { BookContainerCenterSection } from "./BookContainerCenterSection";
 import { BookPriceBlock } from ".";
+import { useSimpleFlashMessage } from "../../states";
 
 
 export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
     const { serverError, showFlashMessage, flashMessage } = useShowFlashMessageStore();
-    const [isSimpleFlashMessage, setIsSimpleFlashMessage] = useState(false);
+    const { isSimpleFlashMessage, setIsSimpleFlashMessage } = useSimpleFlashMessage();
     const { removeBookFromWishlist } = useWishlistBooksStore();
     
     const hasTrackedViewRef = useRef(false);
@@ -84,6 +85,7 @@ export const BookContainer = ({book, breadcrumbLinks, isGift=false}) => {
 
     return(
         <div className="book-container">
+            { console.log(showFlashMessage) }
             <BookPageModals book={ book }/>
             <BookContainerLeftSection ref={ reviewsRef } book={ book } setIsSimpleFlashMessage={ setIsSimpleFlashMessage } 
             isGift={ isGift } breadcrumbLinks={ breadcrumbLinks } />

@@ -1,6 +1,6 @@
 "use client"
 
-import { forwardRef, useEffect, useState } from 'react'
+import { forwardRef } from 'react'
 import { Breadcrumbs, DeliveryTerms, Rate } from '../shared'
 import Link from 'next/link'
 import { BookAuthorBlock, BookInfoBlock, BookReviewsBlock, OtherBookOptions, OtherSeriaBooks, ReviewsList } from '.'
@@ -8,32 +8,30 @@ import { HobbyDescriptionContainer } from '../shared/hobbies/HobbyDescriptionCon
 import { BookCharacteristics } from '../shared/BookCharacteristics'
 import { BookMainInfo } from './BookMainInfo'
 import { Delivery, DeliveryInfoModal, DownloadFile, MobileApp } from '../dynamic'
-import { useDeliveryCityStore, useDeliveryModalStore } from '../../states'
+import { useDeliveryCityStore, useDeliveryModalStore, useSimpleFlashMessage } from '../../states'
+import { setFlashMessage, setShowFlashMessage } from '../../states/ShowFlashMessageStore'
+import { useSmallScreen } from '../../hooks'
 
 export const BookContainerCenterSection = forwardRef(({ breadcrumbLinks, book, isGift }, ref) => {
-    
-    const [smallScreen, setSmallScreen] = useState(false)
-
+    const { setIsSimpleFlashMessage } = useSimpleFlashMessage();
     const { isDeliveryModalOpen } = useDeliveryModalStore();
     const { deliveryLocation } = useDeliveryCityStore();
     
 
+    const smallScreen = useSmallScreen(1441);
     const info = isGift ? book.gift_info : book.book_info;
 
-    useEffect(() => {
-        const handleResize = () => {
-            if(window.innerWidth <= 1441){
-                setSmallScreen(true)
-            } else {
-                setSmallScreen(false)
-            }
+    const copyBookCodeToClipboard = (bookCode) => {
+        
+        try {
+            navigator.clipboard.writeText(bookCode);
+            setFlashMessage(`Код товару "${bookCode}" скопійовано в буфер обміну!`);
+            setShowFlashMessage(true)
+            setIsSimpleFlashMessage(true);
+        } catch {
+            return;
         }
-
-        handleResize();
-        window.addEventListener("resize", handleResize)
-
-        return () => window.removeEventListener("resize", handleResize)
-    }, [])
+    }
 
     return (
      <div className="book-container__section center-section">
@@ -74,12 +72,16 @@ export const BookContainerCenterSection = forwardRef(({ breadcrumbLinks, book, i
 
         { !smallScreen && (
             <p className="book-container__code">
-                Код товару: {info.code}
+                Код товару: 
+                <span className="book-container__book-code"
+                onClick={ () => copyBookCodeToClipboard(info.code) }>
+                    {info.code}
+                </span>
             </p>    
         ) }
 
         {!smallScreen && (
-            <BookInfoBlock book={ book } isGift={ isGift } withTitle={ false } />    
+            <BookInfoBlock book={ book } isGift={ isGift } withTitle={ true } />    
         )}
         
         <HobbyDescriptionContainer hobby={ !isGift ? book.book_info : book.gift_info } isUnderlined={ smallScreen } /> 

@@ -129,6 +129,12 @@
     border-radius: rem(7);
   }
 
+  &__legal-restrictions {
+    font-size: rem(12);
+    font-weight: 500;
+    color: var(--color-red-10);
+  }
+
   & .product-badge-span {
     font-size: rem(12);
     padding: 3%;

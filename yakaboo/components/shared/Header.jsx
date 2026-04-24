@@ -59,7 +59,14 @@ export const Header = () => {
 
         const fetchData = async () => {
             try {
-                const res = await fetch(Endpoints.SEARCH(debouncedSearchValue, USER_EMAIL));
+                let url = null;
+
+                if(!USER_EMAIL){
+                    url = Endpoints.SEARCH_FOR_NO_USER(debouncedSearchValue)
+                } else {
+                    url = Endpoints.SEARCH(debouncedSearchValue, USER_EMAIL)
+                }
+                const res = await fetch(url);
                 if(!res.ok){
                     throw new Error("Error")    
                 } else {

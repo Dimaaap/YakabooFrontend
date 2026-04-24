@@ -27,4 +27,5 @@ export { useSortingOrderStore } from "./SortingOrderStore";
 export { useCurrentSortingOrderStore } from "./CurrentSortingOrderStore"
 export { useSearchHistoryOpenStore } from "./SearchHistoryOpenStore";
 export { useSearchTerm } from "./SearchTermStore";
-export { useHistoryStore } from "./HistoryStore"
+export { useHistoryStore } from "./HistoryStore";
+export { useSimpleFlashMessage } from "./SimpleFlashMessageStore";

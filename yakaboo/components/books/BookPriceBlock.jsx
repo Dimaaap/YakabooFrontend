@@ -1,19 +1,21 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image"
 import { Delivery, DeliveryInfoModal, DownloadFile, MobileApp } from "../dynamic"
 import { DeliveryTerms } from "../shared"
 import { useDeliveryCityStore, useDeliveryModalStore } from "../../states";
 import { AdditionalFromUkInfo } from "../modals";
 import { AudioFiles, PaymentMethods } from ".";
+import { useSmallScreen } from "../../hooks";
 
 export const BookPriceBlock = ({ book, info, isGift }) => {
     const { isDeliveryModalOpen } = useDeliveryModalStore();
     const { deliveryLocation } = useDeliveryCityStore();
 
-    const [smallScreen, setSmallScreen] = useState(false);
     const [isAdditinalModalOpen, setIsAdditionalModalOpen] = useState(false)
+
+    const smallScreen = useSmallScreen(1441);
 
     const bookPromoOptions = {
         "Книга на фронт": info?.is_for_war,
@@ -21,21 +23,6 @@ export const BookPriceBlock = ({ book, info, isGift }) => {
         "Зимова Підтримка": info?.is_has_winter_esupport,
         "Єкнига": info?.is_has_esupport
     }
-
-    useEffect(() => {
-        const handleResize = () => {
-            if(window.innerWidth <= 1441){
-                setSmallScreen(true)
-            } else {
-                setSmallScreen(false)
-            }
-        }
-
-        handleResize();
-        window.addEventListener("resize", handleResize)
-
-        return () => window.removeEventListener("resize", handleResize)
-    }, [])
 
     if(smallScreen) {
         return null
@@ -109,18 +96,20 @@ export const BookPriceBlock = ({ book, info, isGift }) => {
                             </span>
                     ) : <></>}
 
-                    
-                    {!isGift && (info.format === "Паперова" || info.format === "Аудіо") && 
-                    info?.status !== "delivery_from_uk" ? <div className="book-container__dot-separator" /> : 
-                    <div className="book-container__additinal-info-separator" 
-                    onMouseEnter={() => setIsAdditionalModalOpen(!isAdditinalModalOpen)}
-                    onMouseLeave={() => setIsAdditionalModalOpen(!isAdditinalModalOpen
+                    { info?.format === "Паперова" && info.status === "in_stock" && (
+                        <div className="book-container__dot-separator" />
+                    ) }
 
-                    )}>
-                        { isAdditinalModalOpen && <AdditionalFromUkInfo days={ info?.uk_delivery_time || 15 } /> }
-                        <Image src="/icons/red-info.svg" alt="Attention" width="15" height="15" />
-                    </div>
-                    }
+                    { info?.status === "delivery_from_uk" && (
+                        <div className="book-container__additinal-info-separator" 
+                        onMouseEnter={() => setIsAdditionalModalOpen(!isAdditinalModalOpen)}
+                        onMouseLeave={() => setIsAdditionalModalOpen(!isAdditinalModalOpen
+                         )}>
+                            { isAdditinalModalOpen && <AdditionalFromUkInfo days={ info?.uk_delivery_time || 15 } /> }
+                            <Image src="/icons/red-info.svg" alt="Attention" width="15" height="15" />
+                        </div>
+                    ) }
+                    
                     { info.format === "Електронна" && <Image src="/icons/mobile.svg" alt="" width="15" height="15" /> }
                     { info.format === "Аудіо" && <Image src="/icons/audio.svg" alt="" width="15" height="15" /> }
                     {!isGift && <span className={`book-container__text-gray`}>{ info?.format } книга</span>}
@@ -150,6 +139,16 @@ export const BookPriceBlock = ({ book, info, isGift }) => {
                 </div>
             ) }
 
+            { info?.has_legal_restrictions && (
+                <div className="book-container__legal-restrictions">
+                    <Image src="/icons/red-info.svg" alt="Attention" width="15" height="15" />
+                    <p className="book-container__legal-restrictions-text">
+                        За вимогою видавця читання книги 
+                        доступне лише в <b>мобільному застосунку Yakaboo.</b>
+                    </p>
+                </div>
+            ) }
+
             <button
                 className={`book-container__pink-buy-btn buy-btn ${info.status !== "pending" ? "buy-btn-pink" : "disabled-btn"}`}
                 disabled={info.status !== "in_stock"}
@@ -159,11 +158,15 @@ export const BookPriceBlock = ({ book, info, isGift }) => {
 
             { (info?.format !== "Електронна" && info.format !== "Аудіо") ? (<Delivery />) : <MobileApp /> }
             { info.format === "Аудіо" && <AudioFiles /> }
-            { info?.format === "Електронна" && <DownloadFile />}
+            { info?.format === "Електронна" && !info?.has_legal_restrictions && <DownloadFile />}
             
             { isDeliveryModalOpen && <DeliveryInfoModal /> }
 
             { deliveryLocation && info.format === "Паперова" && <DeliveryTerms deliveryLocation={ deliveryLocation } productCode={ book.code } /> }
+
+            {!deliveryLocation && (
+                <PaymentMethods locationPaymentMethods={{ cart_or_scholar_pack: true, e_book: true }} />
+            )}
 
             { deliveryLocation?.payment_methods || info.format === "Аудіо" && (
                 <PaymentMethods locationPaymentMethods={ deliveryLocation?.payment_methods || { cart_or_scholar_pack: true }  } />

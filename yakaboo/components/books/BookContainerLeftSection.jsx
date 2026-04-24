@@ -1,21 +1,20 @@
 "use client"
 
-import { useState, useEffect, forwardRef } from 'react'
+import { forwardRef } from 'react'
 import Image from "next/image"
 import AddToWishlistBtn from '../shared/AddToWishlistBtn'
 import { BookImagesCarousel, BookInfoBlock } from '.';
 import {  useProductImagesStore } from '../../states';
 import { Breadcrumbs, Rate } from '../shared';
 import Link from 'next/link';
+import { useSmallScreen } from '../../hooks';
 
 export const BookContainerLeftSection = forwardRef(({ book, setIsSimpleFlashMessage, isGift, breadcrumbLinks }, ref) => {
-    
-    const [smallScreen, setSmallScreen] = useState(false)
-
 
     const images = book.images || [];
     const pageImages = images.filter((img) => img.type === "page");
     const info = isGift ? book.gift_info : book.book_info;
+    const smallScreen = useSmallScreen(1441);
 
     const bookPromoOptions = {
         "Книга на фронт": info?.is_for_war,
@@ -31,22 +30,6 @@ export const BookContainerLeftSection = forwardRef(({ book, setIsSimpleFlashMess
         setIsReadPart(true)
         setIsProductImagesOpen(true)
     }
-
-    useEffect(() => {
-        const handleResize = () => {
-            if(window.innerWidth <= 1441){
-                setSmallScreen(true)
-            } else {
-                setSmallScreen(false)
-            }
-        }
-
-        handleResize();
-        window.addEventListener("resize", handleResize)
-
-        return () => window.removeEventListener("resize", handleResize)
-    }, [])
-
 
   return (
     <div className="book-container__section left-section">
