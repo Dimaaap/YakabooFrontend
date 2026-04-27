@@ -6,8 +6,7 @@ import Image from 'next/image';
 import { useProtectedPage } from '../../hooks';
 import { useProfileSettingsModalStore, useBookCategoriesModalStore, useMenuModalStore } from '../../states';
 
-import { UserLoginModal, ProfileSettingsModal, MainContainer, BookCategoriesWithSubcategoriesModal, MenuModal } from '../dynamic';
-import { Delivery365Container } from '../user';
+import { UserLoginModal, ProfileSettingsModal, MainContainer, BookCategoriesWithSubcategoriesModal, MenuModal, BonusLeftSection } from '../dynamic';
 
 export const MyAccountClient = () => {
 
@@ -30,13 +29,13 @@ export const MyAccountClient = () => {
         { isCategoriesModalOpen && <BookCategoriesWithSubcategoriesModal /> }
         { isMenuModalOpen && <MenuModal /> }
         <div className="my-account">
+            <BonusLeftSection />
             <div className="my-account__main">
                 <h1 className="my-account__page-title">
                     Налаштування
                 </h1>
                 <div className="my-account__flex-container">
                     <MainContainer />
-                    <Delivery365Container />
                 </div>
             </div>
         </div>

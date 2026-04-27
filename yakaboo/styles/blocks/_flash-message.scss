@@ -1,7 +1,7 @@
 @use "../helpers" as *;
 
 .flash-message {
-    position: absolute;
+    position: fixed;
     top: 1%;
     right: 2%;
     background-color: var(--color-light);

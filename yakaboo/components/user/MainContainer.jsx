@@ -10,6 +10,7 @@ import { DateTime } from '../../services';
 import { getUniqueErrorField, getUserFullName } from '../../utils';
 import { CookiesWorker } from '../../services/cookies.service';
 import { FlashMessage, NoneSpan } from '../shared';
+import { useCartFlashMessageOpenStore } from '../../states';
 
 const MainContainer = () => {
 
@@ -23,6 +24,7 @@ const MainContainer = () => {
     const [uniqueError, setUniqueError] = useState({email: "", phone_number: ""})
     
     const {register, handleSubmit, formState: { errors }} = useForm();
+    const { isAddToCartModalOpen } = useCartFlashMessageOpenStore();
 
     const PHONE_EXISTS_MSG = "Користувач з таким номером телефону вже зареєстрований"
     const EMAIL_EXISTS_MSG = "Користувач з таким email уже зареєстрований"

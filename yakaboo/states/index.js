@@ -29,3 +29,4 @@ export { useSearchHistoryOpenStore } from "./SearchHistoryOpenStore";
 export { useSearchTerm } from "./SearchTermStore";
 export { useHistoryStore } from "./HistoryStore";
 export { useSimpleFlashMessage } from "./SimpleFlashMessageStore";
+export { useCartFlashMessageOpenStore } from "./CartFlashMessageOpenStore";

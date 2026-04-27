@@ -1,30 +1,55 @@
 "use client";
 
 import React from 'react';
-import { Badge, BookInfoBadge } from '.';
+import { BookInfoBadge } from '.';
 import Link from 'next/link';
 import Image from 'next/image';
 import { SupportIcons } from './SupportIcons';
+import { useCartFlashMessageOpenStore, useCartStore } from '../../states';
+import { CookiesWorker } from '../../services';
 
 
-export const ProductCard = ({
-  title = 'Подорожуємо світом. Гра ходилка',
-  brand = 'Авторський проєкт Євгенії Кузнєцової',
-  imageSrc = 'https://static.yakaboo.ua/media/cloudflare/product/webp/352x340/i/m/img_52333.jpg',
-  badges = [],
-  productLink = '#',
-  oldPrice = 156,
-  newPrice = null,
-  extraClass="",
-  withAddToWishlist=true,
-  isEbook=false,
-  isAudio=false,
-  bookInfo=null,
-  changeStyles=false,
-  waitSince=null,
-}) => {
+const ProductCardComponent = (props) => {
+  const {
+    title,
+    brand,
+    imageSrc,
+    badges,
+    productLink,
+    oldPrice,
+    newPrice,
+    extraClass,
+    withAddToWishlist,
+    isEbook,
+    isAudio,
+    bookInfo,
+    changeStyles,
+    waitSince,
+    book
+  } = props;
+
+  
+  const { setIsAddToCartModalOpen } = useCartFlashMessageOpenStore();
+  const { cartItems } = useCartStore();
+
+  const addToCart = useCartStore((state) => state.addToCart);
+  const USER_EMAIL = CookiesWorker.get("email") || null;
+
+  const checkProductInCartItems = (cartItems) => {
+    if(!cartItems?.items){
+      return false
+    }
+
+    const bookSlug = productLink
+
+    return cartItems.items.some(
+      (item) => item.slug === bookSlug.split("/")[1]
+    );
+  }
+
   return (
     <Link className={`${changeStyles ? `${extraClass}` : `product-card ${extraClass}`}`} href={`${productLink}`}>
+      { console.log(book?.id) }
       { (bookInfo?.is_has_cashback || bookInfo?.is_has_winter_esupport || bookInfo?.is_has_esupport || bookInfo?.is_for_war) && (
         <SupportIcons hasCashback={bookInfo?.is_has_cashback} hasWinterSupport={bookInfo?.is_has_winter_esupport} hasESupport={bookInfo?.is_has_esupport} isForWar={bookInfo?.is_for_war} />
       ) }
@@ -87,8 +112,15 @@ export const ProductCard = ({
             </span>
           )}
 
-          <button className={`product-card__in-cart ${waitSince ? "blue-disabled" : ""}`} disabled={!!waitSince}>
+          <button className={`product-card__in-cart ${waitSince ? "blue-disabled" : ""}`} disabled={!!waitSince}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            USER_EMAIL ? addToCart(book, USER_EMAIL) : null;
+            setIsAddToCartModalOpen(true)
+          }}>
             <Image src="/icons/cart.svg" alt="" width="25" height="25" />
+            { checkProductInCartItems(cartItems) ? <span className="product-card__in-cart-item">1</span> : <></> }
           </button>
         </div>
         <div className="product-card__bonuses">
@@ -151,3 +183,6 @@ export const ProductCard = ({
     </Link>
   );
 };
+
+
+export const ProductCard = React.memo(ProductCardComponent)

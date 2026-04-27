@@ -7,7 +7,7 @@ import { useShowBookStore } from "../../states/ShowBooksStore";
 import { fetchData } from "../../services";
 import Endpoints from "../../endpoints";
 import { useWishlistBooksStore } from "../../states/WishlistBooksStore";
-import { ProductCard, Stars, TopBadge } from ".";
+import { CommentsCount, ProductCard, Stars, TopBadge } from ".";
 import { useEffect } from "react";
 import { setShowFlashMessage } from "../../states/ShowFlashMessageStore";
 
@@ -82,20 +82,20 @@ export const WishlistContainer = ({ wishlist }) => {
                     { wishlistBooks[wishlist.id].map((book, index) => (
                         <div className="wishlist__book-container" key={ index }>
                             <ProductCard productLink={`/book/${book.slug}`}
-                            extraClass="wishlist__body-book"
+                            extraClass="top-sales-card"
                             title={ book.title } brand={book.publishing.title}
                             imageSrc={ book.images[0].image_url }
                             badges={
                                 [
-                                    book.stars > 0 ? <Stars count={ book.stars } isSmaller={ true } /> : null,
-                                    book.is_top && <TopBadge />,
+                                    book?.reviews?.length ? <Stars reviews={ book.reviews} isSmaller={ true } /> : <></>,
+                                    book?.reviews?.length > 0 && <CommentsCount count={ book.reviews.length } />,
+                                    <TopBadge />
                                 ]
                             }
-                            productCode={ book.book_info.code }
-                            oldPrice={ book.price }
-                            inStock={ book.book_info.in_stock }
-                            bonusesCount={ book.book_info.bonuses }
-                            withAddToWishlist={false}/>
+                            oldPrice={ book?.price }
+                            newPrice={ book?.is_promo ? book?.promo_price: null }
+                            bookInfo={ book.book_info }
+                            changeStyles={ true }/>
 
                             <button className="wishlist__body-remove-book-btn" onClick={() => deleteBookFromWishlist(book.id, wishlist.id)}>  
                                 <Image src="/icons/red-trash.svg" alt="" width="18" height="18" />

@@ -1,11 +1,12 @@
 import Image from 'next/image'
 import React from 'react'
 import { useQuery } from "@tanstack/react-query"
-import { BooksSection, CommentsCount, NewBanners, ProductCard, Stars, TopBadge, TopSalesSection } from '../shared'
+import { AddToCartFlashMessage, BooksSection, CommentsCount, FlashMessage, NewBanners, ProductCard, Stars, TopBadge, TopSalesSection } from '../shared'
 import Endpoints from '../../endpoints'
 import { STALE_TIME } from '../../site.config'
 import { fetcher } from '../../services/fetch.service'
 import { getDiscountedBooks } from '../../services'
+import { useCartFlashMessageOpenStore, useCartStore } from '../../states'
 
 const BooksContainer = () => {
 
@@ -16,6 +17,9 @@ const BooksContainer = () => {
     refetchOnWindowFocus: false
   })
 
+  const { cartItems } = useCartStore();
+  const { isAddToCartModalOpen } = useCartFlashMessageOpenStore();
+
   const res = books.results ?? [];
 
   const TOP_BOOKS = res.filter(book => !!book.is_top);
@@ -25,6 +29,7 @@ const BooksContainer = () => {
 
   return (
     <div className="categories">
+        { isAddToCartModalOpen && <AddToCartFlashMessage itemsCount={ cartItems.items.length } price={ cartItems.total_price } /> }
         <div className="books-container">
 
             <TopSalesSection books={ TOP_BOOKS } isLoading={ isLoading } />

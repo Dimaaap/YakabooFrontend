@@ -160,6 +160,7 @@ const BookDoubleSubcategories = {
 
 const Cart = {
   CART_ITEMS: (userEmail) => `${DOMAIN}cart/cart-items/all?user_email=${userEmail}`,
+  ADD_ITEM_TO_CART: (bookId, userEmail, quantity=1) => `${DOMAIN}cart-item/add?book_id=${bookId}&user_email=${userEmail}&quantity=${quantity}`,
   CLEAR_CART: (userEmail) => `${DOMAIN}cart/clear?user_email=${userEmail}`,
   DELETE_ITEM_FROM_CART: (userEmail, bookId) => `${DOMAIN}cart-item/delete?book_id=${bookId}&user_email=${userEmail}`,
   UPDATE_BOOK_QUANTITY: (userEmail, bookId, newQuantity) => `${DOMAIN}cart-item/update?book_id=${bookId}&user_email=${userEmail}&quantity=${newQuantity}`

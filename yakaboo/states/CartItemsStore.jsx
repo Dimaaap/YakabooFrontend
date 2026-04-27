@@ -23,6 +23,79 @@ export const useCartStore = create(
               : updater,
       })),
 
+      addToCart: async (book, userEmail) => {
+        const { cartItems, calcTotal } = get();
+
+        const bookId = book.id
+        const prevItems = cartItems.items;
+
+        const existingItem = cartItems.items.find(
+          (item) => item.book_id === bookId
+        );
+
+        let updatedItems;
+
+        if(existingItem) {
+          updatedItems = prevItems.map((item) => item.book_id === bookId ? {...item, quantity: item.quantity + 1} : item)
+        } else {
+          updatedItems  = [
+            ...prevItems, {
+              ...book,
+              book_id: book.id,
+              quantity: 1,
+              price: book.price
+            }
+          ]
+        }
+
+        set({
+          cartItems: {
+            items: updatedItems,
+            total_price: calcTotal(updatedItems)
+          }
+        })
+
+      try {
+        const res = await fetch(
+            Endpoints.ADD_ITEM_TO_CART(book.id, userEmail),
+            {
+              method: "POST",
+            }
+          );
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch");  
+        } 
+
+        const data = await res.json();
+
+        set((state) => {
+          const syncedItems = state.cartItems.items.map((item) => 
+            item.book_id === data.book_id ? {
+              ...item,
+              quantity: data.quantity
+            } : item);
+
+            return {
+              cartItems: {
+                items: syncedItems,
+                total_price: calcTotal(syncedItems)
+              }
+            }
+        }
+      )
+      } catch (e) {
+        console.error("Rollback cart");
+        set({
+          cartItems: {
+            items: prevItems,
+            total_price: calcTotal(prevItems),
+          },
+        });
+      }
+
+    },
+
       deleteItemFromCart: async(bookId, userEmail) => {
         const res = await fetch(Endpoints.DELETE_ITEM_FROM_CART(userEmail, bookId), 
         {

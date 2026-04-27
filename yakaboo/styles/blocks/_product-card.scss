@@ -42,6 +42,7 @@
   padding-block: 10%;
   position: relative;
   padding-inline: 2%;
+  z-index: 100;
 
   &.loading-card {
     background-color: var(--color-gray-50);
@@ -270,6 +271,26 @@
     padding-inline: rem(15);
     border-radius: rem(15);
     transition: all 0.3s ease;
+    z-index: 1001;
+    position: relative;
+
+    &-item {
+      position: absolute;
+      top: -20%;
+      right: -15%;
+      border: rem(1) solid var(--color-light);
+      background-color: var(--color-pink-10);
+      color: var(--color-light);
+      border-radius: rem(50);
+      width: rem(25);
+      height: rem(25);
+      font-size: rem(12);
+      justify-content: center;
+      text-align: center;
+      padding-top: 3%;
+      font-weight: 500p
+    }
+
 
     @include mobile {
       padding-inline: rem(10);

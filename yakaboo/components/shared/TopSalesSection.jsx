@@ -43,6 +43,11 @@ export const TopSalesSection = ({ books, isLoading }) => {
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
+  const visibleBooks = books.slice(
+    index,
+    index + VISIBLE
+  );
+
   if(showSkeleton){
     return (
         <div className="top-sales-section">
@@ -93,10 +98,9 @@ export const TopSalesSection = ({ books, isLoading }) => {
                 </>
             ) }
             <div className="slider-viewport">
-                { console.log(books) }
                 <div className="slider-track"
                 style={{
-                    transform: `translateX(-${index * (100 / VISIBLE)}%)`
+                    transform: `translate3d(-${index * (100 / VISIBLE)}%, 0, 0)`
                 }}>
                     { books.length > 0 && (
                         books.map((book) => (
@@ -114,6 +118,7 @@ export const TopSalesSection = ({ books, isLoading }) => {
                                 bookInfo={ book?.book_info }
                                 extraClass="top-sales-card"
                                 changeStyles={ true }
+                                book={ book }
                                 />    
                             </div>
                         ))

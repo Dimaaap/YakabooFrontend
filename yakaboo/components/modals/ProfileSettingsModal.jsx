@@ -143,12 +143,17 @@ const ProfileSettingsModal = () => {
                     </ul>
                 </div>
 
-                <div className="menu__footer settings-footer">
-                    <p className="settings__additional-info">
-                        Виникли запитання?
-                    </p>
-                    <Link href="tel:0800335425" className="settings__phone-link">
-                        0-800-335-425
+                <div className="menu__footer settings-contact-info">
+                    <div className="menu__footer settings-footer">
+                        <p className="settings__additional-info">
+                            Виникли запитання?
+                        </p>
+                        <Link href="tel:0800335425" className="settings__phone-link">
+                            0-800-335-425
+                        </Link>
+                    </div>
+                    <Link href="tel:0800335425" className="settings-link-btn">
+                        Зв'язатись
                     </Link>
                 </div>
             </div>

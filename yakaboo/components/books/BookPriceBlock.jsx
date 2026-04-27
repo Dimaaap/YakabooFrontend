@@ -105,7 +105,7 @@ export const BookPriceBlock = ({ book, info, isGift }) => {
                         onMouseEnter={() => setIsAdditionalModalOpen(!isAdditinalModalOpen)}
                         onMouseLeave={() => setIsAdditionalModalOpen(!isAdditinalModalOpen
                          )}>
-                            { isAdditinalModalOpen && <AdditionalFromUkInfo days={ info?.uk_delivery_time || 15 } /> }
+                            { isAdditinalModalOpen && <AdditionalFromUkInfo daysCount={ info?.uk_delivery_time || 15 } /> }
                             <Image src="/icons/red-info.svg" alt="Attention" width="15" height="15" />
                         </div>
                     ) }
@@ -164,13 +164,11 @@ export const BookPriceBlock = ({ book, info, isGift }) => {
 
             { deliveryLocation && info.format === "Паперова" && <DeliveryTerms deliveryLocation={ deliveryLocation } productCode={ book.code } /> }
 
-            {!deliveryLocation && (
+            {!deliveryLocation ? (
                 <PaymentMethods locationPaymentMethods={{ cart_or_scholar_pack: true, e_book: true }} />
-            )}
-
-            { deliveryLocation?.payment_methods || info.format === "Аудіо" && (
+            ) : (
                 <PaymentMethods locationPaymentMethods={ deliveryLocation?.payment_methods || { cart_or_scholar_pack: true }  } />
-            ) }
+            )}
         </div>
     )
 

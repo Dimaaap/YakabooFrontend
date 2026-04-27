@@ -1,0 +1,60 @@
+@use '../helpers' as *;
+
+
+.cart-flash {
+    display: flex;
+    flex-direction: column;
+    gap: rem(5);
+
+    &__body {
+        width: 100%;
+        display: flex;
+        align-items: start;
+        gap: rem(7);
+        margin-top: 3%;
+    }
+
+    &__icon {
+        background-color: var(--color-pink-10);
+        padding: 2%;
+        border-radius: rem(50);
+
+        & img {
+            filter: invert(1);
+        }
+    }
+
+    &__text {
+        display: flex;
+        flex-direction: column;
+        gap: rem(3);
+    }
+
+    &__header {
+        font-size: rem(14);
+        font-weight: 500;
+    }
+
+    &__message-text {
+        color: var(--color-gray-30);
+        font-weight: 500;
+        font-size: rem(14);
+    }
+
+    &__button {
+        background-color: var(--color-pink-10);
+        color: var(--color-light);
+        font-weight: 500;
+        width: 100%;
+        font-size: rem(14);
+        padding-block: 3%;
+        margin-top: 2%;
+        justify-content: center;
+        border-radius: rem(10);
+        transition: all 0.3s ease;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+}
