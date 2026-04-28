@@ -3,10 +3,9 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
-import { ContactsModal } from '../modals';
+import { ContactsModal, MessagesModal } from '../modals';
 import { useBookCategoriesModalStore, useCartModalStore, 
     useCartStore, 
-    useHistoryStore, 
     useMenuModalStore, 
     useProfileSettingsModalStore, 
     useSearchHistoryOpenStore, 
@@ -22,6 +21,7 @@ import { useRouter } from 'next/navigation';
 export const Header = () => {
 
     const [isContactsOpen, setIsContactsOpen] = useState(false);
+    const [isMessagesOpen, setIsMessagesOpen] = useState(false);
 
     const { setIsMenuModalOpen } = useMenuModalStore();
     const { setIsCartModalOpen } = useCartModalStore();
@@ -30,7 +30,6 @@ export const Header = () => {
     const { setIsProfileSettingsModalOpen } = useProfileSettingsModalStore();
     const { isSearchHistoryModalOpen, setIsSearchHistoryModalOpen } = useSearchHistoryOpenStore();
     const { cartItems } = useCartStore();
-    const { history } = useHistoryStore();
     const { searchTerm, setSearchTerm, searchResponse, setSearchResponse } = useSearchTerm();
 
     const isAuthenticated = useAuth();
@@ -153,17 +152,20 @@ export const Header = () => {
                         Зв'язатись з нами
                         <Image src="/icons/chevron-down.svg" alt="" width="15" height="15" />
                     </div>
-                    { isContactsOpen && <ContactsModal /> }
-                    
                 </div>
+                 { isContactsOpen && <ContactsModal /> }
             </div>
             <div className="header__icons-row">
                 { isAuthenticated && (
-                    <Image src="/icons/bell.svg" alt="" className="header__link-icon" width="20" height="20" />
+                    <div className="header__bell-wrapper">
+                        <Image src="/icons/bell.svg" alt="" className="header__link-icon" width="20" height="20"/>    
+                        <MessagesModal />
+                    </div>
+                    
                 ) }
                 { isAuthenticated && (
                     <Link className="header__link cart-link" href="#" onClick={() => setIsCartModalOpen(true) }>
-                        <Image src="/icons/cart.svg" alt="" className="header__link-icon" width="20" height="20" />
+                        <Image src="/icons/cart.svg" alt="" className="header__link-icon" width="20" height="20" />    
                         { cartItems?.items?.length > 0 && (<span className="header__cart-items-count">{ cartItems.items.length }</span>) }
                     </Link>    
                 ) }

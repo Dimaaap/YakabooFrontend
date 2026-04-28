@@ -1,5 +1,19 @@
 @use "../helpers" as *;
 
+.header__bell-wrapper:hover .messages-modal {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.header__bell-wrapper {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+}
+
+
 .header {
     display: flex;
     padding-block: 1%;

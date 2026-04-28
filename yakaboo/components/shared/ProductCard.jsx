@@ -1,7 +1,7 @@
 "use client";
 
-import React from 'react';
-import { BookInfoBadge } from '.';
+import React, { useMemo } from 'react';
+import { BookInfoBadge, CommentsCount, Stars, TopBadge } from '.';
 import Link from 'next/link';
 import Image from 'next/image';
 import { SupportIcons } from './SupportIcons';
@@ -14,7 +14,6 @@ const ProductCardComponent = (props) => {
     title,
     brand,
     imageSrc,
-    badges,
     productLink,
     oldPrice,
     newPrice,
@@ -47,9 +46,15 @@ const ProductCardComponent = (props) => {
     );
   }
 
+  const badges = useMemo(() => [
+    book?.reviews?.length ? <Stars reviews={book.reviews} isSmaller /> : null,
+    book?.reviews?.length > 0 && <CommentsCount count={book.reviews.length} />,
+    <TopBadge />
+  ], [book]);
+
   return (
     <Link className={`${changeStyles ? `${extraClass}` : `product-card ${extraClass}`}`} href={`${productLink}`}>
-      { console.log(book?.id) }
+      { checkProductInCartItems(cartItems) && console.log(book) }
       { (bookInfo?.is_has_cashback || bookInfo?.is_has_winter_esupport || bookInfo?.is_has_esupport || bookInfo?.is_for_war) && (
         <SupportIcons hasCashback={bookInfo?.is_has_cashback} hasWinterSupport={bookInfo?.is_has_winter_esupport} hasESupport={bookInfo?.is_has_esupport} isForWar={bookInfo?.is_for_war} />
       ) }
