@@ -76,15 +76,13 @@ export const SeenBooks = ({ books }) => {
                     { books.length > 0 && books.map((book, id) => (
                         <ProductCard key={ id } title={ book.book.title } 
                         brand={`${book.book.authors[0]?.first_name} ${book?.book?.authors[0]?.last_name}`} 
-                        imageSrc={book?.book?.images[0].image_url} 
-                        badges={[book?.book?.stars > 0 && <Stars count={ book?.book?.stars } isSmaller={ true } />, book?.book?.is_in_chart && <TopBadge />, <CommentsCount count={book?.book?.reviews.length} />]}
-                        productCode={ book?.book?.book_info.code } productLink={`/book/${book?.book?.slug}`} 
-                        oldPrice={book?.book?.price} newPrice={ book?.book?.is_promo ? book?.book?.promo_price : null }
-                        inStock={ book?.book?.book_info?.in_stock || book?.book?.is_in_stock || false }
-                        hasCashback={ book?.book?.book_info?.is_has_cashback }
-                        hasWinterSupport={ book?.book?.book_info?.is_has_winter_esupport }
-                        hasESupport={ book?.book?.book_info?.is_has_esupport }
-                        deliveryTime={ book?.book?.book_info?.delivery_time }/>
+                        productLink={`book/${book.slug}`}
+                        imageSrc={book?.book?.images[0].image_url}
+                        oldPrice={book?.book?.price} 
+                        newPrice={ book?.book?.is_promo ? book?.book?.promo_price : null }
+                        bookInfo={ book?.book_info }
+                        book={ book } />
+                        
                     )) }
                 </div>
 
