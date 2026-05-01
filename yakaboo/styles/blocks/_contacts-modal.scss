@@ -67,6 +67,11 @@
         width: 125%;
         font-weight: 500;
 
+        @include tablet {
+            width: 80%;
+            padding-block: 2%;
+        }
+
         &:hover {
             background-color: var(--color-gray-50);
         }

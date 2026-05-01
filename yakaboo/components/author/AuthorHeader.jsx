@@ -8,12 +8,15 @@ import { formatLocalDate } from '../../utils';
 import { fetchData } from '../../services';
 import Endpoints from '../../endpoints';
 import { setDescription, setShowAll, useHobbyDescriptionStore } from '../../states/hobbies/HobbyDescriptionStore';
+import { useSmallScreen } from '../../hooks';
 
 export const AuthorHeader = ({ author }) => {
   const [authorImages, setAuthorImages] = useState([]);
   const [activeImage, setActiveImage] = useState(0);
   const [authorFact, setAuthorFact] = useState(null);
   const { firstParagraph, showAll, isSingle } = useHobbyDescriptionStore()
+
+  const isSmallScreen = useSmallScreen();
 
   useEffect(() => {
     fetchData(
@@ -27,14 +30,6 @@ export const AuthorHeader = ({ author }) => {
   useEffect(() => {
         setDescription(author.description)
   }, [author.description])
-
-  const handleChangeShowAll = () => {
-    if (showAll) {
-      setShowAll(false);
-    } else {
-      setShowAll(true);
-    }
-  };
 
   const showNextImage = () => {
     if(activeImage < authorImages.length - 1){
@@ -56,10 +51,15 @@ export const AuthorHeader = ({ author }) => {
     <div className="author-header">
       {authorImages.length > 0 && (
         <div className="author-header__left">
+          { isSmallScreen && (
+            <h3 className="author-header__title centered">
+              {author.first_name} {author.last_name} - книги і біографія
+            </h3>
+          ) }
           <div className="book-container__images-carousel">
             <div className="book-container__main-image">
-              { authorImages.length > 1 && (
-                <button className="book-container__slider-btn prev-btn slider-btn"
+              { authorImages.length > 1 && !isSmallScreen && (
+                <button className="book-container__slider-btn prev-btn slider-btn header-btn"
                 onClick={ showPrevImage }>
                   <Image src="/icons/arrow-left.svg" alt="" width="20" height="20" />
                 </button>
@@ -73,33 +73,47 @@ export const AuthorHeader = ({ author }) => {
                   className="author__big-image"
                 />  
               </div>
-              { authorImages.length > 1 && (
-                <button className="book-container__slider-btn next-btn slider-btn author-btn"
+              { authorImages.length > 1 && !isSmallScreen && (
+                <button className="book-container__slider-btn next-btn slider-btn header-btn"
                 onClick={ showNextImage }>
                   <Image src="/icons/arrow-left.svg" alt="" width="20" height="20" />
                 </button>
               ) }
             </div>
-            <div className="author-header__small-images-row book-container__rest-images">
-              { authorImages.length > 0 && (
-                authorImages 
-                  .map((image, index) => ({ image, index }))
-                  .filter(({ index }) => index >= activeImage - 1 && index <= activeImage + 3)
-                  .map(({ image, index }) => (
-                    <Image key={ index } src={ image.image_path } 
-                    alt={`${author.slug}_${index + 1}`}
-                    width="50" height="50" className={ activeImage === index ? "cur-img": "" }
-                    onClick={ () => setActiveImage(index) } />
-                  ))
-              ) }
-            </div>
+            { !isSmallScreen ? (
+              <div className="author-header__small-images-row book-container__rest-images">
+                { authorImages.length > 0 && (
+                  authorImages 
+                    .map((image, index) => ({ image, index }))
+                    .filter(({ index }) => index >= activeImage - 1 && index <= activeImage + 3)
+                    .map(({ image, index }) => (
+                      <Image key={ index } src={ image.image_path } 
+                      alt={`${author.slug}_${index + 1}`}
+                      width="50" height="50" className={ activeImage === index ? "cur-img": "" }
+                      onClick={ () => setActiveImage(index) } />
+                    ))
+                ) }
+              </div>  
+            ) : (
+              <div className="author-header__image-dots">
+                { authorImages.map((_, index) => (
+                  <span className={`author-header__dot ${activeImage === index ? "active-dot": ""}`}
+                  key={ index }
+                  onClick={ () => setActiveImage(index) }
+                  />
+                )) }
+              </div>
+            )}
+            
           </div>
         </div>
       )}
       <div className="author-header__center">
-        <h3 className="author-header__title">
-          {author.first_name} {author.last_name} - книги і біографія
-        </h3>
+        {!isSmallScreen && (
+          <h3 className="author-header__title">
+            {author.first_name} {author.last_name} - книги і біографія
+          </h3>  
+        )}
         {authorImages.length > 0 && (
           <div className="author-header__info-table">
             { author.first_name && author.last_name && author.date_of_birth && (

@@ -4,16 +4,14 @@
     width: rem(450);
     border: none;
     border-radius: rem(5);
-    opacity: 0;
-    visibility: hidden;
     transform: translateY(10px);
-    left: -1600%;
+    left: -20%;
     max-height: rem(280);
     overflow: auto;
     padding-bottom: 0;
+    z-index: 1001;
 
     transition: all 0.25s ease;
-    pointer-events: none;
 
     &__body {
         display: flex;

@@ -7,10 +7,12 @@ import Endpoints from "../../endpoints";
 import { useQuery } from "@tanstack/react-query";
 import { fetcher } from "../../services/fetch.service";
 import Image from "next/image";
+import { useSmallScreen } from "../../hooks";
 
 export const AuthorContainerClient = () => {
       const pathname = usePathname();
       const authorSlug = pathname.split('/')[3];
+      const isSmallScreen = useSmallScreen();
 
       const STALE_TIME = 1000 * 60 * 5;
 
@@ -37,7 +39,9 @@ export const AuthorContainerClient = () => {
             <Breadcrumbs linksList={breadcrumbsObject} isSmaller={ true } />
             {author && <AuthorHeader author={author} />}
             <div className="author__flex-container">
-              <Filters needAuthors={ false } />
+              {!isSmallScreen && (
+                <Filters needAuthors={ false } />  
+              )}
               { author && (
                 <CardsContainer source={{ type: "author", id: author?.id}} />  
               ) }

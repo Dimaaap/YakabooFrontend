@@ -98,6 +98,13 @@ export const Header = () => {
         router.push(`/search?q=${encodeURIComponent(searchTerm)}`)
     }
 
+    const handleBellClick = () => {
+        console.log("bell click")
+        console.log(isMessagesOpen)
+        setIsMessagesOpen(!isMessagesOpen)
+        console.log(isMessagesOpen)
+    }
+
 
   return (
     //TODO: Прибрати цей костиль і змінити нормальний z-index через CSS і HTML
@@ -153,15 +160,13 @@ export const Header = () => {
                         <Image src="/icons/chevron-down.svg" alt="" width="15" height="15" />
                     </div>
                 </div>
-                 { isContactsOpen && <ContactsModal /> }
+                 { isContactsOpen && !isMessagesOpen && <ContactsModal /> }
+                 { isMessagesOpen && <MessagesModal /> }
             </div>
             <div className="header__icons-row">
                 { isAuthenticated && (
-                    <div className="header__bell-wrapper">
-                        <Image src="/icons/bell.svg" alt="" className="header__link-icon" width="20" height="20"/>    
-                        <MessagesModal />
-                    </div>
-                    
+                    <Image src="/icons/bell.svg" alt="" className="header__link-icon" width="20" height="20" 
+                     onClick={handleBellClick}/>    
                 ) }
                 { isAuthenticated && (
                     <Link className="header__link cart-link" href="#" onClick={() => setIsCartModalOpen(true) }>

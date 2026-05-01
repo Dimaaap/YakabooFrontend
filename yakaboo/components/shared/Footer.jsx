@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react'
 import { CookiesWorker, fetchData } from '../../services'
 import Endpoints from '../../endpoints'
 import { Spinner } from '.'
+import { useSmallScreen } from '../../hooks'
 
 export const Footer = () => {
 
@@ -17,6 +18,9 @@ export const Footer = () => {
             behavior: "smooth"
         })
     }
+
+    const isSmallScreen = useSmallScreen()
+    const isLaptop = useSmallScreen(1024);
     
     const [links, setLinks] = useState([])
     const [contacts, setContacts] = useState([])
@@ -69,9 +73,11 @@ export const Footer = () => {
                 <h5 className="footer__title">
                     Міняємо email на книжкотренди
                 </h5>
-                <p className="footer__desc">
-                    Інформація про новинки, книжкові добірки, секретні промокоди
-                </p>
+                { !isSmallScreen && (
+                    <p className="footer__desc">
+                        Інформація про новинки, книжкові добірки, секретні промокоди
+                    </p>    
+                ) }
             </div>
             <div className="footer__right-part">
                 { !isSubmitting ? (
@@ -143,31 +149,27 @@ export const Footer = () => {
                     </div>
                 </div>
             </div>
-            {/* <div className="footer__section">
-                <div className="footer__text-block">
-                    <p className="footer__text">
-                        Безкоштовно по Україні
-                    </p>
-                    <Link href="tel:0800335425" className="footer__phone-number">
-                        0-800-335-425
-                    </Link>
-                    <span className="footer__small-text">
-                        Без вихідних, з 9 до 20
-                    </span>
-                </div>
-                { contacts.length > 0 && (
-                    <ul className="footer__social-links">
-                        { contacts.map((contact, index) => (
-                            <li className="footer__social-link" key={ index }>
-                                <Link href={ contact.link } className="footer__social">
-                                    <Image src={`/icons/${contact.icon_title}`} width="30" 
-                                    height="30" alt="" />
-                                </Link>
-                            </li>
-                        )) }
-                    </ul>
-                ) }
-            </div> */}
+            { isLaptop && (
+                <div className="footer__section">
+                    <div className="footer__desc">
+                        <p className="footer__text-title">
+                            Мобільний застосунок
+                        </p>
+                        <p className="footer__text">
+                            Читайте і прослуховуйте книжку у найбільшій біліотеці електронних 
+                            та аудіокниг від топових українських і світових авторів
+                        </p>
+                        <div className="footer__btns-row">
+                            <Link href="#" className="footer__btn-download">
+                                <Image src="/icons/google-play.svg" alt="" width="120" height="120" />
+                            </Link>
+                            <Link href="#" className="footer__btn-download">
+                                <Image src="/icons/app-store.svg" alt="" width="120" height="120" />
+                            </Link>
+                        </div>
+                    </div>
+                </div>    
+            ) }
             <ul className="footer__list">
                 <p className="footer__list-title">
                     Yakaboo
@@ -212,25 +214,28 @@ export const Footer = () => {
                     ))
                 ) }
             </ul>
-            <div className="footer__section">
-                <div className="footer__desc">
-                    <p className="footer__text-title">
-                        Мобільний застосунок
-                    </p>
-                    <p className="footer__text">
-                        Читайте і прослуховуйте книжку у найбільшій біліотеці електронних 
-                        та аудіокниг від топових українських і світових авторів
-                    </p>
-                    <div className="footer__btns-row">
-                        <Link href="#" className="footer__btn-download">
-                            <Image src="/icons/google-play.svg" alt="" width="120" height="120" />
-                        </Link>
-                        <Link href="#" className="footer__btn-download">
-                            <Image src="/icons/app-store.svg" alt="" width="120" height="120" />
-                        </Link>
+            { !isLaptop && (
+                <div className="footer__section">
+                    <div className="footer__desc">
+                        <p className="footer__text-title">
+                            Мобільний застосунок
+                        </p>
+                        <p className="footer__text">
+                            Читайте і прослуховуйте книжку у найбільшій біліотеці електронних 
+                            та аудіокниг від топових українських і світових авторів
+                        </p>
+                        <div className="footer__btns-row">
+                            <Link href="#" className="footer__btn-download">
+                                <Image src="/icons/google-play.svg" alt="" width="120" height="120" />
+                            </Link>
+                            <Link href="#" className="footer__btn-download">
+                                <Image src="/icons/app-store.svg" alt="" width="120" height="120" />
+                            </Link>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </div>    
+            ) }
+            
         </div>
         <div className="footer__footer-row">
             <span className="footer__copyright">

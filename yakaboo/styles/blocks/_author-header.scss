@@ -8,8 +8,36 @@
   padding: 1.5%;
   margin-top: 1%;
 
+  @include laptop {
+    flex-direction: column;
+    gap: 15%;
+  }
+
   &__left {
     width: 30%;
+
+    @include laptop {
+      width: 100%;
+    }
+  }
+
+  &__image-dots {
+    width: max-content;
+    display: flex;
+    align-items: center;
+    gap: rem(5);
+  }
+
+  &__dot {
+    width: rem(10);
+    height: rem(10);
+    border-radius: rem(50);
+    background-color: var(--color-gray-40);
+    cursor: pointer;
+
+    &.active-dot {
+      background-color: var(--color-gray-30);
+    }
   }
 
   &__images {
@@ -53,6 +81,11 @@
   &__title {
     @include fluid-text(23, 18);
     font-weight: 600;
+
+    &.centered {
+      justify-content: center;
+      text-align: center;
+    }
   }
 
   &__info-table {
@@ -63,6 +96,10 @@
     flex-direction: column;
     gap: 1%;
     width: 40%;
+
+    @include laptop {
+      margin-top: 5%;
+    }
   }
 
   &__table-row {
@@ -70,6 +107,12 @@
     justify-content: space-between;
     gap: 1%;
     padding-bottom: 2%;
+
+    @include laptop {
+      flex-direction: column;
+      gap: rem(5);
+      padding-top: 2%;
+    }
 
     &:first-child {
       border-bottom: rem(2) solid var(--color-gray-40);
@@ -126,5 +169,11 @@
 
   &__right {
     width: 30%;
+
+    @include laptop {
+      width: 60%;
+      margin: auto;
+      margin-top: 3%;
+    }
   }
 }

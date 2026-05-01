@@ -6,16 +6,30 @@
     flex-direction: column;
     margin-top: 2%;
 
+    @include tablet {
+        padding-inline: 2%;
+    }
+
     &__top-row {
         display: flex;
         padding: 2%;
         justify-content: space-between;
         gap: 0;
         border-bottom: rem(2) solid var(--color-gray-40);
+
+        @include tablet {
+            flex-direction: column;
+            gap: rem(5);
+            width: 100%;
+        }
     }
 
     &__left-part {
         width: 40%;
+
+        @include tablet {
+            width: 100%;
+        }
     }
 
     &__title {
@@ -43,6 +57,10 @@
         display: flex;
         flex-direction: column;
         gap: rem(5);
+
+        @include tablet {
+            width: 100%;
+        }
     }
 
     &__email-input {
@@ -62,6 +80,13 @@
         display: flex;
         align-items: start;
         gap: 2%;
+
+        @include tablet {
+            display: flex;
+            width: 100%;
+            flex-direction: column;
+            gap: 5%;
+        }
     }
 
     &__submit-btn {
@@ -79,6 +104,11 @@
             background-color: var(--color-gray-30);
             cursor: not-allowed;
         }
+
+        @include tablet {
+            width: 100%;
+            margin-top: rem(10);
+        }
     }
 
     &__bottom-row {
@@ -86,6 +116,12 @@
         grid-template-columns: repeat(4, 1fr);
         padding: 2%;
         border-bottom: rem(2) solid var(--color-gray-40);
+
+        @include tablet {
+            grid-template-columns: 1fr;
+            row-gap: rem(20);
+            border-bottom: none;
+        }
     }
 
     &__text-block {
@@ -114,6 +150,12 @@
         display: flex;
         flex-direction: column;
         gap: rem(18);
+
+        @include tablet {
+            color: var(--color-black);
+            margin-top: 2%;
+            gap: rem(5);
+        }
     }
 
     &__small-text {
@@ -132,17 +174,30 @@
         display: flex;
         flex-direction: column;
         gap: rem(15);
+
+        @include tablet {
+            color: var(--color-black);
+        }
     }
 
     &__list-title {
         font-weight: 500;
         letter-spacing: 0.01em;
+
+        @include tablet {
+            font-size: rem(16);
+        }
     }
 
     &__item {
         color: var(--color-gray-10);
         font-weight: 500;
         letter-spacing: 0.01em;
+
+        @include tablet {
+            color: var(--color-black);
+
+        }
 
         &:hover {
             color: var(--color-blue-10);
@@ -160,17 +215,30 @@
     &__text-title {
         color: var(--color-gray-10);
         font-weight: 600;
+
+        @include tablet {
+            font-size: rem(18);
+            color: var(--color-black);
+        }
     }
 
     &__text {
         color: var(--color-gray-10);
         font-weight: 500;
+
+        @include tablet {
+            color: var(--color-black);
+        }
     }
 
     &__btns-row {
         display: flex;
         gap: 5%;
         align-items: center;
+
+        @include tablet {
+            gap: 2%;
+        }
     }
 
     &__btn-download {
@@ -185,6 +253,11 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+
+        @include tablet {
+            width: 100%;
+            margin: auto;
+        }
     }
 
     &__top-btn {
@@ -205,6 +278,10 @@
     &__copyright {
         font-weight: 500;
         color: var(--color-gray-20);
+
+        @include tablet {
+            margin: auto;
+        }
     }
 }
 
