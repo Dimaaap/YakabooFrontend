@@ -134,6 +134,10 @@
         }
     }
 
+    &__relative-container {
+        position: relative;
+    }
+
     &__input-loader {
         position: absolute;
         right: 25%;
@@ -313,8 +317,8 @@
     &__cart-items-count {
         position: absolute;
         background-color: var(--color-pink-10);
-        width: rem(16);
-        height: rem(16);
+        width: rem(18);
+        height: rem(18);
         border-radius: rem(50);
         font-weight: 500;
         font-size: rem(12);
@@ -323,6 +327,7 @@
         text-align: center;
         left: 60%;
         top: -40%;
+        padding-bottom: 2%;
     }
 }
 

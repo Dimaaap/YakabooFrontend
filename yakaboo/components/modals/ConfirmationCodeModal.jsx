@@ -52,6 +52,7 @@ const ConfirmationCodeModal = () => {
                 headers: {
                     "Content-Type": "application/json"
                 },
+                credentials: "include",
                 body: JSON.stringify({
                     phone_number: phoneNumber,
                     code: verificationCode
@@ -60,9 +61,6 @@ const ConfirmationCodeModal = () => {
 
             if(response.ok){
                 const data = await response.json();
-                CookiesWorker.setWithTimer("access_token", data.access_token, 30)
-                CookiesWorker.setWithTimer("refresh_token", data.refresh_token, ONE_WEEK)
-                CookiesWorker.setWithTimer("token_type", data.token_type, ONE_WEEK)
                 CookiesWorker.set("is_auth", false);
                 setMessage("Ви успішно авторизувались");
                 setIsConfirmationModalOpen(false);

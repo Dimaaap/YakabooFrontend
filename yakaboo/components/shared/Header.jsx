@@ -9,7 +9,7 @@ import { useBookCategoriesModalStore, useCartModalStore,
     useMenuModalStore, 
     useProfileSettingsModalStore, 
     useSearchHistoryOpenStore, 
-    useSearchTerm, 
+    useSearchTerm,
     useUserLoginModalStore} from '../../states';
 import { useAuth } from '../../hooks';
 import { UserProfileButton } from '.';
@@ -17,11 +17,19 @@ import { useDebounce } from '../../hooks/useDebounce';
 import Endpoints from '../../endpoints';
 import { CookiesWorker } from '../../services';
 import { useRouter } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { fetcher } from '../../services/fetch.service';
+import { STALE_TIME } from '../../site.config';
+
+const readMessages = (notificationIds) => {
+    
+}
 
 export const Header = () => {
 
     const [isContactsOpen, setIsContactsOpen] = useState(false);
     const [isMessagesOpen, setIsMessagesOpen] = useState(false);
+    const [unreadCount, setUnreadCount] = useState(0)
 
     const { setIsMenuModalOpen } = useMenuModalStore();
     const { setIsCartModalOpen } = useCartModalStore();
@@ -47,6 +55,12 @@ export const Header = () => {
 
     const debouncedSearchValue = useDebounce(searchTerm, 500);
     const isDebouncing = searchTerm.trim() && searchTerm !== debouncedSearchValue;
+
+    const { data: messages = [], isLoading} = useQuery({
+        queryKey: ["notifications"],
+        queryFn: () => fetcher(Endpoints.ACTIVE_NOTIFICATIONS_FOR_USER, {credentials: "include"}),
+        staleTime: STALE_TIME
+    })
 
     useEffect(() => {
         if(!debouncedSearchValue.trim()){
@@ -85,6 +99,10 @@ export const Header = () => {
     }, [debouncedSearchValue]
     )
 
+    useEffect(() => {
+        setUnreadCount(messages?.length ?? 0)
+    }, [messages])
+
     const handleInputValueChange = (e) => {
         const value = e.target.value;
         setSearchTerm(value);
@@ -99,11 +117,10 @@ export const Header = () => {
     }
 
     const handleBellClick = () => {
-        console.log("bell click")
-        console.log(isMessagesOpen)
         setIsMessagesOpen(!isMessagesOpen)
-        console.log(isMessagesOpen)
+        setUnreadCount(0)
     }
+
 
 
   return (
@@ -161,12 +178,16 @@ export const Header = () => {
                     </div>
                 </div>
                  { isContactsOpen && !isMessagesOpen && <ContactsModal /> }
-                 { isMessagesOpen && <MessagesModal /> }
+                 { isMessagesOpen && <MessagesModal messages={ messages } /> }
             </div>
             <div className="header__icons-row">
                 { isAuthenticated && (
-                    <Image src="/icons/bell.svg" alt="" className="header__link-icon" width="20" height="20" 
-                     onClick={handleBellClick}/>    
+                    <div className="header__relative-container">
+                        <Image src="/icons/bell.svg" alt="" className="header__link-icon" width="20" height="20" 
+                        onClick={handleBellClick}/>     
+                        { unreadCount > 0 && (<span className="header__cart-items-count">{ unreadCount }</span>) }  
+                    </div>
+                    
                 ) }
                 { isAuthenticated && (
                     <Link className="header__link cart-link" href="#" onClick={() => setIsCartModalOpen(true) }>

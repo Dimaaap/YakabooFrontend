@@ -119,6 +119,7 @@ const UserLoginModal = ({ afterClose = null }) => {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: "include",
         body: JSON.stringify({
           email: data.email,
           password: data.password,
@@ -127,6 +128,7 @@ const UserLoginModal = ({ afterClose = null }) => {
 
       if (!response.ok) {
         const errorData = await response.json();
+
         if (response.status === 401) {
           setError('password', {
             type: 'manual',
@@ -137,26 +139,10 @@ const UserLoginModal = ({ afterClose = null }) => {
           setServerError(errorData.detail || 'Невідома помилка');
           throw new Error(`HTTP Error! Status: ${response.status}`);
         }
+
       } else {
         const result = await response.json();
-        const access_token = result.access_token;
-        const refresh_token = result.refresh_token;
         const dataForCookies = [
-          {
-            title: 'access_token',
-            value: access_token,
-            time: 30,
-          },
-          {
-            title: 'refresh_token',
-            value: refresh_token,
-            time: ONE_WEEK,
-          },
-          {
-            title: 'token_type',
-            value: result.token_type,
-            time: ONE_WEEK,
-          },
           {
             title: 'email',
             value: result.user.email,

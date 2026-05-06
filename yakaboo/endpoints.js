@@ -202,6 +202,10 @@ const UserSearchStory = {
 }
 
 
+const Notifications = {
+  ACTIVE_NOTIFICATIONS_FOR_USER: `${DOMAIN}notifications/user/unread`
+}
+
 
 const Endpoints = {
   ...BoardGames,
@@ -233,6 +237,7 @@ const Endpoints = {
   ...UserSeenBooks,
   ...ReviewReactions,
   ...UserSearchStory,
+  ...Notifications,
   ACTIVE_TITLE: `${DOMAIN}page-title/active`,
   USE_PROMO_CODE: (userEmail, promoCode) => `${DOMAIN}promo-codes-usage/use?user_email=${userEmail}&code=${promoCode}`,
   GET_PROMO_CODE_BY_ID: (promoId) => `${DOMAIN}promo-codes/by-id/${promoId}`,

@@ -1,23 +1,14 @@
+"use client"
+
+import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
+import { fetcher } from '../../services/fetch.service';
+import Endpoints from '../../endpoints';
+import { STALE_TIME } from '../../site.config';
+import { useUnreadNotificationsStore } from '../../states';
 
-const messages = [
-    {
-        title: "🔥😍📖Е-видавництво тижня! До -20% на книжки від Stretovych",
-        link: "promotion/e-vydavnytstvo-tyzhnia-do-20-na-knyzhky-vid-stretovych",
-        image_src: "https://picscdn.io/repository/home/3673/pull/images/1777372452315.png",
-        description: "Книжки, що запускають процес мислення та наповнюють ідеями! Шукаєте такі? Тоді вам до нашої добірки електронних видань від Stretovych - тут усе надихає та дає поштовх до творчості",
-        datetime: "2026-04-28 14:01:00"
-    },
-    {
-        title: "💕📕📘-50% на другу книжку «Віхоли» з добірки",
-        link: "promotion/-50-na-druhu-knyzhku-viholy-z-dobirky",
-        image_src: "https://picscdn.io/repository/home/3673/pull/images/1776937954093.png",
-        description: "Обирайте 2 книжки 'Віхоли' з добірки і та, що вартує менше, буде за пів ціни! Замовляйте і нехай у вашій бібліотеці зазвучать українські голоси!",
-        datetime: "2026-04-24 13:04:00"
-    }
-]
 
 const formatMessageDate = (dateString) => {
     const date = new Date(dateString);
@@ -35,7 +26,7 @@ const formatMessageDate = (dateString) => {
     }
 
     const months = [
-         "січня", "лютого", "березня", "квітня",
+        "січня", "лютого", "березня", "квітня",
         "травня", "червня", "липня", "серпня",
         "вересня", "жовтня", "листопада", "грудня"
     ]
@@ -43,7 +34,8 @@ const formatMessageDate = (dateString) => {
     return `${date.getDate()} ${months[date.getMonth()]}, ${hours}:${minutes}`;
 }
 
-export const MessagesModal = () => {
+export const MessagesModal = ({ messages }) => {
+
   return (
     <div className="contacts-modal messages-modal">
         <div className="messages-modal__body">
@@ -63,7 +55,7 @@ export const MessagesModal = () => {
 
                         <div className="messages-modal__message-footer">
                             <span className="messages-modal__message-datetime">
-                                { formatMessageDate(message.datetime) }
+                                { formatMessageDate(message.created_at) }
                             </span>
                             
                             <Link className="messages-modal__message-btn" href={ message.link }>
