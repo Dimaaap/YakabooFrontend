@@ -203,7 +203,9 @@ const UserSearchStory = {
 
 
 const Notifications = {
-  ACTIVE_NOTIFICATIONS_FOR_USER: `${DOMAIN}notifications/user/unread`
+  ACTIVE_NOTIFICATIONS_FOR_USER: `${DOMAIN}notifications/user/unread`,
+  READ_ALL_NOTIFICATIONS_FOR_USER: `${DOMAIN}notifications/user/read-all`,
+  ALL_NOTIFICATIONS_FOR_USER: `${DOMAIN}notifications/user`
 }
 
 

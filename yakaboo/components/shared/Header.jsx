@@ -58,9 +58,10 @@ export const Header = () => {
 
     const { data: messages = [], isLoading} = useQuery({
         queryKey: ["notifications"],
-        queryFn: () => fetcher(Endpoints.ACTIVE_NOTIFICATIONS_FOR_USER, {credentials: "include"}),
+        queryFn: () => fetcher(Endpoints.ALL_NOTIFICATIONS_FOR_USER, {credentials: "include"}),
         staleTime: STALE_TIME
     })
+    
 
     useEffect(() => {
         if(!debouncedSearchValue.trim()){
@@ -100,7 +101,8 @@ export const Header = () => {
     )
 
     useEffect(() => {
-        setUnreadCount(messages?.length ?? 0)
+        const unread = messages.filter((message) => message.is_read === false)
+        setUnreadCount(unread)
     }, [messages])
 
     const handleInputValueChange = (e) => {
@@ -112,13 +114,22 @@ export const Header = () => {
         }
     };
 
+    const markAllNotificationsAsRead = async () => {
+        const res = await fetcher(Endpoints.READ_ALL_NOTIFICATIONS_FOR_USER, { method: "POST", credentials: "include" })
+        if(res?.success === true) {
+            return
+        }
+        throw new Error("Error reading messages: ")
+    }
+
     const handleIsSearchClick = async () => {
         router.push(`/search?q=${encodeURIComponent(searchTerm)}`)
     }
 
-    const handleBellClick = () => {
+    const handleBellClick = async () => {
         setIsMessagesOpen(!isMessagesOpen)
-        setUnreadCount(0)
+        setUnreadCount(0);
+        await markAllNotificationsAsRead()
     }
 
 
@@ -126,6 +137,7 @@ export const Header = () => {
   return (
     //TODO: Прибрати цей костиль і змінити нормальний z-index через CSS і HTML
     <div className={`header ${isSearchHistoryModalOpen || searchResponse ? "increase-z-index": ""}`}>
+        { console.log(messages) }
         <div className="header__section header__first-section">
             <button type="button" id="burger" onClick={() => setIsMenuModalOpen(true)}>
                 <Image src="/icons/burger.svg" alt="Burger" width="20" height="20" />

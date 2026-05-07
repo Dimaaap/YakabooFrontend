@@ -235,7 +235,7 @@ export const Filters = ({
 
                 setValueFilter("inStockOnly", newValue)
                 
-                const query = updateQueryParam(searchParams, "inStockOnly", newValue)
+                const query = updateQueryParam(searchParams, "in_stock", newValue)
                 router.push(`?${query}`)
               }}
             />

@@ -12,6 +12,7 @@ import { getBookAuthor, SORTING_ORDERS } from '../../utils';
 import { sortBooks } from '../../services/discount.service';
 import Endpoints from '../../endpoints';
 import { useQuery } from '@tanstack/react-query';
+import { fromSearchParams } from '../../states/FilterState';
 
 export const CardsContainer = ({
     source=null,
@@ -79,11 +80,8 @@ export const CardsContainer = ({
 
         if(inStockOnly){
             result = result.filter(
-                b =>
-                b?.book_info?.in_stock ||
-                b?.is_in_stock ||
-                b?.gift_info?.in_stock
-            );
+                b => b?.book_info?.status === "in_stock"
+            )
         }
 
         return result;
