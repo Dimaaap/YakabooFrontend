@@ -137,7 +137,6 @@ export const Header = () => {
   return (
     //TODO: Прибрати цей костиль і змінити нормальний z-index через CSS і HTML
     <div className={`header ${isSearchHistoryModalOpen || searchResponse ? "increase-z-index": ""}`}>
-        { console.log(messages) }
         <div className="header__section header__first-section">
             <button type="button" id="burger" onClick={() => setIsMenuModalOpen(true)}>
                 <Image src="/icons/burger.svg" alt="Burger" width="20" height="20" />
