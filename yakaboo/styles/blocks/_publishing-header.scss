@@ -13,6 +13,20 @@
   }
 
   &__section {
+
+    &.left-section {
+      
+      & img {
+        margin: auto;
+      }
+
+      @include mobile {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+      }
+    }
+
     .right-section {
       display: flex;
       flex-direction: column;
@@ -44,6 +58,12 @@
     width: 100%;
     gap: 1rem;
     align-items: start;
+
+    @include mobile {
+      display: flex;
+      flex-direction: column;
+      gap: 2%;
+    }
   }
 
   &__description {

@@ -19,8 +19,8 @@
     }
 
     @include tablet {
-        grid-template-columns: 30% 30% 30%;
-        gap: 0;
+        gap: 5%;
+        justify-content: start;
     }
 
     &__section {
@@ -38,11 +38,7 @@
         width: 25%;
 
         @include tablet {
-            width: 100%;
-        }
-
-        @include mobile {
-            width: 15%;
+            width: max-content;
         }
     }
 
@@ -60,13 +56,13 @@
 
         &-hidden {
             margin-right: 10%;
-            @include tablet-above {
+            @include mobile-above {
                 @include visually-hidden;    
             }
            
         }
 
-        @include tablet {
+        @include mobile {
             @include visually-hidden
         }
     }
@@ -84,9 +80,6 @@
             width: 100%;
         }
 
-        @include mobile {
-            width: 140%;
-        }
 
         & .header__search-icon {
             position: absolute;
@@ -94,11 +87,6 @@
             top: 30%;
             width: fluid(20, 15);
             filter: invert(5%);
-
-            @include mobile {
-                @include visually-hidden;
-            }
-
         }
 
         & .header__close-icon {
@@ -127,7 +115,7 @@
                 background-color: var(--color-blue-accent);
             }
 
-            @include tablet {
+            @include mobile {
                 @include visually-hidden;
             }
 
@@ -173,11 +161,11 @@
         justify-content: center;
         transition: all 0.3s ease;
 
-        & img {
-            @include laptop {
-                @include visually-hidden;
-            }
-        }
+        // & img {
+        //     @include laptop {
+        //         @include visually-hidden;
+        //     }
+        // }
 
         &:hover {
             opacity: 0.8;
@@ -187,10 +175,8 @@
             height: rem(50);
             justify-content: center;
             align-items: center;
-        }
-
-        @include mobile {
-            @include visually-hidden;
+            padding-inline: 6%;
+            padding-block: 0.5%;
         }
     }
 
@@ -245,13 +231,10 @@
         width: 25%;
 
         @include tablet {
-            width: 50%;
+            width: max-content;
             justify-content: end;
         }
 
-        @include mobile {
-            @include visually-hidden;
-        }
     }
 
     &__icon-menu {
@@ -304,7 +287,12 @@
             @include laptop {
                 width: fluid(25, 20);
             }
+        }
 
+        &.small-hidden {
+            @include tablet {
+                @include visually-hidden;
+            }
         }
 
         &-text {

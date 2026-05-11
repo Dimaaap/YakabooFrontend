@@ -9,4 +9,12 @@
         margin-top: 0%;
         margin-bottom: -1%;
     }
+
+    &__flex-container {
+        & .filters {
+            @include tablet {
+                @include visually-hidden;
+            }
+        }
+    }
 }

@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query"
 import { fetcher } from "../../services/fetch.service"
 
 export const OtherSeriaBooks = ({ book }) => {
-    const VISIBLE = 3;
+    const VISIBLE = 2;
 
     const [index, setIndex] = useState(0);
 
@@ -50,7 +50,7 @@ export const OtherSeriaBooks = ({ book }) => {
                 </span>
             </Link>   
             </div>
-            <div className="top-sales-slider">
+            <div className="top-sales-slider seria-slider">
                 { books?.length > VISIBLE && (
                      <>
                         <button className={`top-sales-slider-btn prev-btn ${ index === 0 ? "hidden" : ""}`} type="btn" onClick={ prev }>
@@ -69,7 +69,7 @@ export const OtherSeriaBooks = ({ book }) => {
                     }}>
                         { books?.length > 0 && (
                             books.map((book => (
-                                <div className="slider-item slider-item-smaller" key={ book.id }>
+                                <div className="slider-item slider-item-smaller seria-slider-item" key={ book.id }>
                                     <ProductCard title={ book.title } 
                                     brand={`${book?.authors[0]?.first_name} ${book?.authors[0]?.last_name}`} 
                                     imageSrc={book.images[0]?.image_url ?? ImagesLinks.DEFAULT_IMAGE}

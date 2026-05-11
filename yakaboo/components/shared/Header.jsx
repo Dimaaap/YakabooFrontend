@@ -11,7 +11,7 @@ import { useBookCategoriesModalStore, useCartModalStore,
     useSearchHistoryOpenStore, 
     useSearchTerm,
     useUserLoginModalStore} from '../../states';
-import { useAuth } from '../../hooks';
+import { useAuth, useSmallScreen } from '../../hooks';
 import { UserProfileButton } from '.';
 import { useDebounce } from '../../hooks/useDebounce';
 import Endpoints from '../../endpoints';
@@ -30,6 +30,7 @@ export const Header = () => {
     const [isContactsOpen, setIsContactsOpen] = useState(false);
     const [isMessagesOpen, setIsMessagesOpen] = useState(false);
     const [unreadCount, setUnreadCount] = useState(0)
+    const { isSmallScreen } = useSmallScreen(1090);
 
     const { setIsMenuModalOpen } = useMenuModalStore();
     const { setIsCartModalOpen } = useCartModalStore();
@@ -145,7 +146,7 @@ export const Header = () => {
                 <Image src="/icons/logo.svg" width="200" alt="Yakaboo" height="70" />
             </Link>
             <Link href="/" className="header__logo-hidden">
-                <Image src="/icons/logo-short.svg" width="30" height="30" className="hidden-logo" alt="Yakaboo" />
+                <Image src="/icons/logo-short.svg" width="30" height="50" className="hidden-logo" alt="Yakaboo" />
             </Link>
             
         </div>
@@ -179,18 +180,20 @@ export const Header = () => {
             </div>
         </div>
         <div className="header__section header__right-section">
-            <div className="header__section-relative" onMouseEnter={() => setIsContactsOpen(true)} 
-                onMouseLeave={() => setIsContactsOpen(false)}>
-                <div className="header__section-info-text">
-                    <div className="top-row row">
-                        <Image src="/icons/phone.svg" alt="" width="15" height="15" className="row__icon" />    
-                        Зв'язатись з нами
-                        <Image src="/icons/chevron-down.svg" alt="" width="15" height="15" />
+            { !isSmallScreen && (
+                <div className="header__section-relative" onMouseEnter={() => setIsContactsOpen(true)} 
+                    onMouseLeave={() => setIsContactsOpen(false)}>
+                    <div className="header__section-info-text">
+                        <div className="top-row row">
+                            <Image src="/icons/phone.svg" alt="" width="15" height="15" className="row__icon" />    
+                            Зв'язатись з нами
+                            <Image src="/icons/chevron-down.svg" alt="" width="15" height="15" />
+                        </div>
                     </div>
-                </div>
-                 { isContactsOpen && !isMessagesOpen && <ContactsModal /> }
-                 { isMessagesOpen && <MessagesModal messages={ messages } /> }
-            </div>
+                    { isContactsOpen && !isMessagesOpen && <ContactsModal /> }
+                    { isMessagesOpen && <MessagesModal messages={ messages } /> }
+                </div>    
+            ) }
             <div className="header__icons-row">
                 { isAuthenticated && (
                     <div className="header__relative-container">
@@ -201,7 +204,7 @@ export const Header = () => {
                     
                 ) }
                 { isAuthenticated && (
-                    <Link className="header__link cart-link" href="#" onClick={() => setIsCartModalOpen(true) }>
+                    <Link className="header__link cart-link small-hidden" href="#" onClick={() => setIsCartModalOpen(true) }>
                         <Image src="/icons/cart.svg" alt="" className="header__link-icon" width="20" height="20" />    
                         { cartItems?.items?.length > 0 && (<span className="header__cart-items-count">{ cartItems.items.length }</span>) }
                     </Link>    
@@ -209,13 +212,13 @@ export const Header = () => {
                 
                 { !isAuthenticated ? (
                     <div className="header__link" onClick={() => setIsLoginModalOpen(true)}>
-                        <Image src="/icons/user.svg" alt="" className="header__link-icon" width="20" height="20" />
+                        <Image src="/icons/user.svg" alt="" className="header__link-icon small-hidden" width="20" height="20" />
                         <span className="header__link-text">
                             Увійти    
                         </span>
                     </div>
                 ) : (
-                    <div className="header__link user-info" onClick={() => setIsProfileSettingsModalOpen(true)}>
+                    <div className="header__link user-info small-hidden" onClick={() => setIsProfileSettingsModalOpen(true)}>
                         <UserProfileButton />
                     </div>
                 ) }

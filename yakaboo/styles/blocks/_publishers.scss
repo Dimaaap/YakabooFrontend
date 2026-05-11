@@ -44,3 +44,12 @@
     }
   }
 }
+
+
+.publisher-container {
+  & .filters {
+    @include tablet {
+      @include visually-hidden;
+    }
+  }
+}

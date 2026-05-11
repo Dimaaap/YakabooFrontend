@@ -199,7 +199,7 @@ const MainContainer = () => {
                         Номер телефону
                     </span>
                     <p className="user-data__user-info">
-                        +{ CookiesWorker.get("phone_number") }
+                        { CookiesWorker.get("phone_number") }
                     </p>
                 </div>
                 <button className="user-data__change" type="button"

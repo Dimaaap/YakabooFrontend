@@ -42,7 +42,7 @@ const ProfileSettingsModal = () => {
                                 { getUserFullName() }
                             </p>
                             <span className="settings-header__user_phone">
-                                +{ CookiesWorker.get("phone_number") }
+                                { CookiesWorker.get("phone_number") }
                             </span>
                         </div>
                     </div>

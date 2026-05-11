@@ -9,12 +9,11 @@
 
   &__price-container-title {
     font-size: rem(24);
-    font-weight: 600;
-    width: 100%;
+    font-weight: 600;;
     margin-left: rem(20);
 
     &.orange-text {
-      color: var(--color-red-10);
+      color: var(--color-pink-10);
     }
   }
 
