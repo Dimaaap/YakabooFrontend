@@ -684,6 +684,75 @@
             flex-direction: column;
             gap: rem(10);
         }
+
+        &-pagination {
+            display: flex;
+            flex-direction: column;
+            gap: rem(10);
+
+            &-btns-row {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: rem(7);
+            }
+
+            &-btn {
+                display: flex;
+                align-items: center;
+                gap: rem(5);
+                background-color: var(--color-light);
+                border: rem(1) solid var(--color-gray-50);
+                border-radius: rem(5);
+                font-size: rem(14);
+                font-weight: 500;
+                padding-block: 2%;
+                padding-inline: 4%;
+                font-weight: 500;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    opacity: 0.8;
+                }
+
+                &.back {
+                    & img {
+                        transform: rotate(90deg);
+                    }
+                }
+
+                &.next {
+                    & img {
+                        transform: rotate(270deg);
+                    }
+                }
+
+                &.active {
+                    background-color: var(--color-gray-50);
+                    color: var(--color-blue-10);
+                }
+            }
+        }
+    }
+
+    &__show-more {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: rem(5);
+        justify-content: center;
+        text-align: center;
+        background-color: var(--color-gray-50);
+        border: rem(1) solid var(--color-gray-50);
+        padding-block: 1%;
+        font-size: rem(14);
+        font-weight: 600;
+        border-radius: rem(5);
+        transition: all 0.3s ease;
+
+        &:hover {
+            opacity: 0.8;
+        }
     }
 
     &__price-row {

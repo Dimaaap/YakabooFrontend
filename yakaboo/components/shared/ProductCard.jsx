@@ -46,15 +46,20 @@ const ProductCardComponent = (props) => {
     );
   }
 
+  const calculateAverageReview = (reviews) => {
+    if(!reviews || reviews.length === 0) return null;
+    const total = reviews.reduce((acc, review) => acc + review.rate, 0);
+    return total / reviews.length;
+  }
+
   const badges = useMemo(() => [
     book?.reviews?.length ? <Stars reviews={book.reviews} isSmaller /> : null,
     book?.reviews?.length > 0 && <CommentsCount count={book.reviews.length} />,
-    <TopBadge />
+    calculateAverageReview(book?.reviews) > 4.9 && <TopBadge />
   ], [book]);
 
   return (
     <Link className={`${changeStyles ? `${extraClass}` : `product-card ${extraClass}`}`} href={`${productLink}`}>
-      { checkProductInCartItems(cartItems) && console.log(book) }
       { (bookInfo?.is_has_cashback || bookInfo?.is_has_winter_esupport || bookInfo?.is_has_esupport || bookInfo?.is_for_war) && (
         <SupportIcons hasCashback={bookInfo?.is_has_cashback} hasWinterSupport={bookInfo?.is_has_winter_esupport} hasESupport={bookInfo?.is_has_esupport} isForWar={bookInfo?.is_for_war} />
       ) }
