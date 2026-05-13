@@ -40,7 +40,7 @@ export const BookPublisherClient = () => {
           <Breadcrumbs linksList={links} />
           
           { publisher.banners.length > 0 && (
-            <Banner banners={ publisher.banners } smallerHeight={ true } />
+            <Banner banners={ publisher.banners } smallerHeight={ true } bigger={ false } />
           
           ) }
           {publisher && <PublishingHeader publisher={publisher} />}

@@ -8,15 +8,16 @@ import React, { useState, useEffect, useRef } from 'react';
 export const Banner = ({ banners=[], bigger=false, smallerHeight=false, isLoading=false }) => {
   const intervalRef = useRef(null);
   const [index, setIndex] = useState(0);
-  const [visibleSlides, setVisibleSlides] = useState(bigger ? 3 : 4);
+  const [visibleSlides, setVisibleSlides] = useState(4);
 
   const validBanners = banners.filter((banner) => banner.image_src !== "test");
 
   const gap = 16;
 
   const getTranslateX = () => {
-    if(index === 0) return "0px";
-    return `calc(-${index} * ( (100% - ${(visibleSlides - 1) * gap}px) / ${visibleSlides} + ${gap}px ))`;
+    const slideWidth = `(100% - ${(visibleSlides - 1) * gap}px) / ${visibleSlides}`;
+
+    return `calc(-${index} * (${slideWidth} + ${gap}px))`;
   }
 
   const maxIndex = Math.max(0, validBanners.length - visibleSlides);
@@ -59,7 +60,7 @@ export const Banner = ({ banners=[], bigger=false, smallerHeight=false, isLoadin
       } else if(window.innerWidth <= 767){
         setVisibleSlides(2);
       } else {
-        setVisibleSlides(!bigger ? 3 : 4);
+        setVisibleSlides(4);
       }
     }
 
@@ -67,7 +68,7 @@ export const Banner = ({ banners=[], bigger=false, smallerHeight=false, isLoadin
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize)
-  }, [bigger])
+  }, [])
 
   useEffect(() => {
     setIndex((prev) =>

@@ -34,8 +34,8 @@ export const PublishingHeader = ({ publisher }) => {
                 <Image
                   src={publisher.logo}
                   alt={`${publisher.title} logo`}
-                  width="300"
-                  height="200"
+                  width="200"
+                  height="150"
                 />
               </div>
             )}
