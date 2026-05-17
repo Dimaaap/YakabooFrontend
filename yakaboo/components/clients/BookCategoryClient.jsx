@@ -6,6 +6,7 @@ import { Breadcrumbs, CardsContainer, Filters, Spinner } from "../shared"
 import { useQuery } from "@tanstack/react-query"
 import { fetcher } from "../../services/fetch.service"
 import { STALE_TIME } from "../../site.config"
+import { Banner } from "../main"
 
 export const BookCategoryClient = () => {
 
@@ -32,7 +33,9 @@ export const BookCategoryClient = () => {
 
     return(
         <div className="book-category">
+            { console.log(category) }
             <Breadcrumbs linksList={ breadcrumbsLink } isSmaller={ true } />
+            { category?.banners && (<Banner banners={ category.banners } />) }
             <div className="book-category__container"> 
                 <Filters needBookCategories={ true } bookCategories={ subcategories || [] } categorySlug={ categorySlug } />
                 <div className="book-category__book-section">

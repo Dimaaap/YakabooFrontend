@@ -10,7 +10,12 @@ export const Banner = ({ banners=[], bigger=false, smallerHeight=false, isLoadin
   const [index, setIndex] = useState(0);
   const [visibleSlides, setVisibleSlides] = useState(4);
 
-  const validBanners = banners.filter((banner) => banner.image_src !== "test");
+  const validBanners = banners
+  .map((banner) => ({
+    ...banner,
+    image: banner.image_src || banner.image_url,
+  }))
+  .filter((banner) => banner.image && banner.image !== "test");
 
   const gap = 16;
 
@@ -109,7 +114,7 @@ export const Banner = ({ banners=[], bigger=false, smallerHeight=false, isLoadin
           {validBanners.map((banner, i) => (
               <Link key={i} className="banner__image" href={banner.link}>
                 <Image
-                  src={banner.image_src}
+                  src={banner?.image}
                   alt={`Banner_${i + 1}`}
                   width={400}
                   height={300}

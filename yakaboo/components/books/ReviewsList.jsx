@@ -24,7 +24,6 @@ export const ReviewsList = ({ reviews }) => {
         }
     }
 
-
     const handlePrevPage = () => {
         setIsShowMoreMode(false);
 
