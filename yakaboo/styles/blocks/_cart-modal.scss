@@ -88,6 +88,15 @@
             padding: 2% 4%;
         }
 
+        &__image-container {
+            width: rem(50);
+            margin-right: 2%;
+
+            & img {
+                min-width: rem(50);
+            }
+        }
+
         &__item-info {
             display: flex;
             align-items: start;

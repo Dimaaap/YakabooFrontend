@@ -17,12 +17,18 @@ const BooksContainer = () => {
     refetchOnWindowFocus: false
   })
 
+  const calculateAverageReview = (reviews) => {
+    if(!reviews || reviews.length === 0) return null;
+    const total = reviews.reduce((acc, review) => acc + review.rate, 0);
+    return total / reviews.length;
+  }
+
   const { cartItems } = useCartStore();
   const { isAddToCartModalOpen } = useCartFlashMessageOpenStore();
 
   const res = books.results ?? [];
 
-  const TOP_BOOKS = res.filter(book => !!book.is_top);
+  const TOP_BOOKS = res.filter(book => calculateAverageReview(book.reviews) >= 4.5) || [];
   const YAKABOO_PUBLISHING_BOOKS = res.filter(book => book.publishing.title === "Yakaboo Publishing") || []
   const ENGLISH_LANGUAGE_BOOKS = res.filter(book => book.book_info?.language === "Англійська") || []
   const DISCOUNTED_BOOKS = getDiscountedBooks(res)

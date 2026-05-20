@@ -13,6 +13,7 @@ export const CartComponent = () => {
 
   const userEmail = CookiesWorker.get("email");
 
+
   const [editCartMode, setEditCartMode] = useState(false);
 
   const { cartItems, deleteItemFromCart, changeQuantity } = useCartStore();
@@ -28,6 +29,7 @@ export const CartComponent = () => {
 
   return (
     <div className="checkout__cart-content">
+      { console.log(cartItems) }
       <div className="checkout__cart-header">
         {cartItems?.items?.length} {wordDeclension(cartItems?.items?.length)} у кошику
         <button

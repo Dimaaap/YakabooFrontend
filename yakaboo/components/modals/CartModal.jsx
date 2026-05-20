@@ -2,17 +2,16 @@
 
 import React, { useEffect, useState } from 'react'
 import { useCartModalStore, useCartStore } from '../../states'
-import { CookiesWorker, fetchData, handleBackdropClick } from '../../services'
-import { CartProductCountInput, FlashMessageWithAgreement, ModalCloseBtn } from '../shared'
+import { CookiesWorker, handleBackdropClick } from '../../services'
+import { CartModalBonuses, CartModalItem, EmptyCartModal, FlashMessageWithAgreement, ModalCloseBtn } from '../shared'
 import Endpoints from '../../endpoints'
 import Image from 'next/image'
-import Link from 'next/link'
 import { BonusesInfoModal } from '.'
 
 const CartModal = () => {
 
   const { isCartModalOpen, setIsCartModalOpen } = useCartModalStore()
-  const { cartItems, setCartItems, clearCart, deleteItemFromCart, changeQuantity } = useCartStore();
+  const { cart, setCart } = useCartStore();
   const [isBonusesInfoModalOpen, setIsBonusesInfoModalOpen] = useState(false);
   const [showFlashMessage, setShowFlashMessage] = useState(false);
 
@@ -28,22 +27,41 @@ const CartModal = () => {
     })
 
     if(res.ok){
-      clearCart()
-      console.log(cartItems)
+       setCart({
+        items: [],
+        total_price: 0,
+        discount: 0,
+        final_price: 0,
+        promo: null
+      });
     } else {
       console.log(res.json())
     }
   }
   
   useEffect(() => {
-    fetchData(Endpoints.CART_ITEMS(userEmail), setCartItems)
+    if (!userEmail) return;
+
+    const loadCart = async () => {
+      const res = await fetch(Endpoints.CART_ITEMS(userEmail));
+      const data = await res.json();
+
+      setCart(data);
+    };
+
+    loadCart();
     
   }, [userEmail])
 
+  const items = cart?.items || [];
+
   return (
-    <div className="menu" onClick={e => handleBackdropClick(e, setIsCartModalOpen)}>
-      { showFlashMessage && <FlashMessageWithAgreement message="Ви впевнені, що хочете видалити всі товари з кошика?"
-      onConfirm={ handleDeleteAll } onClose={() => setShowFlashMessage(false)}/> }
+    <div className="menu" 
+    onClick={e => handleBackdropClick(e, setIsCartModalOpen)}>
+      { showFlashMessage && (
+        <FlashMessageWithAgreement message="Ви впевнені, що хочете видалити всі товари з кошика?"
+        onConfirm={ handleDeleteAll } onClose={() => setShowFlashMessage(false)}/>
+      ) }
       <div className={`menu__content cart-content ${isCartModalOpen ? 'active': ''}`}>
         <div className="menu__header cart-header">
             <p className="cart-header__title">
@@ -52,21 +70,13 @@ const CartModal = () => {
             <ModalCloseBtn clickHandler={() => setIsCartModalOpen(false)} />
         </div>
         <div className="menu__body cart-body">
-            { !cartItems?.items || cartItems.items.length === 0 ? (
-              <div className="cart-body__text-container">
-                <p className="cart-body__text-title">
-                      Ваш кошик порожній
-                  </p> 
-                  <p className="cart-body__text-desc">
-                      Не вагайтесь і перегляньте наш каталог, 
-                      щоб знайти щось гарне для Вас!
-                  </p>
-              </div>  
+            { items?.length === 0 ? (
+              <EmptyCartModal />
             ) : (
                 <div className="cart-body__items">
                   <div className="cart-body__items-count">
                      <span className="cart-body__count">
-                      { cartItems?.items?.length } шт.
+                      { items.length } шт.
                      </span>
                      <button className="cart-body__btn delete-all-btn" type="button"
                      onClick={ deleteAllItemsFromCartHandler }>
@@ -74,83 +84,13 @@ const CartModal = () => {
                      </button>
                   </div>
                   <div className="cart-body__items-container">
-                    { cartItems?.items?.map((item, index) => (
-                      <div className="cart-body__item-container" key={ index }>
-                        <div className="cart-body__item-info">
-                          <div className="cart-body__image-container">
-                            <Link href={`/book/${item.slug}`}>
-                              <Image src={ item.images[0].image_url } alt="" width="40" height="45" className="cart-bory__item-image" /> 
-                            </Link> 
-                          </div>
-                          <div className="cart-body__book-content">
-                            <Link className="cart-body__book-title" href={`/book/${item.slug}`}>
-                              { item.title }
-                            </Link>
-                            { item.authors.map((author, author_index) => (
-                              <span className="cart-body__author" key={ author_index }>
-                                { author.first_name } { author.last_name }
-                                { author_index < item.authors.length - 1 ? ", " : ""}
-                              </span>
-                            )) }
-
-                            <div className="cart-body__price-row">
-                              <p className="cart-body__price blue-text">
-                                { item.price } грн 
-                              </p>
-                              <div className="dot-separator" />
-                              <span className="cart-body__book-format">
-                                { item.format }
-                              </span>
-                            </div>
-
-                            <div className="cart-body__in-stock-row">
-                              <p className="cart-body__status">
-                                <Image src={`${item.is_in_stock ? "/icons/green-truck.svg" : "/icons/truck.svg"}`} height="18" width="18" alt="" />
-                                <span className={`cart-body__status-text ${item.is_in_stock ? "green-text": "red-text"}`}>
-                                  { item.is_in_stock ? "В наявності" : "Немає в наявності" }  
-                                </span>
-                              </p>
-                              <div className="dot-separator" />
-                              <span className="cart-body__text">
-                                Код <span className="cart-body__code">{item.code}</span>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="cart-body__item-features">
-                          <button className="cart-body__btn delete-item-btn" type="button" 
-                          onClick={ () => deleteItemFromCart(item.book_id, userEmail) }>
-                            Видалити
-                          </button>
-
-                          <div className="cart-body__quantity">
-                            <div className="cart-body__quantity-feature minus" onClick={() => changeQuantity(item.book_id, "minus", userEmail)}>
-                              <div className="cart-body__minus"></div>
-                            </div>
-
-                            <CartProductCountInput item={ item } />
-
-                            <div className="cart-body__quantity-feature plus" onClick={() => changeQuantity(item.book_id, "add", userEmail)}>
-                              <div className="cart-body__plus"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                    { items.map((item, index) => (
+                      <CartModalItem index={ index } item={ item } userEmail={ userEmail } key={ index }/>
                     )) }
                   </div>
                   
                   <div className="cart-body__bottom-section">
-                    <div className="cart-body__bonuses">
-                      <div className="cart-body__bonuses-container">
-                        <Image src="/icons/bonus.svg" height="25" width="25" alt="" />
-                        <p className="cart-body__bonuses-text">
-                          За цю покупку буде нараховано {" "}
-                          <span className="cart-body__bonuses-highlighted">
-                            +{Math.ceil(cartItems.total_price / 2)} бонусів.  
-                          </span>
-                        </p>
-                      </div>
-                    </div>
+                    <CartModalBonuses cart={ cart } />
 
                     <div className="cart-body__footer">
                       <div className="cart-body__footer-row">
@@ -158,7 +98,7 @@ const CartModal = () => {
                           Всього
                         </p>
                         <p className="cart-body__footer-text bold-text">
-                          { cartItems.total_price } грн
+                          { cart.final_price } грн
                         </p>
                       </div>
 
@@ -169,7 +109,7 @@ const CartModal = () => {
                           alt="" width="16" height="16" onClick={() => setIsBonusesInfoModalOpen(!isBonusesInfoModalOpen)}/>
                         </p>
                         <p className="cart-body__footer-text-bonuses">
-                          + {Math.ceil(cartItems.total_price / 2)} бонусів
+                          + {Math.ceil(cart.total_price / 2)} бонусів
                         </p>
                       </div>
 

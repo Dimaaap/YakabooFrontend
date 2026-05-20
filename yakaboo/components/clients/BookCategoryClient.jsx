@@ -33,7 +33,6 @@ export const BookCategoryClient = () => {
 
     return(
         <div className="book-category">
-            { console.log(category) }
             <Breadcrumbs linksList={ breadcrumbsLink } isSmaller={ true } />
             { category?.banners && (<Banner banners={ category.banners } />) }
             <div className="book-category__container"> 

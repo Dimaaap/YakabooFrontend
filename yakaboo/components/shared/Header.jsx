@@ -102,9 +102,11 @@ export const Header = () => {
     )
 
     useEffect(() => {
-        const unread = messages.filter((message) => message.is_read === false)
-        setUnreadCount(unread)
-    }, [messages])
+        if(isAuthenticated) {
+            const unread = messages.filter((message) => message.is_read === false)
+            setUnreadCount(unread)
+        }
+    }, [messages, isAuthenticated])
 
     const handleInputValueChange = (e) => {
         const value = e.target.value;

@@ -56,3 +56,6 @@ export { BaseSlider } from "./BaseSlider";
 export { BooksSection } from "./BooksSection";
 export { LoadingCard } from "./LoadingCard";
 export { AddToCartFlashMessage } from "./AddToCartFlashMessage";
+export { EmptyCartModal } from "./EmptyCartModal";
+export { CartModalItem } from "./CartModalItem";
+export { CartModalBonuses } from "./CartModalBonuses";

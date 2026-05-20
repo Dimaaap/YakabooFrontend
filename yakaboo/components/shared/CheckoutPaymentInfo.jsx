@@ -4,10 +4,10 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { CookiesWorker } from '../../services';
+import { CookiesWorker, fetchData } from '../../services';
 import Endpoints from '../../endpoints';
 import { wordDeclension } from '../../services/word-declension.service';
-import { useCartStore, useDeliveryOptionsStore, usePromoCodeStore } from '../../states';
+import { useCartStore, useDeliveryOptionsStore} from '../../states';
 import { BonusInfoModal } from '../dynamic';
 
 export const CheckoutPaymentInfo = () => {
@@ -16,8 +16,7 @@ export const CheckoutPaymentInfo = () => {
   const [promoCode, setPromoCode] = useState('');
   const [promoCodeError, setPromoCodeError] = useState('');
 
-  const { usedPromoCode, setUsedPromoCode, priceWithPromoCode } = usePromoCodeStore();
-  const { cartItems } = useCartStore();
+  const { cartItems, setCartItems } = useCartStore();
   const { deliveryPrice } = useDeliveryOptionsStore();
 
   const FREE_DELIVERY_FROM = 600;
@@ -43,56 +42,52 @@ export const CheckoutPaymentInfo = () => {
   }
 
   const addPromoCode = async () => {
-    const userEmail = CookiesWorker.get('email');
-    setPromoCodeError('');
+    const userEmail = CookiesWorker.get("email");
 
-    if (!userEmail) {
+    setPromoCodeError("");
+
+    if(!userEmail){
       setPromoCodeError(
-        'Для використання промокоду потрібно зареєструватись або увійти в акаунт'
-      );
+        "Для використання промокоду потрібно зайти в акаунт"
+      )
+
       return;
     }
 
-    const promo = document.querySelector('.checkout__add-promo-input').value;
-
     try {
-      const res = await fetch(Endpoints.USE_PROMO_CODE(userEmail, promo), {
-        method: 'POST',
-      });
-
-      const response = await res.json();
-
-      if (res.ok) {
-        const promoId = response.promo_id;
-        try {
-          await fetchData(
-            Endpoints.GET_PROMO_CODE_BY_ID(promoId),
-            (promoData) => {
-              setUsedPromoCode(promoData);
-              CookiesWorker.setForYear('promo_code', JSON.stringify(promoData));
-            }
-          );
-          setPromoCode('');
-          setPromoCodeError('');
-          setAddPromo(false);
-        } catch (err) {
-          console.error(err);
+      const res = await fetch(
+        Endpoints.APPLY_PROMO(userEmail, promoCode.id), {
+          method: "POST"
         }
-      } else {
-        setPromoCodeError(response.detail);
-      }
-    } catch (err) {
-      console.log(err);
-    }
+      );
 
-    document.querySelector('.checkout__add-promo-input').value = '';
-    setPromoCode('');
-  };
+      const response = await res.json()
+
+      if(!res.ok){
+        setPromoCodeError(response.detail)
+        return;
+      }
+
+      const updatedCart = await fetchData(
+        Endpoints.GET_CART(userEmail)
+      )
+
+      setCartItems(updatedCart)
+      setPromoCode("")
+      setAddPromo(false)
+      setPromoCodeError("")
+    } catch (err) {
+      console.error(err);
+      setPromoCodeError("Помилка при використання промокоду")
+    }
+  }
+
 
   return (
     <div className="checkout__payment-info">
+      { console.log(cartItems) }
       <div className="checkout__payment-header">
-        {!CookiesWorker.get('promo_code') && (
+        {!cartItems?.promo && (
           <div className="checkout__payment-text-row">
             <p className="checkout__payment-text">
               Подарунковий сертифікат чи промокод
@@ -120,7 +115,7 @@ export const CheckoutPaymentInfo = () => {
               className="checkout__add-promo-button"
               type="button"
               disabled={
-                !promoCode.length === 0 || CookiesWorker.get('promo_code')
+                promoCode.length === 0 || cartItems?.promo
               }
               onClick={() => addPromoCode()}
             >
@@ -131,11 +126,11 @@ export const CheckoutPaymentInfo = () => {
         {promoCodeError && (
           <p className="checkout__form-error-message">{promoCodeError}</p>
         )}
-        {usedPromoCode.code && (
+        {cartItems?.promo && (
           <div className="checkout__payment-bill-row">
             <p className="checkout__payment-type">Використаний купон:</p>
             <span className="checkout__payment-total-sum used-promo-tile">
-              {usedPromoCode.code}
+              {cartItems.promo}
             </span>
           </div>
         )}
@@ -149,9 +144,7 @@ export const CheckoutPaymentInfo = () => {
         <div className="checkout__payment-bill-row">
           <h5 className="checkout__payment-total">До сплати</h5>
           <h5 className="checkout__payment-total-sum bold">
-            {!priceWithPromoCode
-              ? cartItems?.total_price + deliveryPrice
-              : priceWithPromoCode}{' '}
+            { Math.round(cartItems?.final_price + deliveryPrice, 2) }
             грн
           </h5>
         </div>
@@ -173,13 +166,13 @@ export const CheckoutPaymentInfo = () => {
           </div>
         )}
 
-        {priceWithPromoCode > 0 && (
+        {cartItems?.discount > 0 && (
           <div className="checkout__payment-bill-row positive">
             <p className="checkout__payment-type smaller positive">
               Знижка з купону
             </p>
             <p className="checkout__payment-total-sum smaller positive">
-              {cartItems?.total_price + deliveryPrice - priceWithPromoCode} грн
+              {Math.round(cartItems?.discount, 2)} грн
             </p>
           </div>
         )}

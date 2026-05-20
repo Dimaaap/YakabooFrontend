@@ -242,6 +242,8 @@ const Endpoints = {
   ...Notifications,
   ACTIVE_TITLE: `${DOMAIN}page-title/active`,
   USE_PROMO_CODE: (userEmail, promoCode) => `${DOMAIN}promo-codes-usage/use?user_email=${userEmail}&code=${promoCode}`,
+  APPLY_PROMO: (userEmail, promoId) => `${DOMAIN}cart/apply-promo?user_email=${userEmail}&promo_id=${promoId}`,
+  GET_CART: (userEmail) => `${DOMAIN}cart/cart-items/all?user_email=${userEmail}`,
   GET_PROMO_CODE_BY_ID: (promoId) => `${DOMAIN}promo-codes/by-id/${promoId}`,
   ADD_REVIEW: `${DOMAIN}reviews/create`,
   SUBSCRIBE_USER_EMAIL: `${DOMAIN}subs/create`,

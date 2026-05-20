@@ -11,7 +11,7 @@ import { fetcher } from '../../services/fetch.service';
 import { STALE_TIME } from '../../site.config';
 import Endpoints from '../../endpoints';
 import { SearchResponseModal } from '../modals/SearchResponseModal';
-import { useBlockBodyScroll } from '../../hooks';
+import { useAuth, useBlockBodyScroll } from '../../hooks';
 
 export const HomeClient = () => {
   const { isCartModalOpen } = useCartModalStore();
@@ -21,6 +21,8 @@ export const HomeClient = () => {
   const { setIsHoveringCategory, setIsHoveringSubcategoryModal, setIsSubcategoriesModalOpen } = useSubcategoriesModalStore();
   const { cartItems } = useCartStore();
   const { searchTerm, searchResponse } = useSearchTerm();
+
+  const isAuthenticated = useAuth();
 
   const { data: banners = [], isLoading } = useQuery({
     queryKey: ["banners"],
@@ -47,7 +49,7 @@ export const HomeClient = () => {
           { isSearchHistoryModalOpen && <SearchHistoryModal /> }
           { searchResponse && searchTerm.length > 0 && <SearchResponseModal searchResponse={ searchResponse } /> }
           <Banner banners={ banners } isLoading={ isLoading } />
-          { cartItems?.items?.length > 0 && (
+          { cartItems?.items?.length > 0 && isAuthenticated && (
             <CartInfo itemsCount={ cartItems.items.length } 
             totalPrice={ cartItems.total_price } />
           ) }

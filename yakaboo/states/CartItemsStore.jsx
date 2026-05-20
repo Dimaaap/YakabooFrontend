@@ -2,248 +2,84 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import Endpoints from "../endpoints";
 
+const emptyCart = {
+  items: [],
+  total_price: 0,
+  discount: 0,
+  final_price: 0,
+  promo: null
+}
+
 export const useCartStore = create(
   persist(
     (set, get) => ({
-      cartItems: { items: [], total_price: 0 },
-      prevQuantities: {},
+      cart: emptyCart,
+      setCart: (cart) => set({ cart }),
 
-      calcTotal(items) {
-        return items.reduce(
-          (sum, item) => sum + item.price * (item.quantity || 0),
-          0
-        );
-      },
-
-      setCartItems: (updater) =>
-        set((state) => ({
-          cartItems:
-            typeof updater === "function"
-              ? updater(state.cartItems)
-              : updater,
-      })),
+      clearCart: () => set({ cart: emptyCart }),
 
       addToCart: async (book, userEmail) => {
-        const { cartItems, calcTotal } = get();
-
-        const bookId = book.id
-        const prevItems = cartItems.items;
-
-        const existingItem = cartItems.items.find(
-          (item) => item.book_id === bookId
-        );
-
-        let updatedItems;
-
-        if(existingItem) {
-          updatedItems = prevItems.map((item) => item.book_id === bookId ? {...item, quantity: item.quantity + 1} : item)
-        } else {
-          updatedItems  = [
-            ...prevItems, {
-              ...book,
-              book_id: book.id,
-              quantity: 1,
-              price: book.price
-            }
-          ]
-        }
-
-        set({
-          cartItems: {
-            items: updatedItems,
-            total_price: calcTotal(updatedItems)
-          }
-        })
-
-      try {
-        const res = await fetch(
+        try {
+          const res = await fetch(
             Endpoints.ADD_ITEM_TO_CART(book.id, userEmail),
-            {
-              method: "POST",
-            }
-          );
+            { method: "POST" }
+          )
 
-        if (!res.ok) {
-          throw new Error("Failed to fetch");  
-        } 
+          if(!res.ok){
+            return;
+          }
 
-        const data = await res.json();
-
-        set((state) => {
-          const syncedItems = state.cartItems.items.map((item) => 
-            item.book_id === data.book_id ? {
-              ...item,
-              quantity: data.quantity
-            } : item);
-
-            return {
-              cartItems: {
-                items: syncedItems,
-                total_price: calcTotal(syncedItems)
-              }
-            }
+          const updatedCart = await res.json();
+          set({ cart: updatedCart });
+        } catch (err) {
+          console.error("Adding to cart failed", err);
         }
-      )
-      } catch (e) {
-        console.error("Rollback cart");
-        set({
-          cartItems: {
-            items: prevItems,
-            total_price: calcTotal(prevItems),
-          },
-        });
-      }
-
-    },
+      },
 
       deleteItemFromCart: async(bookId, userEmail) => {
-        const res = await fetch(Endpoints.DELETE_ITEM_FROM_CART(userEmail, bookId), 
-        {
-          method: "DELETE"
-        });
-
-        if(!res.ok) return;
-
-        set((state) => {
-          const updatedItems = state.cartItems.items.filter(
-            (item) => item.book_id !== bookId
-          );
-
-          return {
-            cartItems: {
-              items: updatedItems,
-              total_price: get().calcTotal(updatedItems)
-            }
-          }
-        })
-      },
-
-      changeQuantity: async(bookId, type, userEmail) => {
-        const { cartItems } = get();
-        const currentItem = cartItems.items.find((item) => item.book_id === bookId);
-        if(!currentItem) return;
-
-        const newQuantity = type === "add" 
-        ? currentItem.quantity + 1 
-        : currentItem.quantity - 1;
-
-        const res = await fetch(
-          Endpoints.UPDATE_BOOK_QUANTITY(userEmail, bookId, newQuantity),
-          {
-            method: "PATCH",
-            headers: {"Content-Type": "application/json"}
-          }
-        );
-
-        if(!res.ok) return;
-
-        get().updateCartItemQuantity(bookId, newQuantity);
-      },
-
-      setPrevQuantities: (updater) => set((state) => ({
-        prevQuantities: typeof updater === "function" ? updater(state.prevQuantities) : updater,
-      })),
-
-      clearCart: () => set({ cartItems: { items: [], total_price: 0 } }),
-
-      updateCartItemQuantity: (bookId, newQuantity) =>
-        set((state) => {
-
-          const updatedItems = state.cartItems.items.map((item) =>
-            item.book_id === bookId
-              ? {
-                  ...item,
-                  quantity: newQuantity
-                }
-              : item
-          );
-
-          return {
-            cartItems: {
-              ...state.cartItems,
-              items: updatedItems,
-              total_price: get().calcTotal(updatedItems)
-            },
-          };
-      }),
-
-      handleQuantityChangeLocal: (bookId, newValue) => {
-        const { setCartItems } = get()
-
-        if(newValue === ""){
-            setCartItems((prev) => ({
-              ...prev,
-              items: prev.items.map((item) => 
-                item.book_id === bookId 
-                ? {...item, quantity: ""}
-                :item
-              )
-            }));
-
-            return;
-        }
-
-        const newQuantity = parseInt(newValue);
-        if(isNaN(newQuantity) || newQuantity < 1){
-            return;
-        }
-
-        setCartItems((prev) => ({
-          ...prev,
-          items: prev.items.map((item) => 
-            item.book_id === bookId
-            ? { ...item, quantity: newQuantity }
-            : item
+        try {
+          const res = await fetch(
+            Endpoints.DELETE_ITEM_FROM_CART(userEmail, bookId),
+            { method: "DELETE" }
           )
-        }))
-      },
 
-      handleQuantityBlur: async(bookId, newValue, userEmail) => {
-        const { setCartItems, updateCartItemQuantity } = get();
+          if(!res.ok) return;
 
-        const oldQuantity = get().prevQuantities?.[bookId];
+          const updatedCart = await res.json();
 
-        if(newValue === "" || isNaN(parseInt(newValue))){
-            setCartItems((prev) => ({
-              ...prev,
-              items: prev.items.map((item) =>  
-                item.book_id === bookId 
-                ? { ...item, quantity: oldQuantity }
-                : item
-              )
-            }))
-
-            return
-        }
-
-        const newQuantity = parseInt(newValue);
-
-        const res = await fetch(Endpoints.UPDATE_BOOK_QUANTITY(userEmail, bookId, newQuantity), {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-
-        if(res.ok){
-            updateCartItemQuantity(bookId, newQuantity)
-        } else {
-          console.error("Error updating quantity")
+          set({ cart: updatedCart });
+        } catch (err) {
+          console.error(err)
         }
       },
 
-      handleFocus: (bookId) => {
-        const { cartItems, setPrevQuantities } = get();
-        
-        const currentQuantity = cartItems.items.find(
-          (item) => item.book_id === bookId
-        )?.quantity;
+      changeQuantity: async (bookId, type, userEmail) => {
+        const item = get().cart.items.find(
+          i => i.book_id === bookId
+        )
 
-        setPrevQuantities((prev) => ({
-          ...prev,
-          [bookId]: currentQuantity
-        }))
-      }
+        if(!item) return;
+
+        const newQuantity = type === "add" ? item.quantity + 1 : item.quantity - 1;
+
+        if(newQuantity < 1) return;
+
+        try {
+          const res = await fetch(
+            Endpoints.UPDATE_BOOK_QUANTITY(userEmail, bookId, newQuantity), 
+            { method: "PATCH" }
+          )
+
+          if(!res.ok) return;
+
+          const updatedCart = await res.json();
+
+          set({ cart: updatedCart });
+        } catch(err) {
+          console.error(err)
+        }
+      },
+
     }),
     {
       name: "cart-storage",
