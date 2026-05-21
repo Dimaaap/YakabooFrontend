@@ -38,7 +38,7 @@ export const Header = () => {
     const { setIsLoginModalOpen } = useUserLoginModalStore();
     const { setIsProfileSettingsModalOpen } = useProfileSettingsModalStore();
     const { isSearchHistoryModalOpen, setIsSearchHistoryModalOpen } = useSearchHistoryOpenStore();
-    const { cartItems } = useCartStore();
+    const { cart } = useCartStore();
     const { searchTerm, setSearchTerm, searchResponse, setSearchResponse } = useSearchTerm();
 
     const isAuthenticated = useAuth();
@@ -69,8 +69,6 @@ export const Header = () => {
             setSearchResponse(null);
             return;
         }
-
-        let isCanceled = false;
 
         const fetchData = async () => {
             try {
@@ -135,7 +133,7 @@ export const Header = () => {
         await markAllNotificationsAsRead()
     }
 
-
+    const cartItems = cart?.items || [];
 
   return (
     //TODO: Прибрати цей костиль і змінити нормальний z-index через CSS і HTML
@@ -208,7 +206,7 @@ export const Header = () => {
                 { isAuthenticated && (
                     <Link className="header__link cart-link small-hidden" href="#" onClick={() => setIsCartModalOpen(true) }>
                         <Image src="/icons/cart.svg" alt="" className="header__link-icon" width="20" height="20" />    
-                        { cartItems?.items?.length > 0 && (<span className="header__cart-items-count">{ cartItems.items.length }</span>) }
+                        { cartItems?.length > 0 && (<span className="header__cart-items-count">{ cartItems.length }</span>) }
                     </Link>    
                 ) }
                 

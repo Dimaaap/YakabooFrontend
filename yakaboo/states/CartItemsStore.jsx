@@ -80,6 +80,58 @@ export const useCartStore = create(
         }
       },
 
+      handleFocus: (bookId) => {
+        set((state) => ({
+          cart: {
+            ...state.cart,
+            items: state.cart.items.map((item) => item.book_id === bookId ? {
+              ...item,
+              quantity: ""
+            } : item)
+          }
+        }))
+      },
+
+      handleQuantityChangeLocal: (bookId, value) => {
+        if(!/^\d*$/.test(value)) return;
+
+        set((state) => ({
+          cart: {
+            ...state.cart,
+            items: state.cart.items.map((item) => item.book_id === bookId ? {
+              ...item, quantity: value
+            } : item)
+          }
+        }))
+      },
+
+      handleQuantityBlur: async (bookId, value, userEmail) => {
+        let quantity = parseInt(value)
+
+        if(isNaN(quantity) || quantity < 1) {
+          quantity = 1;
+        }
+
+        if(quantity > 999){
+          quantity = 999;
+        }
+
+        try {
+          const res = await fetch(
+            Endpoints.UPDATE_BOOK_QUANTITY(
+              userEmail, bookId, quantity
+            ), { method: "PATCH" }
+          )
+
+          if(!res.ok) return;
+
+          const updatedCart = await res.json();
+
+          set({ cart: updatedCart })
+        } catch(err) {
+          console.error(err)
+        }
+      }
     }),
     {
       name: "cart-storage",

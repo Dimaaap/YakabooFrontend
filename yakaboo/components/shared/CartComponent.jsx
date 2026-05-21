@@ -16,7 +16,7 @@ export const CartComponent = () => {
 
   const [editCartMode, setEditCartMode] = useState(false);
 
-  const { cartItems, deleteItemFromCart, changeQuantity } = useCartStore();
+  const { cart, deleteItemFromCart } = useCartStore();
 
   const toggleEditMode = () => {
     if (editCartMode) {
@@ -26,12 +26,12 @@ export const CartComponent = () => {
     }
   };
 
+  const cartItems = cart?.items || []
 
   return (
     <div className="checkout__cart-content">
-      { console.log(cartItems) }
       <div className="checkout__cart-header">
-        {cartItems?.items?.length} {wordDeclension(cartItems?.items?.length)} у кошику
+        {cartItems?.length} {wordDeclension(cartItems?.length)} у кошику
         <button
           className={`checkout__cart-edit-btn ${editCartMode ? 'edit-cart' : ''}`}
           onClick={() => toggleEditMode()}
@@ -48,7 +48,7 @@ export const CartComponent = () => {
       </div>
 
       <div className="checkout__cart-body">
-        {cartItems?.items?.map((item, index) => (
+        {cartItems?.map((item, index) => (
           <div className="checkout__cart-item" key={index}>
             <div className="checkout__cart-item__left-part">
               <Link
@@ -56,7 +56,7 @@ export const CartComponent = () => {
                 href={`/book/${item.slug}`}
               >
                 <Image
-                  src={item.images[0].image_url}
+                  src={item.images.image_url}
                   alt={item.title}
                   width="50"
                   height="50"
@@ -119,7 +119,7 @@ export const CartComponent = () => {
 
       <div className="checkout__cart-footer">
         <p className="checkout__cart-total">
-          Разом {cartItems?.total_price} грн
+          Разом {cart.total_price} грн
         </p>
       </div>
     </div>

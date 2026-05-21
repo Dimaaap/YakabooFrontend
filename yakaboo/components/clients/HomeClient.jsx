@@ -19,7 +19,7 @@ export const HomeClient = () => {
   const { isDeliveryModalOpen } = useDeliveryModalStore();
   const { isSearchHistoryModalOpen } = useSearchHistoryOpenStore();
   const { setIsHoveringCategory, setIsHoveringSubcategoryModal, setIsSubcategoriesModalOpen } = useSubcategoriesModalStore();
-  const { cartItems } = useCartStore();
+  const { cart } = useCartStore();
   const { searchTerm, searchResponse } = useSearchTerm();
 
   const isAuthenticated = useAuth();
@@ -39,6 +39,8 @@ export const HomeClient = () => {
 
   useBlockBodyScroll(searchResponse)
 
+  const cartItems = cart?.items || [];
+
   return (
     <div className="main-container">
       {isMenuModalOpen && <MenuModal />}
@@ -49,9 +51,9 @@ export const HomeClient = () => {
           { isSearchHistoryModalOpen && <SearchHistoryModal /> }
           { searchResponse && searchTerm.length > 0 && <SearchResponseModal searchResponse={ searchResponse } /> }
           <Banner banners={ banners } isLoading={ isLoading } />
-          { cartItems?.items?.length > 0 && isAuthenticated && (
-            <CartInfo itemsCount={ cartItems.items.length } 
-            totalPrice={ cartItems.total_price } />
+          { cartItems?.length > 0 && isAuthenticated && (
+            <CartInfo itemsCount={ cartItems.length } 
+            totalPrice={ cart.total_price } />
           ) }
           <BooksContainer />
           <AdditionalInfo />

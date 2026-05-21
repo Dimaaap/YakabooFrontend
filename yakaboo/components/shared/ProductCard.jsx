@@ -29,19 +29,19 @@ const ProductCardComponent = (props) => {
 
   
   const { setIsAddToCartModalOpen } = useCartFlashMessageOpenStore();
-  const { cartItems } = useCartStore();
+  const { cart } = useCartStore();
 
   const addToCart = useCartStore((state) => state.addToCart);
   const USER_EMAIL = CookiesWorker.get("email") || null;
 
   const checkProductInCartItems = (cartItems) => {
-    if(!cartItems?.items){
+    if(!cartItems){
       return false
     }
 
     const bookSlug = productLink
 
-    return cartItems.items.some(
+    return cartItems.some(
       (item) => item.slug === bookSlug.split("/")[1]
     );
   }
@@ -57,6 +57,8 @@ const ProductCardComponent = (props) => {
     book?.reviews?.length > 0 && <CommentsCount count={book.reviews.length} />,
     calculateAverageReview(book?.reviews) > 4.9 && <TopBadge />
   ], [book]);
+
+  const cartItems = cart?.items || [];
 
   return (
     <Link className={`${changeStyles ? `${extraClass}` : `product-card ${extraClass}`}`} href={`${productLink}`}>

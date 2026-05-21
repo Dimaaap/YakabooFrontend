@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { CookiesWorker, fetchData } from '../../services';
+import { CookiesWorker } from '../../services';
 import Endpoints from '../../endpoints';
 import { wordDeclension } from '../../services/word-declension.service';
 import { useCartStore, useDeliveryOptionsStore} from '../../states';
@@ -16,26 +16,11 @@ export const CheckoutPaymentInfo = () => {
   const [promoCode, setPromoCode] = useState('');
   const [promoCodeError, setPromoCodeError] = useState('');
 
-  const { cartItems, setCartItems } = useCartStore();
+  const { cart, setCart } = useCartStore();
   const { deliveryPrice } = useDeliveryOptionsStore();
 
   const FREE_DELIVERY_FROM = 600;
-
-  const toggleAddPromo = () => {
-    if (addPromo) {
-      setAddPromo(false);
-    } else {
-      setAddPromo(true);
-    }
-  };
-
-  const toggleShowBonusInfo = () => {
-    if (showBonusInfo) {
-      setShowBonusInfo(false);
-    } else {
-      setShowBonusInfo(true);
-    }
-  };
+  const userEmail = CookiesWorker.get("email")
 
   const getRestToFreeDelivery = (cartItemsPrice) => {
     return FREE_DELIVERY_FROM - cartItemsPrice;
@@ -56,38 +41,48 @@ export const CheckoutPaymentInfo = () => {
 
     try {
       const res = await fetch(
-        Endpoints.APPLY_PROMO(userEmail, promoCode.id), {
+        Endpoints.APPLY_PROMO(userEmail, promoCode), {
           method: "POST"
         }
       );
 
-      const response = await res.json()
+      const data = await res.json()
 
       if(!res.ok){
-        setPromoCodeError(response.detail)
+        setPromoCodeError(data.detail)
         return;
       }
 
-      const updatedCart = await fetchData(
-        Endpoints.GET_CART(userEmail)
-      )
-
-      setCartItems(updatedCart)
-      setPromoCode("")
+      setCart(data)
       setAddPromo(false)
-      setPromoCodeError("")
     } catch (err) {
       console.error(err);
       setPromoCodeError("Помилка при використання промокоду")
     }
   }
 
+  useEffect(() => {
+    if (!userEmail) return;
+
+    const loadCart = async () => {
+      const res = await fetch(Endpoints.CART_ITEMS(userEmail));
+      const data = await res.json();
+
+      setCart(data);
+    };
+
+    loadCart();
+    
+  }, [userEmail])
+
+  const cartItems = cart?.items || [];
+
 
   return (
     <div className="checkout__payment-info">
-      { console.log(cartItems) }
+      { console.log(cart) }
       <div className="checkout__payment-header">
-        {!cartItems?.promo && (
+        {!cart?.promo && (
           <div className="checkout__payment-text-row">
             <p className="checkout__payment-text">
               Подарунковий сертифікат чи промокод
@@ -95,7 +90,7 @@ export const CheckoutPaymentInfo = () => {
             <button
               className="checkout__payment-btn add-btn gray-btn"
               type="button"
-              onClick={() => toggleAddPromo()}
+              onClick={() => setAddPromo(prev => !prev)}
             >
               Додати
             </button>
@@ -115,7 +110,7 @@ export const CheckoutPaymentInfo = () => {
               className="checkout__add-promo-button"
               type="button"
               disabled={
-                promoCode.length === 0 || cartItems?.promo
+                promoCode.length === 0 || cart?.promo
               }
               onClick={() => addPromoCode()}
             >
@@ -126,11 +121,11 @@ export const CheckoutPaymentInfo = () => {
         {promoCodeError && (
           <p className="checkout__form-error-message">{promoCodeError}</p>
         )}
-        {cartItems?.promo && (
+        {cart?.promo && (
           <div className="checkout__payment-bill-row">
             <p className="checkout__payment-type">Використаний купон:</p>
             <span className="checkout__payment-total-sum used-promo-tile">
-              {cartItems.promo}
+              {cart.promo}
             </span>
           </div>
         )}
@@ -144,20 +139,20 @@ export const CheckoutPaymentInfo = () => {
         <div className="checkout__payment-bill-row">
           <h5 className="checkout__payment-total">До сплати</h5>
           <h5 className="checkout__payment-total-sum bold">
-            { Math.round(cartItems?.final_price + deliveryPrice, 2) }
-            грн
+            { cart.final_price < FREE_DELIVERY_FROM ? Math.round(cart?.final_price + deliveryPrice, 2) : Math.round(cart?.final_price, 2) }
+            {" "}грн
           </h5>
         </div>
         <div className="checkout__payment-bill-row">
           <p className="checkout__payment-type smaller">
-            {cartItems?.items?.length}{' '}
-            {wordDeclension(cartItems?.items?.length)}
+            {cartItems?.length}{' '}
+            {wordDeclension(cartItems?.length)}
           </p>
           <p className="checkout__payment-total-sum smaller">
-            {cartItems?.total_price} грн
+            {cart?.total_price} грн
           </p>
         </div>
-        {deliveryPrice > 0 && (
+        {deliveryPrice > 0 && cart.total_price < FREE_DELIVERY_FROM && (
           <div className="checkout__payment-bill-row">
             <p className="checkout__payment-type smaller">Доставка</p>
             <p className="checkout__payment-total-sum smaller">
@@ -166,13 +161,13 @@ export const CheckoutPaymentInfo = () => {
           </div>
         )}
 
-        {cartItems?.discount > 0 && (
+        {cart?.discount > 0 && (
           <div className="checkout__payment-bill-row positive">
             <p className="checkout__payment-type smaller positive">
               Знижка з купону
             </p>
             <p className="checkout__payment-total-sum smaller positive">
-              {Math.round(cartItems?.discount, 2)} грн
+              {Math.round(cart?.discount, 2)} грн
             </p>
           </div>
         )}
@@ -187,11 +182,11 @@ export const CheckoutPaymentInfo = () => {
                 alt=""
                 width="18"
                 height="18"
-                onClick={() => toggleShowBonusInfo()}
+                onClick={() => setShowBonusInfo(prev => !prev)}
               />
             </p>
             <p className="checkout__payment-total-sum blue">
-              +{Math.ceil(cartItems?.total_price / 2)} бонусів
+              +{Math.ceil(cart?.total_price / 2)} бонусів
             </p>
           </div>
         </div>
@@ -206,11 +201,11 @@ export const CheckoutPaymentInfo = () => {
         </div>
 
         {deliveryPrice > 0 &&
-          getRestToFreeDelivery(cartItems?.total_price) > 0 && (
+          getRestToFreeDelivery(cart?.total_price) > 0 && (
             <div className="checkout__advert">
               <span className="checkout__advert-text">
                 Додайте в кошик ще товарів на{' '}
-                {getRestToFreeDelivery(cartItems?.total_price)} грн та отримайте
+                {getRestToFreeDelivery(cart?.total_price)} грн та отримайте
                 безкоштовну доставку
               </span>
             </div>

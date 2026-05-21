@@ -7,6 +7,7 @@ import { CartModalBonuses, CartModalItem, EmptyCartModal, FlashMessageWithAgreem
 import Endpoints from '../../endpoints'
 import Image from 'next/image'
 import { BonusesInfoModal } from '.'
+import Link from 'next/link'
 
 const CartModal = () => {
 
@@ -115,9 +116,9 @@ const CartModal = () => {
 
                       { isBonusesInfoModalOpen && <BonusesInfoModal /> }
 
-                      <button className="cart-body__submit-btn">
+                      <Link className="cart-body__submit-btn" href="/checkout">
                         Перейти до оформлення замовлення
-                      </button>
+                      </Link>
                     </div>
                   </div>
                   
