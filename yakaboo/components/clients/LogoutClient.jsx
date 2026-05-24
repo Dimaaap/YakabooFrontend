@@ -13,25 +13,15 @@ export const LogoutClient = () => {
 
   useEffect(() => {
     const logoutUser = async() => {
-        const refreshToken = CookiesWorker.get("refresh_token");
-
-        if(refreshToken){
-            try{
-                await fetch(Endpoints.USER_LOGOUT, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${refreshToken}`
-                    },
-                })
-            } catch(error){
-                console.warn('Logout request failed. Proceeding anyway.')
-            }
+        try{
+            await fetch(Endpoints.USER_LOGOUT, {
+                method: "POST",
+                credentials: "include"
+            })
+        } catch(error){
+            console.warn('Logout request failed. Proceeding anyway.')
         }
-
         [
-            'access_token',
-            'refresh_token',
             'token_type',
             'email',
             'phone_number',
@@ -41,7 +31,7 @@ export const LogoutClient = () => {
             'is_login',
         ].forEach(CookiesWorker.delete)
 
-        LocalStorageWorker.set('is_auth', 'false')
+        LocalStorageWorker.set('is_auth', false)
         LocalStorageWorker.delete('auth_expires')
 
         setIsRedirectAfterLogout(true)

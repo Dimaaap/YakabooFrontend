@@ -61,7 +61,7 @@ const ConfirmationCodeModal = () => {
 
             if(response.ok){
                 const data = await response.json();
-                CookiesWorker.set("is_auth", false);
+                CookiesWorker.set("is_auth", true);
                 setMessage("Ви успішно авторизувались");
                 setIsConfirmationModalOpen(false);
                 window.location.reload();
