@@ -2,17 +2,20 @@
 
 import { useEffect } from "react"
 
-import { useForm, FormSubmit } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import { useCartStore, useDeliveryCountryStore, useDeliveryOptionsStore, usePromoCodeStore } from "../../states";
 import { deliveryFormsDefaultValues, deliveryOptions, userData } from "../../services/checkoutOptions.service";
 import { useRouter } from "next/navigation";
 import { CartComponent, CheckoutPaymentInfo, CommentForm, ContactDataForm, DeliveryDataForm, OtherPersonDataForm, PaymentMethodForm } from "../shared";
+import { useProtectedPage } from "../../hooks";
+import { UserLoginModal } from "../dynamic";
 
 export const CheckoutClient = () => {
     const { cartItems } = useCartStore();
     const { usedPromoCode, initPromoCode, calculateDiscountPrice } = usePromoCodeStore();
     const { selectedCity, selectedCountry, selectedDeliveryCountry } = useDeliveryCountryStore();
+    const { isAuthenticated, handleCloseModal } = useProtectedPage();
 
     const { deliveryPrice, setSelectedDeliveryOption, setDeliveryPrice,
      } = useDeliveryOptionsStore();
@@ -89,6 +92,10 @@ export const CheckoutClient = () => {
     if(!cartItems.total_price || cartItems.items.length === 0){
         return null;
     }
+
+    if(!isAuthenticated){
+        return <UserLoginModal afterClose={ handleCloseModal } />
+      }
 
     return (
         <form className="checkout" onSubmit={handleSubmit(onSubmit)}>
